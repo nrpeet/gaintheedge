@@ -1,0 +1,520 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>GainTheEdge — College Football &amp; NFL Picks</title>
+<meta name="description" content="This week's college football and NFL picks from the GainTheEdge models, rated by stars from years of backtests, with the full season record.">
+<meta property="og:title" content="GainTheEdge — College Football Picks">
+<meta property="og:description" content="This week's card, rated by stars from years of backtests, with the full season record.">
+<meta name="theme-color" content="#0f1b2e">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230f1b2e'/%3E%3Cpath d='M26 14h12l-10 36H16z' fill='%23e8a317'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@500;600&display=swap">
+<style>
+/* Layout: a game-night scoreboard. A dark band header with the week's totals, then bet tickets grouped by star tier;
+   Record and Setups tabs reuse the same ticket and table language. */
+:root {
+  --bg: #eef1f4;          /* cool concrete */
+  --panel: #ffffff;       /* ticket paper */
+  --ink: #101a2b;         /* stadium navy ink */
+  --muted: #5d6a7d;
+  --line: #d8dee6;
+  --band: #0f1b2e;        /* scoreboard band */
+  --band-ink: #f2f5f9;
+  --band-muted: #9aa8bc;
+  --gold: #e8a317;        /* star gold / accent */
+  --gold-soft: #fff3d6;
+  --gold-ink: #8a5a00;
+  --chip: #eef2f7;
+  --win: #1f8a4c;
+  --win-soft: #e1f3e8;
+  --loss: #c2412f;
+  --loss-soft: #fbe6e2;
+  --warn: #b25e00;
+  --warn-soft: #fff1df;
+  --focus: #2f6fde;
+  --shadow: 0 1px 0 rgba(16, 26, 43, .06), 0 6px 18px -12px rgba(16, 26, 43, .25);
+  --f-display: "Barlow Condensed", "Arial Narrow", "Roboto Condensed", system-ui, sans-serif;
+  --f-body: "Barlow", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-data: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0b1320; --panel: #131e30; --ink: #e8edf4; --muted: #93a1b5; --line: #24324a;
+    --band: #060c16; --band-ink: #f2f5f9; --band-muted: #8796ab;
+    --gold: #f2b53a; --gold-soft: #33280f; --gold-ink: #f6c766; --chip: #1b2840;
+    --win: #45c27a; --win-soft: #12301f; --loss: #ef6b57; --loss-soft: #3a1914;
+    --warn: #f0a24a; --warn-soft: #36240f; --focus: #7aa7ff;
+    --shadow: 0 1px 0 rgba(0, 0, 0, .4), 0 8px 20px -14px rgba(0, 0, 0, .8);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0b1320; --panel: #131e30; --ink: #e8edf4; --muted: #93a1b5; --line: #24324a;
+  --band: #060c16; --band-ink: #f2f5f9; --band-muted: #8796ab;
+  --gold: #f2b53a; --gold-soft: #33280f; --gold-ink: #f6c766; --chip: #1b2840;
+  --win: #45c27a; --win-soft: #12301f; --loss: #ef6b57; --loss-soft: #3a1914;
+  --warn: #f0a24a; --warn-soft: #36240f; --focus: #7aa7ff;
+  --shadow: 0 1px 0 rgba(0, 0, 0, .4), 0 8px 20px -14px rgba(0, 0, 0, .8);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 15px; line-height: 1.45; }
+button, input, select { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 6px; }
+.wrap { max-width: 1040px; margin: 0 auto; padding-inline: 16px; }
+.num { font-family: var(--f-data); font-variant-numeric: tabular-nums; }
+
+/* ---------- scoreboard band ---------- */
+.band { background: var(--band); color: var(--band-ink); padding-block: 20px 0; position: relative; overflow: hidden; }
+.band::before { /* yard lines */
+  content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .07;
+  background: repeating-linear-gradient(90deg, transparent 0 79px, #fff 79px 80px);
+}
+.band .wrap { position: relative; }
+.top { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; justify-content: space-between; }
+.brand { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.logo { font-family: var(--f-display); font-weight: 800; font-size: clamp(30px, 6vw, 44px); letter-spacing: .01em; line-height: .9; text-transform: uppercase; margin: 0; }
+.logo .logo-edge { color: var(--gold); }
+.logo .slash { display: inline-block; width: .32em; height: .8em; background: var(--gold); transform: skewX(-18deg); margin: 0 .12em -.02em; }
+.weekchip { font-family: var(--f-display); font-weight: 600; font-size: 15px; letter-spacing: .08em; text-transform: uppercase; color: var(--band-muted); }
+.weekchip b { color: var(--band-ink); font-weight: 700; }
+.top-tools { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.sport { display: inline-flex; background: rgba(255, 255, 255, .08); border: 1px solid rgba(255, 255, 255, .16); border-radius: 999px; padding: 3px; gap: 2px; }
+.sport button { border: 0; background: transparent; color: var(--band-muted); font-family: var(--f-display); font-weight: 700; font-size: 14px; letter-spacing: .08em; text-transform: uppercase; padding: 5px 12px; border-radius: 999px; cursor: pointer; }
+.sport button[aria-pressed="true"] { background: var(--gold); color: #1a1205; }
+.pill-btn { background: rgba(255, 255, 255, .08); border: 1px solid rgba(255, 255, 255, .16); color: var(--band-ink); border-radius: 999px; padding: 6px 12px; font-size: 13px; cursor: pointer; }
+.pill-btn:hover { background: rgba(255, 255, 255, .14); }
+.pill-btn.gold { background: var(--gold); border-color: var(--gold); color: #1a1205; font-weight: 600; }
+.unit-edit { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--band-muted); }
+.unit-edit input { width: 76px; background: rgba(255, 255, 255, .08); border: 1px solid rgba(255, 255, 255, .2); border-radius: 8px; padding: 5px 8px; color: var(--band-ink); }
+select.week-pick { background: rgba(255, 255, 255, .08); border: 1px solid rgba(255, 255, 255, .16); color: var(--band-ink); border-radius: 999px; padding: 6px 10px; font-size: 13px; }
+select.week-pick option { color: #101a2b; }
+
+.board { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; margin-top: 18px; background: rgba(255, 255, 255, .12); border-radius: 12px 12px 0 0; overflow: hidden; }
+.cell { background: var(--band); padding: 12px 14px 14px; min-width: 0; }
+.cell .k { font-family: var(--f-display); font-weight: 600; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--band-muted); }
+.cell .v { font-family: var(--f-display); font-weight: 700; font-size: clamp(26px, 5vw, 36px); line-height: 1.05; margin-top: 2px; font-variant-numeric: tabular-nums; }
+.cell .s { font-size: 12.5px; color: var(--band-muted); margin-top: 2px; }
+.cell .v.up { color: #5fd391; } .cell .v.down { color: #ff8c78; }
+.cell .v .gold { color: var(--gold); }
+@media (max-width: 640px) { .board { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+.tabs { display: flex; gap: 4px; margin-top: 0; }
+.tab { flex: 0 0 auto; background: transparent; border: 0; color: var(--band-muted); padding: 12px 16px 13px; font-family: var(--f-display); font-weight: 700; font-size: 16px; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; border-radius: 10px 10px 0 0; }
+.tab[aria-selected="true"] { background: var(--bg); color: var(--ink); }
+@media (max-width: 440px) { .tab { padding: 11px 11px 12px; font-size: 14.5px; letter-spacing: .06em; } }
+.tab .count { font-family: var(--f-data); font-size: 12px; font-weight: 500; margin-left: 4px; opacity: .7; }
+
+main { padding-block: 18px 48px; }
+
+/* ---------- filters ---------- */
+.filters { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; margin-bottom: 16px; }
+.seg { display: inline-flex; background: var(--panel); border: 1px solid var(--line); border-radius: 999px; padding: 3px; gap: 2px; flex-wrap: wrap; }
+.seg button { border: 0; background: transparent; padding: 5px 11px; border-radius: 999px; font-size: 13px; font-weight: 500; color: var(--muted); cursor: pointer; white-space: nowrap; }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+.search { flex: 1 1 180px; min-width: 0; max-width: 280px; background: var(--panel); border: 1px solid var(--line); border-radius: 999px; padding: 7px 14px; font-size: 14px; }
+.filters label.chk { display: inline-flex; gap: 6px; align-items: center; font-size: 13px; color: var(--muted); cursor: pointer; }
+
+/* ---------- tiers + tickets ---------- */
+.tier { margin-top: 22px; }
+.tier:first-child { margin-top: 0; }
+.tier-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; padding-bottom: 8px; border-bottom: 2px solid var(--ink); margin-bottom: 12px; }
+.tier-head h2 { margin: 0; font-family: var(--f-display); font-weight: 800; font-size: 22px; letter-spacing: .04em; text-transform: uppercase; }
+.tier-head .meta { font-size: 13px; color: var(--muted); }
+.tier-head .meta .num { color: var(--ink); }
+
+.stars { letter-spacing: .06em; white-space: nowrap; }
+.stars .on { color: var(--gold); }
+.stars .off { color: var(--line); }
+
+.tickets { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; }
+@media (max-width: 420px) { .tickets { grid-template-columns: minmax(0, 1fr); } }
+.ticket { background: var(--panel); border-radius: 12px; box-shadow: var(--shadow); display: grid; grid-template-rows: auto auto 1fr; min-width: 0; position: relative; }
+.ticket.started { opacity: .55; }
+.t-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; padding: 12px 14px 0; }
+.t-market { font-family: var(--f-display); font-weight: 600; font-size: 12.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.t-pick { font-family: var(--f-display); font-weight: 700; font-size: 25px; line-height: 1.05; margin-top: 2px; text-wrap: balance; }
+.t-stake { text-align: right; flex: 0 0 auto; }
+.t-stake .u { font-family: var(--f-display); font-weight: 800; font-size: 25px; line-height: 1; }
+.t-stake .d { font-size: 12.5px; color: var(--muted); }
+.t-game { padding: 6px 14px 10px; font-size: 13.5px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 2px 10px; }
+.t-game .game { color: var(--ink); font-weight: 500; }
+.t-foot { border-top: 1px dashed var(--line); padding: 10px 14px 12px; display: grid; gap: 8px; align-content: start; position: relative; }
+.t-foot::before, .t-foot::after { /* ticket notches */
+  content: ""; position: absolute; top: -7px; width: 14px; height: 14px; border-radius: 50%; background: var(--bg);
+}
+.t-foot::before { left: -7px; } .t-foot::after { right: -7px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { display: inline-flex; align-items: center; gap: 5px; background: var(--chip); border-radius: 6px; padding: 3px 8px; font-size: 12.5px; font-weight: 500; }
+.chip .stars { font-size: 10.5px; }
+.chip.main { background: var(--gold-soft); color: var(--gold-ink); }
+.flag { display: flex; gap: 6px; align-items: flex-start; font-size: 12.5px; color: var(--warn); background: var(--warn-soft); border-radius: 6px; padding: 5px 8px; }
+details.why summary { cursor: pointer; font-size: 13px; font-weight: 600; color: var(--muted); list-style: none; display: inline-flex; gap: 6px; align-items: center; }
+details.why summary::-webkit-details-marker { display: none; }
+details.why summary::before { content: "+"; font-family: var(--f-data); width: 14px; display: inline-block; }
+details.why[open] summary::before { content: "−"; }
+.why-body { display: grid; gap: 8px; margin-top: 8px; font-size: 13.5px; }
+.why-row b { font-weight: 600; }
+.why-row .bt { color: var(--muted); font-size: 12.5px; }
+.edge { font-family: var(--f-data); font-size: 12px; color: var(--ink); background: var(--chip); border-radius: 6px; padding: 6px 8px; overflow-wrap: anywhere; }
+.status-tag { font-family: var(--f-display); font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+
+/* ---------- record ---------- */
+.grid2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; }
+@media (max-width: 760px) { .grid2 { grid-template-columns: minmax(0, 1fr); } }
+.panel { background: var(--panel); border-radius: 12px; box-shadow: var(--shadow); padding: 16px; min-width: 0; }
+.panel h3 { margin: 0 0 4px; font-family: var(--f-display); font-weight: 800; font-size: 18px; letter-spacing: .06em; text-transform: uppercase; }
+.panel .sub { margin: 0 0 12px; font-size: 13px; color: var(--muted); }
+.scroll { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
+th { text-align: left; font-family: var(--f-display); font-weight: 600; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); padding: 6px 8px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+td { padding: 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+tr:last-child td { border-bottom: 0; }
+td.r, th.r { text-align: right; }
+.res { display: inline-block; min-width: 26px; text-align: center; font-family: var(--f-display); font-weight: 700; border-radius: 5px; padding: 1px 6px; }
+.res.W { background: var(--win-soft); color: var(--win); }
+.res.L { background: var(--loss-soft); color: var(--loss); }
+.res.P, .res.pending { background: var(--chip); color: var(--muted); }
+.pos { color: var(--win); } .neg { color: var(--loss); }
+.chart text { font-family: var(--f-data); font-size: 11px; fill: var(--muted); }
+.chart .bar-pos { fill: var(--win); } .chart .bar-neg { fill: var(--loss); }
+.chart .axis { stroke: var(--line); }
+
+/* ---------- setups ---------- */
+.setup-list { display: grid; gap: 8px; }
+.srow { background: var(--panel); border-radius: 10px; box-shadow: var(--shadow); padding: 12px 14px; display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) auto; gap: 6px 18px; align-items: center; }
+@media (max-width: 640px) { .srow { grid-template-columns: minmax(0, 1fr) auto; } .srow .meter-col { grid-column: 1 / -1; order: 3; } }
+.srow .name { font-family: var(--f-display); font-weight: 700; font-size: 19px; line-height: 1.1; }
+.srow .why { font-size: 13px; color: var(--muted); }
+.srow .where { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.srow .rate { text-align: right; }
+.srow .rate .pct { font-family: var(--f-display); font-weight: 800; font-size: 24px; line-height: 1; }
+.srow .rate .rec { font-size: 12px; color: var(--muted); }
+.thisweek { display: inline-block; margin-left: 6px; font-family: var(--f-body); font-size: 11.5px; font-weight: 600; background: var(--gold-soft); color: var(--gold-ink); border-radius: 999px; padding: 1px 8px; vertical-align: 3px; }
+.meter { position: relative; height: 10px; background: var(--chip); border-radius: 999px; }
+.meter .fill { position: absolute; left: 0; top: 0; bottom: 0; background: var(--gold); border-radius: 999px; }
+.meter .be { position: absolute; top: -4px; bottom: -4px; width: 2px; background: var(--ink); }
+.meter-scale { display: flex; justify-content: space-between; font-family: var(--f-data); font-size: 10.5px; color: var(--muted); margin-top: 4px; }
+.legend { font-size: 13px; color: var(--muted); margin: 0 0 14px; max-width: 70ch; }
+.legend b { color: var(--ink); }
+
+/* ---------- empty / admin ---------- */
+.empty { background: var(--panel); border-radius: 12px; box-shadow: var(--shadow); padding: 28px 20px; text-align: center; max-width: 560px; margin: 20px auto; }
+.empty h2 { margin: 0 0 6px; font-family: var(--f-display); font-size: 24px; text-transform: uppercase; letter-spacing: .04em; }
+.empty p { margin: 0; color: var(--muted); }
+.admin { background: var(--panel); border-radius: 12px; box-shadow: var(--shadow); padding: 16px; margin-bottom: 18px; display: grid; gap: 10px; }
+.admin h3 { margin: 0; font-family: var(--f-display); font-size: 18px; letter-spacing: .06em; text-transform: uppercase; }
+.drop { border: 2px dashed var(--line); border-radius: 10px; padding: 18px; text-align: center; color: var(--muted); font-size: 14px; }
+.drop.over { border-color: var(--gold); background: var(--gold-soft); }
+.drop label { color: var(--ink); font-weight: 600; text-decoration: underline; cursor: pointer; }
+.msg { font-size: 13.5px; }
+.msg.err { color: var(--loss); } .msg.ok { color: var(--win); }
+footer { font-size: 12.5px; color: var(--muted); padding-block: 0 32px; display: grid; gap: 4px; }
+footer p { margin: 0; max-width: 80ch; }
+@media (prefers-reduced-motion: no-preference) { .ticket { transition: transform .15s ease; } .ticket:hover { transform: translateY(-2px); } }
+</style>
+</head>
+<body>
+
+<header class="band">
+  <div class="wrap">
+    <div class="top">
+      <div class="brand">
+        <h1 class="logo">Gain<span class="slash" aria-hidden="true"></span>The<span class="logo-edge">Edge</span></h1>
+        <span class="weekchip" id="weekchip">College football</span>
+      </div>
+      <div class="top-tools">
+        <div class="sport" role="group" aria-label="Sport"><button type="button" data-sport="cfb" aria-pressed="true">College</button><button type="button" data-sport="nfl" aria-pressed="false">NFL</button></div>
+        <select class="week-pick" id="weekPick" aria-label="Choose week" hidden></select>
+        <span class="unit-edit"><label for="unitInput">1u =</label> $<input id="unitInput" type="number" min="1" step="5" inputmode="decimal"></span>
+      </div>
+    </div>
+    <div class="board" id="board" aria-live="polite"></div>
+    <nav class="tabs" role="tablist" aria-label="Sections">
+      <button class="tab" role="tab" id="tab-week" aria-controls="view" aria-selected="true" data-view="week">This week<span class="count" id="cnt-week"></span></button>
+      <button class="tab" role="tab" id="tab-record" aria-controls="view" aria-selected="false" data-view="record">Record</button>
+      <button class="tab" role="tab" id="tab-setups" aria-controls="view" aria-selected="false" data-view="setups">Setups</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section id="view" role="tabpanel" aria-labelledby="tab-week"></section>
+</main>
+<footer class="wrap" id="foot">
+  <p>Lines are the numbers the model saw when the card was built. Confirm the number at your book before you bet. Records are graded at −110 unless a price is shown; 52.4% breaks even. Backtests are history, not a promise.</p>
+  <p>For information and entertainment. 21+ where legal. Gambling problem? Call or text 1-800-GAMBLER.</p>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+  var MIN = "−";
+  var state = { sport: "cfb", data: null, index: null, weekId: null, view: "week", stars: 0, market: "all", mainOnly: false, q: "", unit: null, status: "loading" };
+
+  // ---------- helpers ----------
+  function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+  function starsHtml(n) { n = Math.max(0, Math.min(5, n | 0)); return '<span class="stars" aria-label="' + n + ' stars"><span class="on">' + "★".repeat(n) + '</span><span class="off">' + "★".repeat(5 - n) + "</span></span>"; }
+  function u(x) { return (Math.round(x * 100) / 100).toString().replace(/\.0+$/, ""); }
+  function signed(x, d) { var v = (x >= 0 ? "+" : MIN) + Math.abs(x).toFixed(d == null ? 2 : d); return v; }
+  function money(x) { var r = Math.round(Math.abs(x)); return (x < 0 ? MIN : "") + "$" + r.toLocaleString("en-US"); }
+  function pretty(s) { return String(s || "").replace(/ -(\d)/g, " " + MIN + "$1").replace(/^-(\d)/, MIN + "$1"); }
+  function price(p) { if (p == null || isNaN(p)) return ""; p = Math.round(p); return p > 0 ? "+" + p : MIN + Math.abs(p); }
+  function unitDollars() { return state.unit || (state.data && state.data.unit_dollars) || 125; }
+  function pad(n) { return (n < 10 ? "0" : "") + n; }
+  // kickoff strings are Eastern time without an offset ("2026-10-10T15:30:00"); 00:00 means the time isn't set yet
+  function parseET(iso) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/.exec(iso || "");
+    if (!m) return null;
+    var y = +m[1], mo = +m[2], d = +m[3], h = +m[4], mi = +m[5];
+    var dstEnd = new Date(Date.UTC(y, 10, 1)); dstEnd.setUTCDate(1 + (7 - dstEnd.getUTCDay()) % 7);   // first Sunday in Nov
+    var dstStart = new Date(Date.UTC(y, 2, 1)); dstStart.setUTCDate(1 + (7 - dstStart.getUTCDay()) % 7 + 7); // second Sunday in Mar
+    var local = Date.UTC(y, mo - 1, d, h, mi);
+    var off = (local >= dstStart.getTime() && local < dstEnd.getTime()) ? 4 : 5;
+    return { y: y, mo: mo, d: d, h: h, mi: mi, tba: h === 0 && mi === 0, utc: local + off * 3600000 };
+  }
+  var DOW = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"], MON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  function kickText(iso) {
+    var k = parseET(iso); if (!k) return "";
+    var day = DOW[new Date(Date.UTC(k.y, k.mo - 1, k.d)).getUTCDay()] + " " + MON[k.mo - 1] + " " + k.d;
+    if (k.tba) return day + " · time TBA";
+    var hh = k.h % 12 || 12;
+    return day + " · " + hh + ":" + pad(k.mi) + (k.h < 12 ? " AM" : " PM") + " ET";
+  }
+  function started(iso) { var k = parseET(iso); return !!(k && !k.tba && Date.now() > k.utc); }
+  function storeGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+  function storeSet(k, v) { try { localStorage.setItem(k, v); } catch (e) { /* private window */ } }
+
+  // ---------- board ----------
+  function renderBoard() {
+    var b = document.getElementById("board"), d = state.data;
+    var chip = document.getElementById("weekchip");
+    var sportName = state.sport === "nfl" ? "NFL" : "college football";
+    if (!d) { b.innerHTML = ""; chip.textContent = sportName; document.getElementById("cnt-week").textContent = ""; return; }
+    chip.innerHTML = "<b>" + esc(d.season) + " · Week " + esc(d.week) + "</b> · " + sportName;
+    var units = 0, five = 0, fiveU = 0;
+    d.bets.forEach(function (x) { units += x.stake; if (x.stars >= 5) { five++; fiveU += x.stake; } });
+    var r = d.record || {}, done = (r.w || 0) + (r.l || 0);
+    var roi = r.risked ? r.units / r.risked : 0;
+    var upd = d.updated ? new Date(d.updated) : null;
+    b.innerHTML =
+      cell("Bets this week", d.bets.length, upd ? "updated " + upd.toLocaleString("en-US", { weekday: "short", hour: "numeric", minute: "2-digit" }) : "") +
+      cell("At risk", u(units) + "u", money(units * unitDollars()) + " at " + money(unitDollars()) + "/u") +
+      cell('<span class="gold">★★★★★</span> plays', five, five ? u(fiveU) + "u on the best setups" : "none this week") +
+      '<div class="cell"><div class="k">Season</div><div class="v ' + (r.units > 0 ? "up" : r.units < 0 ? "down" : "") + '">' +
+        (r.w || 0) + "-" + (r.l || 0) + (r.p ? "-" + r.p : "") + '</div><div class="s">' +
+        (done ? signed(r.units || 0) + "u · " + money((r.units || 0) * unitDollars()) + " · ROI " + signed(roi * 100, 1) + "%" : "no graded bets yet") + "</div></div>";
+    document.getElementById("cnt-week").textContent = d.bets.length;
+    function cell(k, v, s) { return '<div class="cell"><div class="k">' + k + '</div><div class="v">' + v + '</div><div class="s">' + esc(s) + "</div></div>"; }
+  }
+
+  // ---------- this week ----------
+  var MARKETS = [["all", "All"], ["Spread", "Spreads"], ["Total", "Totals"], ["1H", "1st half"], ["Team Total", "Team totals"], ["Teaser", "Teasers"]];
+  var STARF = [[0, "All"], [5, "5★"], [4, "4★+"], [3, "3★+"], [2, "2★+"]];
+  function filtered() {
+    var q = state.q.trim().toLowerCase();
+    return state.data.bets.filter(function (x) {
+      if (x.stars < state.stars) return false;
+      if (state.market === "1H" ? x.market.indexOf("1H") !== 0 : (state.market !== "all" && x.market !== state.market)) return false;
+      if (state.mainOnly && !x.main) return false;
+      if (q && (x.game + " " + x.pick + " " + x.setups.map(function (s) { return s.name; }).join(" ")).toLowerCase().indexOf(q) < 0) return false;
+      return true;
+    });
+  }
+  function ticket(x) {
+    var st = started(x.kickoff);
+    var main = x.setups.some(function (s) { return isMain(s.name); });
+    var chips = x.setups.map(function (s) { return '<span class="chip' + (isMain(s.name) ? " main" : "") + '">' + starsHtml(s.stars) + esc(s.name) + "</span>"; }).join("");
+    var why = x.setups.map(function (s) {
+      return '<div class="why-row"><b>' + esc(s.name) + "</b> — " + esc(s.why || "") + (s.backtest ? '<div class="bt">Backtest ' + esc(s.backtest) + "</div>" : "") +
+        (s.note ? '<div class="bt">' + esc(s.note) + "</div>" : "") + "</div>";
+    }).join("") + (x.edge ? '<div class="edge">' + esc(pretty(x.edge)) + "</div>" : "");
+    var pr = x.price != null && Math.round(x.price) !== -110 ? " · " + price(x.price) : " · " + MIN + "110";
+    return '<article class="ticket' + (st ? " started" : "") + '">' +
+      '<div class="t-top"><div><div class="t-market">' + esc(x.market) + esc(pr) + (main ? " · main card" : "") + '</div><div class="t-pick">' + esc(pretty(x.pick)) + "</div></div>" +
+      '<div class="t-stake"><div class="u">' + u(x.stake) + 'u</div><div class="d num">' + money(x.stake * unitDollars()) + "</div></div></div>" +
+      '<div class="t-game"><span class="game">' + esc(x.game) + "</span><span>" + esc(kickText(x.kickoff)) + "</span>" + (st ? '<span class="status-tag">Kicked off</span>' : "") + "</div>" +
+      '<div class="t-foot"><div class="chips">' + chips + "</div>" +
+      (x.qb ? '<div class="flag"><span aria-hidden="true">⚠</span><span>QB check: ' + esc(x.qb) + "</span></div>" : "") +
+      '<details class="why"><summary>Why this bet</summary><div class="why-body">' + why + "</div></details></div></article>";
+  }
+  function isMain(n) { return ["Big Under", "Windy Big Under", "Wind Under", "Backed Under", "Strong Dog", "Lean Dog", "Lucky Team Fade", "Moved-Our-Way Under", "Moved-Our-Way Dog"].indexOf(n) >= 0; }
+  var TIERNAME = { 5: "Five stars", 4: "Four stars", 3: "Three stars", 2: "Two stars", 1: "One star" };
+  function renderWeek(el) {
+    var list = filtered();
+    var html = '<div class="filters">' +
+      seg("stars", STARF, state.stars) + seg("market", MARKETS, state.market) +
+      '<label class="chk"><input type="checkbox" id="mainOnly"' + (state.mainOnly ? " checked" : "") + "> Main card only</label>" +
+      '<input class="search" id="q" type="search" placeholder="Search team or setup" value="' + esc(state.q) + '" aria-label="Search team or setup"></div>';
+    if (!list.length) html += '<div class="empty"><h2>No bets match</h2><p>Clear a filter to see the rest of this week\'s card.</p></div>';
+    [5, 4, 3, 2, 1].forEach(function (n) {
+      var t = list.filter(function (x) { return x.stars === n; });
+      if (!t.length) return;
+      var units = t.reduce(function (a, x) { return a + x.stake; }, 0);
+      html += '<section class="tier"><div class="tier-head"><h2>' + starsHtml(n) + " " + TIERNAME[n] + '</h2><span class="meta"><span class="num">' + t.length + "</span> bet" + (t.length > 1 ? "s" : "") +
+        ' · <span class="num">' + u(units) + "u</span> · " + money(units * unitDollars()) + "</span></div>" +
+        '<div class="tickets">' + t.map(ticket).join("") + "</div></section>";
+    });
+    el.innerHTML = html;
+    el.querySelectorAll("[data-seg]").forEach(function (b) {
+      b.addEventListener("click", function () { var k = b.getAttribute("data-seg"), v = b.getAttribute("data-val"); state[k] = k === "stars" ? +v : v; render(); });
+    });
+    document.getElementById("mainOnly").addEventListener("change", function (e) { state.mainOnly = e.target.checked; render(); });
+    var q = document.getElementById("q");
+    q.addEventListener("input", function () { state.q = q.value; var pos = q.selectionStart; render(); var n = document.getElementById("q"); n.focus(); try { n.setSelectionRange(pos, pos); } catch (e) {} });
+  }
+  function seg(key, opts, cur) {
+    return '<div class="seg" role="group" aria-label="' + (key === "stars" ? "Stars" : "Market") + '">' + opts.map(function (o) {
+      return '<button type="button" data-seg="' + key + '" data-val="' + o[0] + '" aria-pressed="' + (String(o[0]) === String(cur)) + '">' + o[1] + "</button>";
+    }).join("") + "</div>";
+  }
+
+  // ---------- record ----------
+  function renderRecord(el) {
+    var r = state.data.record || {}, ud = unitDollars();
+    var log = r.log || [], weeks = r.by_week || [], setups = r.by_setup || [];
+    var html = '<div class="grid2">';
+    html += '<div class="panel"><h3>Units by week</h3><p class="sub">Every graded bet the sheet made, at the stake it called for.</p>' + weekChart(weeks, r.units) + "</div>";
+    html += '<div class="panel"><h3>By setup</h3><p class="sub">This season so far. Small samples swing; the Setups tab has the long-run backtest.</p><div class="scroll"><table><thead><tr><th>Setup</th><th class="r">W-L-P</th><th class="r">Units</th></tr></thead><tbody>' +
+      (setups.length ? setups.map(function (s) {
+        return "<tr><td>" + starsHtml(s.stars) + " " + esc(s.name) + '</td><td class="r num">' + s.w + "-" + s.l + "-" + s.p + '</td><td class="r num ' + (s.units > 0 ? "pos" : s.units < 0 ? "neg" : "") + '">' + signed(s.units) + "</td></tr>";
+      }).join("") : '<tr><td colspan="3">No graded bets yet.</td></tr>') + "</tbody></table></div></div></div>";
+    html += '<div class="panel" style="margin-top:16px"><h3>Every bet</h3><p class="sub">Newest week first. ' + (r.pending ? r.pending + " still pending." : "") + '</p><div class="scroll"><table><thead><tr><th>Wk</th><th>Game</th><th>Setup</th><th>Bet</th><th class="r">Stake</th><th>Final</th><th>Result</th><th class="r">Units</th><th class="r">$</th></tr></thead><tbody>' +
+      (log.length ? log.map(function (x) {
+        return '<tr><td class="num">' + x.week + "</td><td>" + esc(x.game) + "</td><td>" + starsHtml(x.stars) + " " + esc(x.setup) + "</td><td>" + esc(pretty(x.pick)) + '</td><td class="r num">' + u(x.stake) + 'u</td><td class="num">' + esc(x.final || "") +
+          '</td><td><span class="res ' + esc(x.result) + '">' + (x.result === "pending" ? "—" : esc(x.result)) + '</span></td><td class="r num ' + (x.units > 0 ? "pos" : x.units < 0 ? "neg" : "") + '">' + (x.result === "pending" ? "" : signed(x.units)) +
+          '</td><td class="r num">' + (x.result === "pending" ? "" : money(x.units * ud)) + "</td></tr>";
+      }).join("") : '<tr><td colspan="9">No bets logged yet.</td></tr>') + "</tbody></table></div></div>";
+    el.innerHTML = html;
+  }
+  function weekChart(weeks, total) {
+    if (!weeks.length) return '<p class="sub">No graded weeks yet.</p>';
+    var W = 520, H = 220, padL = 44, padR = 12, padT = 16, padB = 28;
+    var running = 0, pts = weeks.map(function (w) { running += w.units; return { week: w.week, u: w.units, cum: running, rec: w.w + "-" + w.l + (w.p ? "-" + w.p : "") }; });
+    var vals = pts.map(function (p) { return p.u; }).concat(pts.map(function (p) { return p.cum; }), [0]);
+    var max = Math.max.apply(null, vals), min = Math.min.apply(null, vals);
+    var step = niceStep((max - min) || 1);
+    max = Math.ceil(max / step) * step; min = Math.floor(min / step) * step; if (max === min) max = min + step;
+    function y(v) { return padT + (max - v) / (max - min) * (H - padT - padB); }
+    var bw = (W - padL - padR) / pts.length, g = "";
+    for (var v = min; v <= max + 1e-9; v += step) {
+      g += '<line class="axis" x1="' + padL + '" x2="' + (W - padR) + '" y1="' + y(v) + '" y2="' + y(v) + '" stroke-width="' + (Math.abs(v) < 1e-9 ? 1.5 : .6) + '"/>' +
+        '<text x="' + (padL - 6) + '" y="' + (y(v) + 4) + '" text-anchor="end">' + (v > 0 ? "+" : v < 0 ? MIN : "") + Math.abs(+v.toFixed(2)) + "u</text>";
+    }
+    pts.forEach(function (p, i) {
+      var x = padL + i * bw + bw * .2, w = bw * .6, y0 = y(0), y1 = y(p.u);
+      g += '<rect class="' + (p.u >= 0 ? "bar-pos" : "bar-neg") + '" x="' + x + '" y="' + Math.min(y0, y1) + '" width="' + w + '" height="' + Math.max(1, Math.abs(y1 - y0)) + '" rx="3"><title>Week ' + p.week + ": " + p.rec + ", " + signed(p.u) + "u</title></rect>" +
+        '<text x="' + (x + w / 2) + '" y="' + (H - 8) + '" text-anchor="middle">Wk ' + p.week + "</text>";
+    });
+    var path = pts.map(function (p, i) { return (i ? "L" : "M") + (padL + i * bw + bw / 2) + " " + y(p.cum); }).join(" ");
+    g += '<path d="' + path + '" fill="none" stroke="var(--gold)" stroke-width="2.5" stroke-linejoin="round"/>';
+    var last = pts[pts.length - 1];
+    g += '<circle cx="' + (padL + (pts.length - 1) * bw + bw / 2) + '" cy="' + y(last.cum) + '" r="4.5" fill="var(--gold)"/>';
+    return '<svg class="chart" viewBox="0 0 ' + W + " " + H + '" width="100%" role="img" aria-label="Units won by week, with the season running total as a line">' + g + "</svg>" +
+      '<p class="sub" style="margin:6px 0 0">Bars: each week. Gold line: season running total (' + signed(total == null ? last.cum : total) + "u).</p>";
+  }
+  function niceStep(span) { var raw = span / 4, p = Math.pow(10, Math.floor(Math.log10(raw))), n = raw / p; return (n <= 1 ? 1 : n <= 2 ? 2 : n <= 2.5 ? 2.5 : n <= 5 ? 5 : 10) * p; }
+
+  // ---------- setups ----------
+  function renderSetups(el) {
+    var count = {};
+    (state.data.bets || []).forEach(function (b) { b.setups.forEach(function (s) { count[s.name] = (count[s.name] || 0) + 1; }); });
+    var lo = 50, hi = 62;
+    var html = '<p class="legend">Every setup we bet, ranked by its <b>honest</b> win rate: the backtest record pulled toward break-even by its sample size, because the setups that survive testing ran a little hot. A small hot sample counts for less than a big proven one. <b>5★</b> = 58.5%+, <b>4★</b> = 57–58.4%, <b>3★</b> = 56–56.9%, <b>2★</b> = 55–55.9%, <b>1★</b> = 53.5–54.9%. The raw backtest record is under each rate. The black tick on each bar is 52.4%, break-even at −110.</p><div class="setup-list">';
+    (state.data.setups || []).forEach(function (s) {
+      var pct = parseFloat(s.win), w = Math.max(0, Math.min(100, (pct - lo) / (hi - lo) * 100)), be = (52.4 - lo) / (hi - lo) * 100;
+      html += '<div class="srow"><div><div class="name">' + esc(s.name) + (count[s.name] ? '<span class="thisweek">' + count[s.name] + " this week</span>" : "") + '</div><div class="why">' + esc(s.why) + '</div><div class="where">' + starsHtml(s.stars) + " · " + esc(s.where) + " · " + esc(s.sample) + " sample</div></div>" +
+        '<div class="meter-col"><div class="meter" role="img" aria-label="' + esc(s.win) + ' win rate"><div class="fill" style="width:' + w + '%"></div><div class="be" style="left:' + be + '%"></div></div><div class="meter-scale"><span>50%</span><span>56%</span><span>62%</span></div></div>' +
+        '<div class="rate"><div class="pct">' + esc(s.win) + '</div><div class="rec num">' + esc(s.record) + "</div></div></div>";
+    });
+    el.innerHTML = html + "</div>";
+  }
+
+  // ---------- shell ----------
+  function render() {
+    renderBoard();
+    var el = document.getElementById("view");
+    document.querySelectorAll(".tab").forEach(function (t) { t.setAttribute("aria-selected", String(t.getAttribute("data-view") === state.view)); });
+    el.setAttribute("aria-labelledby", "tab-" + state.view);
+    if (!state.data) {
+      var msg = {
+        loading: ["Loading picks", "Pulling this week's card."],
+        nodata: ["Picks didn't load", "Refresh the page in a minute. If it keeps happening, this week's card may still be posting."],
+        empty: ["No picks posted yet", "Check back once this week's card is posted."]
+      }[state.status] || ["Loading picks", ""];
+      el.innerHTML = '<div class="empty"><h2>' + msg[0] + "</h2><p>" + msg[1] + "</p></div>";
+      return;
+    }
+    if (state.view === "record") renderRecord(el);
+    else if (state.view === "setups") renderSetups(el);
+    else renderWeek(el);
+  }
+  document.querySelectorAll(".tab").forEach(function (t) {
+    t.addEventListener("click", function () { state.view = t.getAttribute("data-view"); storeSet("gte.view", state.view); render(); });
+  });
+  var sv = storeGet("gte.view"); if (sv === "record" || sv === "setups") state.view = sv;
+  if (/^#(week|record|setups)$/.test(location.hash)) state.view = location.hash.slice(1);
+
+  var unitInput = document.getElementById("unitInput");
+  var su = parseFloat(storeGet("gte.unit")); if (su > 0) state.unit = su;
+  unitInput.value = state.unit || 125;
+  unitInput.addEventListener("change", function () {
+    var v = parseFloat(unitInput.value);
+    if (v > 0) { state.unit = v; storeSet("gte.unit", String(v)); } else { unitInput.value = unitDollars(); }
+    render();
+  });
+
+  // ---------- data ----------
+  function weekLabel(w) { return w.season + " · Week " + w.week; }
+  function renderWeekPick() {
+    var sel = document.getElementById("weekPick"), weeks = (state.index && state.index.weeks) || [];
+    sel.hidden = weeks.length < 2;
+    sel.innerHTML = weeks.map(function (w) { return '<option value="' + esc(w.id) + '"' + (w.id === state.weekId ? " selected" : "") + ">" + esc(weekLabel(w)) + (w.id === state.index.current ? " (current)" : "") + "</option>"; }).join("");
+  }
+  function getJSON(path) {
+    return fetch(path + "?t=" + Date.now(), { cache: "no-store" }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); });
+  }
+  function watchWeek(id) {
+    state.weekId = id;
+    if (!id) { state.data = null; state.status = "empty"; render(); return; }
+    getJSON(base() + id + ".json").then(function (d) { state.data = d; if (!state.unit) unitInput.value = unitDollars(); state.status = "ok"; render(); })
+      .catch(function () { state.data = null; state.status = "nodata"; render(); });
+  }
+  document.getElementById("weekPick").addEventListener("change", function (e) { watchWeek(e.target.value); renderWeekPick(); });
+
+  function base() { return state.sport === "nfl" ? "data/nfl/" : "data/"; }
+  function boot() {
+    state.data = null; state.index = null; state.weekId = null; state.status = "loading";
+    render();
+    getJSON(base() + "index.json").then(function (idx) {
+      state.index = idx;
+      watchWeek(idx.current || null);
+      renderWeekPick();
+    }).catch(function () { state.status = state.sport === "nfl" ? "empty" : "nodata"; render(); renderWeekPick(); });
+  }
+  document.querySelectorAll("[data-sport]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      if (state.sport === b.getAttribute("data-sport")) return;
+      state.sport = b.getAttribute("data-sport");
+      document.querySelectorAll("[data-sport]").forEach(function (x) { x.setAttribute("aria-pressed", String(x === b)); });
+      storeSet("gte.sport", state.sport);
+      boot();
+    });
+  });
+  var ss = storeGet("gte.sport");
+  if (ss === "nfl" || /^#nfl$/.test(location.hash)) {
+    state.sport = "nfl";
+    document.querySelectorAll("[data-sport]").forEach(function (x) { x.setAttribute("aria-pressed", String(x.getAttribute("data-sport") === "nfl")); });
+  }
+
+  boot();
+})();
+</script>
+
+</body>
+</html>
