@@ -1,0 +1,28 @@
+{
+ "name": "GainTheEdge",
+ "short_name": "GainTheEdge",
+ "description": "College football, NFL and NBA picks rated by years of backtests, with live results.",
+ "start_url": "./",
+ "scope": "./",
+ "display": "standalone",
+ "background_color": "#090d18",
+ "theme_color": "#0d1324",
+ "icons": [
+  {
+   "src": "icon-192.png",
+   "sizes": "192x192",
+   "type": "image/png"
+  },
+  {
+   "src": "icon-512.png",
+   "sizes": "512x512",
+   "type": "image/png"
+  },
+  {
+   "src": "icon-512.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}
