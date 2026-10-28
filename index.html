@@ -22,6 +22,7 @@
 <meta name="apple-mobile-web-app-title" content="GainTheEdge">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230d1324'/%3E%3Cpath d='M28 12h12L28 52H16z' fill='%23ff6b2c'/%3E%3C/svg%3E">
 <link rel="icon" type="image/png" sizes="64x64" href="favicon.png">
+<script>window.GTE_CFG = { url: "https://lswipztkythkhoaattlq.supabase.co", key: "sb_publishable_kcmlrR9u9B3raRnUWCbxBA_lbVXuWTz" };</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Archivo:wght@400;500;600;700;800&display=swap">
@@ -468,9 +469,44 @@ table.gl td small { color: var(--ink-2); margin-left: 4px; }
 .numline i { font-style: normal; font-size: 10.5px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
 .numline b { font-variant-numeric: tabular-nums; }
 .numline small { color: var(--ink-2); font-weight: 600; font-variant-numeric: tabular-nums; }
-.numline .up b { color: var(--win); } .numline .down b { color: var(--loss); }
+.numline .up b, .numline b.up { color: var(--win); } .numline .down b, .numline b.down { color: var(--loss); }
 .fl2 { display: inline-flex; align-items: center; gap: 8px; min-width: 0; flex: 1 1 auto; }
 .fl2 .fs { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12.5px; color: var(--ink-2); }
+/* members: account button, sign-in dialog, locked picks */
+.ctl.acct { font-weight: 700; }
+.ctl.acct.in { background: var(--h-accent); color: #1a0c04; border-color: transparent; }
+.acct-av { width: 22px; height: 22px; border-radius: 50%; display: inline-grid; place-items: center; background: rgba(0,0,0,.18); font-size: 12px; font-weight: 800; text-transform: uppercase; }
+.pop .who b { display: block; font-size: 15px; } .pop .who small { color: var(--h-ink-2); font-size: 12.5px; word-break: break-all; }
+.stchip { display: inline-block; font-size: 11px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; padding: 3px 8px; border-radius: 6px; background: rgba(255,255,255,.08); color: var(--h-ink-2); }
+.stchip.on { background: rgba(47,210,122,.16); color: var(--h-win); }
+.pop .btn { width: 100%; }
+.authm { position: fixed; inset: 0; z-index: 70; background: rgba(4, 7, 14, .78); display: grid; place-items: center; padding: 16px; }
+.authm form { background: var(--card); color: var(--ink); border-radius: 18px; padding: 20px; width: 100%; max-width: 400px; display: grid; gap: 12px; box-shadow: 0 30px 80px -20px rgba(0,0,0,.6); }
+.authm h2 { margin: 0; font-size: 22px; font-weight: 800; }
+.authm .tabs2 { display: grid; grid-template-columns: 1fr 1fr; background: var(--card-2); border-radius: 10px; padding: 3px; }
+.authm .tabs2 button { border: 0; background: transparent; height: 34px; border-radius: 8px; font-weight: 700; color: var(--ink-2); cursor: pointer; }
+.authm .tabs2 button[aria-pressed="true"] { background: var(--card); color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,.15); }
+.authm label { display: grid; gap: 5px; font-size: 13px; font-weight: 700; color: var(--ink-2); }
+.authm input { height: 42px; border-radius: 10px; border: 1px solid var(--line); background: var(--card-2); color: var(--ink); padding: 0 12px; font-size: 16px; }
+.authm input:focus { outline: 2px solid var(--accent); outline-offset: 0; }
+.authm .btn { height: 44px; font-size: 15px; }
+.authm .msg { font-size: 13.5px; border-radius: 9px; padding: 9px 11px; }
+.authm .msg.err { background: var(--loss-soft); color: var(--loss); }
+.authm .msg.ok { background: var(--win-soft); color: var(--win); }
+.authm .lnk { background: none; border: 0; padding: 0; color: var(--accent); font-weight: 700; cursor: pointer; font-size: 13.5px; justify-self: start; }
+.authm .fine { font-size: 12px; color: var(--ink-3); margin: 0; }
+.lock { display: grid; place-items: center; padding: 18px 0 8px; }
+.lock-in { background: var(--card); border: 1px solid var(--line); border-radius: 18px; box-shadow: var(--shadow); padding: 26px 22px; max-width: 560px; width: 100%; text-align: center; display: grid; gap: 12px; justify-items: center; }
+.lock-in .ico { width: 52px; height: 52px; border-radius: 14px; background: var(--accent-soft); color: var(--accent); display: grid; place-items: center; }
+.lock-in .ico svg { width: 26px; height: 26px; }
+.lock-in h2 { margin: 0; font-size: 22px; font-weight: 800; }
+.lock-in p { margin: 0; color: var(--ink-2); }
+.lock-in .tz { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.lock-in .tz span { background: var(--card-2); border-radius: 9px; padding: 6px 10px; font-size: 13.5px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.lock-in .tz .st { color: var(--gold); }
+.lock-in .acts { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+.lock-in .acts .btn { height: 42px; padding: 0 20px; font-size: 14.5px; }
+.lock-in small { color: var(--ink-3); font-size: 12.5px; }
 .shm { position: fixed; inset: 0; z-index: 60; background: rgba(4, 7, 14, .78); display: grid; place-items: center; padding: 16px; }
 .shm-in { background: var(--card); border-radius: 18px; padding: 14px; max-width: 420px; width: 100%; display: grid; gap: 12px; box-shadow: 0 30px 80px -20px rgba(0,0,0,.6); }
 .shm-in img { width: 100%; height: auto; border-radius: 10px; display: block; max-height: 62vh; object-fit: contain; }
@@ -558,10 +594,10 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
   /* top bar: logo + settings on one row, sport + week on the next */
   .bar .tools { display: contents; }
   .logo { flex: 1 1 auto; order: 0; }
-  #gearWrap { order: 1; }
+  #gearWrap, #acctWrap { order: 1; }
   .sport { order: 2; }
   #weekPick { order: 3; flex: 1 1 0; min-width: 0; max-width: 220px; }
-  #gearBtn .gl { display: none; }
+  #gearBtn .gl, #acctBtn .gl { display: none; }
   #gearBtn { width: 34px; justify-content: center; padding: 0; }
   nav.tabs button { font-size: 15px; letter-spacing: .03em; padding-inline: 2px; }
   .minibar { background: var(--hero); }
@@ -579,6 +615,9 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
     <div class="tools">
       <div class="sport" role="group" aria-label="Sport"><button type="button" data-sport="cfb" aria-pressed="true">College</button><button type="button" data-sport="nfl" aria-pressed="false">NFL</button><button type="button" data-sport="nba" aria-pressed="false">NBA</button></div>
       <select class="ctl" id="weekPick" aria-label="Choose week" hidden></select>
+      <div class="gearwrap" id="acctWrap" hidden><button type="button" class="ctl acct" id="acctBtn" aria-expanded="false" aria-haspopup="true">Log in</button>
+        <div class="pop" id="acctPop" hidden></div>
+      </div>
       <div class="gearwrap" id="gearWrap"><button type="button" class="ctl" id="gearBtn" aria-expanded="false" aria-controls="gearPop" aria-label="Settings">⚙<span class="gl"> Settings</span></button>
         <div class="pop" id="gearPop" hidden>
           <span class="lbl">Star ratings</span>
@@ -789,11 +828,66 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
     return { r: r, perUnit: r === "W" ? winUnits(1, x.price) : r === "L" ? -1 : 0, units: r === "W" ? winUnits(stake, x.price) : r === "L" ? -stake : 0, legs: legs, stake: stake, teaser: true };
   }
   function finalTxt(g) {
+    if (g.pp && g.voided) return g.pp.player + " didn\u2019t play (void)";
+    if (g.pp && g.pv != null) return g.pp.player + " " + u(g.pv) + " " + ({ rushing: "rush", receiving: "rec", passing: "pass" }[g.pp.stat]) + " yds";
     if (g.teaser) return g.legs.map(function (l) { return l.g ? l.team + " " + (l.side === "home" ? l.g.home + "–" + l.g.away : l.g.away + "–" + l.g.home) : l.team; }).join(", ");
     return g.A + "–" + g.H + (g.half ? " 1H" : "");
   }
+  // player props: "Tony Pollard Under 69.5 rush yds" -> the player's yards in ESPN's box score (never the game score)
+  var BOX = {};
+  function propParts(x) {
+    var m = /^(.*?)\s+(Over|Under)\s+(\d+(?:\.\d+)?)\s*(.*)$/i.exec(String(x.pick || "").trim()); if (!m) return null;
+    var t = m[4].toLowerCase(), stat = /rec/.test(t) ? "receiving" : /pass/.test(t) ? "passing" : /rush/.test(t) ? "rushing" : null;
+    return { player: m[1].trim(), ou: m[2].toLowerCase(), line: +m[3], stat: stat, unit: /yd|yard/.test(t) ? "yds" : "" };
+  }
+  function boxLookup(bx, name, stat) {
+    var P = bx.p, k = norm(name);
+    if (P[k] && P[k][stat] != null) return P[k][stat];
+    var parts = String(name).toLowerCase().replace(/\b(jr|sr|ii|iii|iv|v)\b\.?/g, "").trim().split(/\s+/), last = norm(parts[parts.length - 1] || ""), first = (parts[0] || "")[0];
+    var hits = Object.keys(P).filter(function (q) { return P[q][stat] != null && P[q].last === last && P[q].first === first; });
+    return hits.length === 1 ? P[hits[0]][stat] : null;
+  }
+  function gradeProp(x) {
+    var g = state.scores && state.scores.games && state.scores.games[x.game], pp = propParts(x);
+    if (!g) return { r: started(x.kickoff) ? "wait" : "open" };
+    if (g.status === "pre") return { r: started(x.kickoff) ? "wait" : "open", g: g };
+    var bx = g.eid && BOX[g.eid];
+    if (!pp || !pp.stat || !bx) return g.status === "live" ? { r: "live", g: g } : { r: "wait", g: g };
+    var v = boxLookup(bx, pp.player, pp.stat);
+    if (g.status !== "final" || !bx.final) return { r: "live", g: g, pv: v == null ? 0 : v, pp: pp };
+    var stake = rated(x).stake;
+    if (v == null) return { r: "P", perUnit: 0, units: 0, g: g, stake: stake, pp: pp, pv: null, voided: true, A: +g.away, H: +g.home };   // didn't play: the book voids it
+    var diff = pp.ou === "over" ? v - pp.line : pp.line - v, r = diff > 0 ? "W" : diff < 0 ? "L" : "P";
+    return { r: r, perUnit: r === "W" ? winUnits(1, x.price) : r === "L" ? -1 : 0, units: r === "W" ? winUnits(stake, x.price) : r === "L" ? -stake : 0, A: +g.away, H: +g.home, g: g, stake: stake, pv: v, pp: pp };
+  }
+  function fetchBoxes(sc) {
+    var d = state.data; if (isNBA() || !d || !d.bets || !sc) return Promise.resolve(false);
+    var path = state.sport === "nfl" ? "nfl" : "college-football", want = {};
+    d.bets.forEach(function (x) { if (x.market !== "Prop") return; var g = sc.games[x.game]; if (g && g.eid && g.status !== "pre" && !(BOX[g.eid] && BOX[g.eid].final)) want[g.eid] = g.status === "final"; });
+    var ids = Object.keys(want); if (!ids.length) return Promise.resolve(false);
+    return Promise.all(ids.map(function (id) {
+      return espnGet("/apis/site/v2/sports/football/" + path + "/summary?event=" + id).then(function (j) {
+        var P = {};
+        ((j.boxscore && j.boxscore.players) || []).forEach(function (tm) {
+          (tm.statistics || []).forEach(function (st) {
+            var nm = String(st.name || "").toLowerCase(); if (["rushing", "receiving", "passing"].indexOf(nm) < 0) return;
+            var keys = st.keys || [], labels = st.labels || [], ix = keys.indexOf(nm + "Yards"); if (ix < 0) ix = labels.indexOf("YDS");
+            if (ix < 0) return;
+            (st.athletes || []).forEach(function (a) {
+              var name = a.athlete && (a.athlete.displayName || a.athlete.fullName); if (!name) return;
+              var val = parseFloat(String((a.stats || [])[ix]).replace(/[^0-9.\-]/g, "")); if (isNaN(val)) return;
+              var k = norm(name), parts = name.toLowerCase().replace(/\b(jr|sr|ii|iii|iv|v)\b\.?/g, "").trim().split(/\s+/);
+              var o = P[k] || (P[k] = { last: norm(parts[parts.length - 1] || ""), first: (parts[0] || "")[0] }); o[nm] = val;
+            });
+          });
+        });
+        if (Object.keys(P).length) BOX[id] = { p: P, final: want[id] };
+      }).catch(function () { /* box score not reachable: the prop stays pending */ });
+    })).then(function () { return true; });
+  }
   function grade(x) {
     if (x.market === "Teaser") return gradeTeaser(x);
+    if (x.market === "Prop") return gradeProp(x);
     var g = state.scores && state.scores.games && state.scores.games[x.game];
     var half = x.market.indexOf("1H") === 0;
     if (!g) return { r: started(x.kickoff) ? "wait" : "open" };
@@ -863,7 +957,15 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
   }
   function clvOf(kind, mine, close) { if (mine == null || close == null || isNaN(mine) || isNaN(close)) return null; var d = kind === "over" ? close - mine : mine - close; return Math.round(d * 100) / 100; }
   function clvTxt(c) { return c == null ? "" : (c > 0 ? "+" : c < 0 ? MIN : "") + u(Math.abs(c)); }
+  function propBox(x) {
+    var gr = grade(x), pp = gr.pp || propParts(x); if (!pp) return "";
+    if (gr.voided) return '<div class="numline"><span><i>' + esc(pp.player) + "</i> <b>didn\u2019t play \u00b7 void</b></span></div>";
+    if (gr.pv == null) return gr.r === "live" || gr.r === "wait" ? '<div class="numline"><span><i>' + esc(pp.player) + "</i> <b>" + (gr.r === "live" ? "box score loading" : "waiting for the box score") + "</b></span></div>" : "";
+    var fin = settled(gr.r), need = pp.line - gr.pv;
+    return '<div class="numline"><span><i>' + esc(pp.player) + '</i> <b class="' + (fin ? (gr.r === "W" ? "up" : gr.r === "L" ? "down" : "") : "") + '">' + u(gr.pv) + " " + ({ rushing: "rush", receiving: "rec", passing: "pass" }[pp.stat]) + " yds</b> <small>vs " + u(pp.line) + (fin ? " \u00b7 final" : pp.ou === "under" ? (need > 0 ? " \u00b7 " + u(Math.round(need * 10) / 10) + " to spare" : " \u00b7 over the line") : (need > 0 ? " \u00b7 needs " + u(Math.round(need * 10) / 10) + " more" : " \u00b7 cleared")) + "</small></span></div>";
+  }
   function numberBox(x, paper) {
+    if (x.market === "Prop") { var gp = grade(x); if (gp.g && gp.g.status !== "pre") return propBox(x); }
     var kind = pickKind(x); if (!kind) return "";
     var L = lineOf(x), es = espnFor(x), gr = grade(x), fin = settled(gr.r) || gr.r === "live" || (es && es.closed);
     var spot = kind === "spread" ? function (v) { return (sideOf(x) === "home" ? abbr(x.home) : abbr(x.away)) + " " + lineTxt(v); } : kind === "price" ? null : function (v) { return (kind === "over" ? "Over " : "Under ") + u(v); };
@@ -902,11 +1004,15 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
     document.getElementById("wk").innerHTML = "Week <span>" + esc(d.week) + "</span>";
     var wk = weekTotals(), ss = seasonRecord(), ud = unitDollars(), graded = wk.w + wk.l + wk.p;
     var su = state.scores && state.scores.updated ? new Date(state.scores.updated) : null;
-    document.getElementById("cnt").textContent = wk.plays;
-    sub.innerHTML = "<span>" + wk.plays + " plays" + (wk.watch ? " · " + wk.watch + " on the watch list" : "") + "</span>" +
+    var tz = d.members_only && d.teaser ? d.teaser : null;
+    document.getElementById("cnt").textContent = tz ? tz.bets : wk.plays;
+    sub.innerHTML = "<span>" + (tz ? tz.bets + " picks this week \u00b7 members only" : wk.plays + " plays" + (wk.watch ? " · " + wk.watch + " on the watch list" : "")) + "</span>" +
       '<span class="pulse' + (wk.open ? "" : " idle") + '">' + (state.scoreErr ? "Live scores unavailable right now \u2014 retrying" : su ? "Results updated " + esc(su.toLocaleString("en-US", { weekday: "short", hour: "numeric", minute: "2-digit" })) : "Results post as games finish") + "</span>";
     var roi = ss.risked ? ss.units / ss.risked : 0;
-    board.innerHTML =
+    board.innerHTML = tz ?
+      '<div><div class="k">This week</div><div class="v">' + tz.bets + '</div><div class="s">picks \u00b7 members</div></div>' +
+      '<div><div class="k">On the card</div><div class="v">' + u(tz.units) + 'u</div><div class="s">' + ((tz.stars || {})[5] || 0) + " five-star</div></div>" +
+      '<div><div class="k">Season</div><div class="v">' + rec(ss.w, ss.l, ss.p) + '</div><div class="s ' + (ss.units > 0 ? "h-up" : ss.units < 0 ? "h-down" : "") + '">' + signed(ss.units) + "u · ROI " + signed(roi * 100, 1) + "%</div></div>" :
       '<div><div class="k">This week</div><div class="v">' + (graded ? rec(wk.w, wk.l, wk.p) : "0–0") + '</div><div class="s ' + (wk.units > 0 ? "h-up" : wk.units < 0 ? "h-down" : "") + '">' + signed(wk.units) + "u · " + smoney(wk.units * ud) + "</div></div>" +
       '<div><div class="k">Open</div><div class="v">' + wk.open + '</div><div class="s">' + (wk.open ? u(wk.openU) + "u at risk" : "all settled") + "</div></div>" +
       '<div><div class="k">Season</div><div class="v">' + rec(ss.w, ss.l, ss.p) + '</div><div class="s ' + (ss.units > 0 ? "h-up" : ss.units < 0 ? "h-down" : "") + '">' + signed(ss.units) + "u · ROI " + signed(roi * 100, 1) + "%</div></div>";
@@ -943,6 +1049,146 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
       if (q && (x.game + " " + x.pick + " " + x.setups.map(function (s) { return s.name; }).join(" ")).toLowerCase().indexOf(q) < 0) return false;
       return true;
     });
+  }
+  // ---------- members: log-in (Supabase) ----------
+  // The picks / NBA board live in private storage that only active members can read; everyone else gets the public
+  // preview (record, rankings, a count of this week's picks). Settings are filled in by the notebook's publisher.
+  var SB_SRC = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js";
+  var SB = null, AUTH = { on: false, ready: false, user: null, member: null }, dataAs = "public", lastUid;
+  function cfgOk() { var c = window.GTE_CFG || {}; return !!(c.url && c.key && c.url.indexOf("__GTE") < 0 && c.key.indexOf("__GTE") < 0 && /^https:\/\/[a-z0-9-]+\.supabase\.co$/.test(c.url)); }
+  function isMember() { var m = AUTH.member; return !!(m && m.active && (!m.active_until || new Date(m.active_until) > new Date())); }
+  function initAuth() {
+    if (!cfgOk()) { AUTH.ready = true; return; }
+    AUTH.on = true; document.getElementById("acctWrap").hidden = false; renderAcct();
+    var sc = document.createElement("script"); sc.src = SB_SRC; sc.async = true;
+    sc.onload = function () {
+      try { SB = window.supabase.createClient(window.GTE_CFG.url, window.GTE_CFG.key); } catch (e) { AUTH.ready = true; AUTH.err = true; renderAcct(); render(); return; }
+      SB.auth.onAuthStateChange(function (ev, session) {
+        setTimeout(function () { if (ev === "PASSWORD_RECOVERY") openAuth("reset"); onSession(session); }, 0);
+      });
+      SB.auth.getSession().then(function (r) { onSession(r.data && r.data.session); }, function () { onSession(null); });
+    };
+    sc.onerror = function () { AUTH.ready = true; AUTH.err = true; renderAcct(); render(); };
+    document.head.appendChild(sc);
+  }
+  function onSession(session) {
+    var u = session && session.user, uid = u ? u.id : null;
+    AUTH.user = u || null;
+    if (!uid) { AUTH.member = null; AUTH.ready = true; lastUid = null; renderAcct(); syncData(); return; }
+    if (uid === lastUid && AUTH.member) { AUTH.ready = true; renderAcct(); return; }
+    lastUid = uid;
+    SB.from("members").select("username,active,active_until").eq("user_id", uid).maybeSingle().then(function (r) {
+      AUTH.member = (r && r.data) || { active: false }; AUTH.ready = true; renderAcct(); syncData();
+    }, function () { AUTH.member = { active: false }; AUTH.ready = true; renderAcct(); syncData(); });
+  }
+  // reload the open week / day when what this visitor may see changed (logged in as a member, or logged out)
+  function syncData() {
+    var want = isMember() ? "member" : "public";
+    if (state.weekId && want !== dataAs) watchWeek(state.weekId);
+    else render();
+  }
+  function getData(path) {
+    if (SB && isMember()) {
+      return SB.from("member_files").select("body").eq("path", path).maybeSingle().then(function (r) {
+        if (r.error || !r.data || !r.data.body) throw r.error || new Error("no data");
+        dataAs = "member"; return r.data.body;
+      }).catch(function () { dataAs = "public"; return getJSON(path); });
+    }
+    dataAs = "public"; return getJSON(path);
+  }
+  function acctName() { var m = AUTH.member, u = AUTH.user; return (m && m.username) || (u && u.user_metadata && u.user_metadata.username) || (u && u.email ? u.email.split("@")[0] : ""); }
+  function renderAcct() {
+    var b = document.getElementById("acctBtn"), pop = document.getElementById("acctPop"); if (!b) return;
+    if (!AUTH.user) {
+      b.classList.remove("in"); b.innerHTML = AUTH.err ? "Log in ⚠" : "Log in"; b.setAttribute("aria-label", "Log in or create an account");
+      pop.hidden = true; return;
+    }
+    var nm = acctName();
+    b.classList.add("in"); b.innerHTML = '<span class="acct-av" aria-hidden="true">' + esc((nm || "?")[0]) + '</span><span class="gl"> ' + esc(nm) + "</span>";
+    b.setAttribute("aria-label", "Account: " + nm);
+    pop.innerHTML = '<div class="who"><b>' + esc(nm) + "</b><small>" + esc(AUTH.user.email || "") + "</small></div>" +
+      (isMember() ? '<span class="stchip on">✓ Member</span>' : '<span class="stchip">Membership not active yet</span>') +
+      '<button type="button" class="btn" id="logoutBtn">Log out</button>';
+    document.getElementById("logoutBtn").addEventListener("click", function () { pop.hidden = true; SB.auth.signOut().then(function () { onSession(null); }); });
+  }
+  var LOCK_ICO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>';
+  function lockPanel() {
+    var d = state.data || {}, t = d.teaser || {}, tz = "", nba = isNBA();
+    if (nba) tz = (t.games != null ? "<span>" + t.games + " games · 10,000 sims each</span>" : "") + (t.angles ? '<span><b class="st">★★★</b> ' + t.angles + " tracked pick" + (t.angles === 1 ? "" : "s") + "</span>" : "") + (t.big_gaps ? "<span>" + t.big_gaps + " big gap" + (t.big_gaps === 1 ? "" : "s") + " vs the market</span>" : "");
+    else {
+      var st = t.stars || {};
+      tz = (t.bets != null ? "<span>" + t.bets + " pick" + (t.bets === 1 ? "" : "s") + " this week</span>" : "") +
+        [5, 4, 3].map(function (n) { return st[n] ? '<span><b class="st">' + "★".repeat(n) + "</b> " + st[n] + "</span>" : ""; }).join("");
+    }
+    var acts, line;
+    if (AUTH.on && !AUTH.ready) { line = "Checking your membership…"; acts = ""; }
+    else if (AUTH.user && !isMember()) { line = "You’re signed in as <b>" + esc(acctName()) + "</b>. Your membership isn’t active yet; " + (nba ? "the board" : "the picks") + " unlock as soon as it is."; acts = ""; }
+    else { line = nba ? "Our line for every game, the tracked picks, and each game’s 10,000-sim breakdown are for members." : "Every pick, its star rating, the number it’s good down to, and live results are for members.";
+      acts = AUTH.on ? '<div class="acts"><button type="button" class="btn" data-auth="signup">Create account</button><button type="button" class="btn ghost" data-auth="login">Log in</button></div>' : ""; }
+    return '<div class="lock"><div class="lock-in"><div class="ico">' + LOCK_ICO + "</div><h2>" + (nba ? "Today’s board is for members" : "This week’s picks are for members") + "</h2>" +
+      (tz ? '<div class="tz">' + tz + "</div>" : "") + "<p>" + line + "</p>" + acts +
+      "<small>The record, rankings" + (nba ? " and tracking" : " and how stars work") + " are free for everyone.</small></div></div>";
+  }
+  function bindLock(el) { el.querySelectorAll("[data-auth]").forEach(function (b) { b.addEventListener("click", function () { openAuth(b.getAttribute("data-auth")); }); }); }
+  var AUTH_ERR = [[/invalid login credentials/i, "That email and password don’t match."], [/email not confirmed/i, "Confirm your email first: check your inbox for the link."],
+    [/already registered|already been registered/i, "That email already has an account. Log in instead."], [/database error saving new user/i, "That username was just taken. Try another."],
+    [/password should be at least|weak password/i, "Use a longer password (at least 8 characters)."], [/rate limit|too many/i, "Too many tries. Wait a minute and try again."],
+    [/unable to validate email|invalid email/i, "That email address doesn’t look right."]];
+  function authMsg(e) { var m = String((e && (e.message || e.error_description)) || e || ""); for (var i = 0; i < AUTH_ERR.length; i++) if (AUTH_ERR[i][0].test(m)) return AUTH_ERR[i][1]; return m || "Something went wrong. Try again."; }
+  function openAuth(mode) {
+    if (!SB) { if (AUTH.on && !AUTH.err) setTimeout(function () { openAuth(mode); }, 400); return; }
+    var old = document.querySelector(".authm"); if (old) old.remove();
+    var m = document.createElement("div"); m.className = "authm"; m.setAttribute("role", "dialog"); m.setAttribute("aria-modal", "true"); m.setAttribute("aria-label", "Account");
+    function draw(md) {
+      mode = md;
+      var tabs = md === "reset" || md === "forgot" ? "" : '<div class="tabs2" role="group" aria-label="Log in or create an account"><button type="button" data-md="login" aria-pressed="' + (md === "login") + '">Log in</button><button type="button" data-md="signup" aria-pressed="' + (md === "signup") + '">Create account</button></div>';
+      var f = md === "signup" ? '<label>Username<input name="username" autocomplete="username" required minlength="3" maxlength="20" pattern="[A-Za-z0-9_]{3,20}" title="3–20 letters, numbers or _"></label><label>Email<input name="email" type="email" autocomplete="email" required></label><label>Password<input name="password" type="password" autocomplete="new-password" required minlength="8"></label>'
+        : md === "login" ? '<label>Email<input name="email" type="email" autocomplete="email" required></label><label>Password<input name="password" type="password" autocomplete="current-password" required></label><button type="button" class="lnk" data-md="forgot">Forgot password?</button>'
+        : md === "forgot" ? '<p class="fine" style="font-size:14px;color:var(--ink-2)">Enter your account’s email and we’ll send a link to set a new password.</p><label>Email<input name="email" type="email" autocomplete="email" required></label><button type="button" class="lnk" data-md="login">‹ Back to log in</button>'
+        : '<label>New password<input name="password" type="password" autocomplete="new-password" required minlength="8"></label>';
+      var go = { signup: "Create account", login: "Log in", forgot: "Send reset link", reset: "Save new password" }[md];
+      var ttl = { signup: "Create your account", login: "Welcome back", forgot: "Reset your password", reset: "Set a new password" }[md];
+      m.innerHTML = '<form novalidate><h2>' + ttl + "</h2>" + tabs + f + '<div class="msg" hidden></div><button type="submit" class="btn">' + go + "</button>" +
+        (md === "signup" ? '<p class="fine">You sign in with your email; your username is how you show up on the site. 21+ only. Please bet responsibly.</p>' : "") +
+        '<button type="button" class="lnk" data-close style="justify-self:center;color:var(--ink-3)">Close</button></form>';
+      var first = m.querySelector("input"); if (first) setTimeout(function () { first.focus(); }, 30);
+    }
+    function say(t, ok) { var e = m.querySelector(".msg"); e.hidden = false; e.className = "msg " + (ok ? "ok" : "err"); e.textContent = t; }
+    function close() { m.remove(); document.removeEventListener("keydown", onKey); }
+    function onKey(e) { if (e.key === "Escape") close(); }
+    m.addEventListener("click", function (e) {
+      if (e.target === m || e.target.hasAttribute("data-close")) return close();
+      var t = e.target.closest("[data-md]"); if (t) { e.preventDefault(); draw(t.getAttribute("data-md")); }
+    });
+    m.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var fm = e.target, v = function (n) { var i = fm.querySelector('[name="' + n + '"]'); return i ? i.value.trim() : ""; }, btn = fm.querySelector('[type="submit"]');
+      var bad = Array.prototype.filter.call(fm.querySelectorAll("input"), function (i) { return !i.checkValidity(); })[0];
+      if (bad) { say(bad.name === "username" ? "Usernames are 3–20 letters, numbers or _." : bad.name === "password" ? "Use at least 8 characters." : "Enter a valid email."); bad.focus(); return; }
+      btn.disabled = true; var done = function () { btn.disabled = false; };
+      var here = location.origin + location.pathname;
+      if (mode === "login") SB.auth.signInWithPassword({ email: v("email"), password: fm.querySelector('[name="password"]').value }).then(function (r) {
+        done(); if (r.error) return say(authMsg(r.error)); close(); onSession(r.data.session);
+      });
+      else if (mode === "signup") {
+        var un = v("username");
+        SB.rpc("username_available", { u: un }).then(function (r) {
+          if (r.error) { done(); return say(authMsg(r.error)); }
+          if (r.data === false) { done(); return say("That username is taken. Try another."); }
+          return SB.auth.signUp({ email: v("email"), password: fm.querySelector('[name="password"]').value, options: { data: { username: un }, emailRedirectTo: here } }).then(function (r2) {
+            done(); if (r2.error) return say(authMsg(r2.error));
+            if (!r2.data.session) return say("Almost done: check your email and click the link to confirm your account.", true);
+            say("Account created. Your membership isn’t active yet; picks unlock as soon as it is.", true); onSession(r2.data.session);
+          });
+        });
+      } else if (mode === "forgot") SB.auth.resetPasswordForEmail(v("email"), { redirectTo: here }).then(function (r) {
+        done(); if (r.error) return say(authMsg(r.error)); say("If that email has an account, a reset link is on its way.", true);
+      });
+      else SB.auth.updateUser({ password: fm.querySelector('[name="password"]').value }).then(function (r) {
+        done(); if (r.error) return say(authMsg(r.error)); say("Password saved. You’re logged in.", true); setTimeout(close, 1200);
+      });
+    });
+    document.addEventListener("keydown", onKey); document.body.appendChild(m); draw(mode || "login");
   }
   // ---------- share a pick as an image ----------
   var SHARE_ICO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="M7 8l5-5 5 5"/><path d="M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></svg>';
@@ -1196,6 +1442,7 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
     });
   }
   function renderWeek(el) {
+    if (state.data.members_only) { el.innerHTML = lockPanel(); bindLock(el); return; }
     var list = filtered();
     var html = '<div class="filters">' + segHtml("status", STATUSF, state.status, "Status") + segHtml("stars", STARF, state.stars, "Stars") +
       '<div class="chips" role="group" aria-label="Market">' + marketsOnCard().map(function (m) { return '<button type="button" class="chip" data-seg="market" data-val="' + m[0] + '" aria-pressed="' + (m[0] === state.market) + '">' + m[1] + "</button>"; }).join("") + "</div>" +
@@ -1485,16 +1732,18 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
     if (!d) { board.innerHTML = ""; sub.textContent = ""; tick.innerHTML = ""; document.getElementById("wk").innerHTML = "NBA <span>&mdash;</span>"; document.getElementById("cnt").textContent = ""; return; }
     var dt = new Date(d.date + "T12:00:00Z");
     document.getElementById("wk").innerHTML = esc(dt.toLocaleDateString("en-US", { month: "short", timeZone: "UTC" })) + " <span>" + dt.getUTCDate() + "</span>";
-    var games = d.games || [], flagged = games.filter(nbaFlag).length, live = 0, fin = 0;
+    var games = d.games || [], flagged = games.filter(nbaFlag).length, live = 0, fin = 0, tzn = d.members_only && d.teaser ? d.teaser : null;
+    if (tzn) flagged = tzn.big_gaps || 0;
+    var nGames = tzn ? tzn.games || 0 : games.length;
     games.forEach(function (g) { var s = nbaScore(g); if (s && s.status === "live") live++; if (s && s.status === "final") fin++; });
-    document.getElementById("cnt").textContent = games.length;
+    document.getElementById("cnt").textContent = nGames;
     var up = d.updated ? new Date(d.updated) : null;
-    sub.innerHTML = "<span>" + games.length + " games · each played out 10,000 times</span>" +
+    sub.innerHTML = "<span>" + nGames + " games · each played out 10,000 times" + (tzn ? " \u00b7 members only" : "") + "</span>" +
       (d.injury_report ? "<span>Injury report " + esc(d.injury_report.replace(/_/g, ":").replace(/^0/, "")) + " ET</span>" : "") +
       '<span class="pulse' + (live ? "" : " idle") + '">' + (up ? "Updated " + esc(up.toLocaleString("en-US", { weekday: "short", hour: "numeric", minute: "2-digit" })) : "") + "</span>";
     var t = (d.tracking && d.tracking.summary) || {};
     board.innerHTML =
-      '<div><div class="k">Games</div><div class="v">' + games.length + '</div><div class="s">' + (live ? live + " live · " : "") + fin + " final</div></div>" +
+      '<div><div class="k">Games</div><div class="v">' + nGames + '</div><div class="s">' + (live ? live + " live · " : "") + fin + " final</div></div>" +
       '<div><div class="k">Big gaps</div><div class="v">' + flagged + '</div><div class="s">vs the market</div></div>' +
       '<div><div class="k">Spread miss</div><div class="v">' + (t.spread_ours != null ? t.spread_ours.toFixed(1) : "—") + '</div><div class="s">' + (t.spread_mkt != null ? "market " + t.spread_mkt.toFixed(1) + " · " + t.n_spread + " games" : "tracking starts tonight") + "</div></div>";
     var items = games.map(function (g) { return { g: g, s: nbaScore(g) }; }).filter(function (it) { return it.s && (it.s.status === "live" || it.s.status === "final"); });
@@ -1670,6 +1919,7 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
   var lastGame = null;
   function renderNbaBoard(el) {
     var d = state.data;
+    if (d.members_only) { el.innerHTML = lockPanel(); bindLock(el); return; }
     if (!state.game) lastGame = null;
     if (state.game) { var gm = (d.games || []).filter(function (g) { return g.id === state.game; })[0]; if (gm) return renderNbaGame(el, gm); state.game = null; }
     if (!(d.games || []).length) {
@@ -1913,7 +2163,7 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
     var seq = ++loadSeq, b = base();
     state.weekId = id; state.scores = null; state.ratings = null; state.prevRatings = null; SEEN = {}; seenReady = false; FLASH = {};
     if (!id) { state.data = null; state.load = "empty"; render(); return; }
-    getJSON(b + id + ".json").then(function (d) {
+    getData(b + id + ".json").then(function (d) {
       if (seq !== loadSeq) return;
       state.data = d; state.load = "ok"; if (!state.unit) unitInput.value = unitDollars(); render(); pollScores(seq);
     }).catch(function () { if (seq !== loadSeq) return; state.data = null; state.load = "nodata"; render(); });
@@ -1976,7 +2226,7 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
           games[key] = { away: +aT.score || 0, home: +hT.score || 0, status: state_, period: period,
             h1_away: period >= 3 || state_ === "final" || /half/i.test(ty.name || "") ? h1(aT) : null,
             h1_home: period >= 3 || state_ === "final" || /half/i.test(ty.name || "") ? h1(hT) : null,
-            half_done: /halftime/i.test(ty.name || ""), ln: ln };
+            half_done: /halftime/i.test(ty.name || ""), ln: ln, eid: String(ev.id) };
         });
       });
       return { games: games, updated: new Date().toISOString() };
@@ -1991,6 +2241,7 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
       var old = state.scores && state.scores.games, now = Date.now();
       if (old) Object.keys(sc.games).forEach(function (k) { if (old[k] && scoreSig(old[k]) !== scoreSig(sc.games[k]) && (+old[k].away !== +sc.games[k].away || +old[k].home !== +sc.games[k].home)) FLASH[k] = now; });
       state.scoreErr = false; state.scores = sc; render(); seenReady = true;
+      fetchBoxes(sc).then(function (got) { if (got && seq === loadSeq) render(); });
       if (isNBA()) {
         var now = Date.now(), going = state.data.games.some(function (g) { var s = sc.games[g.id], t = new Date(g.tip).getTime(); return (s && s.status === "live") || (!(s && s.status === "final") && t - now < 3600000); });
         if (going) scoreTimer = setTimeout(function () { pollScores(seq); }, 2 * 60000);
@@ -2003,6 +2254,7 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
   }
 
   function boot() {
+    if (!boot.authed) { boot.authed = true; initAuth(); }
     loadSeq++; state.data = null; state.index = null; state.weekId = null; state.scores = null; state.ratings = null; state.load = "loading";
     render();
     var seq = loadSeq;
@@ -2033,6 +2285,11 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
       setSport(sp); storeSet("gte.sport", sp); loadMode(); rateCache = null; boot();
     });
   });
+  (function () {
+    var b = document.getElementById("acctBtn"), pop = document.getElementById("acctPop");
+    b.addEventListener("click", function (e) { e.stopPropagation(); if (!AUTH.user) return openAuth("login"); var open = pop.hidden; pop.hidden = !open; b.setAttribute("aria-expanded", String(open)); });
+    document.addEventListener("click", function (e) { if (!pop.hidden && !pop.contains(e.target) && !b.contains(e.target)) { pop.hidden = true; b.setAttribute("aria-expanded", "false"); } });
+  })();
   var gearBtn = document.getElementById("gearBtn"), gearPop = document.getElementById("gearPop");
   gearBtn.addEventListener("click", function (e) { e.stopPropagation(); var open = gearPop.hidden; gearPop.hidden = !open; gearBtn.setAttribute("aria-expanded", String(open)); });
   document.addEventListener("click", function (e) { if (!gearPop.hidden && !gearPop.contains(e.target) && e.target !== gearBtn) { gearPop.hidden = true; gearBtn.setAttribute("aria-expanded", "false"); } });
