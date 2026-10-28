@@ -1686,13 +1686,18 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
       groups: [["Ratings", ["off", "def", "st", "off_epa", "def_epa", "scoring"]], ["Market", ["market", "market_rank", "gap"]], ["Schedule", ["sos", "sos_rank"]], ["Results", ["record", "ats"]], ["Other", ["move", "conf", "since", "next"]]] }
   };
   RK.nba = { key: "gte.nbacols", sd: 13, name: "NBA", kind: "nba", avg: "an average NBA team",
-    note: "Points better than an average NBA team per game on a neutral court, built from the players: each player\u2019s rating \u00d7 his minutes. <b>Now</b> counts who\u2019s available (today\u2019s injury report); <b>Healthy</b> is the same team with everyone back; <b>Missing</b> is what absences cost right now. Tap a team to see every player\u2019s value.",
+    note: "Points better than an average NBA team per game on a neutral court, built from the players: each player\u2019s rating \u00d7 his minutes. <b>Now</b> counts who\u2019s available (today\u2019s injury report); <b>Healthy</b> is the same team with everyone back; <b>Missing</b> is what absences cost right now. <b>Market</b> is what this season\u2019s closing lines say; <b>Us vs market</b> is where we disagree. Tap a team to see every player\u2019s value.",
     cols: [{ k: "move", l: "Move", d: 1, t: "move" }, { k: "net", l: "Now", d: 1, t: "bar", fixed: 1 },
       { k: "off", l: "Offense", d: 1, t: "sg" }, { k: "def", l: "Defense", d: 1, t: "sg" },
       { k: "healthy", l: "Healthy", d: 1, t: "sg", nh: 1 }, { k: "healthy_rank", l: "Healthy rank", d: 0, t: "int", asc: 1 },
       { k: "missing_pts", l: "Missing", d: 1, t: "sg", asc: 1 }, { k: "out", l: "Out", d: 1, t: "txt" },
-      { k: "pace", l: "Pace", d: 0, t: "n1" }, { k: "record", l: "Record", d: 1, t: "rec" }, { k: "best", l: "Most valuable", d: 1, t: "txt" }],
-    groups: [["Ratings", ["off", "def", "healthy", "healthy_rank"]], ["Injuries", ["missing_pts", "out"]], ["Style", ["pace"]], ["Results", ["record"]], ["Other", ["move", "best"]]] };
+      { k: "market", l: "Market rating", d: 0, t: "sg", nh: 1 }, { k: "market_rank", l: "Market rank", d: 0, t: "int", asc: 1 },
+      { k: "gap", l: "Us vs market", d: 1, t: "sg", tip: "Our rating from the minutes each player actually played over the last 10 games, minus the market\u2019s (+ = we like them more)" },
+      { k: "sos", l: "Schedule so far", d: 0, t: "sg", nh: 1, tip: "Average full-strength rating of the opponents played so far (+ = tougher)" }, { k: "sos_rank", l: "SOS rank", d: 0, t: "int", asc: 1 },
+      { k: "pace", l: "Pace", d: 0, t: "n1" }, { k: "record", l: "Record", d: 1, t: "rec" }, { k: "ats", l: "ATS", d: 0, t: "rec" },
+      { k: "pf", l: "Pts / game", d: 0, t: "n1" }, { k: "pa", l: "Opp pts / game", d: 0, t: "n1", asc: 1 },
+      { k: "since", l: "Since opening night", d: 0, t: "sg", tip: "Rating change since the first board of the season" }, { k: "best", l: "Most valuable", d: 1, t: "txt" }],
+    groups: [["Ratings", ["off", "def", "healthy", "healthy_rank"]], ["Market", ["market", "market_rank", "gap"]], ["Injuries", ["missing_pts", "out"]], ["Schedule", ["sos", "sos_rank"]], ["Results", ["record", "ats", "pf", "pa"]], ["Other", ["move", "pace", "since", "best"]]] };
   var RK_TIPS = { st: "Special teams, in points per game", qb_adj: "Adjustment for the projected starting QB vs the usual starter",
     sos: "How strong the opponents played so far were (+ = tougher)", sos_rank: "Schedule so far, ranked (1 = toughest)",
     sos_left: "How strong the remaining opponents are (+ = tougher)", since: "Rating change since Week 1", ats: "Record against the spread",
@@ -1702,7 +1707,7 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
   function rkCfg() { return RK[isNBA() ? "nba" : state.sport === "nfl" ? "nfl" : "cfb"]; }
   function nbaRankData() {
     var d = state.data; if (!d || !d.teams || !d.teams.length) return null;
-    return { title: "NBA power rankings", league: d.league || {}, teams: d.teams.map(function (t) { var o = {}; for (var k in t) o[k] = t[k]; o.full = t.team; o.team = t.abbr; o.outFull = t.out || ""; o.out = shortList(t.out); return o; }) };
+    return { title: "NBA power rankings", league: d.league || {}, teams: d.teams.map(function (t) { var o = {}; for (var k in t) o[k] = t[k]; o.full = t.team; o.team = t.abbr; o.outFull = t.out || ""; o.out = shortList(t.out); if (o.since == null && t.since_open != null) o.since = t.since_open; return o; }) };
   }
   function nbaCalcHtml(R, P) {
     var T = {}; R.teams.forEach(function (t) { T[t.team] = t; });
@@ -1827,7 +1832,7 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
     function bdg(t) { return nba ? badge(t.team, t.team, "sm", tc(t.team, t.full)) : badge(t.team, cfb ? null : t.team, "sm"); }
     var hurt = nba ? R.teams.filter(function (t) { return t.missing_pts != null && t.missing_pts < -0.4; }).slice().sort(function (a, b) { return a.missing_pts - b.missing_pts; }) : [];
     function mini(title, arr, fmt, cls) { return arr.length ? '<div class="ins"><i>' + title + "</i>" + arr.slice(0, 3).map(function (t) { return "<div>" + bdg(t) + "<b>" + esc(t.team) + ' <small class="nick">' + esc(nickOf(t)) + '</small></b><span class="tnum ' + cls + '">' + fmt(t) + "</span></div>"; }).join("") + "</div>" : ""; }
-    function th(c) { var on = srt.k === c.k, arrow = on ? (srt.dir > 0 ? " ▴" : " ▾") : ""; return '<th class="' + (c.t === "txt" || c.t === "bar" || c.t === "move" ? "" : "ra") + '"' + (RK_TIPS[c.k] ? ' title="' + esc(RK_TIPS[c.k]) + '"' : "") + '><button type="button" class="ths' + (on ? " on" : "") + '" data-sortk="' + c.k + '">' + esc(c.l) + arrow + "</button></th>"; }
+    function th(c) { var on = srt.k === c.k, arrow = on ? (srt.dir > 0 ? " ▴" : " ▾") : ""; return '<th class="' + (c.t === "txt" || c.t === "bar" || c.t === "move" ? "" : "ra") + '"' + (c.tip || RK_TIPS[c.k] ? ' title="' + esc(c.tip || RK_TIPS[c.k]) + '"' : "") + '><button type="button" class="ths' + (on ? " on" : "") + '" data-sortk="' + c.k + '">' + esc(c.l) + arrow + "</button></th>"; }
     var groups = P.groups.map(function (g) {
       var cs = g[1].filter(function (k) { return byK[k]; }); if (!cs.length) return "";
       return '<div class="cg"><span class="cg-l">' + g[0] + "</span>" + cs.map(function (k) { var c = byK[k], on = rkOn(P, c); return '<button type="button" class="tog' + (on ? " on" : "") + '" data-col="' + k + '" aria-pressed="' + on + '">' + (on ? "✓ " : "+ ") + esc(c.l) + "</button>"; }).join("") + "</div>";
@@ -1836,8 +1841,8 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
     var dl = '<div class="dls"><button type="button" class="dlb" id="dlCsv">' + DL_ICO + '<span class="lg">Rankings </span>.csv</button>' +
       (AUTH.on ? '<button type="button" class="dlb' + (isMem ? "" : " lockd") + '" id="dlXlsx" title="' + (isMem ? "This week’s full spreadsheet" : "Members can download this week’s full spreadsheet") + '">' + (isMem ? DL_ICO : LOCK_ICO) + '<span class="lg">' + (nba ? "Today\u2019s " : "Week " + esc(R.week) + " ") + "</span>sheet .xlsx</button>" : "") + "</div>";
     el.innerHTML = '<div class="nflr"><div class="nflr-top"><div class="panel"><h3>' + esc(R.title || (P.name + " power rankings")) + '</h3><p class="note">' + P.note + "</p>" +
-      '<div class="insights">' + mini("Biggest risers", movers, function (t) { return "▲" + t.move; }, "up") + mini("Biggest fallers", movers.slice().reverse().filter(function (t) { return t.move < 0; }), function (t) { return "▼" + Math.abs(t.move); }, "down") +
-      (nba ? mini("Hurt most by injuries", hurt, function (t) { return signed(t.missing_pts, 1); }, "down") : cfb && gaps.length ? mini("We like more than the market", gaps, function (t) { return signed(t.gap, 1); }, "up") : mini("Most improved since Week 1", climb, function (t) { return signed(t.since, 1); }, "up")) + "</div></div>" + (nba ? nbaCalcHtml(R, P) : calcHtml(R, P)) + "</div>" +
+      '<div class="insights">' + mini("Biggest risers", movers, function (t) { return "▲" + t.move; }, "up") + (nba && gaps.length ? "" : mini("Biggest fallers", movers.slice().reverse().filter(function (t) { return t.move < 0; }), function (t) { return "▼" + Math.abs(t.move); }, "down")) +
+      (nba ? mini("Hurt most by injuries", hurt, function (t) { return signed(t.missing_pts, 1); }, "down") + (gaps.length ? mini("We like more than the market", gaps, function (t) { return signed(t.gap, 1); }, "up") : "") : cfb && gaps.length ? mini("We like more than the market", gaps, function (t) { return signed(t.gap, 1); }, "up") : mini("Most improved since Week 1", climb, function (t) { return signed(t.since, 1); }, "up")) + "</div></div>" + (nba ? nbaCalcHtml(R, P) : calcHtml(R, P)) + "</div>" +
       '<div class="panel tablep"><div class="tbar"><input class="search" id="tq" type="search" placeholder="' + (nba ? "Search team or player" : cfb ? "Search team or conference" : "Search team or QB") + '" value="' + esc(state.tq) + '" aria-label="Search">' +
       (hasConf ? '<select class="sel" id="tconf" aria-label="Conference"><option value="all">All conferences</option>' + Object.keys(confs).sort().map(function (c) { return '<option' + (c === state.tconf ? " selected" : "") + ">" + esc(c) + "</option>"; }).join("") + "</select>" : "") +
       (anyPlays ? '<button type="button" class="chip" id="tplays" aria-pressed="' + !!state.tplays + '">' + (nba ? "Playing today" : "On this week\u2019s card") + "</button>" : "") +
