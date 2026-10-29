@@ -9,8 +9,8 @@
 <meta property="og:description" content="This week's card, rated by stars from years of backtests, with live results and the full season record.">
 <meta name="theme-color" content="#0d1324">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://nrpeet.github.io/gaintheedge/">
-<meta property="og:image" content="https://nrpeet.github.io/gaintheedge/og.png">
+<meta property="og:url" content="https://gaintheedge.io/">
+<meta property="og:image" content="https://gaintheedge.io/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
@@ -555,7 +555,8 @@ table.gl td small { color: var(--ink-2); margin-left: 4px; }
 .ths.on { color: var(--ink); }
 .ths:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
 .nflt th, .nflt td { padding-inline: 9px; }
-body.wide .wrap { max-width: 1440px; }
+body.wide .wrap { max-width: 1600px; }
+@media (min-width: 641px) { body.wide .story { grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 14px; } }
 .nflr { display: grid; gap: 16px; }
 .nflr-top { display: grid; gap: 16px; align-items: start; }
 @media (min-width: 1100px) { .nflr-top { grid-template-columns: minmax(0, 1.55fr) minmax(360px, 1fr); } .nflr-top .insights { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
@@ -612,6 +613,18 @@ body.wide .wrap { max-width: 1440px; }
 .calc select { height: 40px; min-width: 150px; border-radius: 10px; border: 1px solid var(--line); background: var(--card-2); color: var(--ink); padding: 0 10px; font-size: 15px; font-weight: 700; text-transform: none; letter-spacing: 0; }
 .calc label.chk { display: inline-flex; align-items: center; gap: 8px; height: 40px; text-transform: none; letter-spacing: 0; font-size: 14px; font-weight: 600; }
 .calc #cSwap { height: 40px; width: 44px; justify-content: center; font-size: 18px; }
+.wi { margin-top: 12px; border-top: 1px solid var(--line); padding-top: 12px; }
+.wi-top { font-size: 13px; color: var(--ink-2); margin-bottom: 10px; } .wi-top b { color: var(--ink); }
+.wi .lnk { background: none; border: 0; padding: 0; color: var(--accent); font-weight: 700; cursor: pointer; font-size: 13px; }
+.wi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 16px; }
+.wi-col { display: grid; gap: 4px; align-content: start; min-width: 0; }
+.wi-h { display: flex; align-items: center; gap: 6px; font-size: 14px; margin-bottom: 2px; } .wi-d { margin-left: auto; font-weight: 800; font-size: 13px; }
+.wi-p { display: grid; grid-template-columns: minmax(0, 1fr) auto 5ch; gap: 8px; align-items: center; text-align: left; border: 1px solid var(--line); background: var(--card); color: var(--ink); border-radius: 9px; padding: 6px 10px; font-size: 13px; cursor: pointer; }
+.wi-p:hover { border-color: var(--ink-3); }
+.wi-p .nm { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; } .wi-p small { color: var(--ink-2); font-size: 11.5px; } .wi-p i { font-style: normal; text-align: right; font-weight: 700; color: var(--ink-2); }
+.wi-p.off { background: var(--card-2); border-style: dashed; } .wi-p.off .nm { text-decoration: line-through; color: var(--ink-2); }
+.wi-p[aria-pressed="true"] { border-color: var(--accent); box-shadow: inset 3px 0 0 var(--accent); }
+@media (max-width: 560px) { .wi-grid { grid-template-columns: minmax(0, 1fr); } }
 .calc-out { background: var(--card-2); border-radius: 14px; padding: 14px 16px; display: grid; gap: 4px; }
 .calc-big { font-family: var(--f-display); font-weight: 900; font-style: italic; font-size: 40px; line-height: 1; text-transform: uppercase; }
 .calc-why { font-size: 13px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
@@ -674,10 +687,73 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
   #gearBtn { width: 34px; justify-content: center; padding: 0; }
   nav.tabs button { font-size: 15px; letter-spacing: .03em; padding-inline: 2px; }
   .minibar { background: var(--hero); }
-  .nfull { display: none; } .nnick { display: inline; }
+  .nfull { display: none; } .tname .nnick { display: inline; }
 }
 .nnick { display: none; }
 
+
+/* ---------- my bets ---------- */
+.acts2 { display: inline-flex; gap: 6px; align-items: center; }
+.trackbtn { display: inline-flex; align-items: center; gap: 4px; border: 1px solid var(--accent); background: transparent; color: var(--accent); border-radius: 8px; height: 28px; padding: 0 10px; font-size: 12.5px; font-weight: 800; cursor: pointer; flex: 0 0 auto; white-space: nowrap; }
+.trackbtn:hover { background: var(--accent-soft); }
+.trackbtn.on { border-color: var(--win); color: var(--win); background: var(--win-soft); }
+.trackm form { max-width: 460px; max-height: calc(100vh - 32px); overflow-y: auto; }
+.trackm select { height: 42px; border-radius: 10px; border: 1px solid var(--line); background: var(--card-2); color: var(--ink); padding: 0 10px; font-size: 15px; min-width: 0; }
+.trackm input:disabled { opacity: .45; }
+.trackm .tm-desc[hidden] { display: none; }
+.tm-game { font-weight: 800; font-size: 15px; } .tm-game small { display: block; font-weight: 600; color: var(--ink-2); font-size: 12.5px; margin-top: 2px; }
+.tm-pick { font-family: var(--f-display); font-size: 24px; font-weight: 800; letter-spacing: .01em; }
+.tm-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.tm-hint { font-size: 12.5px !important; color: var(--ink-2) !important; } .tm-hint b { color: var(--ink); }
+.toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 10px 16px; border-radius: 10px; font-weight: 700; font-size: 14px; z-index: 80; box-shadow: var(--shadow); transition: opacity .5s; }
+.toast.go { opacity: 0; }
+.mb { display: grid; gap: 16px; }
+.mb-head { display: flex; gap: 12px; align-items: stretch; flex-wrap: wrap; }
+.mb-tiles { flex: 1 1 600px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.mb-t { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; display: grid; gap: 2px; box-shadow: var(--shadow); min-width: 0; }
+.mb-t i { font-style: normal; font-size: 11px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-2); }
+.mb-t b { font-family: var(--f-display); font-size: 30px; font-weight: 800; line-height: 1.1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mb-t small { font-size: 12.5px; color: var(--ink-2); }
+.mb-acts { display: flex; flex-direction: column; gap: 8px; justify-content: center; }
+.mb-acts .btn { height: 40px; display: inline-flex; align-items: center; gap: 6px; justify-content: center; }
+.mb-acts svg { width: 15px; height: 15px; }
+.mb-mid { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(320px, 1fr); gap: 16px; align-items: start; }
+.mb-side, .mb-main { display: grid; gap: 16px; min-width: 0; align-content: start; }
+.mb-chart svg { width: 100%; height: 190px; display: block; margin-top: 8px; }
+.mb-chart .zero { stroke: var(--ink-3); stroke-dasharray: 4 4; stroke-width: 1; }
+.mb-chart .ln { fill: none; stroke-width: 2.5; } .mb-chart .ln.pos { stroke: var(--win); } .mb-chart .ln.neg { stroke: var(--loss); }
+.mb-chart .area.pos { fill: var(--win-soft); } .mb-chart .area.neg { fill: var(--loss-soft); }
+.mb-chart h3 small { font-size: 15px; margin-left: 6px; }
+.mb-bankf { display: flex; gap: 10px; align-items: end; flex-wrap: wrap; }
+.mb-bankf label { display: grid; gap: 4px; font-size: 12.5px; font-weight: 700; color: var(--ink-2); flex: 1 1 130px; }
+.mb-bankf input, .mb-bankf select { height: 38px; border-radius: 9px; border: 1px solid var(--line); background: var(--card-2); color: var(--ink); padding: 0 10px; font-size: 15px; min-width: 0; }
+.mb-bankf .btn { height: 38px; }
+.mb-units { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 12px; font-size: 13px; color: var(--gold); } .mb-units b { color: var(--ink); }
+.mb-sub { font-size: 11px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-2); margin: 12px 0 2px; }
+.mb-bar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 8px; } .mb-bar h3 { margin: 0 auto 0 0; }
+.mb-bar .chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.mbt td { vertical-align: middle; } .mbt .nw, .mbt td.ra { white-space: nowrap; } .mbt small { color: var(--ink-2); }
+.mbt .spt { font-size: 10.5px; font-weight: 800; letter-spacing: .06em; color: var(--ink-2); text-transform: uppercase; margin-right: 4px; }
+.mbt .st { color: var(--gold); font-size: 11px; }
+.mb-res { height: 30px; border-radius: 8px; border: 1px solid var(--line); background: var(--card-2); color: var(--ink); font-size: 13px; padding: 0 6px; }
+.mb-del { border: 0; background: transparent; color: var(--ink-3); cursor: pointer; font-size: 14px; padding: 4px 6px; border-radius: 6px; } .mb-del:hover { color: var(--loss); background: var(--loss-soft); }
+@media (max-width: 900px) { .mb-mid { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 640px) {
+  .mbt thead { display: none; }
+  .mbt, .mbt tbody { display: block; width: 100%; min-width: 0 !important; }
+  .mbt tr { display: flex; flex-wrap: wrap; align-items: center; gap: 3px 10px; padding: 11px 2px; border-bottom: 1px solid var(--line); }
+  .mbt td { display: block; padding: 0 !important; border: 0 !important; white-space: normal; }
+  .mbt td:nth-child(2) { order: 1; flex: 1 1 60%; min-width: 0; font-size: 13px; color: var(--ink-2); }
+  .mbt td:nth-child(8) { order: 2; margin-left: auto; }
+  .mbt td:nth-child(3) { order: 3; flex: 1 1 60%; min-width: 0; font-size: 15px; }
+  .mbt td:nth-child(9) { order: 4; margin-left: auto; font-weight: 800; font-size: 15px; }
+  .mbt td:nth-child(1), .mbt td:nth-child(4), .mbt td:nth-child(5), .mbt td:nth-child(6), .mbt td:nth-child(7) { order: 6; font-size: 12.5px; color: var(--ink-2); white-space: nowrap; }
+  .mbt tr::before { content: ""; order: 5; flex: 0 0 100%; height: 0; }
+  .mbt td:nth-child(7):not(:empty)::before { content: "closed "; }
+  .mbt td:nth-child(10) { order: 7; margin-left: auto; }
+  .mbt td:empty { display: none; }
+}
+@media (max-width: 640px) { .mb-tiles { grid-template-columns: 1fr 1fr; } .mb-t b { font-size: 22px; } .mb-acts { flex-direction: row; flex: 1 1 100%; } .mb-acts .btn { flex: 1 1 0; } .trackm form { padding: 16px; gap: 10px; } }
 </style>
 
 </head>
@@ -725,6 +801,7 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
     <button role="tab" id="tab-teams" aria-controls="view" aria-selected="false" data-view="teams">Rankings</button>
     <button role="tab" id="tab-record" aria-controls="view" aria-selected="false" data-view="record">Record</button>
     <button role="tab" id="tab-ratings" aria-controls="view" aria-selected="false" data-view="ratings">How stars work</button>
+    <button role="tab" id="tab-mybets" aria-controls="view" aria-selected="false" data-view="mybets" hidden>My bets</button>
   </nav>
 </div>
 
@@ -749,7 +826,7 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
   function pct(x, d) { return (x * 100).toFixed(d == null ? 1 : d) + "%"; }
   function pretty(s) { return String(s || "").replace(/ -(\d)/g, " " + MIN + "$1").replace(/^-(\d)/, MIN + "$1"); }
   function price(p) { if (p == null || isNaN(p)) return MIN + "110"; p = Math.round(p); return p > 0 ? "+" + p : MIN + Math.abs(p); }
-  function unitDollars() { return state.unit || (state.data && state.data.unit_dollars) || 125; }
+  function unitDollars() { return (typeof bankUnit === "function" && bankUnit()) || state.unit || (state.data && state.data.unit_dollars) || 125; }
   function rec(w, l, p) { return w + "–" + l + (p ? "–" + p : ""); }
   function storeGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
   function storeSet(k, v) { try { localStorage.setItem(k, v); } catch (e) { /* private window */ } }
@@ -1147,11 +1224,11 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
   function onSession(session) {
     var u = session && session.user, uid = u ? u.id : null;
     AUTH.user = u || null;
-    if (!uid) { AUTH.member = null; AUTH.ready = true; lastUid = null; renderAcct(); syncData(); return; }
+    if (!uid) { AUTH.member = null; AUTH.ready = true; lastUid = null; MB.list = null; MB.set = null; renderAcct(); syncData(); return; }
     if (uid === lastUid && AUTH.member) { AUTH.ready = true; renderAcct(); return; }
     lastUid = uid;
     SB.from("members").select("username,active,active_until").eq("user_id", uid).maybeSingle().then(function (r) {
-      AUTH.member = (r && r.data) || { active: false }; AUTH.ready = true; renderAcct(); syncData();
+      AUTH.member = (r && r.data) || { active: false }; AUTH.ready = true; renderAcct(); syncData(); loadBets();
     }, function () { AUTH.member = { active: false }; AUTH.ready = true; renderAcct(); syncData(); });
   }
   // reload the open week / day when what this visitor may see changed (logged in as a member, or logged out)
@@ -1172,6 +1249,8 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
   function acctName() { var m = AUTH.member, u = AUTH.user; return (m && m.username) || (u && u.user_metadata && u.user_metadata.username) || (u && u.email ? u.email.split("@")[0] : ""); }
   function renderAcct() {
     var b = document.getElementById("acctBtn"), pop = document.getElementById("acctPop"); if (!b) return;
+    var mt = document.getElementById("tab-mybets"); if (mt) mt.hidden = !AUTH.user;
+    if (AUTH.ready && !AUTH.user && state.view === "mybets") { state.view = "week"; }
     if (!AUTH.user) {
       b.classList.remove("in"); b.innerHTML = AUTH.err ? "Log in ⚠" : "Log in"; b.setAttribute("aria-label", "Log in or create an account");
       pop.hidden = true; return;
@@ -1181,7 +1260,8 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
     b.setAttribute("aria-label", "Account: " + nm);
     pop.innerHTML = '<div class="who"><b>' + esc(nm) + "</b><small>" + esc(AUTH.user.email || "") + "</small></div>" +
       (isMember() ? '<span class="stchip on">✓ Member</span>' : '<span class="stchip">Membership not active yet</span>') +
-      '<button type="button" class="btn" id="logoutBtn">Log out</button>';
+      '<button type="button" class="btn ghost" id="myBetsBtn">My bets</button><button type="button" class="btn" id="logoutBtn">Log out</button>';
+    document.getElementById("myBetsBtn").addEventListener("click", function () { pop.hidden = true; state.view = "mybets"; state.game = null; storeSet("gte.view", "mybets"); render(); window.scrollTo(0, 0); });
     document.getElementById("logoutBtn").addEventListener("click", function () { pop.hidden = true; SB.auth.signOut().then(function () { onSession(null); }); });
   }
   var LOCK_ICO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>';
@@ -1312,7 +1392,7 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
     // footer, right under the content: the card is cropped between square and 4:5
     var Hf = Math.max(1080, Math.min(H, Math.round(y + 200))), c2 = document.createElement("canvas"); c2.width = W; c2.height = Hf;
     var z = c2.getContext("2d"); z.drawImage(c, 0, 0, W, Hf, 0, 0, W, Hf);
-    z.font = "600 28px " + SH_B; z.fillStyle = "#98a3bd"; z.fillText("nrpeet.github.io/gaintheedge", L, Hf - 92);
+    z.font = "600 28px " + SH_B; z.fillStyle = "#98a3bd"; z.fillText("gaintheedge.io", L, Hf - 92);
     z.font = "500 22px " + SH_B; z.fillStyle = "#5b6782"; z.fillText("For entertainment and research, not financial advice.", L, Hf - 56);
     z.fillStyle = "#ff6b2c"; z.fillRect(0, Hf - 14, W * 0.22, 14); z.fillRect(W * 0.23, Hf - 14, W * 0.01, 14);
     return c2;
@@ -1497,7 +1577,7 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
       (rt.benched === "tie" ? '<div class="alert warn"><b>⇄ Too close to call: passing both sides</b><span>' + esc(pretty(rt.vs.pick)) + " is on the other side with a similar record</span></div>" : "") +
       (rt.beat ? '<div class="alert warn" style="opacity:.85"><b>⇄ Chosen over the other side</b><span>' + esc(pretty(rt.beat.pick)) + " is benched \u00b7 floor " + pct(rt.lo) + " vs " + pct(baseRated(rt.beat).lo) + "</span></div>" : "") +
       '<div class="chyron"><div class="lbl"><i>PICK</i><b>' + esc(pickTxt) + "</b></div>" + resultChip(x, gr, paper) + "</div>" + numberBox(x, paper) +
-      '<div class="mc-foot"><span class="fl2">' + foot + '</span><button type="button" class="sharebtn" data-share="' + esc(x.id || "") + '" aria-label="Share this pick as an image">' + SHARE_ICO + "Share</button></div>" +
+      '<div class="mc-foot"><span class="fl2">' + foot + '</span><span class="acts2">' + trackBtn(sportKey() + ":" + x.id) + '<button type="button" class="sharebtn" data-share="' + esc(x.id || "") + '" aria-label="Share this pick as an image">' + SHARE_ICO + "Share</button></span></div>" +
       "<details><summary>Why this pick</summary><div class=\"why\">" + why +
       (x.qb ? '<div class="flag">QB check: ' + esc(x.qb) + "</div>" : "") + (x.edge ? '<div class="edge">' + esc(pretty(x.edge)) + "</div>" : "") +
       "</div></details></article>";
@@ -1716,25 +1796,50 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
     var lp = L.pace || (paces.length ? paces.reduce(function (a, b) { return a + b; }, 0) / paces.length : 100), hca = L.hca != null ? +L.hca : 1.6, b2b = L.b2b != null ? +L.b2b : 1.27;
     var games = (state.data && state.data.games) || [];
     var c = state.calc_nba || (function () { var g = games[0]; return g && T[g.home_abbr] && T[g.away_abbr] ? { home: g.home_abbr, away: g.away_abbr } : { home: abbrs[0], away: abbrs[1] }; })();
-    c.roster = c.roster || "now"; state.calc_nba = c;
+    c.roster = c.roster || "now"; c.sit = c.sit || {}; state.calc_nba = c;
     var h = T[c.home], a = T[c.away];
+    // what-if: a player who sits hands his minutes to his teammates in proportion to theirs (what the simulator does);
+    // an injured player who's back takes his usual minutes from them the same way
+    function wiRot(t) { var hm = c.roster === "healthy"; return (t.players || []).map(function (p) { var o = !hm && !!p.out; return { name: p.name, r: (+p.o || 0) + (+p.d || 0), m: hm ? (+p.usual || 0) : (o ? 0 : (+p.min || 0)), usual: +p.usual || 0 }; }).filter(function (p) { return p.m > 0 || p.usual > 0; }); }
+    function wiStr(rot, tog) {
+      var tot = 0, keep = 0, add = 0, s = 0;
+      rot.forEach(function (p) { tot += p.m; if (p.m > 0 && !tog[p.name]) keep += p.m; if (!(p.m > 0) && tog[p.name]) add += p.usual; });
+      var sc = keep > 0 ? Math.max(0, tot - add) / keep : 0;
+      rot.forEach(function (p) { var m = p.m > 0 ? (tog[p.name] ? 0 : p.m * sc) : (tog[p.name] ? p.usual : 0); s += p.r * m; });
+      return s / 48 * lp / 100;
+    }
+    function wiOf(t) { var rot = wiRot(t), tog = {}, n = 0; Object.keys(c.sit).forEach(function (k) { var i = k.indexOf("|"); if (c.sit[k] && k.slice(0, i) === t.team) { tog[k.slice(i + 1)] = true; n++; } }); return { rot: rot, tog: tog, n: n, d: n ? wiStr(rot, tog) - wiStr(rot, {}) : 0 }; }
+    function wiCol(t) {
+      var w = wiOf(t), base = wiStr(w.rot, {});
+      var list = w.rot.slice().sort(function (x, y) { return (y.m || y.usual * .6) - (x.m || x.usual * .6); }).slice(0, 10);
+      return '<div class="wi-col"><div class="wi-h">' + badge(t.team, t.team, "sm", tc(t.team, t.full)) + " <b>" + esc(nbaNick(t.full)) + "</b>" + (w.n ? ' <span class="wi-d ' + (w.d < 0 ? "down" : "up") + '">' + signed(w.d, 1) + " pts</span>" : "") + "</div>" +
+        list.map(function (p) {
+          var one = {}; one[p.name] = true; var imp = wiStr(w.rot, one) - base, on = !!w.tog[p.name], playing = p.m > 0 ? !on : on;
+          return '<button type="button" class="wi-p' + (playing ? "" : " off") + '" data-wi="' + esc(t.team + "|" + p.name) + '" aria-pressed="' + on + '" title="' + esc(p.m > 0 ? "Tap to sit him" : "Out: tap to bring him back") + '"><span class="nm">' + esc(p.name) + "</span><small>" +
+            (playing ? (p.m > 0 ? Math.round(p.m) : Math.round(p.usual)) + " min" : p.m > 0 ? "sits" : "out") + '</small><i class="tnum">' + signed(imp, 1) + "</i></button>";
+        }).join("") + "</div>";
+    }
     function opts(sel) { return abbrs.map(function (n) { return '<option value="' + esc(n) + '"' + (n === sel ? " selected" : "") + ">" + esc(T[n].full) + "</option>"; }).join(""); }
     var out = "";
     if (h && a && c.home !== c.away) {
       var nh = c.roster === "healthy" && h.healthy != null ? h.healthy : h.net, na = c.roster === "healthy" && a.healthy != null ? a.healthy : a.net;
+      var wh = wiOf(h), wa = wiOf(a); nh += wh.d; na += wa.d;
+      var wiTxt = Object.keys(wa.tog).concat(Object.keys(wh.tog)).map(function (n) { var x = wa.rot.concat(wh.rot).filter(function (p) { return p.name === n; })[0]; return nbaShort(n) + (x && x.m > 0 ? " sits" : " back"); });
       var gp = ((h.pace || lp) + (a.pace || lp)) / 2, hc = c.neu ? 0 : hca * gp / 100, rest = (c.b2bA ? b2b : 0) - (c.b2bH ? b2b : 0);
       var sp = Math.round(((nh - na) * gp / lp + hc + rest) * 10) / 10, fav = sp >= 0 ? c.home : c.away, pw = normCdf(sp / P.sd);
       var g = games.filter(function (x) { return x.home_abbr === c.home && x.away_abbr === c.away; })[0], simTxt = "";
       if (g && g.our_spread != null) simTxt = '<div class="calc-mk">Tonight\u2019s full simulator: <b>' + esc(favTxt(g, g.our_spread)) + "</b>" + (g.mkt_spread != null ? " \u00b7 market " + esc(favTxt(g, g.mkt_spread)) : "") + " \u00b7 it also counts minutes, quarter patterns and travel</div>";
       out = '<div class="calc-out"><div class="calc-big">' + (Math.abs(sp) < .05 ? "Pick\u2019em" : esc(fav) + " " + MIN + Math.abs(sp).toFixed(1)) + "</div>" +
         "<div>" + esc(nbaNick(h.full)) + " win about <b>" + Math.round(pw * 100) + "%</b> \u00b7 " + esc(nbaNick(a.full)) + " " + Math.round((1 - pw) * 100) + "%</div>" +
-        '<div class="calc-why">' + esc(c.home) + " " + signed(nh, 1) + " \u2212 " + esc(c.away) + " " + signed(na, 1) + (c.roster === "healthy" ? " (fully healthy)" : " (tonight\u2019s rosters)") + " at a " + gp.toFixed(1) + "-possession pace" +
+        '<div class="calc-why">' + esc(c.home) + " " + signed(nh, 1) + " \u2212 " + esc(c.away) + " " + signed(na, 1) + (c.roster === "healthy" ? " (fully healthy" : " (tonight\u2019s rosters") + (wiTxt.length ? ", " + esc(wiTxt.join(", ")) : "") + ")" + " at a " + gp.toFixed(1) + "-possession pace" +
         (c.neu ? " \u00b7 neutral court" : " + " + hc.toFixed(1) + " home court") + (rest ? " " + (rest > 0 ? "+" : MIN) + " " + Math.abs(rest).toFixed(1) + " back-to-back" : "") + " = " + signed(sp, 1) + " for " + esc(c.home) + "</div>" + simTxt + "</div>";
     } else out = '<div class="calc-out"><div class="calc-why">Pick two different teams.</div></div>';
     return '<div class="panel calc"><h3>Matchup calculator</h3><p class="note">Our spread from the team ratings: home rating \u2212 away rating at the two teams\u2019 pace, plus ' + (hca * lp / 100).toFixed(1) + " for home court and " + b2b.toFixed(2) + " for a team on a back-to-back. Within about 0.3 points of the full 10,000-game simulator on average. Not a bet by itself.</p>" +
       '<div class="calc-row"><label>Away<select id="cAway">' + opts(c.away) + '</select></label><button type="button" class="chip" id="cSwap" aria-label="Swap home and away">\u21c4</button><label>Home<select id="cHome">' + opts(c.home) + "</select></label></div>" +
       '<div class="calc-row calc-opts"><label>Rosters<select id="cRoster"><option value="now"' + (c.roster !== "healthy" ? " selected" : "") + '>Tonight (injury report)</option><option value="healthy"' + (c.roster === "healthy" ? " selected" : "") + ">Everyone healthy</option></select></label>" +
-      '<label class="chk"><input type="checkbox" id="cNeu"' + (c.neu ? " checked" : "") + '> Neutral court</label><label class="chk"><input type="checkbox" id="cB2bA"' + (c.b2bA ? " checked" : "") + "> " + esc(c.away) + ' on a back-to-back</label><label class="chk"><input type="checkbox" id="cB2bH"' + (c.b2bH ? " checked" : "") + "> " + esc(c.home) + " on a back-to-back</label></div>" + out + "</div>";
+      '<label class="chk"><input type="checkbox" id="cNeu"' + (c.neu ? " checked" : "") + '> Neutral court</label><label class="chk"><input type="checkbox" id="cB2bA"' + (c.b2bA ? " checked" : "") + "> " + esc(c.away) + ' on a back-to-back</label><label class="chk"><input type="checkbox" id="cB2bH"' + (c.b2bH ? " checked" : "") + "> " + esc(c.home) + " on a back-to-back</label></div>" +
+      (h && a && c.home !== c.away ? '<div class="wi"><div class="wi-top"><b>What if?</b> Tap a player to sit him, or tap an injured player to bring him back. The number is how far his team\u2019s line moves if you tap him (\u2212 = worse without him); his minutes go to his teammates, the way the simulator does it' +
+        (Object.keys(c.sit).some(function (k) { return c.sit[k]; }) ? ' · <button type="button" class="lnk" id="wiReset">Reset</button>' : "") + '</div><div class="wi-grid">' + wiCol(a) + wiCol(h) + "</div></div>" : "") + out + "</div>";
   }
   function rkColState(P) { if (!(P.key in RK_COLS)) { var v = null; try { v = JSON.parse(storeGet(P.key) || "null"); } catch (e) {} RK_COLS[P.key] = v && typeof v === "object" ? v : null; } return RK_COLS[P.key]; }
   function rkOn(P, c) { var st = rkColState(P); return !!(c.fixed || (st && st[c.k] != null ? st[c.k] : c.d)); }
@@ -1766,18 +1871,23 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
     if (h && a && c.home !== c.away) {
       var gapS = R.sc_coef != null && h.scoring != null && a.scoring != null ? h.scoring - a.scoring : null;
       var scAdj = gapS != null ? R.sc_coef * gapS * Math.abs(gapS) / (R.sc_div || 30) : 0;
-      var sp = Math.round(((h.net || 0) - (a.net || 0) + (c.neu ? 0 : hfa) + scAdj) * 10) / 10, fav = sp >= 0 ? c.home : c.away, pw = normCdf(sp / P.sd);
+      var qh = c.qb_home && h.qb_adj ? -h.qb_adj : 0, qa = c.qb_away && a.qb_adj ? -a.qb_adj : 0, hn = (h.net || 0) + qh, an = (a.net || 0) + qa;
+      var sp = Math.round((hn - an + (c.neu ? 0 : hfa) + scAdj) * 10) / 10, fav = sp >= 0 ? c.home : c.away, pw = normCdf(sp / P.sd);
       var mk = (R.games || {})[c.away + " @ " + c.home], mkTxt = "";
       if (mk && mk.line_spread != null) { var ls = mk.line_spread, diff = Math.round((sp - (-ls)) * 10) / 10;
         mkTxt = '<div class="calc-mk">This week’s line: <b>' + esc(Math.abs(ls) < .05 ? "Pick’em" : (ls < 0 ? c.home : c.away) + " " + MIN + u(Math.abs(ls))) + "</b>" + (Math.abs(diff) >= 0.5 ? " · we’re " + u(Math.abs(diff)) + " pts higher on " + esc(diff > 0 ? c.home : c.away) : " · we agree") + "</div>"; }
       out = '<div class="calc-out"><div class="calc-big">' + (Math.abs(sp) < .05 ? "Pick’em" : esc(fav) + " " + MIN + Math.abs(sp).toFixed(1)) + "</div>" +
         "<div>" + esc(c.home) + " wins about <b>" + Math.round(pw * 100) + "%</b> · " + esc(c.away) + " " + Math.round((1 - pw) * 100) + "%</div>" +
-        '<div class="calc-why">' + esc(c.home) + " " + signed(h.net || 0, 1) + " − " + esc(c.away) + " " + signed(a.net || 0, 1) + (c.neu ? " · neutral field" : " + " + hfa.toFixed(1) + " home field") +
+        '<div class="calc-why">' + esc(c.home) + " " + signed(hn, 1) + " − " + esc(c.away) + " " + signed(an, 1) + (qh || qa ? " (no QB adjustment for " + esc(qh && qa ? "either team" : qh ? c.home : c.away) + ")" : "") + (c.neu ? " · neutral field" : " + " + hfa.toFixed(1) + " home field") +
         (gapS != null && Math.abs(scAdj) >= 0.05 ? " " + (scAdj > 0 ? "+" : MIN) + " " + Math.abs(scAdj).toFixed(1) + " scoring adj." : "") + " = " + signed(sp, 1) + " for " + esc(c.home) + "</div>" + mkTxt + "</div>";
     } else out = '<div class="calc-out"><div class="calc-why">Pick two different teams.</div></div>';
     return '<div class="panel calc"><h3>Matchup calculator</h3><p class="note">Our spread from the ratings: home rating − away rating + ' + hfa.toFixed(1) + " for home field (none on a neutral field)" + (R.sc_coef != null ? ", plus a small scoring-style adjustment, same as the sheet" : "") + ". Stats only, so it can differ from the betting line; only the proven setups on the card are bets.</p>" +
       '<div class="calc-row"><label>Away<select id="cAway">' + opts(c.away) + '</select></label><button type="button" class="chip" id="cSwap" aria-label="Swap home and away">⇄</button><label>Home<select id="cHome">' + opts(c.home) + "</select></label>" +
-      '<label class="chk"><input type="checkbox" id="cNeu"' + (c.neu ? " checked" : "") + "> Neutral field</label></div>" + out + "</div>";
+      '<label class="chk"><input type="checkbox" id="cNeu"' + (c.neu ? " checked" : "") + "> Neutral field</label></div>" +
+      (h && a && c.home !== c.away && ((a.qb_adj && a.qb) || (h.qb_adj && h.qb)) ? '<div class="calc-row calc-opts">' + [["away", a], ["home", h]].map(function (x) {
+        var t = x[1]; if (!t.qb_adj || !t.qb) return "";
+        return '<label class="chk"><input type="checkbox" data-qb="' + x[0] + '"' + (c["qb_" + x[0]] ? " checked" : "") + "> " + esc(t.team) + " as it\u2019s played so far, without the adjustment for " + esc(t.qb) + " starting (" + signed(t.qb_adj, 1) + ")</label>";
+      }).join("") + "</div>" : "") + out + "</div>";
   }
   function weekTag() { var R = state.ratings || {}; return (R.season || "") + "_Week_" + (R.week || ""); }
   function rankingsCsv(R, cols) {
@@ -1873,7 +1983,10 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
     }); });
     document.getElementById("dlCsv").addEventListener("click", function () { saveBlob(new Blob(["\ufeff" + rankingsCsv(R, cols)], { type: "text/csv;charset=utf-8" }), P.name + "_Rankings_" + (nba ? state.data.date : weekTag()) + ".csv"); });
     el.querySelectorAll(".tbtn[data-team]").forEach(function (b) { b.addEventListener("click", function () { var a = b.getAttribute("data-team"); state.topen = state.topen === a ? null : a; render(); }); });
-    [["cRoster", "roster", "value"], ["cB2bA", "b2bA", "checked"], ["cB2bH", "b2bH", "checked"]].forEach(function (x) { var e = document.getElementById(x[0]); if (e) e.addEventListener("change", function () { state.calc_nba[x[1]] = e[x[2]]; render(); }); });
+    [["cRoster", "roster", "value"], ["cB2bA", "b2bA", "checked"], ["cB2bH", "b2bH", "checked"]].forEach(function (x) { var e = document.getElementById(x[0]); if (e) e.addEventListener("change", function () { state.calc_nba[x[1]] = e[x[2]]; if (x[1] === "roster") state.calc_nba.sit = {}; render(); }); });
+    el.querySelectorAll("[data-wi]").forEach(function (b) { b.addEventListener("click", function () { var k = b.getAttribute("data-wi"), s = state.calc_nba.sit; s[k] = !s[k]; if (!s[k]) delete s[k]; render(); }); });
+    var wr = document.getElementById("wiReset"); if (wr) wr.addEventListener("click", function () { state.calc_nba.sit = {}; render(); });
+    el.querySelectorAll("[data-qb]").forEach(function (b) { b.addEventListener("change", function () { var c = state["calc_" + state.sport]; c["qb_" + b.getAttribute("data-qb")] = b.checked; render(); }); });
     var dx = document.getElementById("dlXlsx"); if (dx) dx.addEventListener("click", function () { downloadSheet(dx); });
     if (hasConf) document.getElementById("tconf").addEventListener("change", function (e) { state.tconf = e.target.value; render(); });
     if (anyPlays) document.getElementById("tplays").addEventListener("click", function () { state.tplays = !state.tplays; render(); });
@@ -2126,7 +2239,7 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
           '</span><span class="ra">0</span><span class="ra v">' + (o.val != null && o.val > 0 ? MIN + o.val.toFixed(1) : "out") + "</span></div>";
       }).join("") + "</div>";
   }
-  var VALUE_NOTE = "<b>Value</b> = points per game a player adds over a replacement-level player in tonight’s minutes — about how far our line moves if he sits. Out players (struck through) show what they’re usually worth. Starters come from the NBA’s own lineup feed once it’s posted (✓ Confirmed about 30 minutes before tip); before that, our guess from each team’s last game. Tap or hover a player for his offense and defense ratings.";
+  var VALUE_NOTE = "<b>Value</b> = how far our line moves if he sits: his minutes go to his teammates, so it’s how much better he is than them, over his minutes (checked against the full simulator: within about 0.1 pts). Out players (struck through) show what they’re usually worth. Starters come from the NBA’s own lineup feed once it’s posted (✓ Confirmed about 30 minutes before tip); before that, our guess from each team’s last game. Tap or hover a player for his offense and defense ratings.";
   function luBadge(g) {
     var n = (g.home_lineup === "Confirmed") + (g.away_lineup === "Confirmed");
     return n === 2 ? '<span class="badge ok">Lineups ✓</span>' : n === 1 ? '<span class="badge muted">1 of 2 lineups ✓</span>' : "";
@@ -2162,7 +2275,7 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
       '<div class="mc-top"><span class="mkt">' + esc(nbaStatus(g)) + "</span><span>" + luBadge(g) + (flag ? ' <span class="badge">Big gap</span>' : "") + "</span></div>" +
       '<div class="teams">' + nbaTeamRow(g, "away", nbaScore(g)) + nbaTeamRow(g, "home", nbaScore(g)) + "</div>" + angleBar(g) + changeChip(g) +
       curveSVG(g) + rangeLine(g) + linesTable(g) + gapHint(g) + whyBlock(g) + resultLine(g) +
-      '<div class="openrow"><a class="open" href="' + gameHref(g) + '">Full game page<span aria-hidden="true">›</span></a><button type="button" class="sharebtn" data-share-nba="' + esc(g.id) + '" aria-label="Share this game as an image">' + SHARE_ICO + "Share</button></div>" +
+      '<div class="openrow"><a class="open" href="' + gameHref(g) + '">Full game page<span aria-hidden="true">›</span></a>' + trackBtn("nba:" + g.id) + '<button type="button" class="sharebtn" data-share-nba="' + esc(g.id) + '" aria-label="Share this game as an image">' + SHARE_ICO + "Share</button></div>" +
       "<details><summary>More lines · 1st half, 1st quarter, moneyline</summary>" + moreLines(g) + "</details>" +
       '<details><summary>Who plays · starters, minutes, player value</summary><div class="why"><div class="rot">' + rotList(g.away_players, g.away_out, g.away_abbr, g.away_lineup) + rotList(g.home_players, g.home_out, g.home_abbr, g.home_lineup) + "</div>" +
       '<div class="fl" style="font-size:12px;color:var(--ink-2)">' + VALUE_NOTE + "</div></div></details></article>";
@@ -2277,6 +2390,7 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
     if (lastGame !== g.id) { lastGame = g.id; window.scrollTo(0, 0); }
   }
   var NBA_TSORT = [["net", "Now"], ["off", "Offense"], ["def", "Defense"], ["healthy", "Healthy"], ["missing_pts", "Missing"]];
+  function nbaShort(n) { var p = String(n || "").split(" ").filter(function (x) { return !/^(jr\.?|sr\.?|ii|iii|iv)$/i.test(x); }); return p.length > 1 ? p[p.length - 1] : String(n || ""); }
   function nbaNick(full) { full = String(full || ""); return /Trail Blazers$/.test(full) ? "Trail Blazers" : full.split(" ").pop(); }
   function shortList(s) { var a = String(s || "").split(/\s*,\s*/).filter(Boolean); return a.length > 2 ? a.slice(0, 2).join(", ") + " +" + (a.length - 2) : a.join(", "); }
   function teamRoster(t) {
@@ -2286,7 +2400,7 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
         return '<div class="pl' + (p.out ? " out" : "") + '" title="Offense ' + signed(p.o, 1) + ", defense " + signed(p.d, 1) + ' per 100 possessions"><span><span class="nm">' + esc(p.name) + '</span></span><span class="ra">' + (p.out ? "out" : p.min) + '</span><span class="ra">' + p.usual + '</span><span class="ra v' + (p.val >= 3 ? " hi" : "") + '">' + signed(p.val, 1) + "</span></div>";
       }).join("") + "</div>";
     }
-    return '<p class="note" style="margin:0 0 8px">Value = points per game each player adds over a replacement-level player in his usual minutes — about how much the line moves when he sits. Now = minutes tonight (or lately), Usual = when he plays. Struck through = out right now.</p><div class="roster">' + col(P.slice(0, h)) + col(P.slice(h)) + "</div>";
+    return '<p class="note" style="margin:0 0 8px">Value = how far the line moves when he sits: how much better he is than the teammates who take his minutes, over his usual minutes (checked against the full simulator). Now = minutes tonight (or lately), Usual = when he plays. Struck through = out right now.</p><div class="roster">' + col(P.slice(0, h)) + col(P.slice(h)) + "</div>";
   }
   function renderNbaTeams(el) {
     var d = state.data, T = d.teams || [];
@@ -2387,6 +2501,370 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
     });
   }
 
+  // ---------- my bets: each member's own tracked bets (Supabase tables "bets" and "member_settings"; row-level security
+  // means a member can only ever read or change their own rows). Bets grade themselves from ESPN's final scores, and
+  // spreads/totals also record where the line closed, so a member sees whether they beat the close.
+  var MB = { list: null, loading: false, err: null, set: null, filter: "all", sport: "all", busy: {} };
+  var AUTO_MK = { "Spread": 1, "Total": 1, "Moneyline": 1, "1H Spread": 1, "1H Total": 1 };
+  var SPORT_NM = { nba: "NBA", nfl: "NFL", cfb: "College", other: "Other" };
+  function r2(x) { return Math.round(x * 100) / 100; }
+  function loadBets() {
+    if (!SB || !isMember()) { MB.list = null; MB.set = null; return; }
+    MB.loading = true;
+    Promise.all([
+      SB.from("bets").select("*").order("starts_at", { ascending: false }).limit(3000),
+      SB.from("member_settings").select("bankroll,unit_pct").maybeSingle()
+    ]).then(function (rs) {
+      MB.loading = false;
+      if (rs[0].error) { MB.err = rs[0].error.message || "error"; MB.list = []; } else { MB.err = null; MB.list = rs[0].data || []; }
+      MB.set = (rs[1] && !rs[1].error && rs[1].data) || null; applyBankroll();
+      render(); gradeBets();
+    }, function (e) { MB.loading = false; MB.err = String((e && e.message) || e); MB.list = []; render(); });
+  }
+  function bankUnit() { var s = MB.set; return s && s.bankroll > 0 && isMember() ? s.bankroll * (s.unit_pct || 1) / 100 : null; }
+  function applyBankroll() { var u = bankUnit(); if (u) { state.unit = Math.round(u * 100) / 100; unitInput.value = state.unit; } }
+  // prices: American odds (-110, +125) or exchange cents (54c / 54¢ / .54); fees not included
+  function parsePrice(s) {
+    s = String(s == null ? "" : s).trim().replace(/−/g, "-");
+    if (!s) return -110;
+    var c = /^(\d{1,2}(?:\.\d+)?)\s*[c¢]$/i.exec(s) || /^0?(\.\d+)$/.exec(s);
+    if (c) { var p = c[0].indexOf(".") === 0 || /^0\./.test(c[0]) ? +c[1] : +c[1] / 100; if (!(p > 0 && p < 1)) return null; return Math.round(p >= .5 ? -100 * p / (1 - p) : 100 * (1 - p) / p); }
+    var v = +s.replace(/^\+/, ""); if (isNaN(v) || Math.abs(v) < 100) return null; return Math.round(v);
+  }
+  function clvOf(b) {
+    if (b.close_line == null || b.line == null) return null;
+    if (/Spread/.test(b.market)) return r2(+b.line - +b.close_line);
+    if (/Total/.test(b.market)) return r2(b.side === "over" ? +b.close_line - +b.line : +b.line - +b.close_line);
+    return null;
+  }
+  function betProfit(r, stake, pr) { return r === "W" ? r2(winUnits(+stake, pr)) : r === "L" ? -(+stake) : 0; }
+  function pickFor(o, line) {
+    var mk = o.market.replace(/^1H\s*/, ""), h = /^1H/.test(o.market) ? "1H " : "";
+    if (mk === "Spread") return h + o.team + " " + (line == null || isNaN(line) ? "" : lineTxt(+line));
+    if (mk === "Total") return h + (o.side === "over" ? "Over " : "Under ") + (line == null || isNaN(line) ? "" : u(Math.abs(+line)));
+    if (mk === "Moneyline") return o.team + " moneyline";
+    return o.pick || "";
+  }
+  function trackedBy(id) { return (MB.list || []).filter(function (b) { return b.from_pick && (b.from_pick === id || b.from_pick.indexOf(id + ":") === 0); })[0]; }
+  function trackBtn(id) {
+    if (!AUTH.on || !AUTH.user) return "";
+    var t = trackedBy(id);
+    return '<button type="button" class="trackbtn' + (t ? " on" : "") + '" data-track="' + esc(id) + '" aria-label="' + (t ? "Tracked in My bets" : "Track this bet in My bets") + '">' + (t ? "✓ Tracked" : "+ Track") + "</button>";
+  }
+  function isoOfET(k) { var p = parseET(k); return p ? new Date(p.tba ? p.utc + 17 * 3600000 : p.utc).toISOString() : null; }
+  // what the Track button on a card opens
+  function trackSpec(id) {
+    var d = state.data || {}, sp = id.split(":")[0];
+    if (sp === "nba") {
+      var gid = id.split(":")[1], g = (d.games || []).filter(function (y) { return String(y.id) === gid; })[0]; if (!g) return null;
+      var ms = g.mkt_spread, mt = g.mkt_total, ph = g.mkt_home_win;
+      var mlH = ph > 0 && ph < 1 ? amerOf(ph) : null, mlA = ph > 0 && ph < 1 ? amerOf(1 - ph) : null;
+      var opts = [
+        { key: "sa", market: "Spread", side: "away", team: g.away_abbr, line: ms == null ? null : -ms, price: -110 },
+        { key: "sh", market: "Spread", side: "home", team: g.home_abbr, line: ms, price: -110 },
+        { key: "ov", market: "Total", side: "over", line: mt, price: -110 },
+        { key: "un", market: "Total", side: "under", line: mt, price: -110 },
+        { key: "ma", market: "Moneyline", side: "away", team: g.away_abbr, line: null, price: mlA },
+        { key: "mh", market: "Moneyline", side: "home", team: g.home_abbr, line: null, price: mlH }];
+      var def = ms != null && g.our_spread != null && g.our_spread > ms ? "sa" : "sh";
+      var ang = g.angle && String(g.angle.pick || ""); if (ang) def = ang.indexOf(g.away_abbr) === 0 || ang.indexOf(g.away) === 0 ? "sa" : "sh";
+      return { sport: "nba", game: g.away + " @ " + g.home, away: g.away, home: g.home, starts_at: new Date(g.tip).toISOString(), espn_id: String(g.id),
+        opts: opts, def: def, stars: g.angle ? 3 : null, units: g.angle ? 1 : 0, from: "nba:" + g.id };
+    }
+    var x = (d.bets || []).filter(function (y) { return sportKey() + ":" + y.id === id; })[0]; if (!x) return null;
+    var rt = rated(x), mk = x.market, kind = mk.indexOf("Total") >= 0 && mk !== "Team Total" ? "total" : mk.indexOf("Spread") >= 0 ? "spread" : "other";
+    var side = kind === "total" ? ouOf(x) : kind === "spread" ? sideOf(x) : null, ln = kind === "other" ? (x.line == null ? null : +x.line) : lineOf(x);
+    var team = side === "home" ? x.home : side === "away" ? x.away : null, em = /^(\d{6,})-/.exec(x.id || "");
+    var auto = AUTO_MK[mk] && (kind !== "spread" || side) && (kind !== "total" || side);
+    return { sport: sportKey(), game: x.game, away: x.away, home: x.home, starts_at: isoOfET(x.kickoff), espn_id: em ? em[1] : null,
+      opts: [{ key: "x", market: auto ? mk : (mk || "Other"), side: side, team: team, line: isNaN(ln) ? null : ln, price: x.price == null ? -110 : Math.round(+x.price), pick: pretty(x.pick), fixed: !auto }],
+      def: "x", stars: rt.stars || null, units: rt.stake || 0, from: id };
+  }
+  function modal(html, onReady) {
+    var old = document.querySelector(".authm"); if (old) old.remove();
+    var m = document.createElement("div"); m.className = "authm trackm"; m.setAttribute("role", "dialog"); m.setAttribute("aria-modal", "true");
+    m.innerHTML = html; document.body.appendChild(m);
+    function close() { m.remove(); document.removeEventListener("keydown", onKey); }
+    function onKey(e) { if (e.key === "Escape") close(); }
+    document.addEventListener("keydown", onKey);
+    m.addEventListener("click", function (e) { if (e.target === m || (e.target.closest && e.target.closest("[data-close]"))) close(); });
+    onReady(m, close);
+    var f = m.querySelector("select, input"); if (f) setTimeout(function () { f.focus(); }, 30);
+  }
+  function stakeHint(units) {
+    var ud = unitDollars(), bu = bankUnit();
+    return (units ? "Suggested: <b>" + u(units) + "u = " + money(units * ud) + "</b>" : "1 unit = <b>" + money(ud) + "</b>") +
+      (bu ? " (" + ((MB.set && MB.set.unit_pct) || 1) + "% of your bankroll)" : ' · <button type="button" class="lnk" data-setbank>set your bankroll</button>');
+  }
+  function openTrack(spec) {
+    if (!isMember()) { modal('<form><h2>Track your bets</h2><p class="fine" style="font-size:14px;color:var(--ink-2)">Tracking is part of the membership. Once yours is active, every pick has a Track button and My bets grades them for you.</p><button type="button" class="btn" data-close>OK</button></form>', function () {}); return; }
+    var o0 = spec.opts.filter(function (o) { return o.key === spec.def; })[0] || spec.opts[0];
+    var many = spec.opts.length > 1, sug = spec.units ? r2(spec.units * unitDollars()) : "";
+    function optLabel(o) { return pickFor(o, o.line) + (o.line == null && /Spread|Total/.test(o.market) ? "(no market line yet)" : "") + (o.market === "Moneyline" && o.price ? " " + price(o.price) : ""); }
+    modal('<form novalidate><h2>Track this bet</h2><div class="tm-game">' + esc(spec.game) + "<small>" + esc(SPORT_NM[spec.sport] || "") + (spec.starts_at ? " · " + esc(new Date(spec.starts_at).toLocaleString("en-US", { weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" })) : "") + "</small></div>" +
+      (many ? '<label>Bet<select name="opt">' + spec.opts.map(function (o) { return '<option value="' + o.key + '"' + (o === o0 ? " selected" : "") + ">" + esc(optLabel(o)) + "</option>"; }).join("") + "</select></label>"
+        : '<div class="tm-pick">' + esc(o0.pick || pickFor(o0, o0.line)) + "</div>") +
+      '<div class="tm-row"><label class="tm-line">Your line<input name="line" inputmode="decimal" value="' + (o0.line == null ? "" : o0.line) + '"' + (o0.market === "Moneyline" || o0.fixed ? " disabled" : "") + '></label>' +
+      '<label>Your price<input name="price" inputmode="text" value="' + (o0.price == null ? "" : o0.price) + '" placeholder="−110 or 54c"></label></div>' +
+      '<div class="tm-row"><label>Stake ($)<input name="stake" inputmode="decimal" value="' + sug + '"></label><label>Where<input name="book" list="booksDL" value="' + esc(storeGet("gte.book") || "") + '" placeholder="Kalshi, Novig…"></label></div>' +
+      '<datalist id="booksDL"><option>Kalshi</option><option>Novig</option><option>Robinhood</option><option>ProphetX</option><option>Polymarket</option><option>DraftKings</option><option>FanDuel</option><option>Other</option></datalist>' +
+      '<p class="fine tm-hint">' + stakeHint(spec.units) + ". Exchange prices in cents (54c) are converted; fees aren’t included.</p>" +
+      '<div class="msg" hidden></div><button type="submit" class="btn">Save to My bets</button><button type="button" class="lnk" data-close style="justify-self:center;color:var(--ink-3)">Cancel</button></form>',
+      function (m, close) {
+        var fm = m.querySelector("form"), sel = fm.querySelector('[name="opt"]'), li = fm.querySelector('[name="line"]'), pi = fm.querySelector('[name="price"]');
+        function cur() { return sel ? spec.opts.filter(function (o) { return o.key === sel.value; })[0] : o0; }
+        if (sel) sel.addEventListener("change", function () { var o = cur(); li.value = o.line == null ? "" : o.line; li.disabled = o.market === "Moneyline" || !!o.fixed; pi.value = o.price == null ? "" : o.price; });
+        bindBankLink(m);
+        fm.addEventListener("submit", function (e) {
+          e.preventDefault();
+          var o = cur(), say = function (t) { var el = fm.querySelector(".msg"); el.hidden = false; el.className = "msg err"; el.textContent = t; };
+          var ln = li.disabled ? o.line : (li.value.trim() === "" ? null : +li.value.replace(/−/g, "-")), pr = parsePrice(pi.value), st = +String(fm.querySelector('[name="stake"]').value).replace(/[$,]/g, "");
+          if (/Spread|Total/.test(o.market) && !o.fixed && (ln == null || isNaN(ln))) return say("Enter the line you got.");
+          if (pr == null) return say("Enter a price like −110, +125 or 54c.");
+          if (!(st > 0)) return say("Enter how much you bet.");
+          var book = fm.querySelector('[name="book"]').value.trim(); if (book) storeSet("gte.book", book);
+          var row = { sport: spec.sport, game: spec.game, away: spec.away || null, home: spec.home || null, starts_at: spec.starts_at, espn_id: spec.espn_id || null,
+            market: o.market, side: o.side || null, pick: o.fixed ? (o.pick || "") : pickFor(o, ln), line: ln == null || isNaN(ln) ? null : ln, price: pr, stake: r2(st),
+            book: book || null, stars: spec.stars || null, from_pick: spec.from ? spec.from + (many ? ":" + o.key : "") : null };
+          saveBet(row, fm.querySelector('[type="submit"]'), say, close);
+        });
+      });
+  }
+  function saveBet(row, btn, say, close) {
+    btn.disabled = true;
+    SB.from("bets").insert(row).select().single().then(function (r) {
+      btn.disabled = false;
+      if (r.error) return say(/row-level|policy|permission/i.test(r.error.message || "") ? "Tracking is for active members." : (r.error.message || "Couldn’t save. Try again."));
+      MB.list = [r.data].concat(MB.list || []); close(); toast("Saved to My bets"); render(); gradeBets();
+    }, function () { btn.disabled = false; say("Couldn’t reach the server. Try again."); });
+  }
+  function toast(t) {
+    var el = document.createElement("div"); el.className = "toast"; el.setAttribute("role", "status"); el.textContent = t; document.body.appendChild(el);
+    setTimeout(function () { el.classList.add("go"); }, 1800); setTimeout(function () { el.remove(); }, 2400);
+  }
+  // a bet of the member's own (not from a card)
+  function openAddBet() {
+    var now = new Date(Date.now() + 3600000), pad2 = function (n) { return (n < 10 ? "0" : "") + n; };
+    var dflt = now.getFullYear() + "-" + pad2(now.getMonth() + 1) + "-" + pad2(now.getDate()) + "T" + pad2(now.getHours()) + ":00";
+    modal('<form novalidate><h2>Add a bet</h2>' +
+      '<div class="tm-row"><label>Sport<select name="sport"><option value="nba">NBA</option><option value="nfl">NFL</option><option value="cfb">College football</option><option value="other">Other</option></select></label>' +
+      '<label>Starts<input name="when" type="datetime-local" value="' + dflt + '"></label></div>' +
+      '<div class="tm-row"><label>Away team<input name="away" placeholder="e.g. Celtics"></label><label>Home team<input name="home" placeholder="e.g. Hawks"></label></div>' +
+      '<div class="tm-row"><label>Bet type<select name="mk"><option value="Spread">Spread</option><option value="Total">Total</option><option value="Moneyline">Moneyline</option><option value="Other">Other (prop, parlay…)</option></select></label>' +
+      '<label>Side<select name="side"></select></label></div>' +
+      '<label class="tm-desc" hidden>What you bet<input name="desc" placeholder="e.g. Tatum over 27.5 points"></label>' +
+      '<div class="tm-row"><label class="tm-line">Line<input name="line" inputmode="decimal" placeholder="e.g. -3.5"></label><label>Price<input name="price" value="-110" placeholder="−110 or 54c"></label></div>' +
+      '<div class="tm-row"><label>Stake ($)<input name="stake" inputmode="decimal"></label><label>Where<input name="book" list="booksDL2" value="' + esc(storeGet("gte.book") || "") + '"></label></div>' +
+      '<datalist id="booksDL2"><option>Kalshi</option><option>Novig</option><option>Robinhood</option><option>ProphetX</option><option>DraftKings</option><option>FanDuel</option></datalist>' +
+      '<p class="fine tm-hint">' + stakeHint(0) + '. Spreads, totals and moneylines on NBA, NFL and college games grade themselves; anything else you mark won or lost yourself.</p>' +
+      '<div class="msg" hidden></div><button type="submit" class="btn">Save to My bets</button><button type="button" class="lnk" data-close style="justify-self:center;color:var(--ink-3)">Cancel</button></form>',
+      function (m, close) {
+        var fm = m.querySelector("form"), q = function (n) { return fm.querySelector('[name="' + n + '"]'); };
+        function sides() {
+          var mk = q("mk").value, a = q("away").value.trim() || "Away", h = q("home").value.trim() || "Home", keep = q("side").value;
+          var op = mk === "Total" ? [["over", "Over"], ["under", "Under"]] : mk === "Other" ? [["", "—"]] : [["away", a], ["home", h]];
+          q("side").innerHTML = op.map(function (x) { return '<option value="' + x[0] + '"' + (x[0] === keep ? " selected" : "") + ">" + esc(x[1]) + "</option>"; }).join("");
+          q("line").disabled = mk === "Moneyline" || mk === "Other"; fm.querySelector(".tm-desc").hidden = mk !== "Other";
+        }
+        ["mk", "away", "home"].forEach(function (n) { q(n).addEventListener(n === "mk" ? "change" : "input", sides); }); sides();
+        bindBankLink(m);
+        fm.addEventListener("submit", function (e) {
+          e.preventDefault();
+          var say = function (t) { var el = fm.querySelector(".msg"); el.hidden = false; el.className = "msg err"; el.textContent = t; };
+          var mk = q("mk").value, a = q("away").value.trim(), h = q("home").value.trim(), side = q("side").value || null;
+          var ln = q("line").disabled || q("line").value.trim() === "" ? null : +q("line").value.replace(/−/g, "-"), pr = parsePrice(q("price").value), st = +String(q("stake").value).replace(/[$,]/g, "");
+          var when = q("when").value ? new Date(q("when").value) : null;
+          if (mk === "Other" ? !q("desc").value.trim() : !(a && h)) return say(mk === "Other" ? "Describe the bet." : "Enter both teams.");
+          if ((mk === "Spread" || mk === "Total") && (ln == null || isNaN(ln))) return say("Enter the line.");
+          if (pr == null) return say("Enter a price like −110, +125 or 54c.");
+          if (!(st > 0)) return say("Enter how much you bet.");
+          var team = side === "home" ? h : a, o = { market: mk, side: side, team: team, pick: q("desc").value.trim() };
+          var book = q("book").value.trim(); if (book) storeSet("gte.book", book);
+          saveBet({ sport: q("sport").value, game: a && h ? a + " @ " + h : (q("desc").value.trim()), away: a || null, home: h || null, starts_at: when && !isNaN(when) ? when.toISOString() : null,
+            espn_id: null, market: mk, side: mk === "Other" ? null : side, pick: mk === "Other" ? o.pick : pickFor(o, ln), line: ln == null || isNaN(ln) ? null : ln, price: pr, stake: r2(st),
+            book: book || null, stars: null, from_pick: null }, fm.querySelector('[type="submit"]'), say, close);
+        });
+      });
+  }
+  function bindBankLink(m) { var b = m.querySelector("[data-setbank]"); if (b) b.addEventListener("click", function () { m.remove(); state.view = "mybets"; render(); setTimeout(function () { var i = document.getElementById("mbBank"); if (i) { i.scrollIntoView({ block: "center" }); i.focus(); } }, 50); }); }
+
+  // ---------- grading: ESPN final scores (and the line it closed at) for every pending bet ----------
+  var MB_SB = {};
+  function etYmd(iso) { return new Date(iso).toLocaleDateString("en-CA", { timeZone: "America/New_York" }).replace(/-/g, ""); }
+  function sbDay(sport, day) {
+    var k = sport + day; if (MB_SB[k]) return MB_SB[k];
+    var q = sport === "nba" ? "/apis/site/v2/sports/basketball/nba/scoreboard?dates=" + day
+      : "/apis/site/v2/sports/football/" + (sport === "nfl" ? "nfl" : "college-football") + "/scoreboard?limit=400&dates=" + day + (sport === "cfb" ? "&groups=80" : "");
+    return (MB_SB[k] = espnGet(q).catch(function () { delete MB_SB[k]; return null; }));
+  }
+  function teamKey(sport, n) { n = String(n || ""); if (sport === "nfl" && NFL_ALIAS[n.toUpperCase()]) n = NFL_ALIAS[n.toUpperCase()]; return norm(n); }
+  function nickKey(n) { var p = String(n || "").trim().split(/\s+/); return norm(p[p.length - 1]); }
+  function evFor(j, b) {
+    var evs = (j && j.events) || [];
+    for (var i = 0; i < evs.length; i++) {
+      var ev = evs[i], c = ev.competitions && ev.competitions[0]; if (!c) continue;
+      var H = null, A = null; (c.competitors || []).forEach(function (t) { if (t.homeAway === "home") H = t; else A = t; });
+      if (!H || !A) continue;
+      var flip = false;
+      if (b.espn_id) { if (String(ev.id) !== String(b.espn_id)) continue; }
+      else {
+        var hn = namesOf(H.team), an = namesOf(A.team), hk = teamKey(b.sport, b.home), ak = teamKey(b.sport, b.away);
+        if (b.sport === "nba" || b.sport === "nfl") { hn[nickKey(H.team && H.team.displayName)] = 1; an[nickKey(A.team && A.team.displayName)] = 1; }
+        if (hn[hk] && an[ak]) flip = false; else if (hn[ak] && an[hk]) flip = true; else continue;
+      }
+      var hT = flip ? A : H, aT = flip ? H : A, st = c.status || ev.status || {}, ty = st.type || {};
+      var ln = espnLine(c, H); if (ln && flip) ln = { sp: ln.sp == null ? null : -ln.sp, tot: ln.tot };
+      return { status: ty.state === "post" ? (ty.completed === false || /postpon|cancel|suspend/i.test(ty.name || "") ? "void" : "final") : ty.state === "in" ? "live" : "pre",
+        home: +hT.score || 0, away: +aT.score || 0, h1_home: h1of(hT), h1_away: h1of(aT), ln: ln };
+    }
+    return null;
+  }
+  function h1of(t) { var ls = t.linescores || []; return ls.length >= 2 ? (+(ls[0].value || 0)) + (+(ls[1].value || 0)) : null; }
+  function gradeOne(b, e) {
+    if (!e) return null;
+    if (e.status === "void") return { result: "V", profit: 0, graded_at: new Date().toISOString() };
+    if (e.status !== "final") return null;
+    var half = /^1H/.test(b.market), mk = b.market.replace(/^1H\s*/, ""), A = half ? e.h1_away : e.away, H = half ? e.h1_home : e.home, L = +b.line, diff;
+    if (A == null || H == null) return null;
+    if (mk === "Spread") { if (b.side !== "home" && b.side !== "away" || isNaN(L)) return null; diff = (b.side === "home" ? H - A : A - H) + L; }
+    else if (mk === "Total") { if (b.side !== "over" && b.side !== "under" || isNaN(L)) return null; diff = b.side === "over" ? A + H - L : L - (A + H); }
+    else if (mk === "Moneyline") { if (b.side !== "home" && b.side !== "away") return null; diff = b.side === "home" ? H - A : A - H; }
+    else return null;
+    var r = diff > 0 ? "W" : diff < 0 ? "L" : "P", close = null;
+    if (!half && e.ln) { if (mk === "Spread" && e.ln.sp != null) close = b.side === "home" ? e.ln.sp : -e.ln.sp; if (mk === "Total" && e.ln.tot != null) close = e.ln.tot; }
+    return { result: r, profit: betProfit(r, b.stake, b.price), close_line: close, final: (half ? "1H " : "") + e.away + "–" + e.home, graded_at: new Date().toISOString() };
+  }
+  var gradingNow = false;
+  function gradeBets() {
+    if (gradingNow || !SB || !isMember() || !MB.list) return;
+    var due = MB.list.filter(function (b) {
+      return !b.result && AUTO_MK[b.market] && b.sport !== "other" && b.starts_at && (b.espn_id || (b.home && b.away)) &&
+        Date.now() - new Date(b.starts_at).getTime() > (b.sport === "nba" ? 2 : 3) * 3600000 && Date.now() - new Date(b.starts_at).getTime() < 60 * 86400000;
+    });
+    if (!due.length) return;
+    gradingNow = true;
+    Promise.all(due.map(function (b) {
+      var day = etYmd(b.starts_at), prev = etYmd(new Date(b.starts_at).getTime() - 86400000);
+      return sbDay(b.sport, day).then(function (j) {
+        var e = evFor(j, b);
+        return e ? e : sbDay(b.sport, prev).then(function (j2) { return evFor(j2, b); });       // a late start can sit on the previous ESPN day
+      }).then(function (e) {
+        var p = gradeOne(b, e); if (!p) return false;
+        return SB.from("bets").update(p).eq("id", b.id).then(function (r) { if (r && r.error) return false; for (var k in p) b[k] = p[k]; return true; }, function () { return false; });
+      }).catch(function () { return false; });
+    })).then(function (rs) { gradingNow = false; if (rs.some(Boolean)) render(); }, function () { gradingNow = false; });
+  }
+  setInterval(function () { if (!document.hidden && MB.list && state.view === "mybets") gradeBets(); }, 10 * 60000);
+
+  // ---------- the My bets page ----------
+  function mbStats(list) {
+    var s = { n: 0, w: 0, l: 0, p: 0, v: 0, profit: 0, risked: 0, open: 0, openStake: 0, clvN: 0, clvSum: 0, clvBeat: 0 };
+    list.forEach(function (b) {
+      if (!b.result) { s.open++; s.openStake += +b.stake; return; }
+      if (b.result === "V") { s.v++; return; }
+      s.n++; s[b.result.toLowerCase()]++; s.profit += +b.profit || 0; if (b.result !== "P") s.risked += +b.stake;
+      var c = clvOf(b); if (c != null) { s.clvN++; s.clvSum += c; if (c > 0) s.clvBeat++; }
+    });
+    s.roi = s.risked ? s.profit / s.risked : null; return s;
+  }
+  function mbChart(list) {
+    var pts = list.filter(function (b) { return b.result && b.result !== "V"; }).slice().sort(function (a, b) { return new Date(a.starts_at || a.created_at) - new Date(b.starts_at || b.created_at); });
+    if (pts.length < 2) return "";
+    var cum = 0, ys = [0].concat(pts.map(function (b) { cum += +b.profit || 0; return cum; }));
+    var W = 640, H = 150, P = 8, lo = Math.min(0, Math.min.apply(null, ys)), hi = Math.max(0, Math.max.apply(null, ys)), rng = hi - lo || 1;
+    var X = function (i) { return P + i * (W - 2 * P) / (ys.length - 1); }, Y = function (v) { return P + (hi - v) * (H - 2 * P) / rng; };
+    var d = ys.map(function (v, i) { return (i ? "L" : "M") + X(i).toFixed(1) + " " + Y(v).toFixed(1); }).join(" ");
+    var up = cum >= 0;
+    return '<div class="panel mb-chart"><h3>Profit over time <small class="' + (up ? "up" : "down") + '">' + (cum >= 0 ? "+" : "") + money(cum) + "</small></h3>" +
+      '<svg viewBox="0 0 ' + W + " " + H + '" preserveAspectRatio="none" role="img" aria-label="Running profit after each settled bet, ending at ' + money(cum) + '">' +
+      '<line x1="0" x2="' + W + '" y1="' + Y(0).toFixed(1) + '" y2="' + Y(0).toFixed(1) + '" class="zero"/>' +
+      '<path d="' + d + " L" + X(ys.length - 1).toFixed(1) + " " + Y(0).toFixed(1) + " L" + X(0).toFixed(1) + " " + Y(0).toFixed(1) + 'Z" class="area ' + (up ? "pos" : "neg") + '"/>' +
+      '<path d="' + d + '" class="ln ' + (up ? "pos" : "neg") + '" vector-effect="non-scaling-stroke"/></svg><p class="note">' + pts.length + " settled bets, oldest to newest.</p></div>";
+  }
+  function mbRowsBy(list, keyFn, labels) {
+    var g = {}; list.forEach(function (b) { var k = keyFn(b); if (k == null) return; (g[k] = g[k] || []).push(b); });
+    return Object.keys(g).sort(function (a, b) { return labels.indexOf(a) - labels.indexOf(b); }).map(function (k) {
+      var s = mbStats(g[k]); if (!s.n && !s.open) return "";
+      return '<div class="lrow"><div>' + esc(k) + "<small>" + rec(s.w, s.l, s.p) + (s.open ? " · " + s.open + " open" : "") + (s.clvN ? " · vs close " + signed(s.clvSum / s.clvN, 1) + " pts" : "") + '</small></div><div class="tnum">' +
+        (s.roi == null ? "" : signed(s.roi * 100, 1) + "%") + '</div><div class="tnum ' + (s.profit > 0 ? "up" : s.profit < 0 ? "down" : "") + '">' + (s.n ? (s.profit > 0 ? "+" : "") + money(s.profit) : "") + "</div></div>";
+    }).join("");
+  }
+  function renderMyBets(el) {
+    if (!AUTH.on) { el.innerHTML = '<div class="empty"><h2>My bets</h2><p>Member accounts aren’t set up on this site yet.</p></div>'; return; }
+    if (!AUTH.ready || (isMember() && (MB.list == null || MB.loading) && !MB.err)) { el.innerHTML = '<div class="empty"><h2>Loading your bets</h2><p></p></div>'; if (isMember() && MB.list == null && !MB.loading) loadBets(); return; }
+    if (!AUTH.user || !isMember()) {
+      el.innerHTML = '<div class="lock"><div class="lock-in"><div class="ico">' + LOCK_ICO + "</div><h2>Track every bet you make</h2><p>Tap Track on any pick and it lands here: graded automatically from the final score, with your record, profit, return and whether you beat the closing line, by sport and star rating.</p>" +
+        (AUTH.user ? "<p>Your membership isn’t active yet; My bets unlocks as soon as it is.</p>" : '<div class="acts"><button type="button" class="btn" data-auth="signup">Create account</button><button type="button" class="btn ghost" data-auth="login">Log in</button></div>') + "<small>Only you can see your bets.</small></div></div>";
+      bindLock(el); return;
+    }
+    var all = MB.list || [], list = all.filter(function (b) {
+      if (MB.sport !== "all" && b.sport !== MB.sport) return false;
+      if (MB.filter === "open") return !b.result; if (MB.filter === "settled") return !!b.result; return true;
+    }).sort(function (a, b) {            // open bets first (soonest first), then settled bets newest first
+      var ta = new Date(a.starts_at || a.created_at).getTime(), tb = new Date(b.starts_at || b.created_at).getTime();
+      if (!a.result !== !b.result) return a.result ? 1 : -1;
+      return a.result ? tb - ta : ta - tb;
+    });
+    var s = mbStats(all.filter(function (b) { return MB.sport === "all" || b.sport === MB.sport; })), set = MB.set || {}, bu = bankUnit();
+    var tile = function (k, v, sm, cls) { return '<div class="mb-t"><i>' + k + '</i><b class="tnum ' + (cls || "") + '">' + v + "</b><small>" + sm + "</small></div>"; };
+    var tiles = tile("Record", s.n ? rec(s.w, s.l, s.p) : "—", s.n ? (s.w + s.l ? Math.round(s.w / (s.w + s.l) * 100) + "% won" : "") : "nothing settled yet") +
+      tile("Profit", s.n ? (s.profit > 0 ? "+" : "") + money(s.profit) : "—", s.roi == null ? "on " + money(s.risked) + " risked" : signed(s.roi * 100, 1) + "% return", s.profit > 0 ? "up" : s.profit < 0 ? "down" : "") +
+      tile("Vs the close", s.clvN ? signed(s.clvSum / s.clvN, 1) : "—", s.clvN ? "pts per bet · beat it " + s.clvBeat + " of " + s.clvN : "spreads & totals, once graded", s.clvN ? (s.clvSum > 0 ? "up" : s.clvSum < 0 ? "down" : "") : "") +
+      tile("Open", String(s.open), s.open ? money(s.openStake) + " at risk" : "nothing pending");
+    var bank = '<div class="panel mb-bank"><h3>Bankroll</h3><p class="note">Your bet size comes from your bankroll: 1 unit = a percent of it (1% is standard). Track buttons then suggest the stake for each star rating.</p>' +
+      '<div class="mb-bankf"><label>Bankroll ($)<input id="mbBank" inputmode="decimal" value="' + (set.bankroll > 0 ? set.bankroll : "") + '" placeholder="e.g. 5000"></label><label>1 unit =<select id="mbPct">' +
+      [0.5, 1, 1.5, 2, 3].map(function (p) { return '<option value="' + p + '"' + (+(set.unit_pct || 1) === p ? " selected" : "") + ">" + p + "% of bankroll</option>"; }).join("") + '</select></label><button type="button" class="btn" id="mbSaveBank">Save</button></div>' +
+      (bu ? '<div class="mb-units">' + [[5, 1.5], [4, 1], [3, 1], [2, 0.5], [1, 0.5]].map(function (x) { return "<span>" + "★".repeat(x[0]) + " <b>" + money(x[1] * bu) + "</b></span>"; }).join("") + "</div>" : "") + "</div>";
+    var bySport = mbRowsBy(all, function (b) { return SPORT_NM[b.sport] || "Other"; }, ["NBA", "NFL", "College", "Other"]);
+    var bySrc = mbRowsBy(all, function (b) { return b.from_pick ? (b.stars ? "★".repeat(b.stars) + " our picks" : "Our board, no stars") : "Your own bets"; },
+      ["★★★★★ our picks", "★★★★ our picks", "★★★ our picks", "★★ our picks", "★ our picks", "Our board, no stars", "Your own bets"]);
+    var rows = list.map(function (b) {
+      var c = clvOf(b), auto = AUTO_MK[b.market] && b.sport !== "other", when = b.starts_at ? new Date(b.starts_at) : null;
+      var res = b.result ? '<span class="pill ' + esc(b.result) + '">' + ({ W: "Won", L: "Lost", P: "Push", V: "Void" }[b.result]) + "</span>" : '<span class="pill">' + (when && when > new Date() ? "Open" : auto ? "Grading" : "Open") + "</span>";
+      return '<tr><td class="nw">' + (when ? esc(when.toLocaleDateString("en-US", { month: "short", day: "numeric" })) : "") + '</td><td><span class="spt">' + esc(SPORT_NM[b.sport] || "") + "</span> " + esc(b.game) + (b.final ? " <small>" + esc(b.final) + "</small>" : "") + "</td>" +
+        "<td><b>" + esc(pretty(b.pick)) + "</b>" + (b.stars ? ' <span class="st">' + "★".repeat(b.stars) + "</span>" : "") + '</td><td class="ra">' + esc(price(b.price)) + '</td><td class="ra">' + money(+b.stake) + "</td><td>" + esc(b.book || "") + "</td>" +
+        '<td class="ra">' + (b.close_line == null ? "" : (/Spread/.test(b.market) ? lineTxt(+b.close_line) : u(+b.close_line)) + (c != null ? ' <small class="' + (c > 0 ? "up" : c < 0 ? "down" : "") + '">' + signed(c, 1) + "</small>" : "")) + "</td>" +
+        "<td>" + (auto ? res : '<select class="mb-res" data-res="' + esc(b.id) + '" aria-label="Result">' + [["", "Open"], ["W", "Won"], ["L", "Lost"], ["P", "Push"], ["V", "Void"]].map(function (o) { return '<option value="' + o[0] + '"' + ((b.result || "") === o[0] ? " selected" : "") + ">" + o[1] + "</option>"; }).join("") + "</select>") + "</td>" +
+        '<td class="ra tnum ' + (b.profit > 0 ? "up" : b.profit < 0 ? "down" : "") + '">' + (b.result && b.result !== "V" ? (b.profit > 0 ? "+" : "") + money(+b.profit) : "") + '</td><td><button type="button" class="mb-del" data-del="' + esc(b.id) + '" aria-label="Delete this bet">✕</button></td></tr>';
+    }).join("");
+    var chips = [["all", "All sports"], ["nba", "NBA"], ["nfl", "NFL"], ["cfb", "College"], ["other", "Other"]].filter(function (x) { return x[0] === "all" || all.some(function (b) { return b.sport === x[0]; }); });
+    el.innerHTML = '<div class="mb">' + (MB.err ? '<div class="panel"><p class="msg err">Couldn’t load your bets (' + esc(MB.err) + '). If this is the first time, the site owner still needs to run the My bets setup in Supabase.</p></div>' : "") +
+      '<div class="mb-head"><div class="mb-tiles">' + tiles + '</div><div class="mb-acts"><button type="button" class="btn" id="mbAdd">+ Add a bet</button>' + (all.length ? '<button type="button" class="btn ghost" id="mbCsv">' + DL_ICO + " CSV</button>" : "") + "</div></div>" +
+      '<div class="mb-mid"><div class="mb-main">' + (mbChart(all.filter(function (b) { return MB.sport === "all" || b.sport === MB.sport; })) || '<div class="panel mb-chart"><h3>Profit over time</h3><p class="note">Your running profit shows here once two bets are settled.</p></div>') +
+      '<div class="panel"><div class="mb-bar"><h3>Your bets</h3><div class="chips">' + chips.map(function (x) { return '<button type="button" class="chip" data-mbs="' + x[0] + '" aria-pressed="' + (MB.sport === x[0]) + '">' + x[1] + "</button>"; }).join("") + "</div>" +
+      segHtml("mbf", [["all", "All"], ["open", "Open"], ["settled", "Settled"]], MB.filter, "Show") + "</div>" +
+      (list.length ? '<div class="scroll"><table class="mbt"><thead><tr><th>Date</th><th>Game</th><th>Bet</th><th class="ra">Price</th><th class="ra">Stake</th><th>Where</th><th class="ra" title="Where the line closed, and how many points better (+) your number was">Close</th><th>Result</th><th class="ra">Profit</th><th></th></tr></thead><tbody>' + rows + "</tbody></table></div>"
+        : '<p class="note">' + (all.length ? "Nothing here with these filters." : "No bets yet. Tap <b>+ Track</b> on any pick or game, or add one of your own.") + "</p>") +
+      '<p class="note" style="margin-top:10px">Spreads, totals and moneylines grade themselves a couple of hours after the game from ESPN’s final score; “Close” is where ESPN’s line closed. Only you can see your bets.</p></div></div>' +
+      '<div class="mb-side">' + bank + (bySport || bySrc ? '<div class="panel"><h3>Where you win</h3>' + (bySport ? '<div class="mb-sub">By sport</div>' + bySport : "") + (bySrc ? '<div class="mb-sub">Our picks vs your own</div>' + bySrc : "") + "</div>" : "") + "</div></div>" + "</div>";
+    el.querySelector("#mbAdd").addEventListener("click", openAddBet);
+    var csv = el.querySelector("#mbCsv"); if (csv) csv.addEventListener("click", function () {
+      var cols = ["starts_at", "sport", "game", "market", "pick", "line", "price", "stake", "book", "stars", "result", "profit", "close_line", "final"];
+      var q = function (v) { v = v == null ? "" : String(v); return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; };
+      saveBlob(new Blob(["﻿" + [cols.join(",")].concat(all.map(function (b) { return cols.map(function (c) { return q(b[c]); }).join(","); })).join("\n")], { type: "text/csv;charset=utf-8" }), "GainTheEdge_My_bets.csv");
+    });
+    el.querySelectorAll("[data-mbs]").forEach(function (b) { b.addEventListener("click", function () { MB.sport = b.getAttribute("data-mbs"); render(); }); });
+    el.querySelectorAll('[data-seg="mbf"]').forEach(function (b) { b.addEventListener("click", function () { MB.filter = b.getAttribute("data-val"); render(); }); });
+    el.querySelector("#mbSaveBank").addEventListener("click", function () {
+      var v = +String(el.querySelector("#mbBank").value).replace(/[$,]/g, ""), p = +el.querySelector("#mbPct").value, btn = this;
+      if (!(v >= 0)) return;
+      btn.disabled = true;
+      SB.from("member_settings").upsert({ user_id: AUTH.user.id, bankroll: v || null, unit_pct: p, updated_at: new Date().toISOString() }).then(function (r) {
+        btn.disabled = false; if (r && r.error) return toast("Couldn’t save: " + (r.error.message || "error"));
+        MB.set = { bankroll: v || null, unit_pct: p }; applyBankroll(); toast("Bankroll saved"); render();
+      }, function () { btn.disabled = false; toast("Couldn’t reach the server"); });
+    });
+    el.querySelectorAll("[data-res]").forEach(function (sel) { sel.addEventListener("change", function () {
+      var b = all.filter(function (x) { return x.id === sel.getAttribute("data-res"); })[0]; if (!b) return;
+      var r = sel.value || null, p = { result: r, profit: r ? betProfit(r, b.stake, b.price) : null, graded_at: r ? new Date().toISOString() : null };
+      SB.from("bets").update(p).eq("id", b.id).then(function (x) { if (x && x.error) return toast("Couldn’t save"); for (var k in p) b[k] = p[k]; render(); });
+    }); });
+    el.querySelectorAll("[data-del]").forEach(function (btn) { btn.addEventListener("click", function () {
+      var id = btn.getAttribute("data-del"), b = all.filter(function (x) { return x.id === id; })[0]; if (!b || !confirm("Delete this bet?\n" + b.game + " · " + b.pick)) return;
+      SB.from("bets").delete().eq("id", id).then(function (x) { if (x && x.error) return toast("Couldn’t delete"); MB.list = MB.list.filter(function (y) { return y.id !== id; }); render(); });
+    }); });
+  }
+
   // ---------- shell ----------
   function updateMini() {
     var el = document.getElementById("miniIn"); if (!el) return;
@@ -2398,11 +2876,12 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
     el.innerHTML = '<span class="t">' + esc(wk) + "</span>" + parts.join("");
   }
   function render() {
-    document.body.classList.toggle("wide", state.view === "teams");
+    document.body.classList.toggle("wide", state.view === "teams" || state.view === "mybets" || isNBA());
     renderHero(); updateMini();
     var el = document.getElementById("view");
     document.querySelectorAll("[role=tab]").forEach(function (t) { t.setAttribute("aria-selected", String(t.getAttribute("data-view") === state.view)); });
     el.setAttribute("aria-labelledby", "tab-" + state.view);
+    if (state.view === "mybets") { renderMyBets(el); return; }
     if (!state.data && state.load === "loading") {
       var sk = '<div class="sk"><i style="width:40%"></i><i style="width:85%;height:28px"></i><i style="width:85%;height:28px"></i><i style="height:70px"></i><i style="width:70%"></i></div>';
       el.innerHTML = '<div class="grid">' + sk + sk + sk + "</div>"; return;
@@ -2416,8 +2895,8 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
     if (state.view === "record") renderRecord(el); else if (state.view === "ratings") renderRatings(el); else if (state.view === "teams") renderTeams(el); else renderWeek(el);
   }
   document.querySelectorAll("[role=tab]").forEach(function (t) { t.addEventListener("click", function () { if (state.game) { state.game = null; try { history.replaceState(null, "", "#nba"); } catch (e) {} } state.view = t.getAttribute("data-view"); storeSet("gte.view", state.view); render(); }); });
-  var sv = storeGet("gte.view"); if (sv === "record" || sv === "ratings" || sv === "teams") state.view = sv;
-  if (/^#(week|teams|record|ratings)$/.test(location.hash)) state.view = location.hash.slice(1);
+  var sv = storeGet("gte.view"); if (sv === "record" || sv === "ratings" || sv === "teams" || sv === "mybets") state.view = sv;
+  if (/^#(week|teams|record|ratings|mybets)$/.test(location.hash)) state.view = location.hash.slice(1);
   // college defaults to proven ratings; the NFL sheet already sets honest stars, so it defaults to the stars as posted
   var modePick = document.getElementById("modePick");
   function loadMode() { var sm = storeGet("gte.mode." + state.sport); state.mode = sm === "sheet" || sm === "proven" ? sm : state.sport === "nfl" ? "sheet" : "proven"; modePick.value = state.mode; }
@@ -2427,6 +2906,8 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
   unitInput.addEventListener("change", function () { var v = parseFloat(unitInput.value); if (v > 0) { state.unit = v; storeSet("gte.unit", String(v)); } else unitInput.value = unitDollars(); render(); });
   setInterval(function () { if (state.data && !document.hidden && !document.querySelector("details[open]")) render(); }, 60000);
   document.getElementById("view").addEventListener("click", function (e) {
+    var tb = e.target.closest && e.target.closest("[data-track]");
+    if (tb) { e.preventDefault(); e.stopPropagation(); var sp = trackSpec(tb.getAttribute("data-track")); if (sp) openTrack(sp); return; }
     var b = e.target.closest && e.target.closest("[data-share],[data-share-nba]"); if (!b || !state.data) return;
     e.preventDefault(); e.stopPropagation();
     if (b.hasAttribute("data-share")) {
