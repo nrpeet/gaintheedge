@@ -799,6 +799,18 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
   .slt td:nth-child(11) { grid-column: 1 / -1; } .slt td:nth-child(11):empty { display: none; }
   .sg-ml span { display: inline; margin-right: 10px; }
 }
+
+/* ---------- line movement + previews ---------- */
+.mvnote { margin: 0 12px 8px; font-size: 12.5px; color: var(--ink-2); } .mvnote b { color: var(--ink); }
+.mvseg { margin-bottom: 4px; }
+.mvc .nl { stroke: var(--gold); stroke-width: 1; stroke-dasharray: 2 3; } .mvc .nd { fill: var(--gold); } .mvc .nn { fill: #1a1204; font-size: 10px; font-weight: 800; pointer-events: none; }
+.mvc .el { font-size: 11.5px; font-weight: 800; fill: var(--ink); } .mvc .el.mk { fill: var(--accent); }
+.mvnews { margin: 8px 0 0; padding-left: 22px; font-size: 13px; color: var(--ink); display: grid; gap: 4px; } .mvnews li::marker { color: var(--gold); font-weight: 800; }
+.mvnews span { color: var(--ink-2); margin-right: 6px; font-variant-numeric: tabular-nums; }
+.preview { margin: 0; font-size: 14px; line-height: 1.55; color: var(--ink); } .preview b { font-weight: 700; }
+.why .preview { margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid var(--line); }
+.gp-prev { margin-bottom: 16px; } .gp-prev .preview { font-size: 15px; max-width: 95ch; }
+.slt td small.opn { display: block; color: var(--ink-3); font-size: 11px; }
 </style>
 
 </head>
@@ -1625,7 +1637,7 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
       (rt.beat ? '<div class="alert warn" style="opacity:.85"><b>⇄ Chosen over the other side</b><span>' + esc(pretty(rt.beat.pick)) + " is benched \u00b7 floor " + pct(rt.lo) + " vs " + pct(baseRated(rt.beat).lo) + "</span></div>" : "") +
       '<div class="chyron"><div class="lbl"><i>PICK</i><b>' + esc(pickTxt) + "</b></div>" + resultChip(x, gr, paper) + "</div>" + numberBox(x, paper) +
       '<div class="mc-foot"><span class="fl2">' + foot + '</span><span class="acts2">' + trackBtn(sportKey() + ":" + x.id) + '<button type="button" class="sharebtn" data-share="' + esc(x.id || "") + '" aria-label="Share this pick as an image">' + SHARE_ICO + "Share</button></span></div>" +
-      "<details><summary>Why this pick</summary><div class=\"why\">" + why +
+      "<details><summary>Why this pick</summary><div class=\"why\">" + fbPreview(x) + why +
       (x.qb ? '<div class="flag">QB check: ' + esc(x.qb) + "</div>" : "") + (x.edge ? '<div class="edge">' + esc(pretty(x.edge)) + "</div>" : "") +
       "</div></details></article>";
   }
@@ -2323,8 +2335,9 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
     return '<article class="mc' + (isFavGame(g) ? " favd" : "") + '">' +
       '<div class="mc-top"><span class="mkt">' + esc(nbaStatus(g)) + "</span><span>" + luBadge(g) + (flag ? ' <span class="badge">Big gap</span>' : "") + "</span></div>" +
       '<div class="teams">' + nbaTeamRow(g, "away", nbaScore(g)) + nbaTeamRow(g, "home", nbaScore(g)) + "</div>" + angleBar(g) + changeChip(g) +
-      curveSVG(g) + rangeLine(g) + linesTable(g) + gapHint(g) + whyBlock(g) + resultLine(g) +
+      curveSVG(g) + rangeLine(g) + linesTable(g) + moveNote(g) + gapHint(g) + whyBlock(g) + resultLine(g) +
       '<div class="openrow"><a class="open" href="' + gameHref(g) + '">Full game page<span aria-hidden="true">›</span></a>' + trackBtn("nba:" + g.id) + '<button type="button" class="sharebtn" data-share-nba="' + esc(g.id) + '" aria-label="Share this game as an image">' + SHARE_ICO + "Share</button></div>" +
+      '<details><summary>Preview \u00b7 the game in a few sentences</summary><div class="why">' + nbaPreview(g) + "</div></details>" +
       "<details><summary>More lines · 1st half, 1st quarter, moneyline</summary>" + moreLines(g) + "</details>" +
       '<details><summary>Who plays · starters, minutes, player value</summary><div class="why"><div class="rot">' + rotList(g.away_players, g.away_out, g.away_abbr, g.away_lineup) + rotList(g.home_players, g.home_out, g.home_abbr, g.home_lineup) + "</div>" +
       '<div class="fl" style="font-size:12px;color:var(--ink-2)">' + VALUE_NOTE + "</div></div></details></article>";
@@ -2410,32 +2423,16 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
     qi.addEventListener("input", function () { state.q = qi.value; var pos = qi.selectionStart; render(); var n = document.getElementById("q"); n.focus(); try { n.setSelectionRange(pos, pos); } catch (e) {} });
   }
   // ---------- one game, full page ----------
-  function moveChart(g) {
-    var h = (g.history || []).filter(function (p) { return p.ours != null; });
-    if (h.length < 2) return '<p class="note">The line-movement chart fills in as the board updates during the day (cell 3 updates every 30 minutes).</p>';
-    var W = 640, H = 170, L = 78, R = 12, T = 14, B = 26;
-    var ts = h.map(function (p) { return new Date(p.t).getTime(); }), t0 = Math.min.apply(null, ts), t1 = Math.max.apply(null, ts) || t0 + 1;
-    var vals = []; h.forEach(function (p) { vals.push(p.ours); if (p.mkt != null) vals.push(p.mkt); });
-    var lo = Math.floor(Math.min.apply(null, vals) - 1), hi = Math.ceil(Math.max.apply(null, vals) + 1);
-    function X(t) { return L + (t - t0) / Math.max(1, t1 - t0) * (W - L - R); }
-    function Y(v) { return T + (v - lo) / (hi - lo) * (H - T - B); }
-    function path(key) { var pts = h.filter(function (p) { return p[key] != null; }); return pts.map(function (p, i) { return (i ? "L" : "M") + X(new Date(p.t).getTime()).toFixed(1) + "," + Y(p[key]).toFixed(1); }).join(" "); }
-    var step = Math.max(1, Math.round((hi - lo) / 4)), grid = "";
-    for (var v = lo; v <= hi; v += step) grid += '<line class="grid" x1="' + L + '" x2="' + (W - R) + '" y1="' + Y(v).toFixed(1) + '" y2="' + Y(v).toFixed(1) + '"/><text x="' + (L - 6) + '" y="' + (Y(v) + 4).toFixed(1) + '" text-anchor="end">' + esc(favTxt(g, v)) + "</text>";
-    var tl = [t0, t1].map(function (t, i) { return '<text x="' + X(t).toFixed(1) + '" y="' + (H - 6) + '" text-anchor="' + (i ? "end" : "start") + '">' + new Date(t).toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit", timeZone: "America/Los_Angeles" }) + "</text>"; }).join("");
-    return '<svg class="chart" viewBox="0 0 ' + W + " " + H + '" style="width:100%;height:auto" role="img" aria-label="Home spread through the day, ours and the market’s">' + grid + tl +
-      '<path d="' + path("mkt") + '" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-dasharray="5 4"/><path d="' + path("ours") + '" fill="none" stroke="var(--ink)" stroke-width="2.5"/></svg>' +
-      '<div class="legend"><span><i style="background:var(--ink)"></i>Ours</span><span><i style="background:var(--accent)"></i>Market</span><span>Higher on the chart = better for ' + esc(g.home_abbr) + "</span></div>";
-  }
   function renderNbaGame(el, g) {
     el.innerHTML = '<a class="back" href="#nba">‹ All games</a>' +
       '<div class="gp-head"><div class="teams big">' + nbaTeamRow(g, "away", nbaScore(g)) + nbaTeamRow(g, "home", nbaScore(g)) + '</div><div class="mkt">' + esc(nbaStatus(g)) + (nbaFlag(g) ? ' · <span class="badge">Big gap</span>' : "") + "</div></div>" +
-      angleBar(g) + '<div class="two"><div class="panel"><h3>10,000 simulated finishes</h3>' + curveSVG(g, 560) + rangeLine(g) + linesTable(g) + gapHint(g) + resultLine(g) + moreLines(g) + "</div>" +
+      angleBar(g) + (nbaPreview(g) ? '<div class="panel gp-prev"><h3>Preview</h3>' + nbaPreview(g) + "</div>" : "") + '<div class="two"><div class="panel"><h3>10,000 simulated finishes</h3>' + curveSVG(g, 560) + rangeLine(g) + linesTable(g) + gapHint(g) + resultLine(g) + moreLines(g) + "</div>" +
       '<div class="panel"><h3>Why our line</h3>' + whyBlock(g) + "</div></div>" +
       '<div class="two" style="margin-top:16px"><div class="panel"><h3>Line movement today</h3>' + moveChart(g) + "</div>" +
       '<div class="panel"><h3>What changed</h3>' + ((g.changes || []).length ? changeChip(g, true) : '<p class="note">No changes since the first update today.</p>') + "</div></div>" +
       '<div class="panel" style="margin-top:16px"><h3>Who plays</h3><p class="note">' + VALUE_NOTE + '</p><div class="rot two-col">' + rotList(g.away_players, g.away_out, g.away_abbr, g.away_lineup) + rotList(g.home_players, g.home_out, g.home_abbr, g.home_lineup) + "</div></div>";
     bindCommon(el);
+    el.querySelectorAll("[data-mvk]").forEach(function (b) { b.addEventListener("click", function () { state.mvk = b.getAttribute("data-mvk"); render(); }); });
     if (lastGame !== g.id) { lastGame = g.id; window.scrollTo(0, 0); }
   }
   var NBA_TSORT = [["net", "Now"], ["off", "Offense"], ["def", "Defense"], ["healthy", "Healthy"], ["missing_pts", "Missing"]];
@@ -2963,7 +2960,8 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
       if (g.neutral) notes.push('<span class="sg-flag mute">Neutral site</span>');
       return '<tr><td class="nw">' + esc(kickText(g.kickoff)) + (st ? '<small class="' + (sc.status === "live" ? "live" : "") + '">' + esc(st) + "</small>" : "") + "</td>" +
         '<td><div class="sg-g">' + nm(g.away, r.ra) + '<span class="at">@</span>' + nm(g.home, r.rh) + "</div></td>" +
-        '<td class="ra nw">' + esc(fmtSpread(ha, aa, r.ls)) + (r.live ? "" : ' <small title="The line when the sheet was built">sheet</small>') + "</td>" +
+        '<td class="ra nw">' + esc(fmtSpread(ha, aa, r.ls)) + (r.live ? "" : ' <small title="The line when the sheet was built">sheet</small>') +
+          (g.open_spread != null && r.ls != null && Math.abs(g.open_spread - r.ls) >= .5 ? '<small class="opn">opened ' + esc(fmtSpread(ha, aa, g.open_spread)) + " (" + u(Math.abs(r.ls - g.open_spread)) + " toward " + esc(r.ls < g.open_spread ? ha : aa) + ")</small>" : "") + "</td>" +
         '<td class="ra nw"><b>' + esc(fmtSpread(ha, aa, g.model_spread)) + "</b></td>" +
         '<td class="ra nw sg-d">' + (r.dS == null ? "" : Math.abs(r.dS) < .5 ? "—" : u(Math.abs(r.dS)) + " on " + esc(r.dS > 0 ? ha : aa)) + "</td>" +
         '<td class="ra nw">' + (r.lt == null ? "—" : u(r.lt)) + "</td>" +
@@ -2990,6 +2988,100 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
     var gq = document.getElementById("gq");
     gq.addEventListener("input", function () { state.gq = gq.value; var pos = gq.selectionStart; render(); var n = document.getElementById("gq"); n.focus(); try { n.setSelectionRange(pos, pos); } catch (e) {} });
     el.querySelectorAll("[data-gopick]").forEach(function (b) { b.addEventListener("click", function () { state.view = "week"; state.q = b.getAttribute("data-gopick") || ""; state.status = "all"; state.stars = 0; state.market = "all"; storeSet("gte.view", "week"); render(); window.scrollTo(0, 0); }); });
+  }
+
+  // ---------- line movement: the market's number through the day (every odds snapshot), ours, and the news in between ----------
+  function mktSeries(g, key) {          // key "s" (home spread) or "tot"
+    var m = (g.mkt_hist || []).filter(function (p) { return p[key] != null; }).map(function (p) { return { t: new Date(p.t).getTime(), v: +p[key] }; });
+    if (m.length) return m;
+    return (g.history || []).filter(function (p) { return p[key === "s" ? "mkt" : "mkt_t"] != null; }).map(function (p) { return { t: new Date(p.t).getTime(), v: +p[key === "s" ? "mkt" : "mkt_t"] }; });
+  }
+  function ourSeries(g, key) { return (g.history || []).filter(function (p) { return p[key === "s" ? "ours" : "our_t"] != null; }).map(function (p) { return { t: new Date(p.t).getTime(), v: +p[key === "s" ? "ours" : "our_t"] }; }); }
+  function moveNote(g) {
+    var m = mktSeries(g, "s"); if (m.length < 2) return "";
+    var a = m[0].v, b = m[m.length - 1].v, mv = b - a; if (Math.abs(mv) < 0.5) return "";
+    return '<div class="mvnote">Market moved <b>' + Math.abs(mv).toFixed(1) + " toward " + esc(mv < 0 ? g.home_abbr : g.away_abbr) + "</b> today: " + esc(favTxt(g, a)) + " → " + esc(favTxt(g, b)) + "</div>";
+  }
+  function moveChart(g) {
+    var key = state.mvk === "tot" ? "tot" : "s", tot = key === "tot";
+    var mk = mktSeries(g, key), ours = ourSeries(g, key);
+    var tog = '<div class="seg mvseg" role="group" aria-label="Spread or total"><button type="button" data-mvk="s" aria-pressed="' + !tot + '">Spread</button><button type="button" data-mvk="tot" aria-pressed="' + tot + '">Total</button></div>';
+    if (mk.length + ours.length < 2) return tog + '<p class="note">The chart fills in through the day: every market snapshot (cell 3 takes one every 30 minutes until 4:30 PM) and every update of our line.</p>';
+    var tip = new Date(g.tip).getTime(), all = mk.concat(ours);
+    var t0 = Math.min.apply(null, all.map(function (p) { return p.t; })), t1 = Math.max.apply(null, all.map(function (p) { return p.t; }));
+    if (t1 - t0 < 3600000) t1 = t0 + 3600000;
+    var vals = all.map(function (p) { return p.v; }), lo = Math.floor(Math.min.apply(null, vals) - 1), hi = Math.ceil(Math.max.apply(null, vals) + 1);
+    var W = 640, H = 190, L = 78, R = 14, T = 14, B = 30;
+    function X(t) { return L + (t - t0) / Math.max(1, t1 - t0) * (W - L - R); }
+    function Y(v) { return tot ? T + (hi - v) / (hi - lo) * (H - T - B) : T + (v - lo) / (hi - lo) * (H - T - B); }   // spread: up = better for home
+    function stepPath(arr) {                  // a line holds until it changes: draw it as steps, extended to the last point in time
+      if (!arr.length) return "";
+      var d = "M" + X(arr[0].t).toFixed(1) + "," + Y(arr[0].v).toFixed(1);
+      for (var i = 1; i < arr.length; i++) d += " H" + X(arr[i].t).toFixed(1) + " V" + Y(arr[i].v).toFixed(1);
+      return d + " H" + X(t1).toFixed(1);
+    }
+    var step = Math.max(1, Math.round((hi - lo) / 4)), grid = "";
+    for (var v = lo; v <= hi; v += step) grid += '<line class="grid" x1="' + L + '" x2="' + (W - R) + '" y1="' + Y(v).toFixed(1) + '" y2="' + Y(v).toFixed(1) + '"/><text x="' + (L - 6) + '" y="' + (Y(v) + 4).toFixed(1) + '" text-anchor="end">' + esc(tot ? String(v) : favTxt(g, v)) + "</text>";
+    var fmtT = function (t) { return new Date(t).toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" }); };
+    var tl = [t0, t1].map(function (t, i) { return '<text x="' + X(t).toFixed(1) + '" y="' + (H - 8) + '" text-anchor="' + (i ? "end" : "start") + '">' + fmtT(t) + "</text>"; }).join("");
+    // the news, numbered on the chart and listed underneath
+    var news = (g.changes || []).filter(function (c) { return c.ts; }).map(function (c) { return { t: new Date(c.ts).getTime(), text: c.text }; })
+      .filter(function (c) { return c.t >= t0 - 60000 && c.t <= t1 + 60000; }).sort(function (a, b) { return a.t - b.t; });
+    var marks = news.map(function (c, i) { var x = X(c.t).toFixed(1); return '<line class="nl" x1="' + x + '" x2="' + x + '" y1="' + T + '" y2="' + (H - B) + '"/><circle class="nd" cx="' + x + '" cy="' + (T + 7) + '" r="8"><title>' + esc(fmtT(c.t) + ": " + c.text) + '</title></circle><text class="nn" x="' + x + '" y="' + (T + 11) + '" text-anchor="middle">' + (i + 1) + "</text>"; }).join("");
+    var last = function (arr) { return arr.length ? arr[arr.length - 1] : null; }, lm = last(mk), lo_ = last(ours);
+    var endLbl = (lm ? '<text class="el mk" x="' + (W - R) + '" y="' + (Y(lm.v) - 6).toFixed(1) + '" text-anchor="end">' + esc(tot ? u(lm.v) : favTxt(g, lm.v)) + "</text>" : "") +
+      (lo_ ? '<text class="el" x="' + (W - R) + '" y="' + (Y(lo_.v) + (lm && Math.abs(Y(lm.v) - Y(lo_.v)) < 14 ? 16 : -6)).toFixed(1) + '" text-anchor="end">' + esc(tot ? u(lo_.v) : favTxt(g, lo_.v)) + "</text>" : "");
+    var mv = mk.length >= 2 ? mk[mk.length - 1].v - mk[0].v : 0;
+    var sum = mk.length >= 2 ? (Math.abs(mv) < 0.5 ? "The market hasn’t really moved today (" + (tot ? u(mk[0].v) : esc(favTxt(g, mk[0].v))) + ")." :
+      "The market moved <b>" + Math.abs(mv).toFixed(1) + (tot ? (mv > 0 ? " up" : " down") : " toward " + esc(mv < 0 ? g.home_abbr : g.away_abbr)) + "</b> today, from " + (tot ? u(mk[0].v) : esc(favTxt(g, mk[0].v))) + " to " + (tot ? u(mk[mk.length - 1].v) : esc(favTxt(g, mk[mk.length - 1].v))) + ".") : "";
+    return tog + (sum ? '<p class="note" style="margin:6px 0 4px">' + sum + "</p>" : "") +
+      '<svg class="chart mvc" viewBox="0 0 ' + W + " " + H + '" style="width:100%;height:auto" role="img" aria-label="' + (tot ? "Total" : "Home spread") + ' through the day, the market’s and ours">' + grid + tl + marks +
+      '<path d="' + stepPath(mk) + '" fill="none" stroke="var(--accent)" stroke-width="2.5"/><path d="' + stepPath(ours) + '" fill="none" stroke="var(--ink)" stroke-width="2" stroke-dasharray="5 4"/>' + endLbl + "</svg>" +
+      '<div class="legend"><span><i style="background:var(--accent)"></i>Market</span><span><i style="background:var(--ink)"></i>Ours</span><span>' + (tot ? "Higher = more points" : "Higher = better for " + esc(g.home_abbr)) + "</span>" + (t1 >= tip ? "" : "") + "</div>" +
+      (news.length ? '<ol class="mvnews">' + news.map(function (c) { return "<li><span>" + esc(fmtT(c.t)) + "</span>" + esc(c.text) + "</li>"; }).join("") + "</ol>" : "");
+  }
+
+  // ---------- previews: a few plain sentences built only from the numbers we have ----------
+  function nbaPreview(g) {
+    if (g.our_spread == null) return "";
+    var w = g.why || {}, ph = g.our_home_win, fav = g.our_spread <= 0 ? g.home : g.away, favA = g.our_spread <= 0 ? g.home_abbr : g.away_abbr, pf = ph == null ? null : (g.our_spread <= 0 ? ph : 1 - ph);
+    var S = [];
+    S.push("We make it <b>" + esc(favTxt(g, g.our_spread)) + "</b>" + (pf != null ? ": " + esc(nbaNick(fav)) + " win " + Math.round(pf * 100) + "% of 10,000 simulations" : "") + (g.our_total != null ? ", with about " + Math.round(g.our_total) + " total points" : "") + ".");
+    var parts = (w.parts || []).filter(function (p) { return Math.abs(p.v) >= 0.5 && p.key !== "home"; }).sort(function (a, b) { return Math.abs(b.v) - Math.abs(a.v); }).slice(0, 2);
+    parts.forEach(function (p) {
+      var to = p.v > 0 ? g.home_abbr : g.away_abbr, other = p.v > 0 ? g.away_abbr : g.home_abbr, x = Math.abs(p.v).toFixed(1);
+      if (p.key === "strength") S.push("At full strength " + esc(to) + " is the better team by " + x + " points.");
+      else if (p.key === "injuries") {
+        var names = (w.outs || []).filter(function (o) { return o.team === other; }).map(function (o) { return o.name; }).slice(0, 2);
+        S.push("Absences cost " + esc(other) + " " + x + " points" + (names.length ? " (" + esc(names.join(" and ")) + " out)" : "") + ".");
+      } else if (p.key === "rest") {
+        var fl = (w.flags || []).filter(function (f) { return /back-to-back|4th game|rested/.test(f.text); }).map(function (f) { return f.text; })[0];
+        S.push((fl ? esc(fl[0].toUpperCase() + fl.slice(1)) + ": the" : "The") + " schedule is worth " + x + " points to " + esc(to) + ".");
+      } else if (p.key === "other") S.push("Tonight’s rotation and pace add " + x + " for " + esc(to) + ".");
+    });
+    (w.q || []).slice(0, 1).forEach(function (q) { S.push(esc(q.name) + " is questionable and counted as playing; if he sits, " + esc(q.team) + " is " + Math.abs(q.pts).toFixed(1) + " points worse."); });
+    if (g.mkt_spread != null) {
+      var gap = g.our_spread - g.mkt_spread;
+      S.push("The market is at " + esc(favTxt(g, g.mkt_spread)) + (Math.abs(gap) < 1 ? ", close to ours." : ": " + Math.abs(gap).toFixed(1) + " points more on " + esc(gap > 0 ? g.home_abbr : g.away_abbr) + " than we are."));
+    }
+    if (g.angle) S.push("★★★ Tired Traveler: " + esc(g.away_abbr) + " are on a back-to-back after crossing a time zone; the play is " + esc(g.angle.pick || g.home_abbr) + ".");
+    if (g.dist && g.dist.close != null) S.push(Math.round(g.dist.close * 100) + "% of our simulations finish within 5 points.");
+    return '<p class="preview">' + S.join(" ") + "</p>";
+  }
+  function clip(t, n) { t = String(t || ""); if (t.length <= n) return t; var c = t.slice(0, n), d = c.lastIndexOf(". "); return d > n * .5 ? c.slice(0, d + 1) : c.slice(0, c.lastIndexOf(" ")) + "\u2026"; }
+  function fbPreview(x) {
+    var rt = rated(x), R = state.ratings || {}, rg = (R.games || {})[x.game], S = [];
+    var lead = (x.setups || []).filter(function (s) { return (ratings()[s.name] || {}).n; })[0] || (x.setups || [])[0];
+    var r = lead ? ratings()[lead.name] || {} : {};
+    if (lead) S.push("<b>" + esc(pretty(x.pick)) + "</b> comes from <b>" + esc(lead.name) + "</b>" + (lead.why ? ": " + esc(clip(String(lead.why).replace(/\s+/g, " "), 190).replace(/([^.…])$/, "$1.")) : "."));
+    if (r.n) S.push("In the backtest that setup went " + r.w + "–" + r.l + " (" + pct(r.rate) + ") over " + r.n + (r.leg ? " legs" : " games") + (rt.stars ? ", which is why it’s " + rt.stars + "★." : "."));
+    function tr(n) { var t = null; (R.teams || []).forEach(function (y) { if (!t && y.team === n) t = y; }); return t; }
+    var ta = tr(x.away), th = tr(x.home);
+    if (ta && th && x.market !== "Teaser") S.push(esc(shortName(x.away) || x.away) + " ranks #" + ta.rank + " in our ratings; " + esc(shortName(x.home) || x.home) + " is #" + th.rank + ".");
+    if (rg && rg.model_spread != null && /Spread/.test(x.market) && x.market.indexOf("1H") < 0) S.push("Our model alone has it " + esc(fmtSpread(abbr(x.home), abbr(x.away), rg.model_spread)) + (rg.line_spread != null ? " against a line of " + esc(fmtSpread(abbr(x.home), abbr(x.away), rg.line_spread)) : "") + ".");
+    if (rg && rg.model_total != null && x.market === "Total") S.push("Our model alone has the total at " + u(rg.model_total) + (rg.line_total != null ? " against " + u(rg.line_total) : "") + ".");
+    if (x.qb) S.push("QB check: " + esc(String(x.qb).split("⚠").map(function (t) { return t.replace(/^\s*QB CHECK:\s*/i, "").replace(/\s+/g, " ").trim(); }).filter(Boolean).join("; ").replace(/\.?$/, ".")));
+    return S.length ? '<p class="preview">' + S.join(" ") + "</p>" : "";
   }
 
   // ---------- shell ----------
