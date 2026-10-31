@@ -393,6 +393,11 @@ td:has(.netbar) { padding-right: 56px; }
 .pickbar small { font-size: 12px; color: var(--h-ink-2); }
 .pickbar .res { clip-path: none; border-radius: 8px; padding: 6px 10px; }
 .gp-head + .pickbar, .back + .gp-head + .pickbar { margin: 0 0 16px; }
+.pickbar.cw { background: var(--card); color: var(--ink); border: 1.5px dashed var(--accent); }
+.pickbar.cw .ico { color: var(--accent); font-size: 14px; font-weight: 800; }
+.pickbar.cw i { color: var(--accent); }
+.pickbar.cw small { color: var(--ink-2); }
+.pk-ang { display: block; font-size: 11.5px; color: var(--ink-2); font-weight: 600; }
 .wl { margin: 2px 12px 10px; display: grid; gap: 5px; }
 .wl h5 { margin: 4px 0 2px; font-size: 10.5px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-3); display: flex; justify-content: space-between; }
 .wr { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(70px, 1fr) 64px; align-items: center; gap: 8px; font-size: 12.5px; }
@@ -1363,7 +1368,7 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
   var LOCK_ICO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>';
   function lockPanel() {
     var d = state.data || {}, t = d.teaser || {}, tz = "", nba = isNBA();
-    if (nba) tz = (t.games != null ? "<span>" + t.games + " games · 10,000 sims each</span>" : "") + (t.angles ? '<span><b class="st">★★★</b> ' + t.angles + " tracked pick" + (t.angles === 1 ? "" : "s") + "</span>" : "") + (t.big_gaps ? "<span>" + t.big_gaps + " big gap" + (t.big_gaps === 1 ? "" : "s") + " vs the market</span>" : "");
+    if (nba) tz = (t.games != null ? "<span>" + t.games + " games · 10,000 sims each</span>" : "") + (t.angles ? '<span><b class="st">★★★</b> ' + t.angles + " tracked pick" + (t.angles === 1 ? "" : "s") + "</span>" : "") + (t.combos ? "<span>\u25ce " + t.combos + " combo watch</span>" : "") + (t.big_gaps ? "<span>" + t.big_gaps + " big gap" + (t.big_gaps === 1 ? "" : "s") + " vs the market</span>" : "");
     else {
       var st = t.stars || {};
       tz = (t.bets != null ? "<span>" + t.bets + " pick" + (t.bets === 1 ? "" : "s") + " this week</span>" : "") +
@@ -2352,6 +2357,16 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
     return '<div class="pickbar" title="' + esc(a.backtest || "") + '"><div><span class="stars">' + "\u2605".repeat(a.stars) + '</span><b>' + esc(a.name) + "</b><i>Bet " + esc(a.pick) + " \u00b7 " + a.stake + "u \u00b7 tracking</i>" +
       "<small>" + esc(a.why) + "</small>" + angleNumber(g, line) + "</div>" + res + "</div>";
   }
+  // Combo watch: the combined model's most confident ~5% of games, paper-tracked (no stars, no units) until a season proves it
+  function comboBar(g) {
+    var c = g.combo; if (!c) return "";
+    var s = nbaScore(g), res = "", home = c.team === g.home_abbr;
+    if (s && s.status === "final" && c.line != null) { var v = (home ? +s.home - +s.away : +s.away - +s.home) + c.line; res = v > 0 ? '<span class="res W">\u2713 Won</span>' : v < 0 ? '<span class="res L">\u2717 Lost</span>' : '<span class="res P">Push</span>'; }
+    var ln = s && s.ln, now = "";
+    if (ln && ln.sp != null && s.status === "pre") { var cur = home ? ln.sp : -ln.sp; now = '<div class="numbox"><span><i>Flagged at</i><b>' + esc(c.team + " " + lineTxt(c.line)) + '</b></span><span class="now"><i>Line now' + (ln.by ? " (" + esc(ln.by) + ")" : "") + "</i><b>" + esc(c.team + " " + lineTxt(cur)) + "</b></span></div>"; }
+    return '<div class="pickbar cw" title="' + esc(c.backtest || "") + '"><div><span class="ico">\u25ce</span><b>' + esc(c.name) + "</b><i>" + esc(c.pick) + (c.p != null ? " \u00b7 model " + Math.round(c.p * 100) + "% to cover" : "") + " \u00b7 paper, not a bet yet</i>" +
+      "<small>" + esc(c.why || "") + "</small>" + now + "</div>" + res + "</div>";
+  }
   function angleNumber(g, L) {
     var a = g.angle, s = nbaScore(g), ln = s && s.ln, ab = g.home_abbr;
     if (L == null) return "";
@@ -2372,7 +2387,7 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
     var flag = nbaFlag(g);
     return '<article class="mc' + (isFavGame(g) ? " favd" : "") + '">' +
       '<div class="mc-top"><span class="mkt">' + esc(nbaStatus(g)) + "</span><span>" + luBadge(g) + (flag ? ' <span class="badge">Big gap</span>' : "") + "</span></div>" +
-      '<div class="teams">' + nbaTeamRow(g, "away", nbaScore(g)) + nbaTeamRow(g, "home", nbaScore(g)) + "</div>" + angleBar(g) + changeChip(g) +
+      '<div class="teams">' + nbaTeamRow(g, "away", nbaScore(g)) + nbaTeamRow(g, "home", nbaScore(g)) + "</div>" + angleBar(g) + comboBar(g) + changeChip(g) +
       curveSVG(g) + rangeLine(g) + linesTable(g) + moveNote(g) + gapHint(g) + whyBlock(g) + resultLine(g) +
       '<div class="openrow"><a class="open" href="' + gameHref(g) + '">Full game page<span aria-hidden="true">›</span></a>' + trackBtn("nba:" + g.id) + '<button type="button" class="sharebtn" data-share-nba="' + esc(g.id) + '" aria-label="Share this game as an image">' + SHARE_ICO + "Share</button></div>" +
       '<details><summary>Preview \u00b7 the game in a few sentences</summary><div class="why">' + nbaPreview(g) + "</div></details>" +
@@ -2387,6 +2402,8 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
     function add(g, kicker, text) { if (!g || out.length >= 3) return; used[g.id] = 1; out.push({ g: g, k: kicker, t: text }); }
     var tt = pick(games.filter(function (g) { return g.angle; }));
     if (tt) add(tt, "\u2605\u2605\u2605 " + tt.angle.name, "Bet " + tt.angle.pick + ": " + tt.away + " are on a back-to-back after crossing a time zone.");
+    var cw = pick(games.filter(function (g) { return g.combo; }).sort(function (a, b) { return (b.combo.p || 0) - (a.combo.p || 0); }));
+    if (cw) add(cw, "\u25ce Combo watch \u00b7 paper", "Our combined model\u2019s strongest lean tonight: " + cw.combo.pick + (cw.combo.p != null ? " (" + Math.round(cw.combo.p * 100) + "% to cover)" : "") + ". Tracked on paper, not a bet yet.");
     var bg = pick(games.filter(function (g) { return g.spread_gap != null && Math.abs(g.spread_gap) >= 2; }).sort(function (a, b) { return Math.abs(b.spread_gap) - Math.abs(a.spread_gap); }));
     if (bg) add(bg, "Biggest disagreement", "The market is " + Math.abs(bg.spread_gap).toFixed(1) + " pts more on " + (bg.spread_gap > 0 ? bg.home : bg.away) + " than we are.");
     var c = pick(games.filter(function (g) { return (g.changes || []).length; }));
@@ -2536,11 +2553,13 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
         row("Picked the winner", s.picked_winner == null ? null : pct(s.picked_winner), s.mkt_picked_winner == null ? null : pct(s.mkt_picked_winner), s.games, false) +
         sig("\u2605\u2605\u2605 Tired Traveler: home team vs an away team on a back-to-back that crossed a time zone (1u at \u2212110)", s.tired) +
         (s.tired && s.tired.clv && s.tired.clv.n ? '<div class="lrow"><div>Tired Traveler vs the closing line<small>' + s.tired.clv.n + ' picks · last line before tip</small></div><div class="tnum">' + s.tired.clv.beat + " of " + s.tired.clv.n + ' better</div><div class="tnum ' + (s.tired.clv.avg > 0 ? "up" : s.tired.clv.avg < 0 ? "down" : "") + '">' + clvTxt(s.tired.clv.avg) + " pts</div></div>" : "") +
+        sig("\u25ce Combo watch: the combined model\u2019s most confident 5% of games (paper, 1u at \u2212110)", s.combo) +
+        (s.combo && s.combo.clv && s.combo.clv.n ? '<div class="lrow"><div>Combo watch vs the closing line<small>' + s.combo.clv.n + ' picks · last line before tip</small></div><div class="tnum">' + s.combo.clv.beat + " of " + s.combo.clv.n + ' better</div><div class="tnum ' + (s.combo.clv.avg > 0 ? "up" : s.combo.clv.avg < 0 ? "down" : "") + '">' + clvTxt(s.combo.clv.avg) + " pts</div></div>" : "") +
         sig("Tracked at 0 units: our win % 5+ pts above the market (moneyline)", s.ml_edge) + sig("Tracked at 0 units: underdog moneyline 3+ pts cheaper than its spread", s.cheap_dog)
         : '<p class="note">Nothing graded yet. The first games grade the morning after they’re played.</p>') + "</div>" +
       ((t.picks || []).length ? '<div class="panel"><h3>Tracked picks</h3><p class="note">The line when we flagged it, where it closed, and the result. “vs close” = points our number beat the close by (+ is good): the earliest sign an edge is real.</p><div class="scroll"><table><thead><tr><th>Date</th><th>Game</th><th>Bet</th><th class="ra">Closed</th><th class="ra">vs close</th><th>Result</th><th class="ra">Units</th></tr></thead><tbody>' +
         t.picks.map(function (p) {
-          return "<tr><td>" + esc(nbaDay(p.date)) + "</td><td>" + esc(p.game) + "</td><td><b>" + esc(pretty(p.pick)) + '</b></td><td class="ra">' + (p.close == null ? "" : lineTxt(p.close)) + '</td><td class="ra ' + (p.clv > 0 ? "up" : p.clv < 0 ? "down" : "") + '">' + (p.clv == null ? "" : clvTxt(p.clv)) + "</td><td>" +
+          return "<tr><td>" + esc(nbaDay(p.date)) + "</td><td>" + esc(p.game) + "</td><td><b>" + esc(pretty(p.pick)) + "</b>" + (p.angle ? '<span class="pk-ang">' + esc(p.angle === "Tired Traveler" ? "\u2605\u2605\u2605 " + p.angle : "\u25ce " + p.angle + (p.paper ? " \u00b7 paper" : "")) + "</span>" : "") + '</td><td class="ra">' + (p.close == null ? "" : lineTxt(p.close)) + '</td><td class="ra ' + (p.clv > 0 ? "up" : p.clv < 0 ? "down" : "") + '">' + (p.clv == null ? "" : clvTxt(p.clv)) + "</td><td>" +
             (p.result ? '<span class="pill ' + esc(p.result) + '">' + (p.result === "W" ? "Won" : p.result === "L" ? "Lost" : "Push") + "</span>" : '<span class="pill">Open</span>') + '</td><td class="ra ' + (p.units > 0 ? "up" : p.units < 0 ? "down" : "") + '">' + (p.units == null ? "" : signed(p.units)) + "</td></tr>";
         }).join("") + "</tbody></table></div></div>" : "") +
       (rec.length ? '<div class="panel span2"><h3>Recent games</h3><div class="scroll"><table><thead><tr><th>Date</th><th>Game</th><th class="ra">Ours</th><th class="ra">Market</th><th class="ra">Final</th><th>Closer</th></tr></thead><tbody>' +
@@ -2651,6 +2670,7 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
         { key: "ma", market: "Moneyline", side: "away", team: g.away_abbr, line: null, price: mlA },
         { key: "mh", market: "Moneyline", side: "home", team: g.home_abbr, line: null, price: mlH }];
       var def = ms != null && g.our_spread != null && g.our_spread > ms ? "sa" : "sh";
+      if (g.combo && g.combo.team) def = g.combo.team === g.away_abbr ? "sa" : "sh";
       var ang = g.angle && String(g.angle.pick || ""); if (ang) def = ang.indexOf(g.away_abbr) === 0 || ang.indexOf(g.away) === 0 ? "sa" : "sh";
       return { sport: "nba", game: g.away + " @ " + g.home, away: g.away, home: g.home, starts_at: new Date(g.tip).toISOString(), espn_id: String(g.id),
         opts: opts, def: def, stars: g.angle ? 3 : null, units: g.angle ? 1 : 0, from: "nba:" + g.id };
@@ -3103,6 +3123,7 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
       S.push("The market is at " + esc(favTxt(g, g.mkt_spread)) + (Math.abs(gap) < 1 ? ", close to ours." : ": " + Math.abs(gap).toFixed(1) + " points more on " + esc(gap > 0 ? g.home_abbr : g.away_abbr) + " than we are."));
     }
     if (g.angle) S.push("★★★ Tired Traveler: " + esc(g.away_abbr) + " are on a back-to-back after crossing a time zone; the play is " + esc(g.angle.pick || g.home_abbr) + ".");
+    if (g.combo) S.push("◎ Combo watch leans " + esc(g.combo.pick) + (g.combo.p != null ? " (" + Math.round(g.combo.p * 100) + "% to cover)" : "") + "; it’s tracked on paper until a full season proves it.");
     if (g.dist && g.dist.close != null) S.push(Math.round(g.dist.close * 100) + "% of our simulations finish within 5 points.");
     return '<p class="preview">' + S.join(" ") + "</p>";
   }
