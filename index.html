@@ -234,6 +234,10 @@ main { padding-block: 18px 56px; }
 .vs-num b.up { color: var(--win); } .vs-num b.down { color: var(--loss); }
 .vs-row { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 14px; color: var(--ink-2); padding: 10px 12px; border-radius: 10px; background: var(--card-2); }
 .vs-row b { color: var(--ink); }
+.sr-t td { vertical-align: top; } .sr-t .why2 { font-size: 12.5px; color: var(--ink-2); margin-top: 2px; max-width: 60ch; }
+.sr-t small { color: var(--ink-3); font-weight: 600; }
+table.tt.sr-t { min-width: 640px; }
+@media (max-width: 640px) { .sr-t th:nth-child(1), .sr-t td:nth-child(1), .sr-t th:nth-child(6), .sr-t td:nth-child(6) { display: none; } .sr-t .why2 { display: none; } table.tt.sr-t { min-width: 0; } }
 details.watchd > summary { list-style: none; cursor: pointer; }
 details.watchd > summary::-webkit-details-marker { display: none; }
 details.watchd > summary h2 { color: var(--ink-2); }
@@ -413,6 +417,7 @@ tr:last-child td { border-bottom: 0; }
 .mstrip i { display: block; font-style: normal; font-size: 10px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-3); }
 .mstrip b { font-size: 13.5px; font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; }
 .mstrip .gap b { color: var(--accent); }
+.sr-t small.sw { display: block; color: var(--ink-3, #8a93a6); font-weight: 600; }
 .insights { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; }
 .ins { background: var(--card-2); border-radius: 12px; padding: 10px 12px; display: grid; gap: 6px; }
 .ins i { font-style: normal; font-size: 11px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-2); }
@@ -796,7 +801,7 @@ body.wide .wrap { max-width: 1600px; }
 .calc .calc-opts select { min-width: 190px; }
 .pl-tog { color: var(--ink-3); font-size: 12px; }
 .nflt .tbtn { display: block; width: 100%; }
-@media (max-width: 560px) { .calc select { min-width: 0; width: 100%; } .calc .calc-row > label:not(.chk) { flex: 1 1 40%; } }
+@media (max-width: 560px) { .calc select { min-width: 0; width: 100%; } .calc .calc-row > label:not(.chk) { flex: 1 1 40%; } .calc .calc-opts select { min-width: 0; } .calc .calc-opts > label:not(.chk) { flex: 1 1 100%; min-width: 0; } .calc .calc-row:not(.calc-opts) { flex-wrap: wrap; } .calc .calc-row:not(.calc-opts) > label:not(.chk) { flex: 1 1 0; } .calc .calc-row > label.chk { flex: 1 1 100%; height: 28px; } }
 .tt td { vertical-align: middle; }
 .tt .tbtn { all: unset; cursor: pointer; display: block; }
 .tt .tbtn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
@@ -1027,8 +1032,8 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
       </div>
       <div class="gearwrap" id="gearWrap"><button type="button" class="ctl" id="gearBtn" aria-expanded="false" aria-controls="gearPop" aria-label="Settings">⚙<span class="gl"> Settings</span></button>
         <div class="pop" id="gearPop" hidden>
-          <span class="lbl">Star ratings</span>
-          <select class="ctl" id="modePick" aria-label="Star ratings">
+          <span class="lbl" hidden>Star ratings</span>
+          <select class="ctl" id="modePick" aria-label="Star ratings" hidden>
             <option value="proven">Proven ratings</option>
             <option value="sheet">As posted</option>
           </select>
@@ -1076,7 +1081,7 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
 (function () {
   "use strict";
   var MIN = "−";
-  var state = { data: null, scores: null, index: null, weekId: null, view: "week", sport: "cfb", stars: 0, market: "all", status: "all", q: "", unit: null, mode: "proven", canEdit: false, load: "loading", ratings: null, prevRatings: null, tsort: "net", tconf: "all", tq: "", tplays: false, topen: null, game: null, nsort: "time", nview: "cards" };
+  var state = { data: null, scores: null, index: null, weekId: null, view: "week", sport: "cfb", stars: 0, market: "all", status: "all", q: "", unit: null, mode: "sheet", canEdit: false, load: "loading", ratings: null, prevRatings: null, tsort: "net", tconf: "all", tq: "", tplays: false, topen: null, game: null, nsort: "time", nview: "cards" };
 
   // ---------- helpers ----------
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
@@ -1557,7 +1562,7 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
   var LOCK_ICO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>';
   function lockPanel() {
     var d = state.data || {}, t = d.teaser || {}, tz = "", nba = isNBA(), cbb = isCBB();
-    if (nba) tz = (t.games != null ? "<span>" + t.games + " games · 10,000 sims each</span>" : "") + (t.angles ? '<span><b class="st">★★★</b> ' + t.angles + " tracked pick" + (t.angles === 1 ? "" : "s") + "</span>" : "") + (t.combos ? "<span>\u25ce " + t.combos + " combo watch</span>" : "") + (t.big_gaps ? "<span>" + t.big_gaps + " big gap" + (t.big_gaps === 1 ? "" : "s") + " vs the market</span>" : "");
+    if (nba) tz = (t.games ? "<span>" + t.games + " games · 10,000 sims each</span>" : t.games === 0 ? "<span>No games today</span>" : "") + (t.angles ? '<span><b class="st">★★★</b> ' + t.angles + " tracked pick" + (t.angles === 1 ? "" : "s") + "</span>" : "") + (t.combos ? "<span>\u25ce " + t.combos + " combo watch</span>" : "") + (t.big_gaps ? "<span>" + t.big_gaps + " big gap" + (t.big_gaps === 1 ? "" : "s") + " vs the market</span>" : "");
     else {
       var st = t.stars || {};
       tz = (t.bets != null ? "<span>" + t.bets + " pick" + (t.bets === 1 ? "" : "s") + (cbb ? " today" : " this week") + "</span>" : "") +
@@ -1887,7 +1892,7 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
     ((state.data && state.data.bets) || []).forEach(function (x) {
       var rt = rated(x); if (!rt.stake || x.market === "Prop") return;
       var gr = grade(x); if (settled(gr.r) || gr.r === "live") return;
-      var e = valueOf(x), k = [rt.stake, rt.stars, rt.lo || 0, e ? e.v : 0];
+      var e = valueOf(x), k = [rt.stars, rt.stake, rt.lo || 0, e ? e.v : 0];
       for (var i = 0; i < k.length && bk; i++) { if (k[i] > bk[i]) break; if (k[i] < bk[i]) return; }
       if (bk && i === k.length) return;
       best = x; bk = k;
@@ -1899,14 +1904,14 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
     var rt = rated(x), R = ratings(), e = valueOf(x), lead = null;
     (x.setups || []).forEach(function (s) { var r = R[s.name]; if (r && r.n && (!lead || r.stake > R[lead.name].stake)) lead = s; });
     var r = lead ? R[lead.name] : null, S = lead ? (((state.data.setups || []).filter(function (s) { return s.name === lead.name; })[0]) || lead) : {};
-    var n = (state.data.bets || []).filter(function (y) { return rated(y).stake > 0; }).length;
+    var n = (state.data.bets || []).filter(function (y) { return rated(y).stake > 0 && y.market !== "Prop"; }).length;
     var ex = S.exam ? parseRecord(S.exam) : null;
     var facts = '<div class="bb-facts"><div><i>Stake</i><b>' + u(rt.stake) + "u \u00b7 " + money(rt.stake * unitDollars()) + "</b></div>" +
       (e ? '<div><i>Edge</i><b class="up">' + u(e.v) + " pts</b></div>" : "") +
       (r ? "<div><i>Backtest</i><b>" + r.w + "\u2013" + r.l + "</b></div>" : "") +
       (ex ? "<div><i>Held out</i><b>" + ex.w + "\u2013" + ex.l + "</b></div>" : "") + "</div>";
     var li = [];
-    li.push("The biggest stake of the " + n + " bet" + (n === 1 ? "" : "s") + (isCBB() || isNBA() ? " today" : " this week") + (e ? ", with the largest edge at that stake" : "") + ".");
+    li.push("The highest-rated of the " + n + " side" + (n === 1 ? "" : "s") + " and totals on the card" + (isCBB() || isNBA() ? " today" : " this week") + (e ? ", with the largest edge at that rating" : "") + (state.sport === "nfl" ? " (player props are listed below)" : "") + ".");
     if (r) li.push("<b>" + esc(lead.name) + "</b> won " + pct(r.rate) + " of " + r.n + (r.leg ? " legs" : " games") + " in our backtest" + (S.exam ? "; in the held-out " + esc(S.exam_years || "") + " seasons it went <b>" + esc(S.exam) + "</b>" : "") + ".");
     if (S.honest) li.push("Our honest estimate for this tier going forward: <b>" + pct(S.honest) + "</b> (break-even at −110 is 52.4%).");
     var small = r && r.n < 150 ? '<div class="smallw"><b>Small sample: ' + r.n + " games</b><span>A record this short can be luck. The lowest win rate it supports (90% confidence) is " + pct(r.lo) + ".</span></div>" : "";
@@ -1917,9 +1922,9 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
   // ---------- V2: visitors see what each setup did in the backtest (the picks themselves stay locked) ----------
   function simSetups() {
     var R = ratings(), D = state.data || {};
-    return (D.setups || []).filter(function (s) { var r = R[s.name]; return r && r.n && !r.leg && !s.paper && r.stars > 0; })
-      .map(function (s) { return { s: s, r: R[s.name] }; })
-      .sort(function (a, b) { return b.r.stars - a.r.stars || b.r.lo - a.r.lo; });
+    return (D.setups || []).filter(function (s) { var r = R[s.name]; return r && r.n && !r.leg && !s.paper && (+s.stars || 0) > 0; })
+      .map(function (s) { return { s: s, r: R[s.name], st: +s.stars }; })
+      .sort(function (a, b) { return (histRate(b.s) || 0) - (histRate(a.s) || 0); });
   }
   function simOut(o, amt) {
     var r = o.r, s = o.s, win = 100 / 110, prof = (r.w * win - r.l) * amt, roi = (r.w * win - r.l) / r.n;
@@ -1928,22 +1933,32 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
     if (ex) { var en = ex.w + ex.l, ep = (ex.w * win - ex.l) * amt;
       exHtml = '<div class="vs-row"><span>Held-out seasons ' + esc(s.exam_years || "") + " (never used to build the model):</span><b>" + ex.w + "–" + ex.l + "</b><span>" + pct(ex.w / en) + "</span><b>" + dol(ep) + "</b></div>"; }
     var small = r.n < 150 ? '<div class="smallw"><b>Small sample: only ' + r.n + (r.leg ? " legs" : " games") + "</b><span>A record this short can be luck. " +
-      (s.honest ? "Our honest estimate for this setup is " + pct(s.honest) + "." : "The lowest win rate it supports (90% confidence) is " + pct(r.lo) + ".") + "</span></div>" : "";
+      (honestOf(s) ? "Our honest estimate for this setup is " + pct(honestOf(s)) + "." : "The lowest win rate it supports (90% confidence) is " + pct(r.lo) + ".") + "</span></div>" : "";
     return '<div class="vs-num"><div><i>Bets</i><b>' + r.n.toLocaleString("en-US") + "</b></div><div><i>Record</i><b>" + r.w + "–" + r.l + "</b></div><div><i>Win rate</i><b>" + pct(r.rate) + '</b></div><div><i>Profit</i><b class="' + (prof >= 0 ? "up" : "down") + '">' + dol(prof) + "</b></div></div>" +
-      exHtml + small + '<p class="note">' + (s.honest && r.n >= 150 ? "Our honest estimate going forward is " + pct(s.honest) + ", lower than the backtest. " : "") +
+      exHtml + small + '<p class="note">' + (honestOf(s) && r.n >= 150 ? "Our honest estimate going forward is " + pct(honestOf(s)) + ", lower than the backtest. " : "") +
       "Return per bet: " + signed(roi * 100, 1) + "% at −11" + "0. Every bet at the same size; past results don’t promise future ones.</p>";
   }
   function visitorSim() {
     var L = simSetups(); if (!L.length) return "";
     var i = Math.min(state.vsI || 0, L.length - 1), amt = state.vsAmt || 100;
     return '<section class="vsim" aria-labelledby="vsh"><h2 id="vsh">What our setups did</h2><p class="note">Pick a setup and a bet size to see what betting every one of its backtested picks would have made. The picks themselves are for members.</p>' +
-      '<div class="vs-ctl"><label>Setup<select id="vsSet">' + L.map(function (o, j) { return "<option value=\"" + j + '"' + (j === i ? " selected" : "") + ">" + esc(o.s.name) + " · " + "★".repeat(o.r.stars) + "</option>"; }).join("") +
+      '<div class="vs-ctl"><label>Setup<select id="vsSet">' + L.map(function (o, j) { return "<option value=\"" + j + '"' + (j === i ? " selected" : "") + ">" + esc(o.s.name) + " · " + "★".repeat(o.st) + "</option>"; }).join("") +
       '</select></label><label>Per bet ($)<input id="vsAmt" type="number" inputmode="decimal" min="1" step="5" value="' + amt + '"></label></div><div id="vsOut">' + simOut(L[i], amt) + "</div></section>";
   }
   function bindSim(el) {
     var sel = el.querySelector("#vsSet"), inp = el.querySelector("#vsAmt"), out = el.querySelector("#vsOut"); if (!sel) return;
     function go() { var L = simSetups(); state.vsI = +sel.value; var a = parseFloat(inp.value); state.vsAmt = a > 0 ? a : 100; out.innerHTML = simOut(L[state.vsI], state.vsAmt); }
     sel.addEventListener("change", go); inp.addEventListener("input", go);
+  }
+  // ---------- the sheet's own numbers for a setup (honest rate = "win"; historical win rate = "rate", or the record's %)
+  function sheetSetup(name) { var hit = null; ((state.data && state.data.setups) || []).forEach(function (s) { if (!hit && s.name === name) hit = s; }); return hit; }
+  function pctNum(v) { if (v == null || v === "") return null; if (typeof v === "number") return v > 1 ? v / 100 : v; var m = /(\d+(?:\.\d+)?)\s*%/.exec(String(v)); return m ? +m[1] / 100 : null; }
+  function honestOf(s) { return s ? (s.honest != null ? +s.honest : pctNum(s.win)) : null; }
+  function histRate(s) {
+    if (!s) return null; if (s.rate != null) return +s.rate;
+    var r = parseRecord(s.record); if (!r || !(r.w + r.l)) return null; var p = r.w / (r.w + r.l);
+    if (/teaser/i.test(s.name) || /per leg/i.test(s.record || "")) p = p * p * (1 + 100 / 120) / (1 + 100 / 110);
+    return p;
   }
   function card(x) {
     var rt = rated(x), gr = grade(x), R = ratings(), paper = !rt.stake, conflict = state.mode === "sheet" ? conflictOf(x) : null;
@@ -1956,7 +1971,7 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
         (r.low && state.mode !== "sheet" ? '<span class="badge red">Low sample · ' + r.n + " games</span>" : "") +
         (!r.stars && state.mode !== "sheet" ? '<span class="badge muted">Watch only</span>' : "") + "</div>" +
         (s.why ? "<p>" + esc(s.why) + "</p>" : "") +
-        (r.n ? '<div class="fl">Backtest ' + r.w + "–" + r.l + " (" + pct(r.rate) + (r.leg ? " per leg" : "") + ") · proven floor " + pct(r.lo) + (r.leg ? " as a −110 bet" : "") + " over " + r.n + (r.leg ? " legs" : " games") + "</div>" : "") +
+        (r.n ? '<div class="fl">Backtest ' + r.w + "–" + r.l + " (" + pct(r.rate) + (r.leg ? " per leg" : "") + ") over " + r.n + (r.leg ? " legs" : " games") + (honestOf(sheetSetup(s.name)) ? " · honest rate " + pct(honestOf(sheetSetup(s.name))) + (r.leg ? " as a −110 bet" : "") : "") + "</div>" : "") +
         (s.note ? '<div class="fl">' + esc(s.note) + "</div>" : "") + "</div>";
     }).join("");
     var lead = (x.setups[0] || {}).name || "";
@@ -2093,7 +2108,8 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
     var cv = r.clv || {}, cn = cv.n || 0, cb = cv.beat || 0, cs0 = cv.same || 0, csum = (cv.avg || 0) * cn;
     live.forEach(function (x) { if (x.clv == null) return; cn++; if (x.clv > 0) cb++; if (x.clv === 0) cs0++; csum += x.clv; });
     var clvPanel = '<div class="panel"><h3>Did we beat the closing line?</h3><p class="note">The closing line is the market’s sharpest number. Getting a better number than the close is the earliest proof an edge is real: it shows up over dozens of bets, while win–loss takes hundreds. Points = how much better (or worse) our line was than the close. First halves, team totals and props have no free closing line.</p>' +
-      (cn ? '<div class="clvhead"><div><i>Beat the close</i><b>' + cb + " of " + cn + "</b><small>" + pct(cb / cn, 0) + " · " + cs0 + ' same number</small></div><div><i>Average</i><b class="' + (csum > 0 ? "up" : csum < 0 ? "down" : "") + '">' + clvTxt(Math.round(csum / cn * 100) / 100) + "</b><small>points per bet</small></div>" +
+      (isCBB() && cn >= 10 && cs0 / cn > .9 ? '<p class="note"><b>Not tracked yet for college basketball.</b> The card is built once each morning, so the only number it sees is the one we bet; the true closing line isn’t captured yet.</p>' :
+       cn ? '<div class="clvhead"><div><i>Beat the close</i><b>' + cb + " of " + cn + "</b><small>" + pct(cb / cn, 0) + " · " + cs0 + ' same number</small></div><div><i>Average</i><b class="' + (csum > 0 ? "up" : csum < 0 ? "down" : "") + '">' + clvTxt(Math.round(csum / cn * 100) / 100) + "</b><small>points per bet</small></div>" +
         "<div><i>Verdict so far</i><b>" + (cn < 20 ? "Too early" : csum / cn >= 0.5 && cb / cn >= .5 ? "Real edge signs" : csum / cn > 0 ? "Slightly ahead" : "Not beating it") + "</b><small>" + (cn < 20 ? "needs 20+ bets" : cn + " bets with a close") + "</small></div></div>"
         : '<p class="note"><b>No closing lines yet.</b> They fill in as bets settle, starting with the next notebook run.</p>') + "</div>";
     var html = '<div class="cards"><div class="rec-top"><div class="rec-l">' + clvPanel +
@@ -2572,27 +2588,30 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
       '<div class="panel"><h3>Every setup</h3><p class="note">Bars run from 45% to 70%; the dark tick is 52.4%, break-even at −110. The backtest years were scored walk-forward (each season by a model trained only on earlier ones); the held-out years were kept out of the building and graded at the morning line. This season = bets graded so far.</p>' +
       real.concat(paper).map(row).join("") + "</div></div>";
   }
+  function stakeWhy(s, st) {            // a stake under its star tier: new this season, or held down until it proves itself live
+    var tier = { 5: 1.5, 4: 1.25, 3: 1, 2: .75, 1: .5 }[+s.stars];
+    if (!tier || !(st < tier - 1e-9)) return "";
+    return /\(new/i.test(s.where || "") ? '<small class="sw"> new</small>' : '<small class="sw"> capped</small>';
+  }
   function renderRatings(el) {
-    var R = ratings(), list = Object.keys(R).map(function (k) { return R[k]; });
-    var count = {}; state.data.bets.forEach(function (b) { b.setups.forEach(function (s) { count[s.name] = (count[s.name] || 0) + 1; }); });
-    list.sort(function (a, b) { return (b.stars - a.stars) || (b.lo - a.lo); });
-    var lo = .45, hi = .85; function X(v) { return Math.max(0, Math.min(100, (v - lo) / (hi - lo) * 100)); }
+    var d = state.data || {}, S = (d.setups || []).slice(), nfl = state.sport === "nfl";
+    var count = {}; (d.bets || []).forEach(function (b) { (b.setups || []).forEach(function (s) { count[s.name] = (count[s.name] || 0) + 1; }); });
+    S.sort(function (a, b) { return (histRate(b) || 0) - (histRate(a) || 0) || (+b.stars || 0) - (+a.stars || 0); });
+    var TT = [[5, "58.5%+", "1.5u"], [4, "57–58.4%", "1.25u"], [3, "56–56.9%", "1u"], [2, "55–55.9%", "0.75u"], [1, "53.5–54.9%", "0.5u"]];
     var html = '<div class="cards"><div class="panel"><h3>How the stars work</h3>' +
-      '<p class="note">A setup that went 32\u20139 looks great, but 41 games can\u2019t tell luck from skill. So each setup is rated by its <b>proven floor</b>: the win rate its backtest has cleared with 90% confidence. Big samples have a floor close to their record; small ones get pulled down hard. Setups with ' + MIN_SAMPLE + "+ games are fully trusted once their floor clears 52.4%, the break-even at \u2212110. Setups under " + MIN_SAMPLE + " games still play if they\u2019ve won " + pct(LOW_MIN_RATE, 0) + "+ of the time, but they carry a red <b>low sample \u00b7 low trust</b> warning and are capped at " + u(LOW_STAKE) + "u until they reach " + MIN_SAMPLE + " games.</p>" +
-      '<div class="how">' + TIERS.map(function (t) { return "<div>" + starsHtml(t[0]) + "<b>" + pct(t[1]) + "+</b><small>floor · " + u(STAKE[t[0]]) + "u</small></div>"; }).join("") +
-      '<div><span class="stars"><span class="off">★★★★★</span></span><b>Watch</b><small>floor under 52.4% · 0u</small></div>' +
-      '<div style="background:var(--alert);color:#fff"><span class="stars" style="color:#fff">⚠</span><b>Low sample</b><small style="color:#fff">under ' + MIN_SAMPLE + " games · max " + u(LOW_STAKE) + "u</small></div></div></div>" +
-      '<div class="panel"><h3>Every setup</h3><p class="note">Bar shows the 90% range of each setup’s true win rate; the orange tick is the floor, the dark tick is 52.4%. Stars move as backtests grow.</p>';
-    list.forEach(function (r) {
-      var changed = r.old != null && r.old !== r.stars;
-      html += '<div class="rt"><div><div class="nm">' + esc(r.name) + (count[r.name] ? '<span class="badge">' + count[r.name] + (isCBB() ? " today" : " this week") + "</span>" : "") + (r.low ? '<span class="badge red">Low sample \u00b7 low trust</span>' : "") + "</div>" +
-        '<div class="why2">' + esc(r.why || "") + "</div></div>" +
-        '<div class="gauge"><div class="gbar"><span class="rng" style="left:' + X(r.lo) + "%;width:" + (X(r.hi) - X(r.lo)) + '%"></span><span class="be" style="left:' + X(.524) + '%"></span><span class="flo" style="left:calc(' + X(r.lo) + '% - 1px)"></span></div>' +
-        "<span>" + r.w + "–" + r.l + " · " + pct(r.rate) + (r.leg ? " per leg" : " record") + " · floor <b>" + pct(r.lo) + "</b>" + (r.leg ? " (as a −110 bet)" : "") + "</span>" +
-        '<div class="nbar" title="' + r.n + ' games"><i style="width:' + Math.min(100, r.n / MIN_SAMPLE * 100) + '%"></i></div><span>' + r.n + " games" + (r.low ? " · needs " + (MIN_SAMPLE - r.n) + " more" : "") + "</span></div>" +
-        '<div class="new">' + (r.stars ? starsHtml(r.stars) : '<span class="badge muted">Watch</span>') + (r.stars && r.low ? "<small>" + u(r.stake) + "u cap</small>" : "") + (changed ? "<small>was " + r.old + "★</small>" : "<small>&nbsp;</small>") + "</div></div>";
-    });
-    el.innerHTML = html + "</div></div>";
+      '<p class="note">The stars here are the stars on our sheet. Each setup is rated by its <b>honest win rate</b>: its backtest record pulled toward 52.4% (the break-even at −110) by how many games it has. A setup that only comes up twice a season still counts; a short record just gets pulled in more, so a 32–16 record (66.7%) is rated like a 55.8% bet, and 269–176 (60.4%) like 58.4%. Teasers are rated as the −110 bet with the same return as a two-leg ticket.' +
+      (nfl ? " A setup goes on the NFL card when its honest rate is <b>54% or better</b>. There are no paper bets: everything listed here is bet. Setups new this season bet 0.5u until they have a live season behind them." : "") + "</p>" +
+      '<div class="how">' + TT.map(function (t) { return "<div>" + starsHtml(t[0]) + "<b>" + t[1] + "</b><small>honest rate · " + t[2] + "</small></div>"; }).join("") + "</div></div>" +
+      '<div class="panel"><h3>Every setup, by historical win rate</h3><div class="scroll"><table class="tt sr-t"><thead><tr><th class="ra">#</th><th>Setup</th><th>Stars</th><th class="ra">Win rate</th><th class="ra">Record</th><th class="ra">Honest rate</th><th class="ra">Stake</th></tr></thead><tbody>' +
+      S.map(function (s, i) {
+        var r = parseRecord(s.record), hr = histRate(s), hon = honestOf(s), leg = /teaser/i.test(s.name);
+        var stake = s.stake != null ? +s.stake : (/(\d+(?:\.\d+)?)u/.exec(s.where || "") || [])[1];
+        return '<tr><td class="ra">' + (i + 1) + "</td><td><b>" + esc(s.name) + "</b>" + (count[s.name] ? ' <span class="badge">' + count[s.name] + (isCBB() ? " today" : " this week") + "</span>" : "") +
+          (s.why ? '<div class="why2">' + esc(s.why) + "</div>" : "") + "</td><td>" + (s.paper || !+s.stars ? '<span class="badge muted">Not bet</span>' : starsHtml(+s.stars)) + '</td><td class="ra"><b>' + (hr != null ? pct(hr) : "—") + "</b>" + (leg ? "<small> as −110</small>" : "") +
+          '</td><td class="ra">' + (r ? r.w + "–" + r.l + (leg ? "<small> legs</small>" : "") : esc(s.record || "")) + '</td><td class="ra">' + (hon != null ? pct(hon) : "—") + '</td><td class="ra">' + (s.paper ? "0u" : stake != null ? u(+stake) + "u" + stakeWhy(s, +stake) : "—") + "</td></tr>";
+      }).join("") + "</tbody></table></div>" +
+      '<p class="note" style="margin-top:10px">Win rate = the whole backtest record (most graded at the closing line; props at their real prices). Honest rate = what the stars and stakes are set from. <b>new</b> = first live season, 0.5u until it has one behind it; <b>capped</b> = held at a smaller stake until it proves itself in live bets.</p></div></div>';
+    el.innerHTML = html;
   }
 
   // ---------- NBA: the simulator board (predictions, not bets) ----------
@@ -3334,7 +3353,7 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
     (d.setups || []).forEach(function (x) {
       var r = R[x.name] || {}, sheet = state.mode === "sheet", st = x.paper ? 0 : sheet ? (+x.stars || 0) : (r.stars || 0);
       out.push({ name: x.name, stars: st, stake: x.paper ? 0 : sheet ? (x.stake != null ? +x.stake : (STAKE[st] || 0)) : (r.stake || 0),
-        p: x.honest || r.lo || null, paper: !!x.paper || !st, n: r.n });
+        p: honestOf(x) || r.lo || null, paper: !!x.paper || !st, n: r.n });
     });
     return out;
   }
@@ -3376,7 +3395,7 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
         '</td><td class="ra bk-h">' + (x.paper ? "tracked only" : f ? (f * 100).toFixed(1) + "%" : "no edge yet") + '</td><td class="ra">' + (x.paper ? "0u" : u(x.stake) + "u") + '</td><td class="ra"><b>' + (o.bank > 0 ? money(mine) : "—") +
         "</b></td></tr>";
     }).join("");
-    var table = '<div class="panel"><h3>Stake for each ' + sp + " setup</h3><p class=\"note\">“Win rate we plan on” is deliberately below the backtest: for college basketball it’s the honest rate (each record pulled toward 52.4% by its sample size); for the others, the rate the backtest cleared with 90% confidence. Full Kelly is the size the formula calls for with no margin for error; your bet is a fraction of it.</p>" +
+    var table = '<div class="panel"><h3>Stake for each ' + sp + " setup</h3><p class=\"note\">“Win rate we plan on” is deliberately below the backtest: it’s the honest rate on the sheet: each backtest record pulled toward 52.4% by its sample size. Full Kelly is the size the formula calls for with no margin for error; your bet is a fraction of it.</p>" +
       '<div class="scroll"><table class="tt"><thead><tr><th>Setup</th><th class="bk-h">Stars</th><th class="ra">Win rate we plan on</th><th class="ra bk-h">Full Kelly</th><th class="ra">Stake</th><th class="ra">Your bet</th></tr></thead><tbody>' +
       (rows || '<tr><td colspan="6" class="note">No setups on this card.</td></tr>') + "</tbody></table></div></div>";
     // today's card
@@ -4047,7 +4066,7 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
   if (/^#(week|games|news|ahead|teams|record|ratings|mybets|bank)$/.test(location.hash)) state.view = location.hash.slice(1);
   // college defaults to proven ratings; the NFL sheet already sets honest stars, so it defaults to the stars as posted
   var modePick = document.getElementById("modePick");
-  function loadMode() { var sm = storeGet("gte.mode." + state.sport); state.mode = sm === "sheet" || sm === "proven" ? sm : state.sport === "nfl" || state.sport === "cbb" ? "sheet" : "proven"; modePick.value = state.mode; }
+  function loadMode() { state.mode = "sheet"; modePick.value = "sheet"; }      // the site always shows the stars and stakes on the sheet
   modePick.addEventListener("change", function () { state.mode = modePick.value; storeSet("gte.mode." + state.sport, state.mode); render(); });
   var unitInput = document.getElementById("unitInput"), su = parseFloat(storeGet("gte.unit")); if (su > 0) state.unit = su;
   unitInput.value = state.unit || 125;
