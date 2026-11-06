@@ -479,7 +479,7 @@ td:has(.netbar) { padding-right: 56px; }
 .pickbar.cw .ico { color: var(--accent); font-size: 14px; font-weight: 800; }
 .pickbar.cw i { color: var(--accent); }
 .pickbar.cw small { color: var(--ink-2); }
-.pickbar.vk { border-color: #c98a00; } .pickbar.vk .ico, .pickbar.vk i { color: #b07800; }
+.pickbar.vk { background: #2a2006; } .pickbar.vk .stars, .pickbar.vk i { color: #f5b400; }
 .pk-ang { display: block; font-size: 11.5px; color: var(--ink-2); font-weight: 600; }
 .wl { margin: 2px 12px 10px; display: grid; gap: 5px; }
 .wl h5 { margin: 4px 0 2px; font-size: 10.5px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-3); display: flex; justify-content: space-between; }
@@ -2812,7 +2812,8 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
     var ln = s && s.ln, now = "";
     if (ln && ln.sp != null && s.status === "pre") { var cur = home ? ln.sp : -ln.sp; now = '<div class="numbox"><span><i>Flagged at</i><b>' + esc(v.team + " " + lineTxt(v.line)) + '</b></span><span class="now"><i>Line now' + (ln.by ? " (" + esc(ln.by) + ")" : "") + "</i><b>" + esc(v.team + " " + lineTxt(cur)) + "</b></span></div>"; }
     var nums = v.ours != null && v.mkt != null ? " \u00b7 we had " + esc(favTxt(g, v.ours)) + ", Vegas " + esc(favTxt(g, v.mkt)) : "";
-    return '<div class="pickbar cw vk" title="' + esc(v.backtest || "") + '"><div><span class="ico">\u26a0</span><b>' + esc(v.name) + "</b><i>" + esc(v.pick) + nums + " \u00b7 paper, not a bet yet</i>" +
+    return '<div class="pickbar vk" title="' + esc(v.backtest || "") + '"><div><span class="stars">\u26a0</span><b>' + esc(v.name) + "</b><i>Track " + esc(v.pick) + " \u00b7 paper</i>" +
+      (nums ? "<small>" + nums.replace(" \u00b7 ", "") + "</small>" : "") +
       "<small>" + esc(v.why || "") + "</small>" + now + "</div>" + res + "</div>";
   }
   function angleNumber(g, L) {
