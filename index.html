@@ -479,6 +479,18 @@ td:has(.netbar) { padding-right: 56px; }
 .pickbar.cw .ico { color: var(--accent); font-size: 14px; font-weight: 800; }
 .pickbar.cw i { color: var(--accent); }
 .pickbar.cw small { color: var(--ink-2); }
+.np-head { margin-bottom: 14px; }
+.np-recs { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-top: 10px; }
+.np-rec { background: var(--card-2); border-radius: 10px; padding: 10px 12px; display: grid; gap: 2px; }
+.np-rec small { color: var(--ink-2); font-size: 11.5px; } .np-rec span { font-weight: 800; font-size: 18px; }
+.np-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 14px; }
+.np-card { display: grid; gap: 10px; align-content: start; }
+.np-top { display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 700; color: var(--ink-2); letter-spacing: .04em; text-transform: uppercase; }
+.np-go { background: none; border: 0; color: var(--accent); font-weight: 800; cursor: pointer; font-size: 12px; text-transform: none; }
+.np-m { font-size: 17px; } .np-m .at { color: var(--ink-3); }
+.np-l { display: flex; gap: 16px; font-size: 13px; color: var(--ink-2); } .np-l b { color: var(--ink); }
+@media (max-width: 640px) { .np-grid { grid-template-columns: 1fr; } }
+.pickbar.mk { background: #062a26; } .pickbar.mk .stars, .pickbar.mk i { color: #2fd3b5; }
 .pickbar.vk { background: #2a2006; } .pickbar.vk .stars, .pickbar.vk i { color: #f5b400; }
 .pk-ang { display: block; font-size: 11.5px; color: var(--ink-2); font-weight: 600; }
 .wl { margin: 2px 12px 10px; display: grid; gap: 5px; }
@@ -935,6 +947,7 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
 .sg-pick .st { font-size: 10px; }
 .sg-flag { display: inline-block; font-size: 11px; font-weight: 700; padding: 2px 6px; border-radius: 6px; background: var(--alert, #fff3cd); color: var(--ink); white-space: nowrap; cursor: default; margin: 1px 0; }
 .sg-flag.mute { background: var(--card-2); color: var(--ink-2); }
+.sg-flag.ht2 { background: var(--card-2); color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--accent); }
 @media (max-width: 640px) {
   .slt thead { display: none; }
   .slt, .slt tbody { display: block; width: 100%; min-width: 0 !important; }
@@ -1061,6 +1074,7 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
 
 <div class="wrap">
   <nav class="tabs" role="tablist" aria-label="Sections">
+    <button role="tab" id="tab-picks" aria-controls="view" aria-selected="false" data-view="picks" hidden>Picks<span class="count" id="cntPicks"></span></button>
     <button role="tab" id="tab-week" aria-controls="view" aria-selected="true" data-view="week"><span id="tabWeekLbl">Picks</span><span class="count" id="cnt"></span></button>
     <button role="tab" id="tab-games" aria-controls="view" aria-selected="false" data-view="games">Games</button>
     <button role="tab" id="tab-news" aria-controls="view" aria-selected="false" data-view="news" hidden>News</button>
@@ -2816,6 +2830,15 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
       (nums ? "<small>" + nums.replace(" \u00b7 ", "") + "</small>" : "") +
       "<small>" + esc(v.why || "") + "</small>" + now + "</div>" + res + "</div>";
   }
+  // Model Knows: we and Vegas pick different winners and our line has our team by 2+. Paper: our team's moneyline before tip
+  function mkBar(g) {
+    var v = g.mk; if (!v) return "";
+    var s = nbaScore(g), res = "", home = v.team === g.home_abbr;
+    if (s && s.status === "final") { var w = home ? +s.home > +s.away : +s.away > +s.home; res = w ? '<span class="res W">\u2713 Won</span>' : '<span class="res L">\u2717 Lost</span>'; }
+    var nums = v.ours != null && v.mkt != null ? "we have " + favTxt(g, v.ours) + ", Vegas " + favTxt(g, v.mkt) : "";
+    return '<div class="pickbar mk" title="' + esc(v.backtest || "") + '"><div><span class="stars">\u25c6</span><b>' + esc(v.name) + "</b><i>Track " + esc(v.pick) + " \u00b7 paper \u00b7 check near tip</i>" +
+      (nums ? "<small>" + esc(nums) + "</small>" : "") + "<small>" + esc(v.why || "") + "</small></div>" + res + "</div>";
+  }
   function angleNumber(g, L) {
     var a = g.angle, s = nbaScore(g), ln = s && s.ln, ab = g.home_abbr;
     if (L == null) return "";
@@ -2836,7 +2859,7 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
     var flag = nbaFlag(g);
     return '<article class="mc' + (isFavGame(g) ? " favd" : "") + '">' +
       '<div class="mc-top"><span class="mkt">' + esc(nbaStatus(g)) + "</span><span>" + luBadge(g) + (flag ? ' <span class="badge">Big gap</span>' : "") + "</span></div>" +
-      '<div class="teams">' + nbaTeamRow(g, "away", nbaScore(g)) + nbaTeamRow(g, "home", nbaScore(g)) + "</div>" + angleBar(g) + comboBar(g) + vkBar(g) + changeChip(g) +
+      '<div class="teams">' + nbaTeamRow(g, "away", nbaScore(g)) + nbaTeamRow(g, "home", nbaScore(g)) + "</div>" + angleBar(g) + comboBar(g) + vkBar(g) + mkBar(g) + changeChip(g) +
       curveSVG(g) + rangeLine(g) + linesTable(g) + moveNote(g) + gapHint(g) + whyBlock(g) + resultLine(g) +
       '<div class="openrow"><a class="open" href="' + gameHref(g) + '">Full game page<span aria-hidden="true">›</span></a>' + trackBtn("nba:" + g.id) + '<button type="button" class="sharebtn" data-share-nba="' + esc(g.id) + '" aria-label="Share this game as an image">' + SHARE_ICO + "Share</button></div>" +
       '<details><summary>Preview \u00b7 the game in a few sentences</summary><div class="why">' + nbaPreview(g) + "</div></details>" +
@@ -2853,6 +2876,8 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
     if (tt) add(tt, "\u2605\u2605\u2605 " + tt.angle.name, "Bet " + tt.angle.pick + ": " + tt.away + " are on a back-to-back after crossing a time zone.");
     var cw = pick(games.filter(function (g) { return g.combo; }).sort(function (a, b) { return (b.combo.p || 0) - (a.combo.p || 0); }));
     if (cw) add(cw, "\u25ce Combo watch \u00b7 paper", "Our combined model\u2019s strongest lean tonight: " + cw.combo.pick + (cw.combo.p != null ? " (" + Math.round(cw.combo.p * 100) + "% to cover)" : "") + ". Tracked on paper, not a bet yet.");
+    var mg = pick(games.filter(function (g) { return g.mk; }));
+    if (mg) add(mg, "\u25c6 Model Knows \u00b7 paper", "We pick " + mg.mk.team + " to win; Vegas picks the other side. When we\u2019re this sure (2+ pts), our side has usually been right. Check it near tip.");
     var vg = pick(games.filter(function (g) { return g.vk; }));
     if (vg) add(vg, "\u26a0 Vegas Knows \u00b7 paper", "We have it close; Vegas has " + vg.vk.pick + ". When that happens Vegas has usually known something we don\u2019t. Tracked on paper.");
     var bg = pick(games.filter(function (g) { return g.spread_gap != null && Math.abs(g.spread_gap) >= 2; }).sort(function (a, b) { return Math.abs(b.spread_gap) - Math.abs(a.spread_gap); }));
@@ -2900,6 +2925,41 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
     });
   }
   var lastGame = null;
+  // ---------- NBA Picks: tonight's flagged plays (Tired Traveler is the bet; the rest are tracked on paper) ----------
+  function nbaPickList(d) {
+    var out = [];
+    (d.games || []).forEach(function (g) {
+      if (g.angle) out.push({ g: g, k: "tt", rank: 0, bar: angleBar(g) });
+      if (g.mk) out.push({ g: g, k: "mk", rank: 1, bar: mkBar(g) });
+      if (g.vk) out.push({ g: g, k: "vk", rank: 2, bar: vkBar(g) });
+      if (g.combo) out.push({ g: g, k: "cw", rank: 3, bar: comboBar(g) });
+    });
+    return out.sort(function (a, b) { return a.rank - b.rank || (a.g.tip < b.g.tip ? -1 : 1); });
+  }
+  function renderNbaPicks(el) {
+    var d = state.data || {}, s = ((d.tracking || {}).summary) || {};
+    var SET = [["tt", "\u2605\u2605\u2605 Tired Traveler", "bet \u00b7 1u", s.tired], ["mk", "\u25c6 Model Knows", "paper \u00b7 moneyline", s.mk],
+               ["vk", "\u26a0 Vegas Knows", "paper \u00b7 spread", s.vk], ["cw", "\u25ce Combo watch", "paper \u00b7 spread", s.combo]];
+    var recs = '<div class="np-recs">' + SET.map(function (x) {
+      var r = x[3] || {}, n = (r.w || 0) + (r.l || 0);
+      return '<div class="np-rec"><b>' + x[1] + "</b><small>" + x[2] + '</small><span class="tnum">' + (n ? r.w + "\u2013" + r.l : "no games yet") + "</span>" +
+        (n ? '<span class="tnum ' + (r.units > 0 ? "up" : r.units < 0 ? "down" : "") + '">' + signed(r.units || 0) + "u</span>" : "") + "</div>";
+    }).join("") + "</div>";
+    var head = '<div class="panel np-head"><h3>Tonight\u2019s flagged plays</h3><p class="note">Only <b>Tired Traveler</b> is a bet. Model Knows, Vegas Knows and Combo watch are tracked on paper until they prove themselves live. Model Knows is judged at the price just before tip, so check it once lineups are in. Records are season to date.</p>' + recs + "</div>";
+    if (d.members_only) { el.innerHTML = head + lockPanel(); bindLock(el); return; }
+    var L = nbaPickList(d);
+    var cnt = document.getElementById("cntPicks"); if (cnt) cnt.textContent = L.length ? String(L.length) : "";
+    if (!(d.games || []).length) { el.innerHTML = head + '<div class="empty"><h2>No games today</h2><p>Check back on the next game day.</p></div>'; return; }
+    if (!L.length) { el.innerHTML = head + '<div class="empty"><h2>Nothing flagged tonight</h2><p>None of tonight\u2019s ' + d.games.length + " games fits a setup yet. Flags can appear during the day as lines and lineups change; the Board has every game.</p></div>"; return; }
+    var cards = L.map(function (x) {
+      var g = x.g, sc = nbaScore(g), st = sc && sc.status !== "pre" ? (sc.status === "final" ? "Final " : "Live ") + sc.away + "\u2013" + sc.home : "";
+      return '<div class="panel np-card"><div class="np-top"><span>' + esc(nbaTip(g.tip)) + (st ? " \u00b7 " + esc(st) : "") + '</span><button type="button" class="np-go" data-go="' + esc(g.id) + '">Game page \u203a</button></div>' +
+        '<div class="np-m"><b>' + esc(g.away) + '</b> <span class="at">@</span> <b>' + esc(g.home) + "</b></div>" +
+        '<div class="np-l"><span>Ours <b>' + esc(favTxt(g, g.our_spread)) + "</b></span><span>Vegas <b>" + esc(favTxt(g, g.mkt_spread)) + "</b></span></div>" + x.bar + "</div>";
+    }).join("");
+    el.innerHTML = head + '<div class="np-grid">' + cards + "</div>";
+    el.querySelectorAll("[data-go]").forEach(function (b) { b.addEventListener("click", function () { state.view = "week"; state.game = b.getAttribute("data-go"); render(); window.scrollTo(0, 0); }); });
+  }
   function renderNbaBoard(el) {
     var d = state.data;
     if (d.members_only) { el.innerHTML = lockPanel(); bindLock(el); return; }
@@ -3006,13 +3066,14 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
         (s.tired && s.tired.clv && s.tired.clv.n ? '<div class="lrow"><div>Tired Traveler vs the closing line<small>' + s.tired.clv.n + ' picks · last line before tip</small></div><div class="tnum">' + s.tired.clv.beat + " of " + s.tired.clv.n + ' better</div><div class="tnum ' + (s.tired.clv.avg > 0 ? "up" : s.tired.clv.avg < 0 ? "down" : "") + '">' + clvTxt(s.tired.clv.avg) + " pts</div></div>" : "") +
         sig("\u25ce Combo watch: the combined model\u2019s most confident 5% of games (paper, 1u at \u2212110)", s.combo) +
         (s.combo && s.combo.clv && s.combo.clv.n ? '<div class="lrow"><div>Combo watch vs the closing line<small>' + s.combo.clv.n + ' picks · last line before tip</small></div><div class="tnum">' + s.combo.clv.beat + " of " + s.combo.clv.n + ' better</div><div class="tnum ' + (s.combo.clv.avg > 0 ? "up" : s.combo.clv.avg < 0 ? "down" : "") + '">' + clvTxt(s.combo.clv.avg) + " pts</div></div>" : "") +
+        sig("\u25c6 Model Knows: we and Vegas pick different winners, ours by 2+; our team\u2019s moneyline before tip (paper, 1u)", s.mk) +
         sig("\u26a0 Vegas Knows: we have it within 4, Vegas has the favorite 3+ pts bigger; the Vegas favorite against the spread (paper, 1u at \u2212110)" + (s.vk && s.vk.won_outright != null ? "<small>favorite won outright " + s.vk.won_outright + " of " + (s.vk.w + s.vk.l + (s.vk.p || 0)) + "</small>" : ""), s.vk) +
         (s.vk && s.vk.clv && s.vk.clv.n ? '<div class="lrow"><div>Vegas Knows vs the closing line<small>' + s.vk.clv.n + ' picks · last line before tip</small></div><div class="tnum">' + s.vk.clv.beat + " of " + s.vk.clv.n + ' better</div><div class="tnum ' + (s.vk.clv.avg > 0 ? "up" : s.vk.clv.avg < 0 ? "down" : "") + '">' + clvTxt(s.vk.clv.avg) + " pts</div></div>" : "") +
         sig("Tracked at 0 units: our win % 5+ pts above the market (moneyline)", s.ml_edge) + sig("Tracked at 0 units: underdog moneyline 3+ pts cheaper than its spread", s.cheap_dog)
         : '<p class="note">Nothing graded yet. The first games grade the morning after they’re played.</p>') + "</div>" +
       ((t.picks || []).length ? '<div class="panel"><h3>Tracked picks</h3><p class="note">The line when we flagged it, where it closed, and the result. “vs close” = points our number beat the close by (+ is good): the earliest sign an edge is real.</p><div class="scroll"><table><thead><tr><th>Date</th><th>Game</th><th>Bet</th><th class="ra">Closed</th><th class="ra">vs close</th><th>Result</th><th class="ra">Units</th></tr></thead><tbody>' +
         t.picks.map(function (p) {
-          return "<tr><td>" + esc(nbaDay(p.date)) + "</td><td>" + esc(p.game) + "</td><td><b>" + esc(pretty(p.pick)) + "</b>" + (p.angle ? '<span class="pk-ang">' + esc(p.angle === "Tired Traveler" ? "\u2605\u2605\u2605 " + p.angle : (p.angle === "Vegas Knows" ? "\u26a0 " : "\u25ce ") + p.angle + (p.paper ? " \u00b7 paper" : "")) + "</span>" : "") + '</td><td class="ra">' + (p.close == null ? "" : lineTxt(p.close)) + '</td><td class="ra ' + (p.clv > 0 ? "up" : p.clv < 0 ? "down" : "") + '">' + (p.clv == null ? "" : clvTxt(p.clv)) + "</td><td>" +
+          return "<tr><td>" + esc(nbaDay(p.date)) + "</td><td>" + esc(p.game) + "</td><td><b>" + esc(pretty(p.pick)) + "</b>" + (p.angle ? '<span class="pk-ang">' + esc(p.angle === "Tired Traveler" ? "\u2605\u2605\u2605 " + p.angle : (p.angle === "Vegas Knows" ? "\u26a0 " : p.angle === "Model Knows" ? "\u25c6 " : "\u25ce ") + p.angle + (p.paper ? " \u00b7 paper" : "")) + "</span>" : "") + '</td><td class="ra">' + (p.close == null ? "" : lineTxt(p.close)) + '</td><td class="ra ' + (p.clv > 0 ? "up" : p.clv < 0 ? "down" : "") + '">' + (p.clv == null ? "" : clvTxt(p.clv)) + "</td><td>" +
             (p.result ? '<span class="pill ' + esc(p.result) + '">' + (p.result === "W" ? "Won" : p.result === "L" ? "Lost" : "Push") + "</span>" : '<span class="pill">Open</span>') + '</td><td class="ra ' + (p.units > 0 ? "up" : p.units < 0 ? "down" : "") + '">' + (p.units == null ? "" : signed(p.units)) + "</td></tr>";
         }).join("") + "</tbody></table></div></div>" : "") +
       (rec.length ? '<div class="panel span2"><h3>Recent games</h3><div class="scroll"><table><thead><tr><th>Date</th><th>Game</th><th class="ra">Ours</th><th class="ra">Market</th><th class="ra">Final</th><th>Closer</th></tr></thead><tbody>' +
@@ -3591,6 +3652,7 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
       if (g.neutral) notes.push('<span class="sg-flag mute">Neutral site</span>');
       if (isCBB() && g.model_kind === "market" && g.ratings_spread != null) notes.push('<span class="sg-flag mute" title="Our box-score ratings alone, before the market model">Ratings ' + esc(fmtSpread(ha, aa, g.ratings_spread)) + "</span>");
       if (isCBB() && g.event) notes.push('<span class="sg-flag mute">' + esc(g.event) + "</span>");
+      if (isCBB() && g.taller) notes.push('<span class="sg-flag' + (g.taller_by >= 2 ? " ht2" : " mute") + '" title="' + esc("Average height, weighted by minutes: " + shortName(g.away) + " " + (g.away_ht_txt || "") + " \u00b7 " + shortName(g.home) + " " + (g.home_ht_txt || "") + ". Taller teams rebound and score inside better, but the line already prices it (tested: no betting edge).") + '">\u2195 ' + esc(abbr(g.taller)) + " taller by " + u(g.taller_by) + '\u2033</span>');
       if (nfl) { var mm = bigMismatch(g.away, g.home); if (mm) notes.push('<button type="button" class="sg-flag mute tbtn" data-tpage="' + esc(mm[0]) + '" title="' + esc(mm[0] + "’s " + mm[1] + " offense vs a defense ranked " + mm[2] + " spots worse. A matchup, not a pick.") + '">' + esc(mm[0]) + " " + mm[1] + " mismatch</button>"); }
       return '<tr><td class="nw">' + esc(kickText(g.kickoff)) + (st ? '<small class="' + (sc.status === "live" ? "live" : "") + '">' + esc(st) + "</small>" : "") + "</td>" +
         '<td><div class="sg-g">' + nm(g.away, r.ra) + '<span class="at">' + (g.neutral && isCBB() ? "vs" : "@") + "</span>" + nm(g.home, r.rh) + "</div>" + (function () { if (!nfl) return ""; var h = historyFor(g.away, g.home); if (!h || !(h.facts || []).length) return "";
@@ -3703,6 +3765,7 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
     }
     if (g.angle) S.push("★★★ Tired Traveler: " + esc(g.away_abbr) + " are on a back-to-back after crossing a time zone; the play is " + esc(g.angle.pick || g.home_abbr) + ".");
     if (g.combo) S.push("◎ Combo watch leans " + esc(g.combo.pick) + (g.combo.p != null ? " (" + Math.round(g.combo.p * 100) + "% to cover)" : "") + "; it’s tracked on paper until a full season proves it.");
+    if (g.mk) S.push("\u25c6 Model Knows: we pick " + esc(g.mk.team) + " to win and Vegas picks the other side; tracked on paper (" + esc(g.mk.pick) + ").");
     if (g.vk) S.push("\u26a0 Vegas Knows: we have this one close but Vegas has " + esc(g.vk.pick) + "; tracked on paper (the Vegas favorite against the spread).");
     if (g.dist && g.dist.close != null) S.push(Math.round(g.dist.close * 100) + "% of our simulations finish within 5 points.");
     return '<p class="preview">' + S.join(" ") + "</p>";
@@ -4076,12 +4139,13 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
       el.innerHTML = '<div class="empty"><h2>' + msg[0] + "</h2><p>" + msg[1] + "</p></div>"; return;
     }
     if (isCBB() && !cbbNew()) { if (state.view === "teams") renderCbbTeams(el); else if (state.view === "record") renderCbbRecord(el); else renderCbbBoard(el); return; }
-    if (isNBA()) { if (state.view === "teams") renderRankings(el); else if (state.view === "record") renderNbaTracking(el); else if (state.view === "news") renderNbaNews(el); else if (state.view === "ahead") renderNbaAhead(el); else renderNbaBoard(el); return; }
+    if (isNBA()) { var cp = document.getElementById("cntPicks"); if (cp) cp.textContent = state.data.members_only ? "" : (nbaPickList(state.data).length || ""); }
+    if (isNBA()) { if (state.view === "teams") renderRankings(el); else if (state.view === "record") renderNbaTracking(el); else if (state.view === "news") renderNbaNews(el); else if (state.view === "ahead") renderNbaAhead(el); else if (state.view === "picks") renderNbaPicks(el); else renderNbaBoard(el); return; }
     if (state.view === "games") renderSlate(el); else if (state.view === "record") renderRecord(el); else if (state.view === "ratings") (isCBB() ? renderCbbStars(el) : renderRatings(el)); else if (state.view === "teams") renderTeams(el); else renderWeek(el);
   }
   document.querySelectorAll("[role=tab]").forEach(function (t) { t.addEventListener("click", function () { state.tpage = null; if (state.game) { state.game = null; try { history.replaceState(null, "", "#nba"); } catch (e) {} } state.view = t.getAttribute("data-view"); storeSet("gte.view", state.view); render(); }); });
-  var sv = storeGet("gte.view"); if (sv === "record" || sv === "ratings" || sv === "teams" || sv === "mybets" || sv === "bank" || sv === "games" || sv === "news" || sv === "ahead") state.view = sv;
-  if (/^#(week|games|news|ahead|teams|record|ratings|mybets|bank)$/.test(location.hash)) state.view = location.hash.slice(1);
+  var sv = storeGet("gte.view"); if (sv === "record" || sv === "ratings" || sv === "teams" || sv === "mybets" || sv === "bank" || sv === "games" || sv === "news" || sv === "ahead" || sv === "picks") state.view = sv;
+  if (/^#(week|picks|games|news|ahead|teams|record|ratings|mybets|bank)$/.test(location.hash)) state.view = location.hash.slice(1);
   // college defaults to proven ratings; the NFL sheet already sets honest stars, so it defaults to the stars as posted
   var modePick = document.getElementById("modePick");
   function loadMode() { state.mode = "sheet"; modePick.value = "sheet"; }      // the site always shows the stars and stakes on the sheet
@@ -4408,7 +4472,8 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
     document.getElementById("tab-games").hidden = daily;
     document.getElementById("tab-news").hidden = !nba;
     document.getElementById("tab-ahead").hidden = !nba;
-    if (!nba && (state.view === "news" || state.view === "ahead")) state.view = "week";
+    document.getElementById("tab-picks").hidden = !nba;
+    if (!nba && (state.view === "news" || state.view === "ahead" || state.view === "picks")) state.view = "week";
     document.getElementById("gearWrap").hidden = daily;
     document.querySelector(".hero").classList.toggle("compact", daily);
     if (daily && (state.view === "ratings" || state.view === "games")) state.view = "week";
