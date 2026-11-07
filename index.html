@@ -947,6 +947,13 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
 .sg-pick .st { font-size: 10px; }
 .sg-flag { display: inline-block; font-size: 11px; font-weight: 700; padding: 2px 6px; border-radius: 6px; background: var(--alert, #fff3cd); color: var(--ink); white-space: nowrap; cursor: default; margin: 1px 0; }
 .sg-flag.mute { background: var(--card-2); color: var(--ink-2); }
+.sg-n.sg-w { font-weight: 800; } .sg-n.sg-l { opacity: .55; } .sg-n .wck { font-style: normal; color: var(--win); font-weight: 800; }
+.cl-tag { display: inline-block; font-size: 11px; font-weight: 800; padding: 2px 7px; border-radius: 6px; white-space: nowrap; margin: 1px 0; }
+.cl-tag small { font-weight: 600; opacity: .8; }
+.cl-tag.us { background: var(--win-soft); color: var(--win); } .cl-tag.vegas { background: var(--loss-soft); color: var(--loss); } .cl-tag.even { background: var(--card-2); color: var(--ink-2); }
+.cl-tally { display: flex; flex-wrap: wrap; gap: 6px 18px; align-items: baseline; background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 10px 14px; margin: 0 0 12px; font-size: 13.5px; color: var(--ink-2); }
+.cl-tally > b { color: var(--ink); } .cl-tally .up b { color: var(--win); } .cl-tally .down b { color: var(--loss); }
+.cl-res { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; justify-content: space-between; padding: 8px 10px; margin: 6px 0; background: var(--card-2); border-radius: 10px; font-size: 13px; }
 .sg-flag.ht2 { background: var(--card-2); color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--accent); }
 @media (max-width: 640px) {
   .slt thead { display: none; }
@@ -1813,6 +1820,24 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
     if (!state.prevRatings) return null;
     if (prevIdxFor !== state.prevRatings) { prevIdx = {}; (state.prevRatings.teams || []).forEach(function (t) { prevIdx[t.team] = t; }); prevIdxFor = state.prevRatings; }
     return prevIdx[name] || null;
+  }
+  // finished games: whose spread landed closer to the final margin (spreads from the home side: negative = home favored)
+  function closerOf(m, ours, mkt) {
+    if (m == null || isNaN(m) || ours == null || isNaN(ours) || mkt == null || isNaN(mkt)) return null;
+    var eo = Math.abs(+ours + m), em = Math.abs(+mkt + m);
+    return { eo: eo, em: em, who: Math.abs(eo - em) < .05 ? "even" : eo < em ? "us" : "vegas" };
+  }
+  function closerTag(c) {
+    if (!c) return "";
+    return '<span class="cl-tag ' + c.who + '" title="How far each spread was from the final margin">' + (c.who === "us" ? "\u2713 Ours closer" : c.who === "vegas" ? "Vegas closer" : "Even") +
+      " <small>" + c.eo.toFixed(1) + " vs " + c.em.toFixed(1) + " off</small></span>";
+  }
+  function tallyHtml(cs, what) {
+    var n = cs.length; if (!n) return "";
+    var us = cs.filter(function (c) { return c.who === "us"; }).length, vg = cs.filter(function (c) { return c.who === "vegas"; }).length;
+    var ao = cs.reduce(function (a, c) { return a + c.eo; }, 0) / n, am = cs.reduce(function (a, c) { return a + c.em; }, 0) / n;
+    return '<div class="cl-tally"><b>' + n + " final" + (what ? " " + what : "") + "</b><span class=\"" + (us > vg ? "up" : "") + '">Ours closer in <b>' + us + "</b></span><span" + (vg > us ? ' class="down"' : "") + ">Vegas closer in <b>" + vg + "</b></span>" +
+      (n - us - vg ? "<span>Even " + (n - us - vg) + "</span>" : "") + "<span>Average miss: ours " + ao.toFixed(1) + " \u00b7 Vegas " + am.toFixed(1) + "</span></div>";
   }
   function fmtSpread(home, away, v) { if (v == null || isNaN(v)) return "\u2014"; if (Math.abs(v) < .05) return "Pick\u2019em"; return v < 0 ? home + " " + MIN + u(Math.abs(v)) : away + " " + MIN + u(Math.abs(v)); }
   // the model's number next to the market's, so the edge behind every full-game pick is visible
@@ -2767,9 +2792,8 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
   }
   function resultLine(g) {
     var s = nbaScore(g); if (!(s && s.status === "final")) return "";
-    var m = +s.home - +s.away, ours = Math.abs(m + g.our_spread), mk = g.mkt_spread == null ? null : Math.abs(m + g.mkt_spread);
-    return '<div class="mini"><span>Final <b>' + esc(g.away_abbr) + " " + s.away + " – " + esc(g.home_abbr) + " " + s.home + "</b></span>" +
-      (mk == null ? "" : '<span class="closer ' + (ours < mk ? "up" : ours > mk ? "down" : "") + '">' + (ours < mk ? "✓ Our spread was closer" : ours > mk ? "✗ Market was closer" : "Even") + " (" + ours.toFixed(1) + " vs " + mk.toFixed(1) + " off)</span>") + "</div>";
+    var m = +s.home - +s.away, w = m > 0 ? g.home_abbr : g.away_abbr;
+    return '<div class="cl-res"><span><b>' + esc(w) + " won</b> " + esc(g.away_abbr) + " " + s.away + "\u2013" + s.home + " " + esc(g.home_abbr) + "</span>" + closerTag(closerOf(m, g.our_spread, g.mkt_spread)) + "</div>";
   }
   function changeChip(g, all) {
     var c = g.changes || []; if (!c.length) return "";
@@ -2863,8 +2887,8 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
     var flag = nbaFlag(g);
     return '<article class="mc' + (isFavGame(g) ? " favd" : "") + '">' +
       '<div class="mc-top"><span class="mkt">' + esc(nbaStatus(g)) + "</span><span>" + luBadge(g) + (flag ? ' <span class="badge">Big gap</span>' : "") + "</span></div>" +
-      '<div class="teams">' + nbaTeamRow(g, "away", nbaScore(g)) + nbaTeamRow(g, "home", nbaScore(g)) + "</div>" + angleBar(g) + comboBar(g) + vkBar(g) + mkBar(g) + changeChip(g) +
-      curveSVG(g) + rangeLine(g) + linesTable(g) + moveNote(g) + gapHint(g) + whyBlock(g) + resultLine(g) +
+      '<div class="teams">' + nbaTeamRow(g, "away", nbaScore(g)) + nbaTeamRow(g, "home", nbaScore(g)) + "</div>" + resultLine(g) + angleBar(g) + comboBar(g) + vkBar(g) + mkBar(g) + changeChip(g) +
+      curveSVG(g) + rangeLine(g) + linesTable(g) + moveNote(g) + gapHint(g) + whyBlock(g) +
       '<div class="openrow"><a class="open" href="' + gameHref(g) + '">Full game page<span aria-hidden="true">›</span></a>' + trackBtn("nba:" + g.id) + '<button type="button" class="sharebtn" data-share-nba="' + esc(g.id) + '" aria-label="Share this game as an image">' + SHARE_ICO + "Share</button></div>" +
       '<details><summary>Preview \u00b7 the game in a few sentences</summary><div class="why">' + nbaPreview(g) + "</div></details>" +
       "<details><summary>More lines · 1st half, 1st quarter, moneyline</summary>" + moreLines(g) + "</details>" +
@@ -2915,6 +2939,7 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
     return '<div class="panel" style="padding:6px 8px"><div class="scroll"><table class="gl"><thead><tr><th>Tip</th><th>Game</th><th class="ra">Ours</th><th class="ra">Market</th><th class="ra">Gap</th><th class="ra">Total</th><th class="ra">Mkt total</th><th class="ra">Win %</th></tr></thead><tbody>' +
       list.map(function (g) {
         var s = nbaScore(g), score = s && (s.status === "live" || s.status === "final") ? " <small>" + s.away + "–" + s.home + "</small>" : "";
+        if (s && s.status === "final") score += " " + closerTag(closerOf(+s.home - +s.away, g.our_spread, g.mkt_spread));
         var hotS = g.spread_gap != null && Math.abs(g.spread_gap) >= 3, hotT = g.total_gap != null && Math.abs(g.total_gap) >= 4;
         return '<tr data-go="' + gameHref(g) + '" tabindex="0"><td>' + esc(nbaStatus(g)) + "</td><td><b>" + esc(g.away_abbr) + "</b> @ <b>" + esc(g.home_abbr) + "</b>" + (isFavGame(g) ? ' <span class="favd-dot">★</span>' : "") + score + (g.changes && g.changes.length ? ' <span class="badge">new</span>' : "") + "</td>" +
           '<td class="ra"><b>' + esc(favTxt(g, g.our_spread)) + '</b></td><td class="ra">' + esc(favTxt(g, g.mkt_spread)) + '</td><td class="ra' + (hotS ? " acc2" : "") + '">' + gapCell(g) + "</td>" +
@@ -2979,7 +3004,8 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
       if (q && (g.away + " " + g.home + " " + g.away_abbr + " " + g.home_abbr).toLowerCase().indexOf(q) < 0) return false;
       return true;
     }));
-    var html = storyHtml(d.games) +
+    var NCL = []; (d.games || []).forEach(function (g) { var s = nbaScore(g); if (s && s.status === "final") { var c = closerOf(+s.home - +s.away, g.our_spread, g.mkt_spread); if (c) NCL.push(c); } });
+    var html = storyHtml(d.games) + tallyHtml(NCL, "tonight") +
       '<div class="filters"><div class="chips" role="group" aria-label="Games">' +
       [["all", "All games"], ["flag", "Big gaps"]].map(function (m) { return '<button type="button" class="chip" data-seg="market" data-val="' + m[0] + '" aria-pressed="' + ((state.market === m[0]) || (m[0] === "all" && state.market !== "flag")) + '">' + m[1] + "</button>"; }).join("") +
       "</div>" + segHtml("nsort", NSORT, state.nsort || "time", "Sort") + segHtml("nview", NVIEW, state.nview || "cards", "View") +
@@ -3614,7 +3640,7 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
     var d = state.data || {}, sd = rkCfg().sd, picks = {};
     (d.bets || []).forEach(function (x) { legGames(x).forEach(function (gm) { (picks[gm.game] = picks[gm.game] || []).push(x); }); });
     return (d.slate || []).map(function (g) {
-      var key = g.away + " @ " + g.home, sc = state.scores && state.scores.games && state.scores.games[key];
+      var key = g.away + " @ " + g.home, sc = state.scores && state.scores.games && (state.scores.games[key] || (g.id != null && state.scores.games[String(g.id)]));
       var liveS = sc && sc.ln && sc.ln.sp != null && sc.status === "pre" ? sc.ln.sp : null, liveT = sc && sc.ln && sc.ln.tot != null && sc.status === "pre" ? sc.ln.tot : null;
       var ls = liveS != null ? liveS : g.line_spread, lt = liveT != null ? liveT : g.line_total;
       var pH = g.model_spread == null ? null : normCdf(-g.model_spread / sd), ta = teamRow0(g.away), th = teamRow0(g.home);
@@ -3643,12 +3669,17 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
       if (gs === "close") return Math.abs((a.pH == null ? .5 : a.pH) - .5) - Math.abs((b.pH == null ? .5 : b.pH) - .5);
       return a.t - b.t || (a.key < b.key ? -1 : 1);
     });
-    function nm(team, row) { return badge(team, nfl ? team : null, "sm") + '<span class="sg-n">' + (row && !nfl ? '<i class="rk">' + row.rank + "</i>" : "") + esc(nfl ? team : shortName(team) || team) + "</span>"; }
+    function nm(team, row, wl) { return badge(team, nfl ? team : null, "sm") + '<span class="sg-n' + (wl ? " " + wl : "") + '">' + (row && !nfl ? '<i class="rk">' + row.rank + "</i>" : "") + esc(nfl ? team : shortName(team) || team) + (wl === "sg-w" ? ' <i class="wck">\u2713</i>' : "") + "</span>"; }
+    var CL = [];
     function ml(p) { var a = amerExact(p); return a == null ? "" : (a > 0 ? "+" : MIN) + Math.abs(a); }
     var rows = list.map(function (r) {
       var g = r.g, ha = abbr(g.home), aa = abbr(g.away), sc = r.sc, st = sc && sc.status !== "pre" ? (sc.status === "final" ? "Final " : "Live ") + sc.away + "–" + sc.home : "";
+      var fin = sc && sc.status === "final" && sc.home != null && sc.away != null && !isNaN(+sc.home), fm = fin ? +sc.home - +sc.away : null;
+      var wH = fin ? (fm > 0 ? "sg-w" : fm < 0 ? "sg-l" : "") : "", wA = fin ? (fm < 0 ? "sg-w" : fm > 0 ? "sg-l" : "") : "";
+      var clo = fin ? closerOf(fm, g.model_spread, r.ls) : null;
       var fav = r.pH == null ? null : r.pH >= .5 ? [ha, r.pH] : [aa, 1 - r.pH];
       var notes = r.picks.map(function (x) { return '<button type="button" class="sg-pick" data-gopick="' + esc(x.home || "") + '">' + starsHtml(rated(x).stars) + " " + esc(pretty(x.pick)) + "</button>"; });
+      if (clo) notes.unshift(closerTag(clo));
       if (g.qb) notes.push('<span class="sg-flag" title="' + esc(g.qb) + '">⚠ QB</span>');
       if (g.wind_flag || (g.wind != null && g.wind >= 12 && g.roof !== "dome" && g.roof !== "closed")) notes.push('<span class="sg-flag">Wind' + (g.wind != null ? " " + g.wind + " mph" : " 12+ mph") + "</span>");
       if (g.roof === "dome" || g.roof === "closed") notes.push('<span class="sg-flag mute">Dome</span>');
@@ -3658,7 +3689,7 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
       if (isCBB() && g.taller) notes.push('<span class="sg-flag' + (g.taller_by >= 2 ? " ht2" : " mute") + '" title="' + esc("Average height, weighted by minutes: " + shortName(g.away) + " " + (g.away_ht_txt || "") + " \u00b7 " + shortName(g.home) + " " + (g.home_ht_txt || "") + ". Taller teams rebound and score inside better, but the line already prices it (tested: no betting edge).") + '">\u2195 ' + esc(abbr(g.taller)) + " taller by " + u(g.taller_by) + '\u2033</span>');
       if (nfl) { var mm = bigMismatch(g.away, g.home); if (mm) notes.push('<button type="button" class="sg-flag mute tbtn" data-tpage="' + esc(mm[0]) + '" title="' + esc(mm[0] + "’s " + mm[1] + " offense vs a defense ranked " + mm[2] + " spots worse. A matchup, not a pick.") + '">' + esc(mm[0]) + " " + mm[1] + " mismatch</button>"); }
       return '<tr><td class="nw">' + esc(kickText(g.kickoff)) + (st ? '<small class="' + (sc.status === "live" ? "live" : "") + '">' + esc(st) + "</small>" : "") + "</td>" +
-        '<td><div class="sg-g">' + nm(g.away, r.ra) + '<span class="at">' + (g.neutral && isCBB() ? "vs" : "@") + "</span>" + nm(g.home, r.rh) + "</div>" + (function () { if (!nfl) return ""; var h = historyFor(g.away, g.home); if (!h || !(h.facts || []).length) return "";
+        '<td><div class="sg-g">' + nm(g.away, r.ra, wA) + '<span class="at">' + (g.neutral && isCBB() ? "vs" : "@") + "</span>" + nm(g.home, r.rh, wH) + "</div>" + (function () { if (!nfl) return ""; var h = historyFor(g.away, g.home); if (!h || !(h.facts || []).length) return "";
           return '<small class="sg-hist" title="' + esc((h.facts || []).concat(h.last ? [h.last] : []).join("\n")) + '">' + esc(h.facts[0]) + "</small>"; })() + "</td>" +
         '<td class="ra nw">' + esc(fmtSpread(ha, aa, r.ls)) + (r.live || r.ls == null ? "" : ' <small title="The line when the sheet was built">' + (isCBB() ? "morning" : "sheet") + "</small>") +
           (g.open_spread != null && r.ls != null && Math.abs(g.open_spread - r.ls) >= .5 ? '<small class="opn">opened ' + esc(fmtSpread(ha, aa, g.open_spread)) + " (" + u(Math.abs(r.ls - g.open_spread)) + " toward " + esc(r.ls < g.open_spread ? ha : aa) + ")</small>" : "") + "</td>" +
@@ -3672,6 +3703,7 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
         '<td class="sg-notes">' + notes.join(" ") + "</td></tr>";
     }).join("");
     var nPicks = all.filter(function (r) { return r.picks.length; }).length;
+    all.forEach(function (r) { var sc = r.sc; if (sc && sc.status === "final" && !isNaN(+sc.home)) { var c = closerOf(+sc.home - +sc.away, r.g.model_spread, r.ls); if (c) CL.push(c); } });
     el.innerHTML = '<div class="sg-warn" role="note"><b>Our numbers, not picks.</b> This is our model’s spread, total and win chance for every game on the board. ' +
       "Just because we have a game at a number doesn’t mean you should bet it: on its own, the model didn’t beat closing lines in our backtests. " +
       'Only the setups on the <button type="button" class="lnk" data-gopick="">Picks</button> tab did, and those are the bets.</div>' +
@@ -3679,6 +3711,7 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
       segHtml("gs", [["time", isCBB() ? "Tip time" : "Kickoff"], ["diff", "Biggest difference"], ["close", "Closest"]], gs, "Sort") +
       (Object.keys(confs).length > 1 ? '<select id="gconf" class="search" style="max-width:200px" aria-label="Conference"><option value="all">All conferences</option>' + Object.keys(confs).sort().map(function (c) { return '<option' + (c === gc ? " selected" : "") + ">" + esc(c) + "</option>"; }).join("") + "</select>" : "") +
       '<input class="search" id="gq" type="search" placeholder="Search team' + (nfl ? " or QB" : "") + '" value="' + esc(state.gq || "") + '" aria-label="Search team"></div>' +
+      tallyHtml(CL, isCBB() ? "today" : "this week") +
       '<div class="panel sg-panel"><div class="scroll"><table class="slt"><thead><tr><th>' + (isCBB() ? "Tip" : "Kickoff") + '</th><th>Game</th><th class="ra">Line</th><th class="ra">Our spread</th><th class="ra">Difference</th><th class="ra">Total</th><th class="ra">Our total</th><th class="ra">Difference</th><th class="ra">Win chance</th><th class="ra" title="What each side is worth at our win chance: American odds, and cents on an exchange">Fair price</th><th>Notes</th></tr></thead><tbody>' +
       (rows || '<tr><td colspan="11" class="note">No games match.</td></tr>') + "</tbody></table></div>" +
       '<p class="note" style="margin-top:10px">Spreads are shown as the favorite and its number. ' + (isCBB() ? "Line = ESPN’s current line before tip (“morning” = the line when the card was built). " : "Line = ESPN’s current line before kickoff (“sheet” = the line when the sheet was built). ") +
