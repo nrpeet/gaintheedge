@@ -1014,6 +1014,8 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
 .mu-row { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, .9fr); gap: 8px; align-items: center; padding: 8px 0; border-top: 1px solid var(--line, rgba(127,127,127,.18)); font-size: 13px; }
 .mu-row:first-of-type { border-top: 0; }
 .hist { margin-top: 10px; } .hist ul { margin: 6px 0 4px; padding-left: 18px; font-size: 13.5px; } .hist li { margin: 3px 0; }
+.hist1 { display: flex; gap: 6px; align-items: baseline; font-size: 12.5px; color: var(--ink-2); background: var(--card-2); border-radius: 8px; padding: 6px 9px; margin: 6px 0 2px; }
+.hist1 span { flex: none; }
 .sg-hist { display: block; margin-top: 3px; font-size: 11.5px; color: var(--ink-2); max-width: 320px; white-space: normal; }
 .sty-row { display: grid; grid-template-columns: minmax(0, 1fr) auto 48px; gap: 12px; align-items: center; padding: 8px 0; border-top: 1px solid var(--line, rgba(127,127,127,.18)); font-size: 13.5px; }
 .sty-row .tnum { color: var(--ink-2); } .sty-row .sty-rk { justify-self: end; }
@@ -2026,9 +2028,9 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
       (rt.benched === "lost" ? '<div class="alert warn"><b>⇄ Benched: other side is stronger</b><span>Playing ' + esc(pretty(rt.vs.pick)) + " (" + esc(baseRated(rt.vs).by) + ", floor " + pct(baseRated(rt.vs).lo) + " vs " + pct(rt.was.lo) + ")</span></div>" : "") +
       (rt.benched === "tie" ? '<div class="alert warn"><b>⇄ Too close to call: passing both sides</b><span>' + esc(pretty(rt.vs.pick)) + " is on the other side with a similar record</span></div>" : "") +
       (rt.beat ? '<div class="alert warn" style="opacity:.85"><b>⇄ Chosen over the other side</b><span>' + esc(pretty(rt.beat.pick)) + " is benched \u00b7 floor " + pct(rt.lo) + " vs " + pct(baseRated(rt.beat).lo) + "</span></div>" : "") +
-      '<div class="chyron"><div class="lbl"><i>PICK</i><span class="pk"><b>' + esc(pickTxt) + "</b>" + goodTo(x, paper) + "</span></div>" + resultChip(x, gr, paper) + "</div>" + numberBox(x, paper, true) + plainHtml(x) +
+      '<div class="chyron"><div class="lbl"><i>PICK</i><span class="pk"><b>' + esc(pickTxt) + "</b>" + goodTo(x, paper) + "</span></div>" + resultChip(x, gr, paper) + "</div>" + numberBox(x, paper, true) + plainHtml(x) + histLine(x) +
       '<div class="mc-foot"><span class="fl2">' + foot + '</span><span class="acts2">' + trackBtn(sportKey() + ":" + x.id) + '<button type="button" class="sharebtn" data-share="' + esc(x.id || "") + '" aria-label="Share this pick as an image">' + SHARE_ICO + "Share</button></span></div>" +
-      "<details><summary>Why this pick</summary><div class=\"why\">" + fbPreview(x) + why +
+      "<details><summary>Why this pick</summary><div class=\"why\">" + fbPreview(x) + why + (isFootball() ? historyHtml(historyFor(x.away, x.home)) : "") +
       (x.qb ? '<div class="flag">QB check: ' + esc(x.qb) + "</div>" : "") + (x.edge && !x.plain ? '<div class="edge">' + esc(pretty(x.edge)) + "</div>" : "") +
       "</div></details></article>";
   }
@@ -3689,8 +3691,8 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
       if (isCBB() && g.taller) notes.push('<span class="sg-flag' + (g.taller_by >= 2 ? " ht2" : " mute") + '" title="' + esc("Average height, weighted by minutes: " + shortName(g.away) + " " + (g.away_ht_txt || "") + " \u00b7 " + shortName(g.home) + " " + (g.home_ht_txt || "") + ". Taller teams rebound and score inside better, but the line already prices it (tested: no betting edge).") + '">\u2195 ' + esc(abbr(g.taller)) + " taller by " + u(g.taller_by) + '\u2033</span>');
       if (nfl) { var mm = bigMismatch(g.away, g.home); if (mm) notes.push('<button type="button" class="sg-flag mute tbtn" data-tpage="' + esc(mm[0]) + '" title="' + esc(mm[0] + "’s " + mm[1] + " offense vs a defense ranked " + mm[2] + " spots worse. A matchup, not a pick.") + '">' + esc(mm[0]) + " " + mm[1] + " mismatch</button>"); }
       return '<tr><td class="nw">' + esc(kickText(g.kickoff)) + (st ? '<small class="' + (sc.status === "live" ? "live" : "") + '">' + esc(st) + "</small>" : "") + "</td>" +
-        '<td><div class="sg-g">' + nm(g.away, r.ra, wA) + '<span class="at">' + (g.neutral && isCBB() ? "vs" : "@") + "</span>" + nm(g.home, r.rh, wH) + "</div>" + (function () { if (!nfl) return ""; var h = historyFor(g.away, g.home); if (!h || !(h.facts || []).length) return "";
-          return '<small class="sg-hist" title="' + esc((h.facts || []).concat(h.last ? [h.last] : []).join("\n")) + '">' + esc(h.facts[0]) + "</small>"; })() + "</td>" +
+        '<td><div class="sg-g">' + nm(g.away, r.ra, wA) + '<span class="at">' + (g.neutral && isCBB() ? "vs" : "@") + "</span>" + nm(g.home, r.rh, wH) + "</div>" + (function () { if (!nfl && state.sport !== "cfb") return ""; var h = historyFor(g.away, g.home); if (!h || !(h.facts || []).length) return "";
+          return '<small class="sg-hist" title="' + esc((h.facts || []).concat(h.last ? [h.last] : []).join("\n")) + '">\ud83d\udcdc ' + esc(h.facts[0]) + "</small>"; })() + "</td>" +
         '<td class="ra nw">' + esc(fmtSpread(ha, aa, r.ls)) + (r.live || r.ls == null ? "" : ' <small title="The line when the sheet was built">' + (isCBB() ? "morning" : "sheet") + "</small>") +
           (g.open_spread != null && r.ls != null && Math.abs(g.open_spread - r.ls) >= .5 ? '<small class="opn">opened ' + esc(fmtSpread(ha, aa, g.open_spread)) + " (" + u(Math.abs(r.ls - g.open_spread)) + " toward " + esc(r.ls < g.open_spread ? ha : aa) + ")</small>" : "") + "</td>" +
         '<td class="ra nw"><b>' + esc(fmtSpread(ha, aa, g.model_spread)) + "</b></td>" +
@@ -3993,6 +3995,12 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
   var STY_KEYS = [["run_off", "Run offense"], ["pass_off", "Pass offense"], ["run_def", "Run defense"], ["pass_def", "Pass defense"], ["run_rate", "Run rate"],
     ["pres_allowed", "Pressure allowed"], ["pres_made", "Pressure created"], ["blitz", "Blitz rate"], ["expl_off", "Big plays"], ["expl_def", "Big plays allowed"]];
   var STY_NOTE = "From this season’s play-by-play (EPA per play) and FTN charting, before this week. Matchups explain a line; in our tests (2016-25) none of them beat the closing line on its own, so they aren’t picks.";
+  function isFootball() { return state.sport === "cfb" || state.sport === "nfl"; }
+  function histLine(x) {
+    if (!isFootball() || !x.away || !x.home || x.market === "Teaser") return "";
+    var h = historyFor(x.away, x.home); if (!h || !(h.facts || []).length) return "";
+    return '<div class="hist1" title="' + esc((h.facts || []).concat(h.last ? [h.last] : []).join("\n")) + '"><span>\ud83d\udcdc</span>' + esc(h.facts[0]) + "</div>";
+  }
   function historyFor(a, b) {
     var H = (state.ratings || {}).history; if (!H) return null;
     var out = null; Object.keys(H).forEach(function (k) { var x = H[k]; if ((x.home === a && x.away === b) || (x.home === b && x.away === a)) out = x; });
@@ -4000,8 +4008,8 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
   }
   function historyHtml(h) {
     if (!h) return "";
-    return '<div class="hist"><div class="mb-sub">History <small>(' + h.meetings + " meetings since 1999)</small></div><ul>" + (h.facts || []).map(function (f) { return "<li>" + esc(f) + "</li>"; }).join("") +
-      (h.last ? "<li>" + esc(h.last) + "</li>" : "") + '</ul><p class="note">History, not a pick: in our tests (2006-25) head-to-head streaks and records didn’t beat the closing line.</p></div>';
+    return '<div class="hist"><div class="mb-sub">History <small>(' + h.meetings + " meeting" + (h.meetings === 1 ? "" : "s") + " since " + (h.since || 1999) + ")</small></div><ul>" + (h.facts || []).map(function (f) { return "<li>" + esc(f) + "</li>"; }).join("") +
+      (h.last ? "<li>" + esc(h.last) + "</li>" : "") + '</ul><p class="note">' + (h.since ? "History, not a pick: these notes aren\u2019t part of how picks are made." : "History, not a pick: in our tests (2006-25) head-to-head streaks and records didn’t beat the closing line.") + "</p></div>";
   }
   function styleData() { var r = state.ratings || {}; return r.style && r.style.teams && Object.keys(r.style.teams).length ? r.style : null; }
   function styRank(n, tendency) { if (n == null) return '<span class="sty-rk">—</span>'; var cls = tendency ? "" : n <= 8 ? " top" : n >= 25 ? " bot" : ""; return '<span class="sty-rk' + cls + '" title="#' + n + ' of 32">#' + n + "</span>"; }
