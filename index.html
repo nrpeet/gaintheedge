@@ -1664,7 +1664,8 @@ body.on-home { overflow-anchor: none; }
     if (!uid) { AUTH.member = null; AUTH.ready = true; lastUid = null; MB.list = null; MB.set = null; renderAcct(); syncData(); return; }
     if (uid === lastUid && AUTH.member) { AUTH.ready = true; renderAcct(); return; }
     lastUid = uid;
-    SB.from("members").select("username,active,active_until,plan,comp,sub_status").eq("user_id", uid).maybeSingle().then(function (r) {
+    SB.from("members").select("*").eq("user_id", uid).maybeSingle().then(function (r) {   // "*": works before and after the Stripe columns exist
+      if (r && r.error) console.warn("members lookup:", r.error.message);
       AUTH.member = (r && r.data) || { active: false }; AUTH.ready = true; storeSet("gte.member", isMember() ? "1" : ""); renderAcct(); if (isMember() && state.home && state.homeAuto) showHome(false); syncData(); loadBets();
       if (!isMember() && payOn() && wantTrial()) { storeSet("gte.wantTrial", ""); goCheckout(); }
     }, function () { AUTH.member = { active: false }; AUTH.ready = true; renderAcct(); syncData(); });
