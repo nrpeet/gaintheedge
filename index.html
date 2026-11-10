@@ -177,6 +177,14 @@ select.ctl option { color: #0b1222; }
 .fm-d b { font-size: 14px; } .fm-d.w { background: var(--win-soft); } .fm-d.w b { color: var(--win); } .fm-d.l { background: var(--loss-soft); } .fm-d.l b { color: var(--loss); }
 .ct-r.up { fill: var(--win); font-weight: 800; } .ct-r.down { fill: var(--loss); font-weight: 800; }
 @media (max-width: 560px) { .eg-row { grid-template-columns: 70px minmax(0, 1fr) 70px; } .on-g { grid-template-columns: 1fr; } }
+
+.tb-row { margin-top: 10px; } .tb-h { display: flex; align-items: center; gap: 6px; font-size: 13.5px; margin-bottom: 5px; } .tb-h span { color: var(--ink-2); font-size: 12.5px; margin-left: 4px; }
+.tb-bar { display: flex; height: 22px; border-radius: 7px; overflow: hidden; background: var(--card-2); --tc: var(--tcd, #8b96ad); }
+:root[data-theme="light"] .tb-bar { --tc: var(--tcl, #56627d); }
+@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) .tb-bar { --tc: var(--tcl, #56627d); } }
+.tb-s { display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800; color: #fff; white-space: nowrap; overflow: hidden; }
+.tb-s.ret { background: var(--tc); } .tb-s.xfer { background: var(--accent); } .tb-s.new { background: repeating-linear-gradient(135deg, var(--ink-3) 0 6px, color-mix(in srgb, var(--ink-3) 70%, transparent) 6px 12px); }
+.tb-f { font-size: 12px; color: var(--ink-2); margin-top: 4px; }
 /* ---------- each sport's scoreboard band: a faint field or court behind the numbers ---------- */
 body[class*="lg-"] .hero::before { inset: 0; -webkit-mask-image: linear-gradient(90deg, transparent 0, rgba(0,0,0,.25) 30%, #000 72%); mask-image: linear-gradient(90deg, transparent 0, rgba(0,0,0,.25) 30%, #000 72%); }
 body.lg-nfl .hero::before { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='240' viewBox='0 0 120 240'%3E%3Cg stroke='%23fff' fill='none' stroke-opacity='.11'%3E%3Cpath d='M1 0v240' stroke-width='2.5'/%3E%3Cpath d='M24 0v9M24 231v9M24 101v10M24 129v10'/%3E%3Cpath d='M48 0v9M48 231v9M48 101v10M48 129v10'/%3E%3Cpath d='M72 0v9M72 231v9M72 101v10M72 129v10'/%3E%3Cpath d='M96 0v9M96 231v9M96 101v10M96 129v10'/%3E%3C/g%3E%3C/svg%3E") repeat-x right center / auto 100%, linear-gradient(90deg, transparent, rgba(46, 140, 72, .16)); }
@@ -3497,7 +3505,7 @@ body.on-home { overflow-anchor: none; }
   function edgeRows(away, home) {
     var R = [], sp = state.sport;
     var SC = { "Rating tonight": 10, "Rating": isCBB() ? 20 : 14, "Offense": isCBB() ? 15 : 8, "Defense": isCBB() ? 15 : 8, "Fully healthy": 10, "Lost to injuries": 5, "Last 10 games": 10,
-      "Schedule so far": isCBB() ? 10 : 6, "Pace": 6, "Luck": 4, "Tempo": 8, "Height": 3, "Offense EPA/play": .2, "Defense EPA/play": .2, "QB adjustment": 6, "Special teams": 3 };
+      "Schedule so far": isCBB() ? 10 : 6, "Pace": 6, "Luck": 4, "Tempo": 8, "Height": 3, "Offense EPA/play": .2, "Defense EPA/play": .2, "QB adjustment": 6, "Special teams": 3, "Roster talent": 4, "Transfers added": 2, "Returning minutes": .5 };
     function add(l, a, h, better, fmt, ra, rh, tip, main) { if (a == null || h == null || isNaN(+a) || isNaN(+h)) return; R.push({ l: l, a: +a, h: +h, b: better, f: fmt, ra: ra, rh: rh, tip: tip || "", main: !!main, sc: SC[l] || 10 }); }
     var f1 = function (v) { return (+v).toFixed(1); }, s1 = function (v) { return signed(+v, 1); }, s2 = function (v) { return signed(+v, 2); };
     if (isNBA()) {
@@ -3519,6 +3527,10 @@ body.on-home { overflow-anchor: none; }
       add("Luck", A2.luck, H2.luck, 0, s1, null, null, "Points a game gained (+) or lost to opponents' shooting luck; lucky teams tend to come back to earth");
       add("Tempo", A2.tempo, H2.tempo, 0, f1, A2.t_rank, H2.t_rank, "Possessions per 40 (style, no edge)");
       var sg = slateGame(away, home); if (sg) add("Height", sg.away_ht, sg.home_ht, 1, htTxt, null, null, "Average height weighted by minutes (tested: the line already prices it)");
+      var pc = function (v) { return Math.round(100 * v) + "%"; };
+      add("Roster talent", A2.talent, H2.talent, 1, s1, A2.talent_rank, H2.talent_rank, "Coming into the season: each player's box plus-minus from last season (any team), weighted by his minutes, top 9. Freshmen have no D1 numbers yet and count at a bench-level default (we don't have recruiting rankings)", 1);
+      add("Transfers added", A2.xfer_val, H2.xfer_val, 1, s1, null, null, "What the D1 transfers add to the roster talent (their share of it)");
+      add("Returning minutes", A2.ret_share, H2.ret_share, 1, pc, null, null, "Share of the expected minutes from players who were on this team last season (continuity)");
     } else {
       var A3 = teamRow0(away), H3 = teamRow0(home);
       if (A3 && H3) {
@@ -3561,10 +3573,24 @@ body.on-home { overflow-anchor: none; }
       return '<div class="eg-mu"><span>' + esc(m.l) + ": <b>" + esc(shortName(m.oT)) + "</b> offense #" + m.oR + " vs <b>" + esc(shortName(m.dT)) + "</b> defense #" + m.dR + "</span>" +
         (m.edge && m.gap >= 6 ? '<span class="eg-who">' + badge(m.edge, nfl ? m.edge : null, "sm") + " edge" + (m.gap >= 15 ? " (big)" : "") + "</span>" : '<span class="eg-who mute">even</span>') + "</div>";
     }).join("");
+    var tb = isCBB() ? talentBars(away, home) : "";
     return '<div class="panel mu-edges"><h3>Who has the edge</h3><div class="eg-head"><span>' + badge(away, nfl ? away : null, "sm") + " " + esc(shortName(away)) + "<small>" + ca + " edge" + (ca === 1 ? "" : "s") + "</small></span><span>" +
       "<small>" + ch + " edge" + (ch === 1 ? "" : "s") + "</small>" + esc(shortName(home)) + " " + badge(home, nfl ? home : null, "sm") + "</span></div>" + rows +
-      (mrows ? '<div class="eg-sub">Offense vs defense <small>(ranks, 1 = best)</small></div>' + mrows : "") +
+      (mrows ? '<div class="eg-sub">Offense vs defense <small>(ranks, 1 = best)</small></div>' + mrows : "") + tb +
       '<p class="note">★ = matters most. The bar shows who’s better and by how much. The line already prices most of this; our picks come from the models, not from counting edges.</p></div>';
+  }
+  function talentBars(away, home) {
+    var A = teamRow0(away), H = teamRow0(home); if (!A || !H || A.talent == null || H.talent == null) return "";
+    function bar(t, T) {
+      var r = Math.round(100 * (T.ret_share || 0)), x = Math.round(100 * (T.xfer_share || 0)), n = Math.max(0, 100 - r - x);
+      return '<div class="tb-row"><div class="tb-h">' + badge(t, null, "sm") + " <b>" + esc(shortName(t)) + '</b><span>talent ' + signed(T.talent, 1) + (T.talent_rank ? " · #" + T.talent_rank : "") + "</span></div>" +
+        '<div class="tb-bar"' + tcStyle(t) + ">" + (r ? '<span class="tb-s ret" style="width:' + r + '%" title="Returning: ' + r + '% of the minutes">' + (r >= 12 ? "Returning " + r + "%" : "") + "</span>" : "") +
+        (x ? '<span class="tb-s xfer" style="width:' + x + '%" title="' + esc((T.xfer_n || 0) + " D1 transfer" + (T.xfer_n === 1 ? "" : "s") + ": " + x + "% of the minutes, adding " + signed(T.xfer_val || 0, 1)) + '">' + (x >= 12 ? "Transfers " + x + "%" : "") + "</span>" : "") +
+        (n ? '<span class="tb-s new" style="width:' + n + '%" title="' + esc((T.new_n || 0) + " newcomer" + (T.new_n === 1 ? "" : "s") + " with no D1 minutes (freshmen, JUCO, international): " + n + "% of the minutes, not rated yet") + '">' + (n >= 14 ? "New " + n + "%" : "") + "</span>" : "") +
+        '</div><div class="tb-f">' + (T.xfer_n || 0) + " transfer" + (T.xfer_n === 1 ? "" : "s") + " (" + signed(T.xfer_val || 0, 1) + ") · " + (T.new_n || 0) + " newcomer" + (T.new_n === 1 ? "" : "s") + " not rated yet</div></div>";
+    }
+    return '<div class="eg-sub">Talent bar <small>(where each roster\u2019s minutes come from)</small></div>' + bar(away, A) + bar(home, H) +
+      '<p class="note" style="margin-top:6px">Talent = last season\u2019s box plus-minus of the players on this roster, weighted by minutes (it tracks the final rating closely: 0.82 correlation in 2025-26). Freshmen and other newcomers have no D1 numbers, so they count at a bench-level default until they play; we don\u2019t have recruiting rankings, so a team built on elite freshmen will look less talented here than it is.</p>';
   }
   function slateGame(away, home) { var out = null; ((state.data || {}).slate || []).forEach(function (g) { if (g.away === away && g.home === home) out = g; }); return out; }
   // ---- our number vs Vegas, and any picks on this game
