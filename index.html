@@ -123,6 +123,73 @@ select.ctl option { color: #0b1222; }
   -webkit-mask-image: linear-gradient(90deg, transparent, #000 40%); mask-image: linear-gradient(90deg, transparent, #000 40%);
 }
 .hero::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 4px; background: linear-gradient(90deg, var(--h-accent) 0 22%, transparent 22% 23%, var(--h-accent) 23% 24%, transparent 24%); opacity: .9; }
+
+
+/* ---------- matchup page ---------- */
+.sg-mu { cursor: pointer; } .sg-mu:hover .sg-g { text-decoration: underline; text-decoration-color: var(--accent); text-underline-offset: 4px; }
+.mu-back { border: 0; background: none; cursor: pointer; padding: 0; }
+.mu-head .mu-vs { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-family: var(--f-display); font-size: 28px; font-weight: 900; text-transform: uppercase; }
+.mu-head .mu-vs .at { color: var(--ink-3); font-size: 18px; }
+.mu-h2h, .mu-lu, .mu-head + .hist { margin-top: 16px; }
+.mu-sum { display: flex; gap: 12px; align-items: baseline; flex-wrap: wrap; margin-bottom: 10px; } .mu-sum b { font-size: 17px; } .mu-sum span { color: var(--ink-2); font-size: 13px; }
+.mu-tbl td { vertical-align: middle; } .mu-post { color: var(--accent); font-weight: 700; }
+.mu-side + .mu-side { margin-top: 18px; }
+.mu-cap { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; font-size: 14px; margin-bottom: 8px; } .mu-cap span { color: var(--ink-3); font-size: 12px; }
+.mu-fill { font-size: 12.5px; color: var(--ink-2); margin: 6px 0 0; }
+.mu-courts { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+.mu-lead { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; font-size: 13.5px; } .mu-lead ul { margin: 6px 0 0; padding-left: 18px; }
+.fx, .ct { width: 100%; height: auto; display: block; }
+.fx-wrap { overflow-x: auto; } .fx { min-width: 560px; max-width: 780px; margin: 0 auto; } .ct { max-width: 520px; margin: 0 auto; }
+.fx-bg { fill: color-mix(in srgb, #2e8c48 14%, var(--card-2)); } .fx-yd { stroke: var(--line); stroke-width: 2; } .fx-los { stroke: var(--ink-3); stroke-width: 2; stroke-dasharray: 6 5; }
+.fx-wrap { --o: var(--mo); --x: var(--mx); }
+:root[data-theme="light"] .fx-wrap { --o: var(--mo-l); --x: var(--mx-l); }
+@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) .fx-wrap { --o: var(--mo-l); --x: var(--mx-l); } }
+.fx-o { fill: none; stroke: color-mix(in srgb, var(--o) 62%, #fff); stroke-width: 3.5; } .fx-x path { stroke: color-mix(in srgb, var(--x) 62%, #fff); stroke-width: 3.5; stroke-linecap: round; }
+:root[data-theme="light"] .fx-o { stroke: var(--o); } :root[data-theme="light"] .fx-x path { stroke: var(--x); }
+@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) .fx-o { stroke: var(--o); } :root:not([data-theme="dark"]) .fx-x path { stroke: var(--x); } }
+.mu-w { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+.fx-n { font-size: 13.5px; font-weight: 700; fill: var(--ink); text-anchor: middle; font-family: var(--f-body); } .fx-n.fill { fill: var(--accent); } .fx-n.q { font-style: italic; }
+.fx-p { font-size: 10.5px; font-weight: 800; fill: var(--ink-3); text-anchor: middle; letter-spacing: .06em; font-family: var(--f-body); }
+.ct-bg { fill: color-mix(in srgb, #c47a34 13%, var(--card-2)); } .ct-ln { fill: none; stroke: var(--ink-3); stroke-opacity: .55; stroke-width: 2; }
+.ct-wrap { --c: var(--tc-c); }
+:root[data-theme="light"] .ct-wrap { --c: var(--tc-cl); }
+@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) .ct-wrap { --c: var(--tc-cl); } }
+.ct-p { fill: var(--c); stroke: var(--card); stroke-width: 2.5; } .ct-p.q { stroke: var(--live); stroke-width: 3; } .ct-p.fill { fill: var(--card); stroke: var(--c); stroke-width: 3; }
+.ct-pos { font-size: 11px; font-weight: 800; fill: #fff; text-anchor: middle; font-family: var(--f-body); } .ct-p.fill + .ct-pos { fill: var(--ink); }
+.ct-n { font-size: 12.5px; font-weight: 700; fill: var(--ink); text-anchor: middle; font-family: var(--f-body); } .ct-m { font-size: 10.5px; fill: var(--ink-2); text-anchor: middle; font-family: var(--f-body); }
+
+.mu-edges, .mu-our, .mu-form { margin-top: 16px; }
+.eg-head { display: flex; justify-content: space-between; font-weight: 800; margin-bottom: 6px; } .eg-head span { display: inline-flex; align-items: center; gap: 6px; } .eg-head small { color: var(--ink-3); font-weight: 600; margin: 0 6px; }
+.eg-row { display: grid; grid-template-columns: 92px minmax(0, 1fr) 92px; align-items: center; gap: 10px; padding: 6px 0; border-top: 1px solid var(--line); font-variant-numeric: tabular-nums; }
+.eg-row.main i { color: var(--ink); font-weight: 800; }
+.eg-v { font-weight: 600; color: var(--ink-2); } .eg-v.r { text-align: right; } .eg-v.b { color: var(--win); font-weight: 800; } .eg-v small { color: var(--ink-3); font-size: 11px; margin: 0 4px; }
+.eg-mid { display: grid; gap: 4px; text-align: center; } .eg-mid i { font-style: normal; font-size: 12.5px; color: var(--ink-2); font-weight: 700; }
+.eg-track { position: relative; height: 6px; border-radius: 4px; background: var(--card-2); } .eg-track::after { content: ""; position: absolute; left: 50%; top: -2px; bottom: -2px; width: 2px; background: var(--ink-3); }
+.eg-bar { position: absolute; top: 0; bottom: 0; background: var(--win); border-radius: 4px; } .eg-bar.l { right: 50%; } .eg-bar.r { left: 50%; }
+.eg-sub { margin: 14px 0 4px; font-weight: 800; font-size: 13px; } .eg-sub small { color: var(--ink-3); font-weight: 600; }
+.eg-mu { display: flex; justify-content: space-between; gap: 10px; padding: 6px 0; border-top: 1px solid var(--line); font-size: 13px; } .eg-who { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; white-space: nowrap; } .eg-who.mute { color: var(--ink-3); font-weight: 600; }
+.on-g { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; } .on-c { background: var(--card-2); border-radius: 10px; padding: 10px 12px; display: grid; gap: 2px; }
+.on-c i { font-style: normal; font-size: 11px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); } .on-c b { font-family: var(--f-display); font-size: 22px; } .on-c small { color: var(--ink-2); font-size: 12px; }
+.on-p { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+.fm-g { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; } .fm-h { display: flex; align-items: center; gap: 6px; margin-bottom: 8px; } .fm-h span { color: var(--ink-2); font-weight: 700; }
+.fm-dots { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; } .fm-d { display: grid; justify-items: center; gap: 1px; padding: 6px 2px; border-radius: 8px; font-size: 11px; color: var(--ink-2); }
+.fm-d b { font-size: 14px; } .fm-d.w { background: var(--win-soft); } .fm-d.w b { color: var(--win); } .fm-d.l { background: var(--loss-soft); } .fm-d.l b { color: var(--loss); }
+.ct-r.up { fill: var(--win); font-weight: 800; } .ct-r.down { fill: var(--loss); font-weight: 800; }
+@media (max-width: 560px) { .eg-row { grid-template-columns: 70px minmax(0, 1fr) 70px; } .on-g { grid-template-columns: 1fr; } }
+/* ---------- each sport's scoreboard band: a faint field or court behind the numbers ---------- */
+body[class*="lg-"] .hero::before { inset: 0; -webkit-mask-image: linear-gradient(90deg, transparent 0, rgba(0,0,0,.25) 30%, #000 72%); mask-image: linear-gradient(90deg, transparent 0, rgba(0,0,0,.25) 30%, #000 72%); }
+body.lg-nfl .hero::before { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='240' viewBox='0 0 120 240'%3E%3Cg stroke='%23fff' fill='none' stroke-opacity='.11'%3E%3Cpath d='M1 0v240' stroke-width='2.5'/%3E%3Cpath d='M24 0v9M24 231v9M24 101v10M24 129v10'/%3E%3Cpath d='M48 0v9M48 231v9M48 101v10M48 129v10'/%3E%3Cpath d='M72 0v9M72 231v9M72 101v10M72 129v10'/%3E%3Cpath d='M96 0v9M96 231v9M96 101v10M96 129v10'/%3E%3C/g%3E%3C/svg%3E") repeat-x right center / auto 100%, linear-gradient(90deg, transparent, rgba(46, 140, 72, .16)); }
+body.lg-cfb .hero::before { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='240' viewBox='0 0 120 240'%3E%3Cg stroke='%23fff' fill='none' stroke-opacity='.11'%3E%3Cpath d='M1 0v240' stroke-width='2.5'/%3E%3Cpath d='M24 0v9M24 231v9M24 85v10M24 145v10'/%3E%3Cpath d='M48 0v9M48 231v9M48 85v10M48 145v10'/%3E%3Cpath d='M72 0v9M72 231v9M72 85v10M72 145v10'/%3E%3Cpath d='M96 0v9M96 231v9M96 85v10M96 145v10'/%3E%3C/g%3E%3C/svg%3E") repeat-x right center / auto 100%, linear-gradient(90deg, transparent, rgba(46, 140, 72, .16)); }
+body.lg-nba .hero::before { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='480' height='500' viewBox='-6 -6 482 512'%3E%3Cg stroke='%23fff' fill='none' stroke-opacity='.12' stroke-width='3'%3E%3Crect x='0' y='0' width='470' height='500'/%3E%3Cpath d='M0 190a60 60 0 0 1 0 120'/%3E%3Crect x='280' y='170' width='190' height='160'/%3E%3Ccircle cx='280' cy='250' r='60'/%3E%3Cpath d='M470 30H328.5A237.5 237.5 0 0 0 328.5 470H470'/%3E%3Cpath d='M418 210a40 40 0 0 0 0 80'/%3E%3Cpath d='M430 220v60'/%3E%3Ccircle cx='418' cy='250' r='7.5'/%3E%3C/g%3E%3C/svg%3E") no-repeat right -24px center / auto 150%, linear-gradient(90deg, transparent, rgba(196, 122, 52, .14)); }
+body.lg-cbb .hero::before { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='480' height='500' viewBox='-6 -6 482 512'%3E%3Cg stroke='%23fff' fill='none' stroke-opacity='.12' stroke-width='3'%3E%3Crect x='0' y='0' width='470' height='500'/%3E%3Cpath d='M0 190a60 60 0 0 1 0 120'/%3E%3Crect x='280' y='170' width='190' height='160'/%3E%3Ccircle cx='280' cy='250' r='60'/%3E%3Cpath d='M470 33.3H372.3A221.46 221.46 0 0 0 372.3 466.7H470'/%3E%3Cpath d='M418 210a40 40 0 0 0 0 80'/%3E%3Cpath d='M430 220v60'/%3E%3Ccircle cx='418' cy='250' r='7.5'/%3E%3C/g%3E%3C/svg%3E") no-repeat right -24px center / auto 150%, linear-gradient(90deg, transparent, rgba(196, 122, 52, .14)); }
+/* team colors: the picked team's color on its card (top bar, picked row, pick bar); --tcl / --tcd are picked to show on light / dark cards */
+.mc { --tc: var(--tcd, transparent); }
+:root[data-theme="light"] .mc { --tc: var(--tcl, transparent); }
+@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) .mc { --tc: var(--tcl, transparent); } }
+.mc.tc::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 4px; background: linear-gradient(90deg, var(--tc), color-mix(in srgb, var(--tc) 30%, transparent)); }
+.mc.tc .team.picked { background: color-mix(in srgb, var(--tc) 13%, var(--card-2)); box-shadow: inset 3px 0 0 var(--tc); }
+.mc.tc .chyron { box-shadow: inset 4px 0 0 var(--tc); }
+.mc.tc.watch::before { opacity: .45; }
 .hero .wrap { position: relative; padding-block: 28px 26px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 20px 28px; align-items: end; }
 @media (max-width: 720px) { .hero .wrap { grid-template-columns: minmax(0, 1fr); } }
 .eyebrow { font-size: 12.5px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--h-accent); }
@@ -1905,7 +1972,7 @@ body.on-home { overflow-anchor: none; }
   var LG_DIR = { nfl: "nfl", nba: "nba" };
   function loadTeams(sp) {
     if (TEAMREG[sp] || TEAMREQ[sp]) return;
-    try { var c = JSON.parse(storeGet("gte.teams2." + sp) || "null"); if (c && Date.now() - c.t < 7 * 864e5 && c.r) { TEAMREG[sp] = c.r; return; } } catch (e) { /* no cache */ }
+    try { var c = JSON.parse(storeGet("gte.teams4." + sp) || "null"); if (c && Date.now() - c.t < 7 * 864e5 && c.r) { TEAMREG[sp] = c.r; return; } } catch (e) { /* no cache */ }
     TEAMREQ[sp] = 1;
     var p = LG_PATH[sp];
     Promise.all(p[1].map(function (g) { return espnGet("/apis/site/v2/sports/" + p[0] + "/teams?limit=1000" + (g ? "&groups=" + g : "")).catch(function () { return null; }); })).then(function (all) {
@@ -1914,12 +1981,12 @@ body.on-home { overflow-anchor: none; }
         var lg = j && j.sports && j.sports[0] && j.sports[0].leagues && j.sports[0].leagues[0];
         ((lg && lg.teams) || []).forEach(function (w) {
           var t = w.team || w, logos = t.logos || [], full = logos[0], dark = logos.filter(function (l) { return (l.rel || []).indexOf("dark") >= 0; })[0];
-          var rec = { l: full && full.href, d: dark && dark.href, c: t.color || "", n: t.shortDisplayName || t.name || "", a: t.abbreviation || "" };
+          var rec = { l: full && full.href, d: dark && dark.href, c: t.color || "", c2: t.alternateColor || "", id: t.id ? String(t.id) : "", n: t.shortDisplayName || t.name || "", a: t.abbreviation || "" };
           var keys = sp === "cfb" || sp === "cbb" ? [t.location, t.displayName, t.shortDisplayName] : [t.abbreviation, t.location, t.displayName, t.shortDisplayName, t.name];
           keys.forEach(function (k) { if (k) { var kk = norm(k); if (!r[kk]) r[kk] = rec; } });
         });
       });
-      if (Object.keys(r).length) { TEAMREG[sp] = r; storeSet("gte.teams2." + sp, JSON.stringify({ t: Date.now(), r: r })); if (state.sport === sp || (sp === "nba") === isNBA()) render(); }
+      if (Object.keys(r).length) { TEAMREG[sp] = r; storeSet("gte.teams4." + sp, JSON.stringify({ t: Date.now(), r: r })); if (state.sport === sp || (sp === "nba") === isNBA()) render(); }
     });
   }
   function teamInfo(name) {
@@ -1947,6 +2014,17 @@ body.on-home { overflow-anchor: none; }
       (src ? '<img src="' + esc(smallLogo(src)) + '" data-full="' + esc(src) + '" alt="" loading="lazy" decoding="async" onerror="gteLogoErr(this)">' : "") +
       "<span>" + esc(ab || abbr(name)) + "</span></span>";
   }
+  function lumOf(h) { if (!/^[0-9a-f]{6}$/i.test(h || "")) return null; var v = [0, 2, 4].map(function (i) { var c = parseInt(h.substr(i, 2), 16) / 255; return c <= .04045 ? c / 12.92 : Math.pow((c + .055) / 1.055, 2.4); }); return .2126 * v[0] + .7152 * v[1] + .0722 * v[2]; }
+  function teamColors(name) {
+    var t = teamInfo(name); if (!t || !t.c) return null;
+    var c = t.c, c2 = t.c2, L = lumOf(c), L2 = lumOf(c2);
+    if (L == null) return null;
+    var light = L > .7 && L2 != null && L2 < L ? c2 : c;          // a near-white color doesn't show on a white card
+    var dark = L < .035 && L2 != null && L2 > L ? c2 : c;          // a near-black one doesn't show on a navy card
+    if (lumOf(dark) < .02) dark = "8b96ad";                        // still too dark: a neutral steel
+    return { l: "#" + light, d: "#" + dark };
+  }
+  function tcStyle(name) { var c = teamColors(name); return c ? ' style="--tcl:' + c.l + ";--tcd:" + c.d + '"' : ""; }
   function shortName(name) { var t = teamInfo(name); return (t && t.n) || name; }
   // ---------- team ratings ----------
   var teamIdx = null, teamIdxFor = null, prevIdx = null, prevIdxFor = null;
@@ -2124,7 +2202,8 @@ body.on-home { overflow-anchor: none; }
     }).join("");
     var lead = (x.setups[0] || {}).name || "";
     var foot = starsHtml(rt.stars) + '<span class="fs">' + esc(lead) + (x.setups.length > 1 ? " +" + (x.setups.length - 1) : "") + (gr.half && settled(gr.r) ? " · 1H " + gr.A + "–" + gr.H : "") + (x.market === "Teaser" ? " · 2-team teaser" : "") + "</span>";
-    return '<article class="mc' + (paper ? " watch" : "") + '">' +
+    var tcs = picked && x.market !== "Teaser" ? tcStyle(x[picked]) : "";
+    return '<article class="mc' + (paper ? " watch" : "") + (tcs ? " tc" : "") + '"' + tcs + '>' +
       '<div class="mc-top"><span class="mkt">' + mk + " · " + esc(price(x.price)) + (startTxt(x) ? ' <span class="kt">\u00b7 ' + esc(startTxt(x)) + "</span>" : "") + '</span><span class="stk tnum">' + (paper ? "0u<small>watch</small>" : u(rt.stake) + "u<small>" + money(rt.stake * unitDollars()) + "</small>") + "</span></div>" +
       '<div class="teams">' + (x.market === "Teaser" ? teaserRows(x, gr) : teamRow(x.away, "away", x, gr, picked) + teamRow(x.home, "home", x, gr, picked)) + "</div>" + modelStrip(x) +
       (rt.low ? '<div class="alert"><b>⚠ Low sample · Low trust</b><span>' + rt.n + " backtested games · capped at " + u(LOW_STAKE) + "u</span></div>" : "") +
@@ -2133,7 +2212,7 @@ body.on-home { overflow-anchor: none; }
       (rt.benched === "tie" ? '<div class="alert warn"><b>⇄ Too close to call: passing both sides</b><span>' + esc(pretty(rt.vs.pick)) + " is on the other side with a similar record</span></div>" : "") +
       (rt.beat ? '<div class="alert warn" style="opacity:.85"><b>⇄ Chosen over the other side</b><span>' + esc(pretty(rt.beat.pick)) + " is benched \u00b7 floor " + pct(rt.lo) + " vs " + pct(baseRated(rt.beat).lo) + "</span></div>" : "") +
       '<div class="chyron"><div class="lbl"><i>PICK</i><span class="pk"><b>' + esc(pickTxt) + "</b>" + goodTo(x, paper) + "</span></div>" + resultChip(x, gr, paper) + "</div>" + numberBox(x, paper, true) + plainHtml(x) + histLine(x) +
-      '<div class="mc-foot"><span class="fl2">' + foot + '</span><span class="acts2">' + trackBtn(sportKey() + ":" + x.id) + '<button type="button" class="sharebtn" data-share="' + esc(x.id || "") + '" aria-label="Share this pick as an image">' + SHARE_ICO + "Share</button></span></div>" +
+      '<div class="mc-foot"><span class="fl2">' + foot + '</span><span class="acts2">' + (x.market !== "Teaser" && x.away && x.home && !isNBA() ? '<button type="button" class="sharebtn" data-mu-a="' + esc(x.away) + '" data-mu-h="' + esc(x.home) + '" data-mu-k="' + esc(x.game || "") + '" data-mu-t="' + esc(x.kickoff || "") + '" data-mu-n="' + (x.neutral ? 1 : 0) + '">Matchup</button>' : "") + trackBtn(sportKey() + ":" + x.id) + '<button type="button" class="sharebtn" data-share="' + esc(x.id || "") + '" aria-label="Share this pick as an image">' + SHARE_ICO + "Share</button></span></div>" +
       "<details><summary>Why this pick</summary><div class=\"why\">" + fbPreview(x) + why + (isFootball() ? historyHtml(historyFor(x.away, x.home)) : "") +
       (x.qb ? '<div class="flag">QB check: ' + esc(x.qb) + "</div>" : "") + (x.edge && !x.plain ? '<div class="edge">' + esc(pretty(x.edge)) + "</div>" : "") +
       "</div></details></article>";
@@ -2749,7 +2828,7 @@ body.on-home { overflow-anchor: none; }
     var TT = [[5, "58.5%+", "1.5u"], [4, "57–58.4%", "1.25u"], [3, "56–56.9%", "1u"], [2, "55–55.9%", "0.75u"], [1, "53.5–54.9%", "0.5u"]];
     var html = '<div class="cards"><div class="panel"><h3>How the stars work</h3>' +
       '<p class="note">The stars here are the stars on our sheet. Each setup is rated by its <b>honest win rate</b>: its backtest record pulled toward 52.4% (the break-even at −110) by how many games it has. A setup that only comes up twice a season still counts; a short record just gets pulled in more, so a 32–16 record (66.7%) is rated like a 55.8% bet, and 269–176 (60.4%) like 58.4%. Teasers are rated as the −110 bet with the same return as a two-leg ticket.' +
-      (state.sport === "nba" ? " NBA setups use the same scale. Tired Traveler, Model Knows and Vegas Knows are bets; Combo watch shows its stars but is tracked on paper (0u). Model Knows and Vegas Knows are 1u moneyline bets (1u risked). Vegas Knows gets 1 star on purpose: its favorites won 375-231 (61.9%) outright, but at their usual price (around \u2212230) a bet needs about 70% to pay, so its backtest lost about 11% per bet. We\u2019re betting it to test it live." : "") +
+      (state.sport === "nba" ? " NBA setups use the same scale. Tired Traveler, Fade the Sim, Combo watch, Model Knows and Vegas Knows are bets (Combo watch since Nov 9; it was paper before). Model Knows and Vegas Knows are 1u moneyline bets (1u risked). Vegas Knows gets 1 star on purpose: its favorites won 375-231 (61.9%) outright, but at their usual price (around \u2212230) a bet needs about 70% to pay, so its backtest lost about 11% per bet. We\u2019re betting it to test it live." : "") +
       (nfl ? " A setup goes on the NFL card when its honest rate is <b>54% or better</b>. There are no paper bets: everything listed here is bet. Setups new this season bet 0.5u until they have a live season behind them." : "") + "</p>" +
       '<div class="how">' + TT.map(function (t) { return "<div>" + starsHtml(t[0]) + "<b>" + t[1] + "</b><small>honest rate · " + t[2] + "</small></div>"; }).join("") + "</div></div>" +
       '<div class="panel"><h3>Every setup, by historical win rate</h3><div class="scroll"><table class="tt sr-t"><thead><tr><th class="ra">#</th><th>Setup</th><th>Stars</th><th class="ra">Win rate</th><th class="ra">Record</th><th class="ra">Honest rate</th><th class="ra">Stake</th></tr></thead><tbody>' +
@@ -2942,14 +3021,14 @@ body.on-home { overflow-anchor: none; }
     return '<div class="pickbar" title="' + esc(a.backtest || "") + '"><div><span class="stars">' + "\u2605".repeat(a.stars) + '</span><b>' + esc(a.name) + "</b><i>Bet " + esc(a.pick) + " \u00b7 " + a.stake + "u \u00b7 tracking</i>" +
       "<small>" + esc(a.why) + "</small>" + angleNumber(g, line) + "</div>" + res + "</div>";
   }
-  // Combo watch: the combined model's most confident ~5% of games, paper-tracked (no stars, no units) until a season proves it
+  // Combo watch: the combined model's most confident ~5% of games. Paper until Nov 8 2026, a 0.5u bet since Nov 9
   function comboBar(g) {
     var c = g.combo; if (!c) return "";
     var s = nbaScore(g), res = "", home = c.team === g.home_abbr;
     if (s && s.status === "final" && c.line != null) { var v = (home ? +s.home - +s.away : +s.away - +s.home) + c.line; res = v > 0 ? '<span class="res W">\u2713 Won</span>' : v < 0 ? '<span class="res L">\u2717 Lost</span>' : '<span class="res P">Push</span>'; }
     var ln = s && s.ln, now = "";
     if (ln && ln.sp != null && s.status === "pre") { var cur = home ? ln.sp : -ln.sp; now = '<div class="numbox"><span><i>Flagged at</i><b>' + esc(c.team + " " + lineTxt(c.line)) + '</b></span><span class="now"><i>Line now' + (ln.by ? " (" + esc(ln.by) + ")" : "") + "</i><b>" + esc(c.team + " " + lineTxt(cur)) + "</b></span></div>"; }
-    return '<div class="pickbar cw" title="' + esc(c.backtest || "") + '"><div><span class="ico">\u25ce</span><b>' + esc(c.name) + "</b><i>" + esc(c.pick) + (c.p != null ? " \u00b7 model " + Math.round(c.p * 100) + "% to cover" : "") + " \u00b7 paper, not a bet yet</i>" +
+    return '<div class="pickbar cw" title="' + esc(c.backtest || "") + '"><div><span class="ico">\u25ce</span><b>' + esc(c.name) + "</b><i>" + esc(c.pick) + (c.p != null ? " \u00b7 model " + Math.round(c.p * 100) + "% to cover" : "") + (c.paper ? " \u00b7 paper" : " \u00b7 " + (c.stake || 0.5) + "u bet") + "</i>" +
       "<small>" + esc(c.why || "") + "</small>" + now + "</div>" + res + "</div>";
   }
   // Vegas Knows: our line has it close, Vegas has a real favorite. A 1u bet on the favorite's moneyline since Nov 9 2026
@@ -2971,6 +3050,16 @@ body.on-home { overflow-anchor: none; }
     if (s && s.status === "final") { var w = home ? +s.home > +s.away : +s.away > +s.home; res = w ? '<span class="res W">\u2713 Won</span>' : '<span class="res L">\u2717 Lost</span>'; }
     var nums = v.ours != null && v.mkt != null ? "we have " + favTxt(g, v.ours) + ", Vegas " + favTxt(g, v.mkt) : "";
     return '<div class="pickbar mk" title="' + esc(v.backtest || "") + '"><div><span class="stars">\u25c6</span><b>' + esc(v.name) + "</b><i>" + esc(v.pick) + " \u00b7 1u bet \u00b7 check the price near tip</i>" +
+      (nums ? "<small>" + esc(nums) + "</small>" : "") + "<small>" + esc(v.why || "") + "</small></div>" + res + "</div>";
+  }
+  // Fade the Sim: our simulator likes a side by 2+ but the morning market model leans the other way: bet against the simulator (0.5u, Nov 9 2026)
+  function fsBar(g) {
+    var v = g.fs; if (!v) return "";
+    var s = nbaScore(g), res = "", home = v.team === g.home_abbr;
+    if (s && s.status === "final" && v.line != null) { var c = (home ? +s.home - +s.away : +s.away - +s.home) + v.line; res = c > 0 ? '<span class="res W">\u2713 Won</span>' : c < 0 ? '<span class="res L">\u2717 Lost</span>' : '<span class="res P">Push</span>'; }
+    var other = home ? g.away_abbr : g.home_abbr;
+    var nums = (v.sim != null ? "Our simulator likes " + other + " by " + Math.abs(v.sim).toFixed(1) + " vs the line" : "") + (v.mm != null ? "; the morning market model has " + v.team + " by " + Math.abs(v.mm).toFixed(1) : "");
+    return '<div class="pickbar fs" title="' + esc(v.backtest || "") + '"><div><span class="stars">' + "\u2605".repeat(v.stars || 1) + '</span><b>' + esc(v.name) + "</b><i>Bet " + esc(v.pick) + " \u00b7 " + (v.stake || 0.5) + "u \u00b7 bet near tip</i>" +
       (nums ? "<small>" + esc(nums) + "</small>" : "") + "<small>" + esc(v.why || "") + "</small></div>" + res + "</div>";
   }
   function angleNumber(g, L) {
@@ -3009,9 +3098,11 @@ body.on-home { overflow-anchor: none; }
     var tt = pick(games.filter(function (g) { return g.angle; }));
     if (tt) add(tt, "\u2605 " + tt.angle.name, "Bet " + tt.angle.pick + ": " + tt.away + " are on a back-to-back after crossing a time zone.");
     var cw = pick(games.filter(function (g) { return g.combo; }).sort(function (a, b) { return (b.combo.p || 0) - (a.combo.p || 0); }));
-    if (cw) add(cw, "\u25ce Combo watch \u00b7 paper", "Our combined model\u2019s strongest lean tonight: " + cw.combo.pick + (cw.combo.p != null ? " (" + Math.round(cw.combo.p * 100) + "% to cover)" : "") + ". Tracked on paper, not a bet yet.");
+    if (cw) add(cw, "\u25ce Combo watch \u00b7 0.5u", "Our combined model\u2019s strongest lean tonight: " + cw.combo.pick + (cw.combo.p != null ? " (" + Math.round(cw.combo.p * 100) + "% to cover)" : "") + ". A 0.5u bet.");
     var mg = pick(games.filter(function (g) { return g.mk; }));
     if (mg) add(mg, "\u25c6 Model Knows \u00b7 1u", "We pick " + mg.mk.team + " to win; Vegas picks the other side. When we\u2019re this sure (2+ pts), our side has usually been right. 1u on the moneyline; check the price near tip.");
+    var fg = pick(games.filter(function (g) { return g.fs; }));
+    if (fg) add(fg, "\u2605 Fade the Sim \u00b7 0.5u", "Bet " + fg.fs.pick + ": our simulator likes the other side, but the morning market model disagrees. In the backtest, betting against the simulator here won 54%.");
     var vg = pick(games.filter(function (g) { return g.vk; }));
     if (vg) add(vg, "\u26a0 Vegas Knows \u00b7 1u", "We have it close; Vegas has " + vg.vk.team + " as a clear favorite. 1u on their moneyline. They usually win (62% in our backtest), but at these prices the backtest lost money, so this is a live test.");
     var bg = pick(games.filter(function (g) { return g.spread_gap != null && Math.abs(g.spread_gap) >= 2; }).sort(function (a, b) { return Math.abs(b.spread_gap) - Math.abs(a.spread_gap); }));
@@ -3066,6 +3157,7 @@ body.on-home { overflow-anchor: none; }
     (d.games || []).forEach(function (g) {
       if (g.angle) out.push({ g: g, k: "tt", rank: 0, bar: angleBar(g) });
       if (g.mk) out.push({ g: g, k: "mk", rank: 1, bar: mkBar(g) });
+      if (g.fs) out.push({ g: g, k: "fs", rank: 1.5, bar: fsBar(g) });
       if (g.vk) out.push({ g: g, k: "vk", rank: 2, bar: vkBar(g) });
       if (g.combo) out.push({ g: g, k: "cw", rank: 3, bar: comboBar(g) });
     });
@@ -3074,13 +3166,14 @@ body.on-home { overflow-anchor: none; }
   function renderNbaPicks(el) {
     var d = state.data || {}, s = ((d.tracking || {}).summary) || {};
     var SET = [["tt", "\u2605 Tired Traveler", "bet \u00b7 0.5u", s.tired], ["mk", "\u25c6 Model Knows", "bet \u00b7 1u moneyline", s.mk_real || s.mk],
-               ["vk", "\u26a0 Vegas Knows", "bet \u00b7 1u moneyline", s.vk_real || s.vk], ["cw", "\u25ce Combo watch", "paper \u00b7 spread", s.combo]];
+               ["fs", "\u2605 Fade the Sim", "bet \u00b7 0.5u spread", s.fs],
+               ["vk", "\u26a0 Vegas Knows", "bet \u00b7 1u moneyline", s.vk_real || s.vk], ["cw", "\u25ce Combo watch", "bet \u00b7 0.5u spread", s.combo_real || s.combo]];
     var recs = '<div class="np-recs">' + SET.map(function (x) {
       var r = x[3] || {}, n = (r.w || 0) + (r.l || 0);
       return '<div class="np-rec"><b>' + x[1] + "</b><small>" + x[2] + '</small><span class="tnum">' + (n ? r.w + "\u2013" + r.l : "no games yet") + "</span>" +
         (n ? '<span class="tnum ' + (r.units > 0 ? "up" : r.units < 0 ? "down" : "") + '">' + signed(r.units || 0) + "u</span>" : "") + "</div>";
     }).join("") + "</div>";
-    var head = '<div class="panel np-head"><h3>Tonight\u2019s flagged plays</h3><p class="note"><b>Tired Traveler</b>, <b>Model Knows</b> and <b>Vegas Knows</b> are bets. Combo watch is tracked on paper. Model Knows and Vegas Knows are moneyline bets judged at the price just before tip, so check them once lineups are in; their records count real bets from Nov 9.</p>' + recs + "</div>";
+    var head = '<div class="panel np-head"><h3>Tonight\u2019s flagged plays</h3><p class="note"><b>Tired Traveler</b>, <b>Fade the Sim</b>, <b>Combo watch</b>, <b>Model Knows</b> and <b>Vegas Knows</b> are bets (Combo watch since Nov 9). If two setups land on opposite sides of a game, only the higher-star one is bet. Fade the Sim can appear or drop off during the day as lines and lineups move, so check it near tip. Model Knows and Vegas Knows are moneyline bets judged at the price just before tip, so check them once lineups are in; their records count real bets from Nov 9.</p>' + recs + "</div>";
     if (d.members_only) { el.innerHTML = head + lockPanel(); bindLock(el); return; }
     var L = nbaPickList(d);
     var cnt = document.getElementById("cntPicks"); if (cnt) cnt.textContent = L.length ? String(L.length) : "";
@@ -3125,6 +3218,411 @@ body.on-home { overflow-anchor: none; }
     qi.addEventListener("input", function () { state.q = qi.value; var pos = qi.selectionStart; render(); var n = document.getElementById("q"); n.focus(); try { n.setSelectionRange(pos, pos); } catch (e) {} });
   }
   // ---------- one game, full page ----------
+  // ---------- MATCHUP PAGE: head-to-head over the last 5 seasons + projected starters (X's and O's / a starting five on a court) ----------
+  // Everything here is public ESPN data fetched in the browser (schedules, depth charts, last box scores, injury lists), cached
+  // for the visit. NBA starters come from our own board (the injury report + the NBA's lineup feed the notebook already reads).
+  var MU = {};
+  function muSeason() { var d = new Date(), y = d.getFullYear(), m = d.getMonth() + 1; return isFootball() ? (m >= 3 ? y : y - 1) : (m >= 8 ? y + 1 : y); }
+  function muPath() { return LG_PATH[sportKey()][0]; }
+  function muLast(n) { var p = String(n || "").split(" ").filter(function (x) { return !/^(jr\.?|sr\.?|ii|iii|iv|v)$/i.test(x); }); return p.length > 1 ? p.slice(1).join(" ") : String(n || ""); }
+  function muScore(c) { var s = c && c.score; if (s == null) return null; if (typeof s === "object") s = s.value != null ? s.value : s.displayValue; s = parseFloat(s); return isNaN(s) ? null : s; }
+  function muGet(key, fn) {                                  // one load per key per visit; re-render when it lands
+    if (MU[key]) return MU[key].v;
+    MU[key] = { v: null };
+    fn().then(function (v) { MU[key].v = v || { err: 1 }; }, function () { MU[key].v = { err: 1 }; }).then(function () { if (state.view === "matchup" || isNBA()) render(); });
+    return null;
+  }
+  // ---- head-to-head: the home team's schedule, each season, regular season + postseason, games against the other team
+  function h2hLoad(away, home) {
+    var A = teamInfo(away), H = teamInfo(home);
+    if (!A || !H || !A.id || !H.id) return Promise.resolve({ err: 1, why: "team ids not loaded" });
+    var S = muSeason(), qs = [];
+    for (var s = S - 5; s <= S; s++) [2, 3].forEach(function (t) { qs.push("/apis/site/v2/sports/" + muPath() + "/teams/" + H.id + "/schedule?season=" + s + "&seasontype=" + t); });
+    return Promise.all(qs.map(function (q) { return espnGet(q).catch(function () { return null; }); })).then(function (all) {
+      var seen = {}, rows = [];
+      all.forEach(function (j) {
+        ((j && j.events) || []).forEach(function (ev) {
+          if (seen[ev.id]) return; var c = ev.competitions && ev.competitions[0]; if (!c) return;
+          var st = (c.status || ev.status || {}).type || {}; if (!st.completed) return;
+          var me = null, op = null;
+          (c.competitors || []).forEach(function (t) { var id = String(t.id || (t.team && t.team.id)); if (id === String(H.id)) me = t; else op = t; });
+          if (!me || !op || String(op.id || (op.team && op.team.id)) !== String(A.id)) return;
+          var hs = muScore(me), as = muScore(op); if (hs == null || as == null) return;
+          seen[ev.id] = 1;
+          rows.push({ date: ev.date, us: hs, them: as, at: c.neutralSite ? "neutral" : me.homeAway === "home" ? "home" : "away", post: (ev.seasonType && +ev.seasonType.type === 3) || false,
+                      name: (ev.seasonType && ev.seasonType.name) || "" });
+        });
+      });
+      rows.sort(function (a, b) { return a.date < b.date ? 1 : -1; });
+      return { rows: rows, since: S - 5 };
+    });
+  }
+  function h2hHtml(away, home, h) {
+    var hd = '<div class="panel mu-h2h"><h3>Head to head <small>· last 5 seasons</small></h3>';
+    if (!h) return hd + '<p class="note">Loading past meetings…</p></div>';
+    if (h.err) return hd + '<p class="note">Past meetings aren’t available right now (ESPN didn’t answer).</p></div>';
+    if (!h.rows.length) return hd + '<p class="note">These teams haven’t met in the last 5 seasons.</p></div>';
+    var hw = 0, aw = 0, mg = 0; h.rows.forEach(function (r) { if (r.us > r.them) hw++; else if (r.us < r.them) aw++; mg += r.us - r.them; });
+    var lead = hw === aw ? "Series tied " + hw + "–" + aw : (hw > aw ? shortName(home) : shortName(away)) + " lead " + Math.max(hw, aw) + "–" + Math.min(hw, aw);
+    var avg = mg / h.rows.length;
+    return hd + '<div class="mu-sum"><b>' + esc(lead) + "</b><span>" + h.rows.length + " meeting" + (h.rows.length === 1 ? "" : "s") + " · average margin " + esc(shortName(avg >= 0 ? home : away)) + " +" + Math.abs(avg).toFixed(1) + "</span></div>" +
+      '<div class="scroll"><table class="mu-tbl"><thead><tr><th>Date</th><th>Where</th><th>Final</th><th>Winner</th></tr></thead><tbody>' +
+      h.rows.map(function (r) {
+        var d = new Date(r.date), w = r.us > r.them ? home : away, where = r.at === "neutral" ? "Neutral" : r.at === "home" ? "at " + shortName(home) : "at " + shortName(away);
+        return "<tr><td>" + esc(d.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" })) + (r.post ? ' <small class="mu-post">' + esc(/play|post|tourn/i.test(r.name) ? r.name : "Postseason") + "</small>" : "") +
+          "</td><td>" + esc(where) + '</td><td class="tnum">' + esc(shortName(away)) + " " + r.them + " – " + r.us + " " + esc(shortName(home)) + "</td><td>" + (r.us === r.them ? "Tie" : '<span class="mu-w">' + badge(w, isNBA() || state.sport === "nfl" ? w : null, "sm") + " " + esc(shortName(w)) + " by " + Math.abs(r.us - r.them) + "</span>") + "</td></tr>";
+      }).join("") + '</tbody></table></div><p class="note">History, not a pick: head-to-head records didn’t beat the closing line in our tests.</p></div>';
+  }
+  // ---- injuries for one game (ESPN's game summary), by team id -> {name lowercased: status}
+  function injLoad(eid) {
+    if (!eid) return Promise.resolve({});
+    return espnGet("/apis/site/v2/sports/" + muPath() + "/summary?event=" + eid).then(function (j) {
+      var out = {};
+      (j.injuries || []).forEach(function (t) {
+        var id = String((t.team && t.team.id) || ""), m = out[id] = out[id] || {};
+        (t.injuries || []).forEach(function (x) { var a = x.athlete || {}, nm = String(a.displayName || a.fullName || "").toLowerCase(); if (nm) m[nm] = String(x.status || (x.type && x.type.description) || "Injured"); });
+      });
+      out._leaders = j.leaders || [];
+      return out;
+    }).catch(function () { return {}; });
+  }
+  function isOut(st) { return /out|doubtful|suspend|injured reserve|^ir$/i.test(String(st || "")); }
+  // ---- football: ESPN depth chart (site API first, then the core API with each player looked up)
+  function depthLoad(team) {
+    var T = teamInfo(team); if (!T || !T.id) return Promise.resolve(null);
+    var lg = state.sport === "nfl" ? "nfl" : "college-football", S = muSeason();
+    function tryHost(h) { return fetch(h + "/apis/site/v2/sports/football/" + lg + "/teams/" + T.id + "/depthcharts", { cache: "no-store" }).then(function (r) { if (!r.ok) throw 0; return r.json(); }); }
+    function https(u) { return String(u || "").replace(/^http:/, "https:"); }
+    function core() {
+      return fetch("https://sports.core.api.espn.com/v2/sports/football/leagues/" + lg + "/seasons/" + S + "/teams/" + T.id + "/depthcharts?limit=10", { cache: "no-store" })
+        .then(function (r) { if (!r.ok) throw 0; return r.json(); }).then(function (j) {
+          var items = j.items || [], refs = {};
+          items.forEach(function (it) { Object.keys(it.positions || {}).forEach(function (k) { ((it.positions[k] || {}).athletes || []).slice(0, 2).forEach(function (a) { var r = a.athlete && a.athlete.$ref; if (r) refs[r] = 1; }); }); });
+          var list = Object.keys(refs);
+          return Promise.all(list.map(function (r) { return fetch(https(r)).then(function (x) { return x.ok ? x.json() : null; }).catch(function () { return null; }); })).then(function (ath) {
+            var nm = {}; list.forEach(function (r, i) { if (ath[i]) nm[r] = ath[i]; });
+            items.forEach(function (it) { Object.keys(it.positions || {}).forEach(function (k) { ((it.positions[k] || {}).athletes || []).forEach(function (a) { var r = a.athlete && a.athlete.$ref; if (r && nm[r]) a.athlete = nm[r]; }); }); });
+            return { depthchart: items };
+          });
+        });
+    }
+    return tryHost("https://site.api.espn.com").catch(function () { return tryHost("https://site.web.api.espn.com"); }).then(function (j) {
+      var dc = j && (j.depthchart || j.depthCharts || j.items); if (!dc || !dc.length) throw 0; return { depthchart: dc };
+    }).catch(core).then(function (j) { return parseDepth(j); }).catch(function () { return null; });
+  }
+  var OFF_POS = /^(QB|RB|HB|FB|WR|TE|LT|LG|C|RG|RT|OT|OG|T|G|OL)$/, DEF_POS = /^(LDE|RDE|DE|EDGE|LDT|RDT|DT|NT|DL|WLB|MLB|SLB|LILB|RILB|LOLB|ROLB|OLB|ILB|LB|LCB|RCB|CB|NB|NCB|SS|FS|S|DB)$/;
+  function parseDepth(j) {
+    var forms = (j && j.depthchart) || []; if (!forms.length) return null;
+    function slots(f) {
+      return Object.keys(f.positions || {}).map(function (k) {
+        var p = f.positions[k] || {}, ab = String((p.position && (p.position.abbreviation || p.position.name)) || k).toUpperCase();
+        var ath = (p.athletes || []).map(function (a) { var x = a.athlete || a; return { name: x.displayName || x.fullName || x.shortName || "", short: x.shortName || "" }; }).filter(function (a) { return a.name; });
+        return { pos: ab, key: k, ath: ath };
+      }).filter(function (s) { return s.ath.length; });
+    }
+    var off = null, def = null;
+    forms.forEach(function (f) {
+      var S = slots(f), o = S.filter(function (s) { return OFF_POS.test(s.pos); }).length, d = S.filter(function (s) { return DEF_POS.test(s.pos); }).length;
+      if (!off && S.some(function (s) { return s.pos === "QB"; }) && o >= 8) off = { name: f.name || "Offense", slots: S.filter(function (s) { return OFF_POS.test(s.pos); }) };
+      if (!def && d >= 8) def = { name: f.name || "Defense", slots: S.filter(function (s) { return DEF_POS.test(s.pos); }) };
+    });
+    return off || def ? { off: off, def: def } : null;
+  }
+  // the 11 starters, with anyone listed out (or doubtful) replaced by the next man on the depth chart
+  function starters(side, inj) {
+    if (!side) return [];
+    return side.slots.slice(0, 11).map(function (s) {
+      var i = 0, out = [];
+      while (i < s.ath.length - 1 && isOut(inj[s.ath[i].name.toLowerCase()])) { out.push(s.ath[i].name + " (" + inj[s.ath[i].name.toLowerCase()] + ")"); i++; }
+      var a = s.ath[i]; return { pos: s.pos, name: a.name, st: inj[a.name.toLowerCase()] || "", next: out.length ? out.join(", ") : "" };
+    });
+  }
+  function grp(pos, def) {
+    if (!def) return /^(LT|LG|C|RG|RT|OT|OG|T|G|OL)$/.test(pos) ? "ol" : pos === "TE" ? "te" : pos === "WR" ? "wr" : pos === "QB" ? "qb" : "rb";
+    return /DE|EDGE|DT|NT|DL/.test(pos) ? "dl" : /LB/.test(pos) ? "lb" : /CB|NB|DB/.test(pos) ? "cb" : "s";
+  }
+  // x/y spots for each group (offense moves up the page; the line of scrimmage is y = 180, yard lines run across)
+  var F_SPOT = {
+    ol: function (n) { return spread(n, 320, 52).map(function (x) { return [x, 196]; }); },
+    te: function (n) { return spread(n, 320, 330).map(function (x) { return [n === 1 ? 158 : x, 204]; }); },
+    wr: function (n) { var xs = [56, 584, 512, 128]; return xs.slice(0, n).map(function (x, i) { return [x, i < 2 ? 196 : 214]; }); },
+    qb: function (n) { return spread(n, 320, 70).map(function (x) { return [x, 258]; }); },
+    rb: function (n) { return spread(n, 320, 70).map(function (x) { return [x, 312]; }); },
+    dl: function (n) { return spread(n, 320, n === 3 ? 80 : 66).map(function (x) { return [x, 164]; }); },
+    lb: function (n) { return spread(n, 320, n === 2 ? 120 : 110).map(function (x) { return [x, 112]; }); },
+    cb: function (n) { var xs = [56, 584, 512, 128]; return xs.slice(0, n).map(function (x, i) { return [x, i < 2 ? 150 : 130]; }); },
+    s: function (n) { return spread(n, 320, 190).map(function (x) { return [x, 52]; }); }
+  };
+  function spread(n, cx, gap) { var out = []; for (var i = 0; i < n; i++) out.push(cx + (i - (n - 1) / 2) * gap); return out; }
+  function fieldSVG(offTeam, defTeam, O, D) {
+    var co = teamColors(offTeam) || { d: "#8b96ad", l: "#56627d" }, cd = teamColors(defTeam) || { d: "#ff6b2c", l: "#e8551a" };
+    function place(list, def) {
+      var G = {}; list.forEach(function (p) { var g = grp(p.pos, def); (G[g] = G[g] || []).push(p); });
+      var out = []; Object.keys(G).forEach(function (g) { var pts = (F_SPOT[g] || F_SPOT.rb)(G[g].length); G[g].forEach(function (p, i) { out.push({ p: p, x: pts[i][0], y: pts[i][1] }); }); });
+      return out;
+    }
+    function lab(m, below) {
+      var nm = muLast(m.p.name), y = below ? m.y + 25 : m.y - 15;
+      return '<text x="' + m.x + '" y="' + y + '" class="fx-n' + (m.p.next ? " fill" : "") + (m.p.st ? " q" : "") + '">' + esc(nm) + (m.p.st && !isOut(m.p.st) ? " (" + esc(m.p.st.charAt(0)) + ")" : "") + "</text>" +
+        '<text x="' + m.x + '" y="' + (below ? m.y + 36 : m.y - 26) + '" class="fx-p">' + esc(m.p.pos) + "</text>";
+    }
+    var o = place(O, false), d = place(D, true), s = '<svg class="fx" viewBox="0 0 640 350" role="img" aria-label="' + esc(shortName(offTeam) + " offense vs " + shortName(defTeam) + " defense") + '">' +
+      '<rect x="0" y="0" width="640" height="350" rx="12" class="fx-bg"/>';
+    for (var y = 20; y < 350; y += 60) s += '<line x1="0" y1="' + y + '" x2="640" y2="' + y + '" class="fx-yd"/>';
+    s += '<line x1="0" y1="180" x2="640" y2="180" class="fx-los"/>';
+    d.forEach(function (m) { s += '<g class="fx-x" style="--c:var(--mx)"><path d="M' + (m.x - 8) + " " + (m.y - 8) + "l16 16M" + (m.x + 8) + " " + (m.y - 8) + 'l-16 16"/></g>' + lab(m, false); });
+    o.forEach(function (m) { s += '<circle cx="' + m.x + '" cy="' + m.y + '" r="9" class="fx-o"/>' + lab(m, true); });
+    return '<div class="fx-wrap" style="--mo:' + co.d + ";--mx:" + cd.d + ";--mo-l:" + co.l + ";--mx-l:" + cd.l + '">' + s + "</svg></div>";
+  }
+  function footballPanel(away, home, eid) {
+    var key = "fb|" + sportKey() + "|" + away + "|" + home;
+    var v = muGet(key, function () { return Promise.all([depthLoad(away), depthLoad(home), injLoad(eid)]).then(function (r) { return { a: r[0], h: r[1], inj: r[2] }; }); });
+    var hd = '<div class="panel mu-lu"><h3>Projected starters <small>· depth chart with the injury report applied</small></h3>';
+    if (!v) return hd + '<p class="note">Loading depth charts…</p></div>';
+    var A = teamInfo(away) || {}, H = teamInfo(home) || {}, ia = (v.inj || {})[String(A.id)] || {}, ih = (v.inj || {})[String(H.id)] || {};
+    function sideHtml(offT, defT, oDC, dDC, oInj, dInj) {
+      if (!oDC || !oDC.off || !dDC || !dDC.def) return "";
+      var O = starters(oDC.off, oInj), D = starters(dDC.def, dInj), fills = O.concat(D).filter(function (p) { return p.next; });
+      return '<div class="mu-side"><div class="mu-cap">' + badge(offT, state.sport === "nfl" ? offT : null, "sm") + " <b>" + esc(shortName(offT)) + "</b> offense <span>(O)</span> vs " + badge(defT, state.sport === "nfl" ? defT : null, "sm") + " <b>" + esc(shortName(defT)) + "</b> defense <span>(X)</span></div>" +
+        fieldSVG(offT, defT, O, D) + (fills.length ? '<p class="mu-fill">Filling in: ' + fills.map(function (p) { return "<b>" + esc(p.name) + "</b> for " + esc(p.next); }).join("; ") + "</p>" : "") + "</div>";
+    }
+    var body = sideHtml(away, home, v.a, v.h, ia, ih) + sideHtml(home, away, v.h, v.a, ih, ia);
+    if (!body) {                                              // no depth chart from ESPN (common in college): the key players instead
+      var L = (v.inj && v.inj._leaders) || [];
+      var rows = L.map(function (t) {
+        var nm = (t.team && (t.team.displayName || t.team.location)) || "";
+        return "<div><b>" + esc(nm) + "</b><ul>" + (t.leaders || []).slice(0, 4).map(function (c) { var x = (c.leaders || [])[0]; return x ? "<li>" + esc(c.displayName || c.name) + ": " + esc((x.athlete || {}).displayName || "") + " <small>" + esc(x.displayValue || "") + "</small></li>" : ""; }).join("") + "</ul></div>";
+      }).join("");
+      return hd + '<p class="note">ESPN has no depth chart for ' + (v.a && v.h ? "these teams" : "at least one of these teams") + " right now" + (rows ? "; here are each team’s key players this season." : ".") + "</p>" + (rows ? '<div class="mu-lead">' + rows + "</div>" : "") + "</div>";
+    }
+    var outs = [];
+    [[away, ia], [home, ih]].forEach(function (t) { Object.keys(t[1]).forEach(function (n) { if (isOut(t[1][n])) outs.push(shortName(t[0]) + ": " + n.replace(/\b\w/g, function (c) { return c.toUpperCase(); }) + " (" + t[1][n] + ")"); }); });
+    return hd + body + '<p class="note">From ESPN’s depth charts' + (eid ? " and this game’s injury report" : "") + ". Out or doubtful starters are replaced by the next man up; (Q) = questionable." +
+      (outs.length ? " Out: " + esc(outs.slice(0, 12).join(" · ")) + (outs.length > 12 ? " …" : "") : "") + "</p></div>";
+  }
+  // ---- basketball: a starting five on a half court
+  var C_SPOT = [[240, 92], [370, 140], [110, 140], [310, 236], [170, 236]];   // PG top of the key, wings, then the blocks
+  function posRank(p) { p = String(p || "").toUpperCase(); return p === "PG" ? 0 : p === "SG" ? 1 : p === "G" ? 1.5 : p === "GF" ? 2 : p === "SF" ? 2.5 : p === "F" ? 3 : p === "PF" ? 3.5 : p === "FC" ? 4 : p === "C" ? 5 : 3; }
+  function courtSVG(team, five) {
+    var c = teamColors(team) || { d: "#8b96ad", l: "#56627d" };
+    var s = '<svg class="ct" viewBox="0 0 480 300" role="img" aria-label="' + esc(shortName(team) + " starting five") + '"><rect x="0" y="0" width="480" height="300" rx="12" class="ct-bg"/>' +
+      '<g class="ct-ln"><rect x="160" y="190" width="160" height="110"/><circle cx="240" cy="190" r="48"/><path d="M40 300V250A205 205 0 0 1 440 250V300"/><circle cx="240" cy="272" r="7"/><path d="M210 290h60"/><path d="M0 2h480"/><path d="M190 2a50 50 0 0 0 100 0"/></g>';
+    five.slice().sort(function (a, b) { return posRank(a.pos) - posRank(b.pos); }).forEach(function (p, i) {
+      var xy = C_SPOT[i] || [240, 150], last = muLast(p.name);
+      s += '<circle cx="' + xy[0] + '" cy="' + xy[1] + '" r="15" class="ct-p' + (p.q ? " q" : "") + (p.fill ? " fill" : "") + '"/>' +
+        '<text x="' + xy[0] + '" y="' + (xy[1] + 4) + '" class="ct-pos">' + esc(String(p.pos || "").slice(0, 2)) + "</text>" +
+        '<text x="' + xy[0] + '" y="' + (xy[1] + 31) + '" class="ct-n">' + esc(last) + (p.q ? " (Q)" : "") + "</text>" +
+        '<text x="' + xy[0] + '" y="' + (xy[1] + 44) + '" class="ct-m">' + [p.ht ? htTxt(p.ht) : "", p.rt != null ? '<tspan class="ct-r ' + (p.rt > 0 ? "up" : p.rt < 0 ? "down" : "") + '">' + esc(signed(p.rt, 1)) + "</tspan>" : "", p.min ? esc(Math.round(p.min)) + " min" : ""].filter(Boolean).join(" \u00b7 ") + "</text>";
+    });
+    return '<div class="ct-wrap" style="--tc-c:' + c.d + ";--tc-cl:" + c.l + '">' + s + "</svg></div>";
+  }
+  function courtCard(team, five, outs, note) {
+    return '<div class="mu-court"><div class="mu-cap">' + badge(team, isNBA() ? team : null, "sm") + " <b>" + esc(shortName(team)) + "</b>" + (note ? " <span>" + esc(note) + "</span>" : "") + "</div>" +
+      (five.length ? courtSVG(team, five) : '<p class="note">No starters found.</p>') +
+      (outs.length ? '<p class="mu-fill">Out: ' + outs.map(esc).join(", ") + "</p>" : "") + "</div>";
+  }
+  function nbaFive(g, side) {
+    var P = g[side + "_players"] || [], st = P.filter(function (p) { return p.start; }).slice(0, 5);
+    var outs = (g[side + "_out"] || []).map(function (o) { return o.name + (o.why ? " (" + String(o.why).replace(/^Out:\s*/, "").slice(0, 40) + ")" : ""); });
+    return { five: st.map(function (p) { return { name: p.name, pos: p.pos || "", q: p.q, min: p.min, ht: p.ht, rt: p.o != null && p.d != null ? +p.o + +p.d : null }; }), outs: outs };
+  }
+  function nbaCourtPanel(g) {
+    var a = nbaFive(g, "away"), h = nbaFive(g, "home"), lu = g.home_lineup || g.away_lineup;
+    return '<div class="panel mu-lu" style="margin-top:16px"><h3>Starting fives <small>· ' + esc(lu ? "the NBA’s lineup feed: " + lu : "projected from the injury report and recent starts") + "</small></h3>" +
+      '<div class="mu-courts">' + courtCard(g.away_abbr, a.five, a.outs, g.away_lineup || "") + courtCard(g.home_abbr, h.five, h.outs, g.home_lineup || "") + "</div></div>";
+  }
+  // college basketball: each team's starting five from its last game, with ESPN's injury list for this game applied
+  function lastGameFive(team, inj) {
+    var T = teamInfo(team); if (!T || !T.id) return Promise.resolve(null);
+    var S = muSeason();
+    return espnGet("/apis/site/v2/sports/" + muPath() + "/teams/" + T.id + "/schedule?season=" + S).then(function (j) {
+      var done = (j.events || []).filter(function (ev) { var c = ev.competitions && ev.competitions[0]; return c && ((c.status || {}).type || {}).completed; }).sort(function (a, b) { return a.date < b.date ? 1 : -1; });
+      if (!done.length) return null;
+      return espnGet("/apis/site/v2/sports/" + muPath() + "/summary?event=" + done[0].id).then(function (b) {
+        var mine = ((b.boxscore && b.boxscore.players) || []).filter(function (t) { return String((t.team || {}).id) === String(T.id); })[0];
+        var st = mine && mine.statistics && mine.statistics[0]; if (!st) return null;
+        var mi = (st.keys || []).indexOf("minutes"); if (mi < 0) mi = (st.labels || []).indexOf("MIN");
+        var all = (st.athletes || []).map(function (a) { var x = a.athlete || {}; return { name: x.displayName || "", pos: (x.position && x.position.abbreviation) || "", start: !!a.starter, min: mi >= 0 ? parseFloat((a.stats || [])[mi]) || 0 : 0 }; }).filter(function (p) { return p.name; });
+        var five = all.filter(function (p) { return p.start; }), bench = all.filter(function (p) { return !p.start; }).sort(function (a, b) { return b.min - a.min; }), outs = [];
+        five = five.map(function (p) {
+          var s = inj[p.name.toLowerCase()];
+          if (!isOut(s)) return { name: p.name, pos: p.pos, q: !!s, min: null };
+          outs.push(p.name + " (" + s + ")");
+          var r = bench.shift(); while (r && isOut(inj[r.name.toLowerCase()])) r = bench.shift();
+          return r ? { name: r.name, pos: r.pos, fill: true, min: null } : null;
+        }).filter(Boolean);
+        return { five: five, outs: outs, last: done[0].date };
+      });
+    }).catch(function () { return null; });
+  }
+  function rosterFive(R, inj) {
+    var P = R.players || [], five = [], outs = [], bench = P.filter(function (p) { return !p.start; }).slice().sort(function (a, b) { return (b.mpg || 0) - (a.mpg || 0); });
+    function bad(p) { return isOut(inj[String(p.name).toLowerCase()]); }
+    P.filter(function (p) { return p.start; }).forEach(function (p) {
+      if (!bad(p)) { five.push({ name: p.name, pos: p.pos, ht: p.ht, rt: p.rating, q: !!inj[String(p.name).toLowerCase()] }); return; }
+      outs.push(p.name + " (" + inj[String(p.name).toLowerCase()] + ")");
+      var r = bench.shift(); while (r && bad(r)) r = bench.shift();
+      if (r) five.push({ name: r.name, pos: r.pos, ht: r.ht, rt: r.rating, fill: true });
+    });
+    return { five: five.slice(0, 5), outs: outs, last: R.last };
+  }
+  function cbbCourtPanel(away, home, eid) {
+    var RS = (state.data || {}).rosters || {};
+    if (RS[away] && RS[home]) {
+      var vi = muGet("cbbinj|" + eid, function () { return injLoad(eid); });
+      var A0 = teamInfo(away) || {}, H0 = teamInfo(home) || {}, ij = vi || {};
+      var ra = rosterFive(RS[away], ij[String(A0.id)] || {}), rh = rosterFive(RS[home], ij[String(H0.id)] || {});
+      function one0(t, x) { return courtCard(t, x.five, x.outs, x.last ? "last start " + new Date(x.last + "T12:00:00").toLocaleDateString(undefined, { month: "short", day: "numeric" }) : ""); }
+      return '<div class="panel mu-lu"><h3>Projected starting fives <small>· last game’s starters, with ESPN’s injury list applied</small></h3><div class="mu-courts">' + one0(away, ra) + one0(home, rh) +
+        '</div><p class="note">Under each player: height · rating (points per 100 possessions vs an average player, from box scores this season, early season leans on last season). Hollow = filling in for a starter who’s out.</p></div>';
+    }
+    var key = "cbb|" + away + "|" + home;
+    var v = muGet(key, function () {
+      return injLoad(eid).then(function (inj) {
+        var A = teamInfo(away) || {}, H = teamInfo(home) || {};
+        return Promise.all([lastGameFive(away, inj[String(A.id)] || {}), lastGameFive(home, inj[String(H.id)] || {})]).then(function (r) { return { a: r[0], h: r[1] }; });
+      });
+    });
+    var hd = '<div class="panel mu-lu"><h3>Projected starting fives <small>· each team’s last starting five, with ESPN’s injury list applied</small></h3>';
+    if (!v) return hd + '<p class="note">Loading lineups…</p></div>';
+    function one(t, x) { return x ? courtCard(t, x.five, x.outs, "last start " + new Date(x.last).toLocaleDateString(undefined, { month: "short", day: "numeric" })) : courtCard(t, [], [], ""); }
+    return hd + '<div class="mu-courts">' + one(away, v.a) + one(home, v.h) + '</div><p class="note">College injury reports are thin, so this is a projection: the five who started last time, with anyone ESPN lists as out swapped for the next player by minutes (shown hollow).</p></div>';
+  }
+  // ---- who has the edge, category by category (the numbers our models and the market lean on most)
+  function htTxt(i) { i = +i; return i ? Math.floor(i / 12) + "′" + Math.round(i % 12) + "″" : ""; }
+  function edgeRows(away, home) {
+    var R = [], sp = state.sport;
+    var SC = { "Rating tonight": 10, "Rating": isCBB() ? 20 : 14, "Offense": isCBB() ? 15 : 8, "Defense": isCBB() ? 15 : 8, "Fully healthy": 10, "Lost to injuries": 5, "Last 10 games": 10,
+      "Schedule so far": isCBB() ? 10 : 6, "Pace": 6, "Luck": 4, "Tempo": 8, "Height": 3, "Offense EPA/play": .2, "Defense EPA/play": .2, "QB adjustment": 6, "Special teams": 3 };
+    function add(l, a, h, better, fmt, ra, rh, tip, main) { if (a == null || h == null || isNaN(+a) || isNaN(+h)) return; R.push({ l: l, a: +a, h: +h, b: better, f: fmt, ra: ra, rh: rh, tip: tip || "", main: !!main, sc: SC[l] || 10 }); }
+    var f1 = function (v) { return (+v).toFixed(1); }, s1 = function (v) { return signed(+v, 1); }, s2 = function (v) { return signed(+v, 2); };
+    if (isNBA()) {
+      var T = {}; ((state.data || {}).teams || []).forEach(function (t) { T[t.abbr] = t; }); var A = T[away], H = T[home]; if (!A || !H) return R;
+      add("Rating tonight", A.net, H.net, 1, s1, A.rank, H.rank, "Points per 100 possessions vs an average team, with tonight's injuries", 1);
+      add("Offense", A.off, H.off, 1, s1, null, null, "Points scored per 100 vs average");
+      add("Defense", A.def, H.def, 1, s1, null, null, "Points prevented per 100 vs average (+ = better)");
+      add("Fully healthy", A.healthy, H.healthy, 1, s1, A.healthy_rank, H.healthy_rank, "Rating if everyone played");
+      add("Lost to injuries", A.missing_pts, H.missing_pts, -1, f1, null, null, "Points per game the players out tonight are worth (lower is better)", 1);
+      add("Last 10 games", A.recent, H.recent, 1, s1, null, null, "Rating over the last 10 games");
+      add("Schedule so far", A.sos, H.sos, 0, s1, A.sos_rank, H.sos_rank, "How tough the opponents have been (+ = tougher)");
+      add("Pace", A.pace, H.pace, 0, f1, null, null, "Possessions per game (style, no edge)");
+    } else if (isCBB()) {
+      var A2 = teamRow0(away), H2 = teamRow0(home); if (!A2 || !H2) return R;
+      add("Rating", A2.net, H2.net, 1, s1, A2.rank, H2.rank, "Points per 100 possessions vs an average D1 team, neutral court", 1);
+      add("Offense", A2.adj_o, H2.adj_o, 1, f1, A2.o_rank, H2.o_rank, "Points scored per 100 vs an average defense");
+      add("Defense", A2.adj_d, H2.adj_d, -1, f1, A2.d_rank, H2.d_rank, "Points allowed per 100 vs an average offense (lower is better)");
+      add("Schedule so far", A2.sos, H2.sos, 0, s1, A2.sos_rank, H2.sos_rank, "Average rating of opponents (+ = tougher)");
+      add("Luck", A2.luck, H2.luck, 0, s1, null, null, "Points a game gained (+) or lost to opponents' shooting luck; lucky teams tend to come back to earth");
+      add("Tempo", A2.tempo, H2.tempo, 0, f1, A2.t_rank, H2.t_rank, "Possessions per 40 (style, no edge)");
+      var sg = slateGame(away, home); if (sg) add("Height", sg.away_ht, sg.home_ht, 1, htTxt, null, null, "Average height weighted by minutes (tested: the line already prices it)");
+    } else {
+      var A3 = teamRow0(away), H3 = teamRow0(home);
+      if (A3 && H3) {
+        add("Rating", A3.net, H3.net, 1, s1, A3.rank, H3.rank, "Points better than an average team on a neutral field", 1);
+        add("Offense", A3.off, H3.off, 1, s1, null, null, "Points per game added by the offense vs average");
+        add("Defense", A3.def, H3.def, 1, s1, null, null, "Points per game saved by the defense vs average (+ = better)");
+        add("Offense EPA/play", A3.off_epa, H3.off_epa, 1, s2, null, null, "Expected points added per play");
+        add("Defense EPA/play", A3.def_epa, H3.def_epa, -1, s2, null, null, "Expected points allowed per play (lower is better)");
+        add("QB adjustment", A3.qb_adj, H3.qb_adj, 1, s1, null, null, "Projected starting QB vs the usual starter, in points", 1);
+        add("Special teams", A3.st, H3.st, 1, s1, null, null, "Points per game from special teams");
+        add("Schedule so far", A3.sos, H3.sos, 0, s1, A3.sos_rank, H3.sos_rank, "How tough the opponents have been (+ = tougher)");
+      }
+    }
+    return R;
+  }
+  function styleMatchups(away, home) {                       // NFL: each offense against the other defense, by rank (1 = best)
+    var S = styleData(); if (!S || !S.teams[away] || !S.teams[home]) return [];
+    var A = S.teams[away], H = S.teams[home], out = [];
+    function m(lbl, oT, oR, dT, dR) { if (oR == null || dR == null) return; out.push({ l: lbl, oT: oT, oR: oR, dT: dT, dR: dR, edge: oR < dR ? oT : dR < oR ? dT : null, gap: Math.abs(oR - dR) }); }
+    m("Pass game", away, A.pass_off_rank, home, H.pass_def_rank); m("Pass game", home, H.pass_off_rank, away, A.pass_def_rank);
+    m("Run game", away, A.run_off_rank, home, H.run_def_rank); m("Run game", home, H.run_off_rank, away, A.run_def_rank);
+    m("Pass rush vs protection", home, H.pres_made_rank, away, A.pres_allowed_rank); m("Pass rush vs protection", away, A.pres_made_rank, home, H.pres_allowed_rank);
+    m("Big plays", away, A.expl_off_rank, home, H.expl_def_rank); m("Big plays", home, H.expl_off_rank, away, A.expl_def_rank);
+    return out;
+  }
+  function edgesHtml(away, home) {
+    var R = edgeRows(away, home), M = state.sport === "nfl" ? styleMatchups(away, home) : [];
+    if (!R.length && !M.length) return "";
+    var nfl = state.sport === "nfl" || isNBA(), ca = 0, ch = 0;
+    var rows = R.map(function (r) {
+      var e = !r.b || r.a === r.h ? 0 : (r.b > 0 ? r.a > r.h : r.a < r.h) ? -1 : 1;
+      if (e < 0) ca++; else if (e > 0) ch++;
+      var gap = Math.abs(r.a - r.h), w = Math.max(3, Math.min(50, 50 * gap / r.sc));          // a full half-bar = a big gap for that category
+      var bar = e ? '<span class="eg-bar ' + (e < 0 ? "l" : "r") + '" style="width:' + w.toFixed(0) + '%"></span>' : "";
+      return '<div class="eg-row' + (r.main ? " main" : "") + '" title="' + esc(r.tip) + '"><span class="eg-v' + (e < 0 ? " b" : "") + '">' + esc(r.f(r.a)) + (r.ra ? "<small>#" + r.ra + "</small>" : "") + "</span>" +
+        '<span class="eg-mid"><i>' + esc(r.l) + (r.main ? " ★" : "") + '</i><span class="eg-track">' + bar + "</span></span>" +
+        '<span class="eg-v r' + (e > 0 ? " b" : "") + '">' + (r.rh ? "<small>#" + r.rh + "</small>" : "") + esc(r.f(r.h)) + "</span></div>";
+    }).join("");
+    var mrows = M.map(function (m) {
+      return '<div class="eg-mu"><span>' + esc(m.l) + ": <b>" + esc(shortName(m.oT)) + "</b> offense #" + m.oR + " vs <b>" + esc(shortName(m.dT)) + "</b> defense #" + m.dR + "</span>" +
+        (m.edge && m.gap >= 6 ? '<span class="eg-who">' + badge(m.edge, nfl ? m.edge : null, "sm") + " edge" + (m.gap >= 15 ? " (big)" : "") + "</span>" : '<span class="eg-who mute">even</span>') + "</div>";
+    }).join("");
+    return '<div class="panel mu-edges"><h3>Who has the edge</h3><div class="eg-head"><span>' + badge(away, nfl ? away : null, "sm") + " " + esc(shortName(away)) + "<small>" + ca + " edge" + (ca === 1 ? "" : "s") + "</small></span><span>" +
+      "<small>" + ch + " edge" + (ch === 1 ? "" : "s") + "</small>" + esc(shortName(home)) + " " + badge(home, nfl ? home : null, "sm") + "</span></div>" + rows +
+      (mrows ? '<div class="eg-sub">Offense vs defense <small>(ranks, 1 = best)</small></div>' + mrows : "") +
+      '<p class="note">★ = matters most. The bar shows who’s better and by how much. The line already prices most of this; our picks come from the models, not from counting edges.</p></div>';
+  }
+  function slateGame(away, home) { var out = null; ((state.data || {}).slate || []).forEach(function (g) { if (g.away === away && g.home === home) out = g; }); return out; }
+  // ---- our number vs Vegas, and any picks on this game
+  function ourNumberHtml(away, home) {
+    var g = slateGame(away, home); if (!g) return "";
+    var ha = abbr(home), aa = abbr(away), sc = state.scores && state.scores.games && (state.scores.games[away + " @ " + home] || (g.id != null && state.scores.games[String(g.id)]));
+    var ls = sc && sc.ln && sc.ln.sp != null && sc.status === "pre" ? sc.ln.sp : g.line_spread, lt = sc && sc.ln && sc.ln.tot != null && sc.status === "pre" ? sc.ln.tot : g.line_total;
+    var pH = g.model_spread == null ? null : normCdf(-g.model_spread / rkCfg().sd);
+    var picks = ((state.data || {}).bets || []).filter(function (x) { return x.away === away && x.home === home && rated(x).stake > 0; });
+    function cell(l, v, sub) { return '<div class="on-c"><i>' + l + "</i><b>" + v + "</b>" + (sub ? "<small>" + sub + "</small>" : "") + "</div>"; }
+    return '<div class="panel mu-our"><h3>Our number</h3><div class="on-g">' +
+      cell("Our line", esc(fmtSpread(ha, aa, g.model_spread)), "Vegas " + esc(fmtSpread(ha, aa, ls))) +
+      cell("Our total", g.model_total == null ? "—" : u(g.model_total), "Vegas " + (lt == null ? "—" : u(lt))) +
+      cell("Win chance", pH == null ? "—" : esc(pH >= .5 ? ha : aa) + " " + Math.round(100 * Math.max(pH, 1 - pH)) + "%", "from our line") + "</div>" +
+      (picks.length ? '<div class="on-p">' + picks.map(function (x) { return '<span class="sg-pick">' + starsHtml(rated(x).stars) + " " + esc(pretty(x.pick)) + " · " + u(rated(x).stake) + "u</span>"; }).join("") + "</div>" : '<p class="note">No pick on this game.</p>') + "</div>";
+  }
+  // ---- recent form: each team's last 5 results this season (ESPN schedules)
+  function formLoad(team) {
+    var T = teamInfo(team); if (!T || !T.id) return Promise.resolve(null);
+    return espnGet("/apis/site/v2/sports/" + muPath() + "/teams/" + T.id + "/schedule?season=" + muSeason()).then(function (j) {
+      return (j.events || []).map(function (ev) {
+        var c = ev.competitions && ev.competitions[0]; if (!c || !((c.status || {}).type || {}).completed) return null;
+        var me = null, op = null; (c.competitors || []).forEach(function (t) { if (String(t.id || (t.team && t.team.id)) === String(T.id)) me = t; else op = t; });
+        if (!me || !op) return null; var a = muScore(me), b = muScore(op); if (a == null || b == null) return null;
+        return { date: ev.date, us: a, them: b, opp: (op.team && (op.team.abbreviation || op.team.shortDisplayName)) || "", at: me.homeAway === "home" ? "vs" : "@" };
+      }).filter(Boolean).sort(function (a, b) { return a.date < b.date ? 1 : -1; }).slice(0, 5);
+    }).catch(function () { return null; });
+  }
+  function formHtml(away, home) {
+    var v = muGet("form|" + sportKey() + "|" + away + "|" + home, function () { return Promise.all([formLoad(away), formLoad(home)]).then(function (r) { return { a: r[0], h: r[1] }; }); });
+    var hd = '<div class="panel mu-form"><h3>Recent form <small>· last 5 games</small></h3>';
+    if (!v) return hd + '<p class="note">Loading…</p></div>';
+    function col(t, L) {
+      if (!L || !L.length) return '<div><b>' + esc(shortName(t)) + '</b><p class="note">No games yet.</p></div>';
+      var w = L.filter(function (g) { return g.us > g.them; }).length;
+      return "<div><div class=\"fm-h\">" + badge(t, isNBA() || state.sport === "nfl" ? t : null, "sm") + " <b>" + esc(shortName(t)) + "</b> <span>" + w + "–" + (L.length - w) + '</span></div><div class="fm-dots">' +
+        L.map(function (g) { var win = g.us > g.them; return '<span class="fm-d ' + (win ? "w" : "l") + '" title="' + esc(new Date(g.date).toLocaleDateString(undefined, { month: "short", day: "numeric" }) + " " + g.at + " " + g.opp + ": " + g.us + "–" + g.them) + '"><b>' + (win ? "W" : "L") + "</b><small>" + esc(g.at + " " + g.opp) + "</small><small>" + g.us + "–" + g.them + "</small></span>"; }).join("") + "</div></div>";
+    }
+    return hd + '<div class="fm-g">' + col(away, v.a) + col(home, v.h) + "</div></div>";
+  }
+  // ---- the page
+  function openMatchup(m) { state.mu = m; state.muFrom = state.view; state.view = "matchup"; render(); window.scrollTo(0, 0); }
+  function idsReady(a, b) {                              // true when both teams' ESPN ids are known; "missing" when the list loaded without them
+    var A = teamInfo(a), B = teamInfo(b); if (A && B && A.id && B.id) return true;
+    if (TEAMREG[sportKey()]) return "missing";
+    loadTeams(sportKey()); return false;
+  }
+  function renderMatchup(el) {
+    var m = state.mu; if (!m) { state.view = state.muFrom || "week"; return render(); }
+    var rdy = idsReady(m.away, m.home);
+    if (rdy === "missing") { el.innerHTML = '<button type="button" class="back mu-back">‹ Back</button><div class="panel"><p class="note">ESPN doesn’t list one of these teams, so the matchup page isn’t available for this game.</p></div>'; el.querySelector(".mu-back").addEventListener("click", function () { state.view = state.muFrom || "week"; state.mu = null; render(); }); return; }
+    if (!rdy) { el.innerHTML = '<button type="button" class="back mu-back">‹ Back</button><div class="panel"><p class="note">Loading teams…</p></div>'; el.querySelector(".mu-back").addEventListener("click", function () { state.view = state.muFrom || "week"; state.mu = null; render(); }); setTimeout(function () { if (state.view === "matchup") render(); }, 1500); return; }
+    var h = muGet("h2h|" + sportKey() + "|" + m.away + "|" + m.home, function () { return h2hLoad(m.away, m.home); });
+    var lu = isFootball() ? footballPanel(m.away, m.home, m.eid) : isCBB() ? cbbCourtPanel(m.away, m.home, m.eid) : "";
+    var nfl = state.sport === "nfl";
+    el.innerHTML = '<button type="button" class="back mu-back">‹ Back</button>' +
+      '<div class="gp-head mu-head"><div class="mu-vs">' + badge(m.away, nfl ? m.away : null, "") + "<b>" + esc(shortName(m.away) || m.away) + '</b><span class="at">' + (m.neutral ? "vs" : "@") + "</span>" + badge(m.home, nfl ? m.home : null, "") + "<b>" + esc(shortName(m.home) || m.home) + "</b></div>" +
+      (m.kickoff ? '<div class="mkt">' + esc(kickText(m.kickoff)) + "</div>" : "") + "</div>" +
+      ourNumberHtml(m.away, m.home) + edgesHtml(m.away, m.home) + lu + formHtml(m.away, m.home) + h2hHtml(m.away, m.home, h) +
+      (isFootball() ? historyHtml(historyFor(m.away, m.home)) : "");
+    el.querySelector(".mu-back").addEventListener("click", function () { state.view = state.muFrom || "week"; state.mu = null; render(); });
+  }
   function renderNbaGame(el, g) {
     el.innerHTML = '<a class="back" href="#nba">‹ All games</a>' +
       '<div class="gp-head"><div class="teams big">' + nbaTeamRow(g, "away", nbaScore(g)) + nbaTeamRow(g, "home", nbaScore(g)) + '</div><div class="mkt">' + esc(nbaStatus(g)) + (nbaFlag(g) ? ' · <span class="badge">Big gap</span>' : "") + "</div></div>" +
@@ -3132,7 +3630,8 @@ body.on-home { overflow-anchor: none; }
       '<div class="panel"><h3>Why our line</h3>' + whyBlock(g) + "</div></div>" +
       '<div class="two" style="margin-top:16px"><div class="panel"><h3>Line movement today</h3>' + moveChart(g) + "</div>" +
       '<div class="panel"><h3>What changed</h3>' + ((g.changes || []).length ? changeChip(g, true) : '<p class="note">No changes since the first update today.</p>') + "</div></div>" +
-      '<div class="panel" style="margin-top:16px"><h3>Who plays</h3><p class="note">' + VALUE_NOTE + '</p><div class="rot two-col">' + rotList(g.away_players, g.away_out, g.away_abbr, g.away_lineup) + rotList(g.home_players, g.home_out, g.home_abbr, g.home_lineup) + "</div></div>";
+      '<div class="panel" style="margin-top:16px"><h3>Who plays</h3><p class="note">' + VALUE_NOTE + '</p><div class="rot two-col">' + rotList(g.away_players, g.away_out, g.away_abbr, g.away_lineup) + rotList(g.home_players, g.home_out, g.home_abbr, g.home_lineup) + "</div></div>" +
+      nbaCourtPanel(g) + edgesHtml(g.away_abbr, g.home_abbr) + (idsReady(g.away_abbr, g.home_abbr) === true ? formHtml(g.away_abbr, g.home_abbr) : "") + (idsReady(g.away_abbr, g.home_abbr) === true ? h2hHtml(g.away_abbr, g.home_abbr, muGet("h2h|nba|" + g.away_abbr + "|" + g.home_abbr, function () { return h2hLoad(g.away_abbr, g.home_abbr); })) : h2hHtml(g.away_abbr, g.home_abbr, null));
     bindCommon(el);
     el.querySelectorAll("[data-mvk]").forEach(function (b) { b.addEventListener("click", function () { state.mvk = b.getAttribute("data-mvk"); render(); }); });
     if (lastGame !== g.id) { lastGame = g.id; window.scrollTo(0, 0); }
@@ -3200,15 +3699,16 @@ body.on-home { overflow-anchor: none; }
         row("Picked the winner", s.picked_winner == null ? null : pct(s.picked_winner), s.mkt_picked_winner == null ? null : pct(s.mkt_picked_winner), s.games, false) +
         sig("\u2605 Tired Traveler: home team vs an away team on a back-to-back that crossed a time zone (0.5u at \u2212110; graded at 1u before Nov 6)", s.tired) +
         (s.tired && s.tired.clv && s.tired.clv.n ? '<div class="lrow"><div>Tired Traveler vs the closing line<small>' + s.tired.clv.n + ' picks · last line before tip</small></div><div class="tnum">' + s.tired.clv.beat + " of " + s.tired.clv.n + ' better</div><div class="tnum ' + (s.tired.clv.avg > 0 ? "up" : s.tired.clv.avg < 0 ? "down" : "") + '">' + clvTxt(s.tired.clv.avg) + " pts</div></div>" : "") +
-        sig("\u25ce Combo watch: the combined model\u2019s most confident 5% of games (paper, 1u at \u2212110)", s.combo) +
+        sig("\u25ce Combo watch: the combined model\u2019s most confident 5% of games (0.5u bet from Nov 9; 1u on paper before)", s.combo) +
         (s.combo && s.combo.clv && s.combo.clv.n ? '<div class="lrow"><div>Combo watch vs the closing line<small>' + s.combo.clv.n + ' picks · last line before tip</small></div><div class="tnum">' + s.combo.clv.beat + " of " + s.combo.clv.n + ' better</div><div class="tnum ' + (s.combo.clv.avg > 0 ? "up" : s.combo.clv.avg < 0 ? "down" : "") + '">' + clvTxt(s.combo.clv.avg) + " pts</div></div>" : "") +
+        sig("\u2605 Fade the Sim: the simulator 2+ one way, the morning market model 0.5+ the other; bet against the simulator (0.5u at \u2212110, from Nov 9)", s.fs) +
         sig("\u25c6 Model Knows: we and Vegas pick different winners, ours by 2+; our team\u2019s moneyline before tip (1u bet from Nov 9, paper before)", s.mk) +
         sig("\u26a0 Vegas Knows: we have it within 4, Vegas has the favorite 3+ pts bigger; the favorite\u2019s moneyline, 1u at its price (1u bet from Nov 9, paper before; backtest: won 62%, lost ~11% per bet)" + (s.vk && s.vk.won_outright != null ? "<small>favorite won outright " + s.vk.won_outright + " of " + (s.vk.w + s.vk.l + (s.vk.p || 0)) + "</small>" : ""), s.vk) +
         sig("Tracked at 0 units: our win % 5+ pts above the market (moneyline)", s.ml_edge) + sig("Tracked at 0 units: underdog moneyline 3+ pts cheaper than its spread", s.cheap_dog)
         : '<p class="note">Nothing graded yet. The first games grade the morning after they’re played.</p>') + "</div>" +
       ((t.picks || []).length ? '<div class="panel"><h3>Tracked picks</h3><p class="note">The line when we flagged it, where it closed, and the result. “vs close” = points our number beat the close by (+ is good): the earliest sign an edge is real.</p><div class="scroll"><table><thead><tr><th>Date</th><th>Game</th><th>Bet</th><th class="ra">Closed</th><th class="ra">vs close</th><th>Result</th><th class="ra">Units</th></tr></thead><tbody>' +
         t.picks.map(function (p) {
-          return "<tr><td>" + esc(nbaDay(p.date)) + "</td><td>" + esc(p.game) + "</td><td><b>" + esc(pretty(p.pick)) + "</b>" + (p.angle ? '<span class="pk-ang">' + esc(p.angle === "Tired Traveler" ? "\u2605 " + p.angle : (p.angle === "Vegas Knows" ? "\u26a0 " : p.angle === "Model Knows" ? "\u25c6 " : "\u25ce ") + p.angle + (p.paper ? " \u00b7 paper" : "")) + "</span>" : "") + '</td><td class="ra">' + (p.close == null ? "" : lineTxt(p.close)) + '</td><td class="ra ' + (p.clv > 0 ? "up" : p.clv < 0 ? "down" : "") + '">' + (p.clv == null ? "" : clvTxt(p.clv)) + "</td><td>" +
+          return "<tr><td>" + esc(nbaDay(p.date)) + "</td><td>" + esc(p.game) + "</td><td><b>" + esc(pretty(p.pick)) + "</b>" + (p.angle ? '<span class="pk-ang">' + esc(p.angle === "Tired Traveler" ? "\u2605 " + p.angle : (p.angle === "Vegas Knows" ? "\u26a0 " : p.angle === "Model Knows" ? "\u25c6 " : p.angle === "Fade the Sim" ? "\u2605 " : "\u25ce ") + p.angle + (p.paper ? " \u00b7 paper" : "")) + "</span>" : "") + '</td><td class="ra">' + (p.close == null ? "" : lineTxt(p.close)) + '</td><td class="ra ' + (p.clv > 0 ? "up" : p.clv < 0 ? "down" : "") + '">' + (p.clv == null ? "" : clvTxt(p.clv)) + "</td><td>" +
             (p.result ? '<span class="pill ' + esc(p.result) + '">' + (p.result === "W" ? "Won" : p.result === "L" ? "Lost" : "Push") + "</span>" : '<span class="pill">Open</span>') + '</td><td class="ra ' + (p.units > 0 ? "up" : p.units < 0 ? "down" : "") + '">' + (p.units == null ? "" : signed(p.units)) + "</td></tr>";
         }).join("") + "</tbody></table></div></div>" : "") +
       (rec.length ? '<div class="panel span2"><h3>Recent games</h3><div class="scroll"><table><thead><tr><th>Date</th><th>Game</th><th class="ra">Ours</th><th class="ra">Market</th><th class="ra">Final</th><th>Closer</th></tr></thead><tbody>' +
@@ -3795,7 +4295,7 @@ body.on-home { overflow-anchor: none; }
       if (isCBB() && g.taller) notes.push('<span class="sg-flag' + (g.taller_by >= 2 ? " ht2" : " mute") + '" title="' + esc("Average height, weighted by minutes: " + shortName(g.away) + " " + (g.away_ht_txt || "") + " \u00b7 " + shortName(g.home) + " " + (g.home_ht_txt || "") + ". Taller teams rebound and score inside better, but the line already prices it (tested: no betting edge).") + '">\u2195 ' + esc(abbr(g.taller)) + " taller by " + u(g.taller_by) + '\u2033</span>');
       if (nfl) { var mm = bigMismatch(g.away, g.home); if (mm) notes.push('<button type="button" class="sg-flag mute tbtn" data-tpage="' + esc(mm[0]) + '" title="' + esc(mm[0] + "’s " + mm[1] + " offense vs a defense ranked " + mm[2] + " spots worse. A matchup, not a pick.") + '">' + esc(mm[0]) + " " + mm[1] + " mismatch</button>"); }
       return '<tr><td class="nw">' + esc(kickText(g.kickoff)) + (st ? '<small class="' + (sc.status === "live" ? "live" : "") + '">' + esc(st) + "</small>" : "") + "</td>" +
-        '<td><div class="sg-g">' + nm(g.away, r.ra, wA) + '<span class="at">' + (g.neutral && isCBB() ? "vs" : "@") + "</span>" + nm(g.home, r.rh, wH) + "</div>" + (function () { if (!nfl && state.sport !== "cfb") return ""; var h = historyFor(g.away, g.home); if (!h || !(h.facts || []).length) return "";
+        '<td class="sg-mu" data-mu-a="' + esc(g.away) + '" data-mu-h="' + esc(g.home) + '" data-mu-k="' + esc(r.key) + '" data-mu-id="' + esc(g.id != null ? g.id : "") + '" data-mu-t="' + esc(g.kickoff || "") + '" data-mu-n="' + (g.neutral ? 1 : 0) + '" title="Open the matchup: head to head and projected starters"><div class="sg-g">' + nm(g.away, r.ra, wA) + '<span class="at">' + (g.neutral && isCBB() ? "vs" : "@") + "</span>" + nm(g.home, r.rh, wH) + "</div>" + (function () { if (!nfl && state.sport !== "cfb") return ""; var h = historyFor(g.away, g.home); if (!h || !(h.facts || []).length) return "";
           return '<small class="sg-hist" title="' + esc((h.facts || []).concat(h.last ? [h.last] : []).join("\n")) + '">\ud83d\udcdc ' + esc(h.facts[0]) + "</small>"; })() + "</td>" +
         '<td class="ra nw">' + esc(fmtSpread(ha, aa, r.ls)) + (r.live || r.ls == null ? "" : ' <small title="The line when the sheet was built">' + (isCBB() ? "morning" : "sheet") + "</small>") +
           (g.open_spread != null && r.ls != null && Math.abs(g.open_spread - r.ls) >= .5 ? '<small class="opn">opened ' + esc(fmtSpread(ha, aa, g.open_spread)) + " (" + u(Math.abs(r.ls - g.open_spread)) + " toward " + esc(r.ls < g.open_spread ? ha : aa) + ")</small>" : "") + "</td>" +
@@ -3906,7 +4406,7 @@ body.on-home { overflow-anchor: none; }
       S.push("The market is at " + esc(favTxt(g, g.mkt_spread)) + (Math.abs(gap) < 1 ? ", close to ours." : ": " + Math.abs(gap).toFixed(1) + " points more on " + esc(gap > 0 ? g.home_abbr : g.away_abbr) + " than we are."));
     }
     if (g.angle) S.push("★ Tired Traveler: " + esc(g.away_abbr) + " are on a back-to-back after crossing a time zone; the play is " + esc(g.angle.pick || g.home_abbr) + ".");
-    if (g.combo) S.push("◎ Combo watch leans " + esc(g.combo.pick) + (g.combo.p != null ? " (" + Math.round(g.combo.p * 100) + "% to cover)" : "") + "; it’s tracked on paper until a full season proves it.");
+    if (g.combo) S.push("◎ Combo watch leans " + esc(g.combo.pick) + (g.combo.p != null ? " (" + Math.round(g.combo.p * 100) + "% to cover)" : "") + ". A 0.5u bet.");
     if (g.mk) S.push("\u25c6 Model Knows: we pick " + esc(g.mk.team) + " to win and Vegas picks the other side; a 1u moneyline bet (" + esc(g.mk.pick) + ").");
     if (g.vk) S.push("\u26a0 Vegas Knows: we have this one close but Vegas has " + esc(g.vk.team) + " as a clear favorite (" + esc(g.vk.pick) + "). A 1u moneyline bet: favorites like this won 62% in our backtest, but at these prices it lost money, so it\u2019s a live test.");
     if (g.dist && g.dist.close != null) S.push(Math.round(g.dist.close * 100) + "% of our simulations finish within 5 points.");
@@ -4297,7 +4797,7 @@ body.on-home { overflow-anchor: none; }
     if (isCBB() && !cbbNew()) { if (state.view === "teams") renderCbbTeams(el); else if (state.view === "record") renderCbbRecord(el); else renderCbbBoard(el); return; }
     if (isNBA()) { var cp = document.getElementById("cntPicks"); if (cp) cp.textContent = state.data.members_only ? ((state.data.teaser || {}).bets || "") : ((state.data.bets ? state.data.bets.length : nbaPickList(state.data).length) || ""); }
     if (isNBA()) { if (state.view === "teams") renderRankings(el); else if (state.view === "record") renderNbaTracking(el); else if (state.view === "news") renderNbaNews(el); else if (state.view === "ahead") renderNbaAhead(el); else if (state.view === "picks") (state.data.bets ? renderWeek(el) : renderNbaPicks(el)); else if (state.view === "ratings" && state.data.setups) renderRatings(el); else renderNbaBoard(el); return; }
-    if (state.view === "games") renderSlate(el); else if (state.view === "record") renderRecord(el); else if (state.view === "ratings") (isCBB() ? renderCbbStars(el) : renderRatings(el)); else if (state.view === "teams") renderTeams(el); else renderWeek(el);
+    if (state.view === "matchup") renderMatchup(el); else if (state.view === "games") renderSlate(el); else if (state.view === "record") renderRecord(el); else if (state.view === "ratings") (isCBB() ? renderCbbStars(el) : renderRatings(el)); else if (state.view === "teams") renderTeams(el); else renderWeek(el);
   }
   document.querySelectorAll("[role=tab]").forEach(function (t) { t.addEventListener("click", function () { if (t.getAttribute("data-view") === "home") { showHome(true); window.scrollTo(0, 0); return; } state.tpage = null; if (state.game) { state.game = null; try { history.replaceState(null, "", "#nba"); } catch (e) {} } state.view = t.getAttribute("data-view"); storeSet("gte.view", state.view); render(); }); });
   var sv = storeGet("gte.view"); if (sv === "record" || sv === "ratings" || sv === "teams" || sv === "mybets" || sv === "bank" || sv === "games" || sv === "news" || sv === "ahead" || sv === "picks") state.view = sv;
@@ -4619,6 +5119,7 @@ body.on-home { overflow-anchor: none; }
   FOOT.nfl = FOOT.cfb;
   function setSport(sp) {
     state.sport = sp; state.tpage = null;
+    ["cfb", "nfl", "nba", "cbb"].forEach(function (k) { document.body.classList.toggle("lg-" + k, k === sp); });
     var ft = document.getElementById("foot"); if (ft && FOOT[sp]) ft.textContent = FOOT[sp];
     document.querySelectorAll("[data-sport]").forEach(function (x) { x.setAttribute("aria-pressed", String(x.getAttribute("data-sport") === sp)); });
     var nba = sp === "nba", daily = nba;          // college basketball is daily but uses the full card pages
@@ -4636,6 +5137,12 @@ body.on-home { overflow-anchor: none; }
     state.market = "all";
     loadTeams(sportKey());
   }
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest && e.target.closest("[data-mu-a]"); if (!b || e.target.closest("button:not([data-mu-a]), a")) return;
+    var k = b.getAttribute("data-mu-k"), sc = state.scores && state.scores.games, id = b.getAttribute("data-mu-id");
+    var g = sc && (sc[k] || (id && sc[id]));
+    openMatchup({ away: b.getAttribute("data-mu-a"), home: b.getAttribute("data-mu-h"), eid: (g && g.eid) || (isCBB() && id) || "", kickoff: b.getAttribute("data-mu-t"), neutral: b.getAttribute("data-mu-n") === "1" });
+  });
   document.querySelectorAll("[data-sport]").forEach(function (b) {
     b.addEventListener("click", function () {
       var sp = b.getAttribute("data-sport"); if (state.home) { showHome(false); window.scrollTo(0, 0); } if (state.sport === sp) return;
