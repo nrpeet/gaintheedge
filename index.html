@@ -1084,6 +1084,30 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
 .gl-sharp .spl-chip { font-size: 11px; white-space: nowrap; }
 .spl-track { font-size: 12.5px; color: var(--ink-2); margin: 10px 0 0; }
 
+
+.qtag, .otag { display: inline-block; font-size: 10.5px; font-weight: 800; letter-spacing: .02em; padding: 1px 7px; border-radius: 999px; margin: 0 4px; vertical-align: 1px; text-decoration: none; }
+.qtag { color: #f2b63c; background: rgba(242, 182, 60, .15); }
+.otag { color: #ff6b6b; background: rgba(255, 107, 107, .14); }
+.pl.out .otag { text-decoration: none; }
+.ij-g { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+.ij h4 { margin: 0 0 6px; display: flex; align-items: center; gap: 8px; }
+.ij ul { list-style: none; margin: 0; padding: 0; }
+.ij li { padding: 7px 0; border-top: 1px solid var(--line); font-size: 14px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 6px; }
+.ij li .qtag, .ij li .otag { margin: 0; }
+.ij li small { color: var(--ink-2); }
+.ij li em { font-style: normal; font-size: 12.5px; color: var(--ink-2); margin-left: auto; }
+
+.sc-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px; margin: 2px 0 10px; }
+.sc-st { background: color-mix(in srgb, var(--ink) 5%, transparent); border-radius: 10px; padding: 8px 10px; }
+.sc-st b { display: block; font-size: 18px; font-variant-numeric: tabular-nums; }
+.sc-st span { font-size: 12px; color: var(--ink-2); }
+.sc svg { display: block; width: 100%; height: auto; overflow: visible; }
+.sc .sc-ax { font-size: 11.5px; fill: var(--ink-3); font-family: var(--f-body); }
+.sc .sc-lb { font-size: 12.5px; font-weight: 800; font-family: var(--f-body); paint-order: stroke; stroke: var(--card); stroke-width: 5px; stroke-linejoin: round; }
+.sc .sc-lb.us { fill: var(--ink); } .sc .sc-lb.vg { fill: var(--accent); }
+.sc line.us { stroke: var(--ink); stroke-width: 2; } .sc line.vg { stroke: var(--accent); stroke-width: 2; stroke-dasharray: 5 4; }
+.sc-key { font-size: 12.5px; color: var(--ink-2); margin: 8px 0 0; line-height: 1.55; }
+.sc-key i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin: 0 4px 0 6px; vertical-align: -1px; }
 /* NBA game page v3 (Nov 12 2026) */
 body.on-game .hero { display: none; }
 .gp-sum { position: sticky; top: var(--barH, 56px); z-index: 15; display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 10px 14px; margin: 8px 0 14px; }
@@ -3194,6 +3218,93 @@ body.on-home { overflow-anchor: none; }
     MIN: "#0C2340", NO: "#0C2340", NY: "#006BB6", OKC: "#007AC1", ORL: "#0077C0", PHI: "#006BB6", PHX: "#1D1160", POR: "#E03A3E", SAC: "#5A2D81",
     SA: "#8a8d8f", TOR: "#CE1141", UTAH: "#002B5C", WSH: "#002B5C" };
   function tc(ab, name) { return NBA_COL[ab] || hue(name || ab || ""); }
+  // ---- NBA game page: the 10,000 simulated finishes, v2 (Nov 12 2026). Smoothed curve, split at the VEGAS line (so the two
+  // colors are each side's chance to cover), our line and Vegas's marked with labels that can't collide, the middle 80% bracketed.
+  function liftCol(hex) {                // team colors that would vanish on the dark card (navy, black) get lightened
+    var m = /^#?([0-9a-f]{6})$/i.exec(String(hex || "")); if (!m) return hex;
+    var n = parseInt(m[1], 16), r = n >> 16, gg = (n >> 8) & 255, b = n & 255, L = (0.2126 * r + 0.7152 * gg + 0.0722 * b) / 255;
+    if (L >= 0.32) return "#" + m[1];
+    var k = (0.32 - L) / (1 - L) + 0.12; r = Math.round(r + (255 - r) * k); gg = Math.round(gg + (255 - gg) * k); b = Math.round(b + (255 - b) * k);
+    return "#" + ((1 << 24) + (r << 16) + (gg << 8) + b).toString(16).slice(1);
+  }
+  // chart colors: each team's most recognizable color that still shows on a dark card, plus a second choice when both teams'
+  // colors would look alike (Bulls vs Raptors are both red)
+  var NBA_VIV = { ATL: ["#E03A3E", "#C1D32F"], BOS: ["#00A651", "#BA9653"], BKN: ["#C9C9C9", "#7A7A7A"], CHA: ["#00A3B4", "#6A5ACD"], CHI: ["#E0213D", "#BBBBBB"],
+    CLE: ["#B0204F", "#FDBB30"], DAL: ["#1E7FD6", "#B8C4CA"], DEN: ["#FEC524", "#4A7FD0"], DET: ["#E0213D", "#1D74D9"], GS: ["#FFC72C", "#2F6FD6"],
+    HOU: ["#E0213D", "#C4CED4"], IND: ["#FDBB30", "#3A6FC4"], LAC: ["#E0213D", "#2F6FD6"], LAL: ["#FDB927", "#7B4BB5"], MEM: ["#7D98D6", "#F5B112"],
+    MIA: ["#E0213D", "#F9A01B"], MIL: ["#3E9E4B", "#EEE1C6"], MIN: ["#78BE20", "#2E7CC6"], NO: ["#C8A75D", "#E0213D"], NY: ["#F58426", "#2F6FD6"],
+    OKC: ["#2D9CDB", "#EF3B24"], ORL: ["#1E88E5", "#C4CED4"], PHI: ["#2F6FD6", "#ED174C"], PHX: ["#E56020", "#7B5BC2"], POR: ["#E03A3E", "#BBBBBB"],
+    SAC: ["#8A5CC4", "#A1A5A8"], SA: ["#C4CED4", "#7A7A7A"], TOR: ["#E0213D", "#A1A1A4"], UTAH: ["#7B5BC2", "#DDDDDD"], WSH: ["#E31837", "#3A6FC4"] };
+  function chartCols(g) {
+    function pick(ab, name, k) { var v = NBA_VIV[ab]; return v ? v[k] : liftCol(tc(ab, name)); }
+    function rgb(h) { var n = parseInt(String(h).replace("#", ""), 16); return [n >> 16, (n >> 8) & 255, n & 255]; }
+    function near(a, b) { var x = rgb(a), y = rgb(b); return Math.abs(x[0] - y[0]) + Math.abs(x[1] - y[1]) + Math.abs(x[2] - y[2]) < 140; }
+    var ch = pick(g.home_abbr, g.home, 0), ca = pick(g.away_abbr, g.away, 0);
+    if (near(ca, ch)) ca = pick(g.away_abbr, g.away, 1);
+    if (near(ca, ch)) ca = "#9aa3b5";
+    return [ca, ch];
+  }
+  function simChart(g) {
+    var d = g.dist; if (!d || !d.p || !d.p.length) return "";
+    var n = d.p.length, tot = d.p.reduce(function (a, b) { return a + b; }, 0) || 1, A = g.away_abbr, Hh = g.home_abbr;
+    var at = function (i) { return d.lo + i * d.step; };
+    var sm = d.p.map(function (_, i) { var w = [1, 2, 3, 4, 3, 2, 1], s0 = 0, ws = 0; for (var k = -3; k <= 3; k++) { var j = i + k; if (j >= 0 && j < n) { s0 += d.p[j] * w[k + 3]; ws += w[k + 3]; } } return s0 / ws; });
+    var mx = Math.max.apply(null, sm) || 1;
+    var phone = window.innerWidth < 700, W = phone ? 360 : window.innerWidth >= 1000 ? 920 : 680, H = phone ? 200 : 230, T = 40, B = 46, PL = phone ? 26 : 34, PR = PL;
+    var R = Math.min(45, Math.max(35, Math.ceil(Math.max(Math.abs(d.m10 || 0), Math.abs(d.m90 || 0)) / 5) * 5 + 15));   // wide enough for a blowout
+    var lo = Math.max(d.lo + 4 * d.step, -R), hi = Math.min(at(n - 1) - 4 * d.step, R);   // the end bins collect every blowout: leave them off
+    function X(v) { return PL + (Math.max(lo, Math.min(hi, v)) - lo) / (hi - lo) * (W - PL - PR); }
+    function Y(c) { return H - B - c / mx * (H - T - B); }
+    var ours = g.our_spread == null ? null : -g.our_spread, vg = g.mkt_spread == null ? null : -g.mkt_spread;
+    var cut = vg != null ? vg : 0;                                    // split at Vegas's line (at a tie when there's no line)
+    function pct(f) { var c = 0; d.p.forEach(function (x, i) { if (f(at(i))) c += x; }); return Math.round(100 * c / tot); }
+    var homeCov = pct(function (m) { return m > cut; }), awayCov = pct(function (m) { return m < cut; }), push = 100 - homeCov - awayCov;
+    var homeWin = Math.round(g.our_home_win * 100);
+    var CC = chartCols(g), ca = CC[0], ch = CC[1];
+    function area(f) {
+      var pts = [], i;
+      for (i = 0; i < n; i++) { var v = at(i); if (v < lo || v > hi) continue; if (f(v)) pts.push([X(v), Y(sm[i])]); }
+      var ci = (cut - d.lo) / d.step, c0 = Math.floor(ci), fr = ci - c0;           // close the gap at the split: the curve's height at Vegas's line
+      if (c0 >= 0 && c0 + 1 < n) { var yc = Y(sm[c0] * (1 - fr) + sm[c0 + 1] * fr); if (f(cut - 1e-6) && !f(cut + 1e-6)) pts.push([X(cut), yc]); else if (f(cut + 1e-6) && !f(cut - 1e-6)) pts.unshift([X(cut), yc]); }
+      if (!pts.length) return "";
+      return "M" + pts[0][0].toFixed(1) + "," + (H - B) + pts.map(function (q) { return " L" + q[0].toFixed(1) + "," + q[1].toFixed(1); }).join("") + " L" + pts[pts.length - 1][0].toFixed(1) + "," + (H - B) + " Z";
+    }
+    var outline = []; for (var i = 0; i < n; i++) { var v = at(i); if (v >= lo && v <= hi) outline.push((outline.length ? "L" : "M") + X(v).toFixed(1) + "," + Y(sm[i]).toFixed(1)); }
+    var cx = X(cut);
+    var svg = '<path d="' + area(function (m) { return m <= cut; }) + '" fill="' + ca + '" fill-opacity=".55"/>' +
+      '<path d="' + area(function (m) { return m >= cut; }) + '" fill="' + ch + '" fill-opacity=".55"/>' +
+      '<path d="' + outline.join(" ") + '" fill="none" stroke="var(--ink)" stroke-opacity=".55" stroke-width="1.5"/>' +
+      '<line x1="' + PL + '" x2="' + (W - PR) + '" y1="' + (H - B) + '" y2="' + (H - B) + '" stroke="var(--line)"/>';
+    // axis: "MIN by 20 ... Tie ... CLE by 20"
+    var step = phone ? 20 : 10;
+    var tstep = phone ? (R >= 40 ? 20 : 15) : 10; for (var t = -Math.floor((R - 8) / tstep) * tstep; t <= R - 8; t += tstep) { if (t < lo || t > hi) continue;
+      svg += '<line x1="' + X(t).toFixed(1) + '" x2="' + X(t).toFixed(1) + '" y1="' + (H - B) + '" y2="' + (H - B + 4) + '" stroke="var(--ink-3)"/>' +
+        '<text class="sc-ax" x="' + X(t).toFixed(1) + '" y="' + (H - B + 17) + '" text-anchor="middle">' + (t === 0 ? "Tie" : (t < 0 ? A : Hh) + " by " + Math.abs(t)) + "</text>"; }
+    // the middle 80%
+    if (d.m10 != null && d.m90 != null) {
+      var a1 = X(d.m10), a2 = X(d.m90), yb = H - 10;
+      svg += '<path d="M' + a1.toFixed(1) + "," + (yb - 5) + " V" + yb + " H" + a2.toFixed(1) + " V" + (yb - 5) + '" fill="none" stroke="var(--ink-3)"/>' +
+        '<text class="sc-ax" x="' + ((a1 + a2) / 2).toFixed(1) + '" y="' + (yb - 4) + '" text-anchor="middle">8 in 10 games land in here</text>';
+    }
+    // our line and Vegas's: lines plus two label rows so they never overlap
+    var lines = "", labels = "";
+    function mark(v, cls, row, label) {
+      var x = X(v), tx = Math.max(PL + 52, Math.min(W - PR - 52, x)), y = row ? 30 : 13;
+      lines += '<line class="' + cls + '" x1="' + x.toFixed(1) + '" x2="' + x.toFixed(1) + '" y1="' + (row ? y + 5 : 36) + '" y2="' + (H - B) + '"/>';
+      labels += '<text class="sc-lb ' + cls + '" x="' + tx.toFixed(1) + '" y="' + y + '" text-anchor="middle">' + esc(label) + "</text>";
+    }
+    if (vg != null) mark(vg, "vg", 1, "Vegas " + favTxt(g, g.mkt_spread));
+    if (ours != null) mark(ours, "us", 0, "Ours " + favTxt(g, g.our_spread));
+    svg += lines + labels;
+    var vtxt = vg == null ? null : favTxt(g, g.mkt_spread), atxt = vg == null ? null : favTxt(g, -g.mkt_spread).replace(Hh, A);
+    function stat(big, small, col) { return '<div class="sc-st"><b' + (col ? ' style="color:' + col + '"' : "") + ">" + big + "</b><span>" + small + "</span></div>"; }
+    var stats = '<div class="sc-stats">' +
+      stat((homeWin >= 50 ? Hh : A) + " " + Math.max(homeWin, 100 - homeWin) + "%", "win the game") +
+      (vg != null ? stat(Hh + " " + homeCov + "%", "cover " + esc(Hh + " " + lineTxt(g.mkt_spread)), ch) + stat(A + " " + awayCov + "%", "cover " + esc(A + " " + lineTxt(g.mkt_spread == null ? null : -g.mkt_spread)), ca) : "") +
+      (d.close != null ? stat(Math.round(d.close * 100) + "%", "decided by 5 or less") : "") + "</div>";
+    return stats + '<div class="sc"><svg viewBox="0 0 ' + W + " " + H + '" role="img" aria-label="' + esc("10,000 simulated finishes: " + Hh + " covers Vegas in " + homeCov + "%, " + A + " in " + awayCov + "%") + '">' + svg + "</svg></div>" +
+      '<p class="sc-key">The curve is how often each final margin came up in 10,000 simulations. Shaded by who covers <b>Vegas’s</b> line: <i style="background:' + ca + '"></i>' + esc(A) + " side · <i style=\"background:" + ch + '"></i>' + esc(Hh) + " side" + (push > 0 ? " (" + push + "% push)" : "") + ". Total: 8 in 10 sims land between " + d.t10 + " and " + d.t90 + ".</p>";
+  }
   function curveSVG(g, Wd) {
     var d = g.dist; if (!d || !d.p || !d.p.length) return "";
     var W = Wd || 320, H = Wd ? 150 : 92, top = 20, bot = 16, n = d.p.length, mx = Math.max.apply(null, d.p) || 1;
@@ -3329,7 +3440,7 @@ body.on-home { overflow-anchor: none; }
   }
   function plRow(p) {
     var tip = "Offense " + signed(p.o, 1) + ", defense " + signed(p.d, 1) + " per 100 possessions" + (p.note ? " · " + p.note : "");
-    return '<div class="pl' + (p.start ? " st" : "") + '" title="' + esc(tip) + '"><span>' + esc(p.name) + (p.q ? ' <span class="badge">Q</span>' : "") + '</span><span class="ra">' + p.min + '</span><span class="ra v' + (p.val > 0 ? " pos" : "") + (p.val >= 3 ? " hi" : "") + '">' + (p.val == null ? "" : signed(p.val, 1)) + "</span></div>";
+    return '<div class="pl' + (p.start ? " st" : "") + '" title="' + esc(tip) + '"><span>' + esc(p.name) + (p.q ? ' <span class="qtag" title="' + esc(p.note || "Questionable on the NBA injury report") + '">Questionable</span>' : "") + '</span><span class="ra">' + p.min + '</span><span class="ra v' + (p.val > 0 ? " pos" : "") + (p.val >= 3 ? " hi" : "") + '">' + (p.val == null ? "" : signed(p.val, 1)) + "</span></div>";
   }
   function rotList(arr, outsArr, ab, lu) {
     arr = arr || [];
@@ -3338,7 +3449,7 @@ body.on-home { overflow-anchor: none; }
       st.map(plRow).join("") + (bn.length ? '<div class="pl sep"><span>Bench</span></div>' + bn.map(plRow).join("") : "") +
       (outsArr || []).map(function (o) {
         var why = String(o.why || "").replace(/^(Out|Doubtful): /, "");
-        return '<div class="pl out" title="' + esc((o.why || "Out") + (o.usual ? " · usually " + o.usual + " min" : "")) + '"><span><span class="nm">' + esc(o.name) + "</span>" + (why ? " <small>" + esc(why.length > 28 ? why.slice(0, 27) + "…" : why) + "</small>" : "") +
+        return '<div class="pl out" title="' + esc((o.why || "Out") + (o.usual ? " · usually " + o.usual + " min" : "")) + '"><span><span class="nm">' + esc(o.name) + '</span> <span class="otag">' + (/^Doubtful/.test(o.why || "") ? "Doubtful" : "Out") + "</span>" + (why ? " <small>" + esc(why.length > 28 ? why.slice(0, 27) + "…" : why) + "</small>" : "") +
           '</span><span class="ra">0</span><span class="ra v">' + (o.val != null && o.val > 0 ? MIN + o.val.toFixed(1) : "out") + "</span></div>";
       }).join("") + "</div>";
   }
@@ -4244,6 +4355,8 @@ body.on-home { overflow-anchor: none; }
     if (C.length) out.push("What drives our number: " + C.map(function (c) { return esc(String(c.label).replace(/\s*\(.*\)$/, "").toLowerCase()) + " (" + esc(c.v > 0 ? H : A) + " +" + Math.abs(c.v).toFixed(1) + ")"; }).join(" and ") + ".");
     var outs = []; [[A, g.away_out], [H, g.home_out]].forEach(function (x) { (x[1] || []).slice(0, 2).forEach(function (p) { var nm = typeof p === "string" ? p : p && (p.name || p.player); if (nm) outs.push(nbaShort(nm) + " (" + x[0] + ")"); }); });
     if (outs.length) out.push("Out tonight: " + esc(outs.join(", ")) + ".");
+    var qs = []; [[A, g.away_players], [H, g.home_players]].forEach(function (x) { (x[1] || []).forEach(function (p) { if (p.q) qs.push(nbaShort(p.name) + " (" + x[0] + (p.val != null && Math.abs(p.val) >= 0.5 ? ", " + Math.abs(p.val).toFixed(1) + " pts" : "") + ")"); }); });
+    if (qs.length) out.push("Questionable: " + esc(qs.join(", ")) + ".");
     var bets = [g.angle && g.angle.pick, g.vk && g.vk.pick, g.mk && g.mk.pick, g.combo && !g.combo.paper && g.combo.pick].filter(Boolean);
     out.push(bets.length ? "Our bet" + (bets.length > 1 ? "s" : "") + ": <b>" + esc(bets.join(" · ")) + "</b>." : "No bet on this game; it’s here to analyze.");
     var chips = (nbaFlag(g) ? '<span class="vd-chip gap">Big gap</span>' : "") + sharpMini(A, H, A, H);
@@ -4258,10 +4371,26 @@ body.on-home { overflow-anchor: none; }
       '<div class="panel rl-sharp"><h3>Sharp money</h3>' + (sm ? '<div class="vd-chips">' + sm + "</div>" : '<p class="note">No splits posted for this game yet.</p>') +
       '<button type="button" class="linkish" data-gtab="market">Full splits ›</button></div></aside>';
   }
+  function injuryBox(g) {                 // who's out and who's questionable tonight, from the NBA's official injury report
+    var d = state.data || {};
+    function team(ab, outs, pl, lu) {
+      var O = (outs || []).map(function (o) {
+        var why = String(o.why || "").replace(/^(Out|Doubtful): /, ""), dbt = /^Doubtful/.test(o.why || "");
+        return '<li><span class="otag">' + (dbt ? "Doubtful" : "Out") + "</span><b>" + esc(o.name) + "</b>" + (why ? " <small>" + esc(why) + "</small>" : "") + (o.val != null && o.val > 0 ? '<em>costs ' + esc(ab) + " " + o.val.toFixed(1) + " pts</em>" : "") + "</li>";
+      });
+      var Q = (pl || []).filter(function (p) { return p.q; }).map(function (p) {
+        return '<li><span class="qtag">Questionable</span><b>' + esc(p.name) + "</b>" + (p.note ? " <small>" + esc(String(p.note).replace(/^Questionable: /, "")) + "</small>" : "") + (p.val != null && p.val > 0 ? "<em>worth " + p.val.toFixed(1) + " pts if he sits</em>" : "") + "</li>";
+      });
+      return '<div class="ij-t"><h4>' + esc(ab) + luChip(lu) + "</h4>" + (O.length + Q.length ? "<ul>" + O.concat(Q).join("") + "</ul>" : '<p class="note">Nobody on the report.</p>') + "</div>";
+    }
+    return '<div class="panel ij"><h3>Injury report <small>\u00b7 ' + esc(d.injury_report ? "NBA official, " + d.injury_report + " ET" : "the NBA\u2019s report isn\u2019t out yet") + "</small></h3>" +
+      '<div class="ij-g">' + team(g.away_abbr, g.away_out, g.away_players, g.away_lineup) + team(g.home_abbr, g.home_out, g.home_players, g.home_lineup) + "</div>" +
+      '<p class="note">Out and Doubtful players are taken out of the lineup and our numbers. Questionable players are counted as playing, and their \u201cif he sits\u201d value shows how far our line would move. We re-check the report and the NBA\u2019s lineup feed every 10 minutes until tip, and re-run the numbers whenever anything changes.</p></div>';
+  }
   function gpTab(g) {
     var A = g.away_abbr, H = g.home_abbr, t = state.gtab || "edge", ids = idsReady(A, H, { away: A, home: H, eid: g.id }) === true;
     if (t === "mu") return edgesHtml(A, H, "mu");
-    if (t === "lineups") return nbaCourtPanel(g) + '<div class="panel"><h3>Who plays</h3><p class="note">' + VALUE_NOTE + '</p><div class="rot two-col">' + rotList(g.away_players, g.away_out, A, g.away_lineup) + rotList(g.home_players, g.home_out, H, g.home_lineup) + "</div></div>";
+    if (t === "lineups") return injuryBox(g) + nbaCourtPanel(g) + '<div class="panel"><h3>Who plays</h3><p class="note">' + VALUE_NOTE + '</p><div class="rot two-col">' + rotList(g.away_players, g.away_out, A, g.away_lineup) + rotList(g.home_players, g.home_out, H, g.home_lineup) + "</div></div>";
     if (t === "market") {
       var mk = mktSeries(g, "s"), moved = mk.length > 1 && Math.max.apply(null, mk.map(function (p) { return p.v; })) - Math.min.apply(null, mk.map(function (p) { return p.v; })) >= 0.5;
       return (splitsPanel(A, H, A, H) || '<div class="panel"><h3>Betting splits &amp; handle</h3><p class="note">No splits posted for this game yet. They post around 3 PM PT.</p></div>') +
@@ -4271,7 +4400,7 @@ body.on-home { overflow-anchor: none; }
     if (t === "history") return (ids ? formHtml(A, H) : "") + (ids ? h2hHtml(A, H, muGet("h2h|nba|" + A + "|" + H, function () { return h2hLoad(A, H); })) : h2hHtml(A, H, null));
     var ep = edgesHtml(A, H, "edge");
     return (/ep-/.test(ep) ? "" : '<div class="panel"><h3>Why our line</h3>' + whyBlock(g) + "</div>") + ep +
-      '<div class="panel"><h3>10,000 simulated finishes</h3>' + curveSVG(g, 560) + rangeLine(g) + gapHint(g) + "</div>";
+      '<div class="panel"><h3>10,000 simulated finishes</h3>' + simChart(g) + gapHint(g) + "</div>";
   }
   function renderNbaGame(el, g) {
     if (lastGame !== g.id) state.gtab = "edge";
