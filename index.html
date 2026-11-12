@@ -3,9 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>GainTheEdge — College Football, NFL &amp; NBA</title>
+<title>GainTheEdge — College Football, NFL, NBA &amp; College Basketball</title>
+<link rel="canonical" href="https://gaintheedge.io/">
 <meta name="description" content="College football and NFL picks rated by stars from years of backtests, NBA lines from a 10,000-game simulator, and team rankings for all three.">
-<meta property="og:title" content="GainTheEdge — College Football, NFL &amp; NBA">
+<meta property="og:title" content="GainTheEdge — College Football, NFL, NBA &amp; College Basketball">
 <meta property="og:description" content="This week's card, rated by stars from years of backtests, with live results and the full season record.">
 <meta name="theme-color" content="#0d1324">
 <meta property="og:type" content="website">
@@ -647,6 +648,7 @@ table.gl td small { color: var(--ink-2); margin-left: 4px; }
 .numline small { color: var(--ink-2); font-weight: 600; font-variant-numeric: tabular-nums; }
 .numline .up b, .numline b.up { color: var(--win); } .numline .down b, .numline b.down { color: var(--loss); }
 .fl2 { display: inline-flex; align-items: center; gap: 8px; min-width: 0; flex: 1 1 auto; }
+.pickbar small.sp-rec { display: block; margin-top: 6px; padding-top: 6px; border-top: 1px dashed var(--line); color: var(--ink-2); }
 .fl2 .fs { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12.5px; color: var(--ink-2); }
 /* members: account button, sign-in dialog, locked picks */
 .ctl.acct { font-weight: 700; }
@@ -659,6 +661,17 @@ table.gl td small { color: var(--ink-2); margin-left: 4px; }
 .authm { position: fixed; inset: 0; z-index: 70; background: rgba(4, 7, 14, .78); display: grid; place-items: center; padding: 16px; }
 .authm form { background: var(--card); color: var(--ink); border-radius: 18px; padding: 20px; width: 100%; max-width: 400px; display: grid; gap: 12px; box-shadow: 0 30px 80px -20px rgba(0,0,0,.6); }
 .authm h2 { margin: 0; font-size: 22px; font-weight: 800; }
+.legalm .lg { background: var(--card); color: var(--ink); border-radius: 18px; padding: 22px 22px 16px; width: 100%; max-width: 640px; max-height: calc(100vh - 32px); overflow: auto; box-shadow: 0 30px 80px -20px rgba(0,0,0,.6); }
+.legalm .lg h2 { margin: 0 0 4px; font-size: 22px; font-weight: 800; }
+.legalm .lg h3 { margin: 18px 0 6px; font-size: 15px; font-weight: 800; }
+.legalm .lg p, .legalm .lg li { font-size: 14px; line-height: 1.55; color: var(--ink-2); margin: 0 0 8px; }
+.legalm .lg ul { padding-left: 18px; margin: 0 0 8px; }
+.legalm .lg .lg-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin: 10px 0 4px; }
+.legalm .lg .lg-tabs button { border: 1px solid var(--line); background: var(--card-2); color: var(--ink-2); height: 32px; padding: 0 12px; border-radius: 8px; font-weight: 700; cursor: pointer; }
+.legalm .lg .lg-tabs button[aria-pressed="true"] { background: var(--ink); color: var(--card); border-color: var(--ink); }
+.legalm .lg .lg-close { display: block; margin: 14px auto 0; background: none; border: 0; color: var(--ink-3); font-weight: 700; cursor: pointer; }
+.legal-links { display: block; margin-top: 8px; }
+.legal-links a { color: inherit; text-decoration: underline; margin-right: 12px; cursor: pointer; }
 .authm .tabs2 { display: grid; grid-template-columns: 1fr 1fr; background: var(--card-2); border-radius: 10px; padding: 3px; }
 .authm .tabs2 button { border: 0; background: transparent; height: 34px; border-radius: 8px; font-weight: 700; color: var(--ink-2); cursor: pointer; }
 .authm .tabs2 button[aria-pressed="true"] { background: var(--card); color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,.15); }
@@ -712,6 +725,10 @@ table.gl td small { color: var(--ink-2); margin-left: 4px; }
 .clvhead i { display: block; font-style: normal; font-size: 10.5px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
 .clvhead b { font-size: 22px; font-variant-numeric: tabular-nums; }
 .clvhead small { display: block; color: var(--ink-2); font-size: 12px; }
+.rvw table td small { display: block; color: var(--ink-3); font-size: 11.5px; font-weight: 600; }
+.rv { display: inline-block; font-weight: 800; font-size: 12.5px; padding: 2px 8px; border-radius: 6px; background: var(--card-2); color: var(--ink-2); white-space: nowrap; }
+.rv.up { background: var(--win-soft); color: var(--win); } .rv.down { background: var(--loss-soft, rgba(255,77,94,.14)); color: var(--loss, #ff4d5e); }
+.rv-bar { display: block; height: 4px; border-radius: 3px; background: var(--card-2); margin-top: 5px; max-width: 120px; overflow: hidden; } .rv-bar i { display: block; height: 100%; background: var(--accent); }
 @media (max-width: 560px) { .clvhead { grid-template-columns: 1fr 1fr; } }
 .pl.hd { font-size: 10.5px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); border-bottom-width: 2px; }
 .pl.hd span:first-child { font-weight: 800; }
@@ -935,6 +952,20 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
 .trackbtn { display: inline-flex; align-items: center; gap: 4px; border: 1px solid var(--accent); background: transparent; color: var(--accent); border-radius: 8px; height: 28px; padding: 0 10px; font-size: 12.5px; font-weight: 800; cursor: pointer; flex: 0 0 auto; white-space: nowrap; }
 .trackbtn:hover { background: var(--accent-soft); }
 .trackbtn.on { border-color: var(--win); color: var(--win); background: var(--win-soft); }
+.freebtn { display: inline-flex; align-items: center; gap: 4px; border: 1px dashed var(--ink-3); background: transparent; color: var(--ink-2); border-radius: 8px; height: 28px; padding: 0 10px; font-size: 12.5px; font-weight: 800; cursor: pointer; flex: 0 0 auto; white-space: nowrap; }
+.freebtn:hover { color: var(--ink); border-color: var(--ink-2); }
+.freebtn.on { border-style: solid; border-color: #e0a800; color: #e0a800; background: rgba(255,197,61,.14); }
+.freebtn[disabled] { cursor: default; }
+.st-tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 10px; }
+.st-t { background: var(--card-2); border-radius: 12px; padding: 12px 14px; } .st-t i { display: block; font-style: normal; font-size: 10.5px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); }
+.st-t b { display: block; font-size: 26px; font-variant-numeric: tabular-nums; margin: 2px 0; } .st-t small { color: var(--ink-2); font-size: 12px; }
+@media (max-width: 640px) { .st-tiles { grid-template-columns: 1fr 1fr; } }
+.st-bars { display: flex; align-items: flex-end; gap: 3px; height: 120px; margin-top: 16px; padding: 0 2px; border-bottom: 1px solid var(--line); }
+.st-b { flex: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; position: relative; } .st-b i { display: block; width: 100%; background: var(--ink-3); border-radius: 3px 3px 0 0; min-height: 3px; }
+.st-b em { position: absolute; top: -2px; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+.st-tbl { width: 100%; min-width: 0; } .st-tbl th, .st-tbl td { white-space: nowrap; }
+.st-days { margin: 8px 0 4px; } .st-days button.on { background: var(--accent); color: #fff; }
+.mc-adm { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 8px 16px; border-top: 1px dashed var(--line); font-size: 11.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-3); }
 .trackm form { max-width: 460px; max-height: calc(100vh - 32px); overflow-y: auto; }
 .trackm select { height: 42px; border-radius: 10px; border: 1px solid var(--line); background: var(--card-2); color: var(--ink); padding: 0 10px; font-size: 15px; min-width: 0; }
 .trackm input:disabled { opacity: .45; }
@@ -995,6 +1026,38 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
 
 /* ---------- games tab (football) ---------- */
 .sg-warn { background: color-mix(in srgb, var(--gold) 14%, var(--card)); border: 1px solid color-mix(in srgb, var(--gold) 45%, var(--line)); border-radius: 12px; padding: 11px 14px; font-size: 13.5px; color: var(--ink); margin-bottom: 14px; line-height: 1.45; }
+.gt-day { display: flex; align-items: baseline; gap: 10px; margin: 24px 0 10px; font-family: var(--f-display); font-weight: 800; font-size: 24px; line-height: 1.1; }
+.gt-day:first-of-type { margin-top: 8px; } .gt-day small { font-family: var(--f-body); font-weight: 600; font-size: 12.5px; color: var(--ink-2); }
+.gt-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(296px, 1fr)); gap: 12px; }
+.gt { background: var(--card); border: 1px solid var(--line); border-radius: 14px; display: flex; flex-direction: column; min-width: 0; overflow: hidden; position: relative; }
+.gt.haspick { border-color: color-mix(in srgb, var(--accent) 50%, var(--line)); } .gt.haspick::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--accent); }
+.gt-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; padding: 11px 14px 0; font-size: 12.5px; font-weight: 700; color: var(--ink-2); }
+.gt-when { white-space: nowrap; } .gt-when small { font-weight: 600; color: var(--ink-3); margin-left: 6px; } .gt-when.fin { color: var(--ink); }
+.gt-when.live { color: var(--live); } .gt-when.live::before { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--live); margin-right: 6px; vertical-align: 1px; animation: gtpulse 1.6s ease-in-out infinite; }
+@keyframes gtpulse { 50% { opacity: .25; } } @media (prefers-reduced-motion: reduce) { .gt-when.live::before { animation: none; } }
+.gt-flags { display: flex; gap: 4px; flex-wrap: wrap; justify-content: flex-end; }
+.gt-teams { display: block; padding: 6px 14px 6px; color: inherit; text-decoration: none; cursor: pointer; } .gt-teams:hover .gt-name { text-decoration: underline; text-decoration-color: var(--ink-3); text-underline-offset: 3px; }
+.gt-team { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 10px; padding: 5px 0; }
+.gt-name { font-weight: 700; font-size: 15.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } .gt-name .rk { font-style: normal; color: var(--ink-3); font-size: 11.5px; font-weight: 700; margin-right: 5px; }
+.gt-name small { color: var(--ink-3); font-weight: 600; font-size: 11px; margin-left: 7px; }
+.gt-val { font-family: var(--f-display); font-weight: 800; font-size: 26px; line-height: 1; font-variant-numeric: tabular-nums; text-align: right; min-width: 2ch; }
+.gt-val.pct { font-size: 20px; color: var(--ink-3); } .gt-val.pct.fav { color: var(--ink); }
+.gt-team.w .gt-name, .gt-team.w .gt-val { color: var(--win); } .gt-team.l .gt-name, .gt-team.l .gt-val { color: var(--loss); }
+.gt-prob { display: flex; height: 4px; margin: 0 14px; border-radius: 2px; background: var(--card-2); overflow: hidden; } .gt-prob.r { justify-content: flex-end; }
+.gt-prob i { display: block; height: 100%; background: color-mix(in srgb, var(--fc, var(--ink-3)) 70%, #fff); }
+:root[data-theme="light"] .gt-prob i { background: var(--fcl, var(--ink-3)); } @media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) .gt-prob i { background: var(--fcl, var(--ink-3)); } }
+.gt-nums { display: grid; gap: 10px; padding: 12px 14px 2px; }
+.gt-line { display: grid; grid-template-columns: 50px minmax(0, 1fr) minmax(0, 1fr); gap: 8px; align-items: baseline; font-size: 12.5px; color: var(--ink-2); white-space: nowrap; }
+.gt-line b { color: var(--ink); font-weight: 700; font-variant-numeric: tabular-nums; } .gt-line small { color: var(--ink-3); font-size: 10.5px; } .gt-line span:last-child { text-align: right; } .gt-k { font-weight: 700; }
+.gt-meter { display: grid; grid-template-columns: 74px minmax(0, 1fr) 74px; align-items: center; gap: 8px; margin-top: 5px; font-size: 11.5px; font-weight: 700; color: var(--ink-3); white-space: nowrap; }
+.gt-end.r { text-align: right; } .gt-end.on { color: var(--ink); } .gt-end b { font-variant-numeric: tabular-nums; }
+.gt-track { position: relative; height: 6px; border-radius: 3px; background: var(--card-2); }
+.gt-track::after { content: ""; position: absolute; left: 50%; top: -3px; bottom: -3px; width: 2px; margin-left: -1px; border-radius: 1px; background: var(--ink-3); }
+.gt-track i { position: absolute; top: 0; bottom: 0; border-radius: 3px; background: var(--ink-2); }
+.gt-foot { margin-top: auto; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 14px 12px; }
+.gt-picks { display: flex; gap: 5px; flex-wrap: wrap; min-width: 0; } .gt-picks .sg-pick { font-family: inherit; }
+.gt-go { border: 0; background: none; padding: 4px 0; color: var(--ink-2); font: inherit; font-size: 12.5px; font-weight: 700; cursor: pointer; white-space: nowrap; text-decoration: none; margin-left: auto; } .gt-go:hover { color: var(--ink); }
+.gt-go:focus-visible, .gt-teams:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
 .sg-warn .lnk { background: none; border: 0; padding: 0; color: var(--accent); font-weight: 700; cursor: pointer; font-size: inherit; }
 .sg-panel { padding: 8px 14px 14px; }
 .slt { min-width: 1080px; } .slt td { vertical-align: middle; } .slt td small { display: block; color: var(--ink-2); font-size: 11.5px; } .slt td small.live { color: var(--live); font-weight: 700; }
@@ -1265,7 +1328,7 @@ body.on-home { overflow-anchor: none; }
 <main class="wrap">
   <section id="view" role="tabpanel" aria-labelledby="tab-week"></section>
 </main>
-<footer class="wrap" id="foot">NBA: our predicted lines from a 10,000-game simulator, shown next to the market; they are predictions, not bets. College and NFL lines are the numbers the sheet saw when it was built, so confirm yours at the book. Bets grade at −110 unless a price is shown; 52.4% breaks even. Scores come from ESPN and refresh every few minutes while games are on; first-half bets settle at halftime. Proven ratings come from each setup's backtest record; see the How stars work tab. For entertainment and research, not financial advice.</footer>
+<footer class="wrap" id="foot">NBA: our predicted lines from a 10,000-game simulator, shown next to the market; they are predictions, not bets. College and NFL lines are the numbers the sheet saw when it was built, so confirm yours at the book. Bets grade at −110 unless a price is shown; 52.4% breaks even. Scores come from ESPN and refresh every few minutes while games are on; first-half bets settle at halftime. Proven ratings come from each setup's backtest record; see the How stars work tab. For entertainment and research, not financial advice. 21+. If gambling stops being fun, call 1-800-GAMBLER.<span class="legal-links"><a href="#terms" data-legal="terms">Terms</a><a href="#privacy" data-legal="privacy">Privacy</a><a href="#refunds" data-legal="refunds">Billing &amp; refunds</a><a href="#contact" data-legal="contact">Contact</a></span></footer>
 
 <script>
 (function () {
@@ -1692,6 +1755,36 @@ body.on-home { overflow-anchor: none; }
   // preview (record, rankings, a count of this week's picks). Settings are filled in by the notebook's publisher.
   var SB_SRC = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js";
   var SB = null, AUTH = { on: false, ready: false, user: null, member: null }, dataAs = "public", lastUid;
+  var FREE = { choice: null, busy: false };          // today's free pick, as chosen by the site owner
+  // ---------- visitor counts (owner-only Stats page): a random id kept in this browser, no cookies, no IP, no name or email.
+  // Skipped for anyone with "Do Not Track" on. Events go straight to Supabase's site_events table (insert-only for the public).
+  var TRK = { last: "" };
+  function trkIds() {
+    var now = Date.now(), vid = storeGet("gte.vid"), sid = storeGet("gte.sid"), st = +storeGet("gte.sidT") || 0;
+    if (!vid) { vid = (Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2)).slice(0, 20); storeSet("gte.vid", vid); }
+    if (!sid || now - st > 30 * 60000) { sid = (Math.random().toString(36).slice(2) + now.toString(36)).slice(0, 20); storeSet("gte.sid", sid); }
+    storeSet("gte.sidT", String(now));
+    var src = storeGet("gte.src");
+    if (!src) {                                                 // where this visitor first came from: ?utm_source=..., else the referring site
+      var m = /[?&]utm_source=([^&#]+)/.exec(location.search), r = "";
+      try { r = document.referrer ? new URL(document.referrer).hostname.replace(/^www\./, "") : ""; } catch (e) {}
+      src = m ? decodeURIComponent(m[1]).slice(0, 40) : r && r !== location.hostname ? r : "direct";
+      storeSet("gte.src", src);
+    }
+    return { vid: vid, sid: sid, src: src };
+  }
+  function trk(ev, page) {
+    try {
+      if (!cfgOk() || navigator.doNotTrack === "1" || window.doNotTrack === "1" || /^(localhost|127\.)/.test(location.hostname)) return;
+      var c = window.GTE_CFG, id = trkIds();
+      fetch(c.url + "/rest/v1/site_events", { method: "POST", keepalive: true, headers: { apikey: c.key, Authorization: "Bearer " + c.key, "Content-Type": "application/json", Prefer: "return=minimal" },
+        body: JSON.stringify({ vid: id.vid, sid: id.sid, ev: ev, page: String(page || "").slice(0, 24) || null, sport: (state && state.sport) || null, src: id.src, member: !!(typeof isMember === "function" && isMember()) }) }).catch(function () {});
+    } catch (e) { /* counting must never break the page */ }
+  }
+  function trkView() {
+    var pg = state.home ? "home" : state.view, k = pg + "|" + (state.home ? "" : state.sport);
+    if (k === TRK.last) return; TRK.last = k; trk("view", pg);
+  }
   function cfgOk() { var c = window.GTE_CFG || {}; return !!(c.url && c.key && c.url.indexOf("__GTE") < 0 && c.key.indexOf("__GTE") < 0 && /^https:\/\/[a-z0-9-]+\.supabase\.co$/.test(c.url)); }
   function isMember() { var m = AUTH.member; return !!(m && m.active && (!m.active_until || new Date(m.active_until) > new Date())); }
   // ---------- membership checkout (Stripe payment link; the webhook turns the membership on) ----------
@@ -1703,6 +1796,7 @@ body.on-home { overflow-anchor: none; }
   function priceLine() { return PLAN.price + "/" + PLAN.per + " after your " + PLAN.trial + "-day free trial. Cancel anytime."; }
   function goCheckout() {
     if (!payOn()) return;
+    trk("checkout", state.home ? "home" : state.view);
     if (!AUTH.user) { storeSet("gte.wantTrial", String(Date.now())); openAuth("signup"); return; }
     var c = window.GTE_CFG;
     location.href = c.pay + "?client_reference_id=" + encodeURIComponent(AUTH.user.id) + (AUTH.user.email ? "&prefilled_email=" + encodeURIComponent(AUTH.user.email) : "");
@@ -1738,9 +1832,10 @@ body.on-home { overflow-anchor: none; }
   function onSession(session) {
     var u = session && session.user, uid = u ? u.id : null;
     AUTH.user = u || null;
-    if (!uid) { AUTH.member = null; AUTH.ready = true; lastUid = null; MB.list = null; MB.set = null; renderAcct(); syncData(); return; }
+    if (!uid) { AUTH.admin = false; FREE.choice = null; AUTH.member = null; AUTH.ready = true; lastUid = null; MB.list = null; MB.set = null; renderAcct(); syncData(); return; }
     if (uid === lastUid && AUTH.member) { AUTH.ready = true; renderAcct(); return; }
     lastUid = uid;
+    freeLoad(uid);
     SB.from("members").select("*").eq("user_id", uid).maybeSingle().then(function (r) {   // "*": works before and after the Stripe columns exist
       if (r && r.error) console.warn("members lookup:", r.error.message);
       AUTH.member = (r && r.data) || { active: false }; AUTH.ready = true; storeSet("gte.member", isMember() ? "1" : ""); renderAcct(); if (isMember() && state.home && state.homeAuto) showHome(false); syncData(); loadBets();
@@ -1778,9 +1873,10 @@ body.on-home { overflow-anchor: none; }
       (isMember() ? '<span class="stchip on">✓ Member' + (AUTH.member.sub_status === "trialing" ? " · free trial" : "") + "</span>" : '<span class="stchip">Membership not active yet</span>') +
       (!isMember() && payOn() ? trialBtn() : "") +
       (AUTH.member && AUTH.member.plan === "stripe" && !AUTH.member.comp && portalOn() ? '<a class="btn ghost" href="' + esc(portalUrl()) + '" target="_blank" rel="noopener">Manage subscription</a>' : "") +
-      '<button type="button" class="btn ghost" id="myBetsBtn">My bets</button><button type="button" class="btn" id="logoutBtn">Log out</button>';
+      '<button type="button" class="btn ghost" id="myBetsBtn">My bets</button>' + (AUTH.admin ? '<button type="button" class="btn ghost" id="statsBtn">Site stats</button>' : "") + '<button type="button" class="btn" id="logoutBtn">Log out</button>';
     pop.querySelectorAll("[data-pay]").forEach(function (x) { x.addEventListener("click", goCheckout); });
     document.getElementById("myBetsBtn").addEventListener("click", function () { pop.hidden = true; state.view = "mybets"; state.game = null; storeSet("gte.view", "mybets"); render(); window.scrollTo(0, 0); });
+    var sb_ = document.getElementById("statsBtn"); if (sb_) sb_.addEventListener("click", function () { pop.hidden = true; state.home = false; state.view = "stats"; state.game = null; render(); window.scrollTo(0, 0); });
     document.getElementById("logoutBtn").addEventListener("click", function () { pop.hidden = true; SB.auth.signOut().then(function () { onSession(null); }); });
   }
   var LOCK_ICO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>';
@@ -1824,7 +1920,71 @@ body.on-home { overflow-anchor: none; }
     [/password should be at least|weak password/i, "Use a longer password (at least 8 characters)."], [/rate limit|too many/i, "Too many tries. Wait a minute and try again."],
     [/unable to validate email|invalid email/i, "That email address doesn’t look right."]];
   function authMsg(e) { var m = String((e && (e.message || e.error_description)) || e || ""); for (var i = 0; i < AUTH_ERR.length; i++) if (AUTH_ERR[i][0].test(m)) return AUTH_ERR[i][1]; return m || "Something went wrong. Try again."; }
+
+  // ---------------------------------------------------------------- Terms, Privacy, Billing & refunds, Contact (Nov 12 2026 review)
+  // CONTACT_EMAIL: set this to the business inbox members should write to (it is shown on the Contact page). While it's empty,
+  // the page points members to the Stripe billing portal and their Stripe receipt instead.
+  var CONTACT_EMAIL = "";
+  var LEGAL_UPDATED = "November 12, 2026";
+  function legalLinks() {
+    return '<span class="legal-links"><a href="#terms" data-legal="terms">Terms</a><a href="#privacy" data-legal="privacy">Privacy</a><a href="#refunds" data-legal="refunds">Billing &amp; refunds</a><a href="#contact" data-legal="contact">Contact</a></span>';
+  }
+  function legalBody(which) {
+    var mail = CONTACT_EMAIL ? '<a href="mailto:' + CONTACT_EMAIL + '">' + CONTACT_EMAIL + "</a>" : "the email address on your Stripe receipt";
+    if (which === "privacy") return "<h2>Privacy policy</h2><p>Last updated " + LEGAL_UPDATED + "</p>" +
+      "<h3>What we collect</h3><ul><li><b>Your account:</b> your email address, username and password (the password is stored by our login provider, Supabase, and we never see it).</li>" +
+      "<li><b>Payments:</b> handled by Stripe. We see whether your membership is active and when it renews. We never see or store your card number.</li>" +
+      "<li><b>Bets you log:</b> if you use My bets, the bets you enter are saved to your account.</li>" +
+      "<li><b>How the site is used:</b> pages viewed, buttons such as Join or Share, and the link you arrived from. This is tied to a random ID kept in your browser (and to your account if you are logged in). We use it only to improve the site.</li>" +
+      "<li><b>Your browser's storage:</b> we keep settings such as the sport you last viewed and your table or card view in your browser. We don't use advertising cookies or ad trackers.</li></ul>" +
+      "<h3>What we do with it</h3><p>We use it to run your account and membership, show your bets, and understand which parts of the site help members. We don't sell or rent your information, and we don't share it except with the services that run the site: Supabase (accounts and data), Stripe (payments) and GitHub Pages (hosting).</p>" +
+      "<h3>Your choices</h3><p>You can cancel your membership at any time from Account, Manage subscription. To see, correct or delete your account information, contact us at " + mail + " and we'll handle it within 30 days. California residents have these rights under California law; we honor them for everyone.</p>" +
+      "<h3>Age</h3><p>The site is for adults 21 and older. We don't knowingly collect information from anyone younger.</p>" +
+      "<h3>Changes</h3><p>If we change this policy we'll update the date above, and tell members by email if the change is significant.</p>";
+    if (which === "refunds") return "<h2>Billing &amp; refunds</h2><p>Last updated " + LEGAL_UPDATED + "</p>" +
+      "<h3>Price and trial</h3><p>Membership is $49 a month after a 7-day free trial. Your card is charged when the trial ends unless you cancel before then, and then every month on the same date until you cancel.</p>" +
+      "<h3>Cancel any time</h3><p>Go to Account, Manage subscription. Canceling stops future charges; you keep member access until the end of the period you've paid for. Cancel during the trial and you won't be charged.</p>" +
+      "<h3>Refunds</h3><p>Monthly charges aren't refunded for partly used months. If you were charged by mistake (for example, twice, or after you canceled), contact us at " + mail + " within 30 days and we'll refund it.</p>" +
+      "<h3>Results</h3><p>Picks win and lose. A losing week or month is not a reason for a refund: we publish every result, including the losses, so you can judge the record before you join.</p>";
+    if (which === "contact") return "<h2>Contact</h2>" +
+      "<p>Questions about your membership, a charge, your account or the picks: write to " + mail + ".</p>" +
+      "<p>To cancel or change your card, go to Account, Manage subscription. It works any time and doesn't need us.</p>" +
+      "<p>If gambling stops being fun, call 1-800-GAMBLER (free and confidential, 24/7).</p>";
+    return "<h2>Terms of use</h2><p>Last updated " + LEGAL_UPDATED + "</p>" +
+      "<h3>What GainTheEdge is</h3><p>GainTheEdge publishes sports betting research: model lines, picks and their records. It is information and entertainment, not financial, legal or betting advice, and not a sportsbook: we don't take bets or hold money for betting.</p>" +
+      "<h3>No guarantees</h3><p>Past results, including backtests, don't promise future results. Any bet can lose. Lines move, so the number you get may differ from ours. You are responsible for your own bets and for following the laws where you are.</p>" +
+      "<h3>Who can use it</h3><p>You must be 21 or older. Bet only where it's legal for you.</p>" +
+      "<h3>Your account</h3><p>Keep your login to yourself. Memberships are for one person; sharing or reselling member content isn't allowed and can end your membership without a refund.</p>" +
+      "<h3>Membership</h3><p>Billing, trials, cancellations and refunds work as described on the Billing &amp; refunds page.</p>" +
+      "<h3>Our content</h3><p>The site's picks, lines, write-ups and images belong to GainTheEdge. You may share the free pick and links to the site; please don't copy member content elsewhere.</p>" +
+      "<h3>Limits</h3><p>The site is provided as is. We aren't liable for betting losses or for errors, delays or outages, and our total liability to you is limited to what you paid us in the last 3 months.</p>" +
+      "<h3>Changes</h3><p>We may update these terms; the date above shows the latest version. Using the site after a change means you accept it.</p>";
+  }
+  function openLegal(which) {
+    var old = document.querySelector(".legalm"); if (old) old.remove();
+    var m = document.createElement("div"); m.className = "authm legalm"; m.setAttribute("role", "dialog"); m.setAttribute("aria-modal", "true"); m.setAttribute("aria-label", "Site policies");
+    function draw(w) {
+      which = w;
+      var tabs = [["terms", "Terms"], ["privacy", "Privacy"], ["refunds", "Billing & refunds"], ["contact", "Contact"]].map(function (t) {
+        return '<button type="button" data-lg="' + t[0] + '" aria-pressed="' + (t[0] === w) + '">' + t[1].replace("&", "&amp;") + "</button>"; }).join("");
+      m.innerHTML = '<div class="lg" tabindex="-1"><div class="lg-tabs" role="group" aria-label="Policies">' + tabs + "</div>" + legalBody(w) + '<button type="button" class="lg-close" data-close>Close</button></div>';
+      var b = m.querySelector(".lg"); b.scrollTop = 0; b.focus();
+    }
+    function close() { m.remove(); document.removeEventListener("keydown", onKey); if (/^#(terms|privacy|refunds|contact)$/.test(location.hash)) try { history.replaceState(null, "", location.pathname + location.search); } catch (e) {} }
+    function onKey(e) { if (e.key === "Escape") close(); }
+    m.addEventListener("click", function (e) {
+      if (e.target === m || e.target.hasAttribute("data-close")) return close();
+      var t = e.target.closest("[data-lg]"); if (t) draw(t.getAttribute("data-lg"));
+    });
+    document.addEventListener("keydown", onKey);
+    document.body.appendChild(m); draw(which || "terms");
+  }
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest && e.target.closest("[data-legal]"); if (!a) return;
+    e.preventDefault(); e.stopPropagation(); openLegal(a.getAttribute("data-legal"));
+  }, true);
   function openAuth(mode) {
+    if (mode === "signup" && !openAuth.n) { openAuth.n = 1; trk("signup_open", state.home ? "home" : state.view); }
     if (!SB) { if (AUTH.on && !AUTH.err) setTimeout(function () { openAuth(mode); }, 400); return; }
     var old = document.querySelector(".authm"); if (old) old.remove();
     var m = document.createElement("div"); m.className = "authm"; m.setAttribute("role", "dialog"); m.setAttribute("aria-modal", "true"); m.setAttribute("aria-label", "Account");
@@ -1838,7 +1998,7 @@ body.on-home { overflow-anchor: none; }
       var go = { signup: "Create account", login: "Log in", forgot: "Send reset link", reset: "Save new password" }[md];
       var ttl = { signup: "Create your account", login: "Welcome back", forgot: "Reset your password", reset: "Set a new password" }[md];
       m.innerHTML = '<form novalidate><h2>' + ttl + "</h2>" + tabs + f + '<div class="msg" hidden></div><button type="submit" class="btn">' + go + "</button>" +
-        (md === "signup" ? '<p class="fine">You sign in with your email; your username is how you show up on the site. 21+ only. Please bet responsibly.</p>' : "") +
+        (md === "signup" ? '<p class="fine">You sign in with your email; your username is how you show up on the site. 21+ only. Please bet responsibly. By creating an account you agree to our <a href="#terms" data-legal="terms">Terms</a> and <a href="#privacy" data-legal="privacy">Privacy Policy</a>.</p>' : "") +
         '<button type="button" class="lnk" data-close style="justify-self:center;color:var(--ink-3)">Close</button></form>';
       var first = m.querySelector("input"); if (first) setTimeout(function () { first.focus(); }, 30);
     }
@@ -1857,7 +2017,7 @@ body.on-home { overflow-anchor: none; }
       btn.disabled = true; var done = function () { btn.disabled = false; };
       var here = location.origin + location.pathname;
       if (mode === "login") SB.auth.signInWithPassword({ email: v("email"), password: fm.querySelector('[name="password"]').value }).then(function (r) {
-        done(); if (r.error) return say(authMsg(r.error)); close(); onSession(r.data.session);
+        done(); if (r.error) return say(authMsg(r.error)); trk("login"); close(); onSession(r.data.session);
       });
       else if (mode === "signup") {
         var un = v("username");
@@ -1865,7 +2025,7 @@ body.on-home { overflow-anchor: none; }
           if (r.error) { done(); return say(authMsg(r.error)); }
           if (r.data === false) { done(); return say("That username is taken. Try another."); }
           return SB.auth.signUp({ email: v("email"), password: fm.querySelector('[name="password"]').value, options: { data: { username: un }, emailRedirectTo: here } }).then(function (r2) {
-            done(); if (r2.error) return say(authMsg(r2.error));
+            done(); if (r2.error) return say(authMsg(r2.error)); trk("signup");
             if (!r2.data.session) return say("Almost done: check your email and click the link to confirm your account." + (payOn() && wantTrial() ? " Then you’ll go straight to checkout for your free trial." : ""), true);
             say(payOn() && wantTrial() ? "Account created. Taking you to checkout for your free trial…" : "Account created. Your membership isn’t active yet; picks unlock as soon as it is.", true); onSession(r2.data.session);
           });
@@ -2224,6 +2384,7 @@ body.on-home { overflow-anchor: none; }
       (rt.beat ? '<div class="alert warn" style="opacity:.85"><b>⇄ Chosen over the other side</b><span>' + esc(pretty(rt.beat.pick)) + " is benched \u00b7 floor " + pct(rt.lo) + " vs " + pct(baseRated(rt.beat).lo) + "</span></div>" : "") +
       '<div class="chyron"><div class="lbl"><i>PICK</i><span class="pk"><b>' + esc(pickTxt) + "</b>" + goodTo(x, paper) + "</span></div>" + resultChip(x, gr, paper) + "</div>" + numberBox(x, paper, true) + plainHtml(x) + histLine(x) +
       '<div class="mc-foot"><span class="fl2">' + foot + '</span><span class="acts2">' + (x.market !== "Teaser" && x.away && x.home && !isNBA() ? '<button type="button" class="sharebtn" data-mu-a="' + esc(x.away) + '" data-mu-h="' + esc(x.home) + '" data-mu-k="' + esc(x.game || "") + '" data-mu-t="' + esc(x.kickoff || "") + '" data-mu-n="' + (x.neutral ? 1 : 0) + '">Matchup</button>' : "") + trackBtn(sportKey() + ":" + x.id) + '<button type="button" class="sharebtn" data-share="' + esc(x.id || "") + '" aria-label="Share this pick as an image">' + SHARE_ICO + "Share</button></span></div>" +
+      (function () { var fb = freeBtn(x, rt); return fb ? '<div class="mc-adm"><span>Owner only</span>' + fb + "</div>" : ""; })() +
       "<details><summary>Why this pick</summary><div class=\"why\">" + fbPreview(x) + why + (isFootball() ? historyHtml(historyFor(x.away, x.home)) : "") +
       (x.qb ? '<div class="flag">QB check: ' + esc(x.qb) + "</div>" : "") + (x.edge && !x.plain ? '<div class="edge">' + esc(pretty(x.edge)) + "</div>" : "") +
       "</div></details></article>";
@@ -2250,7 +2411,7 @@ body.on-home { overflow-anchor: none; }
     var z = isCBB() && state.data && state.data.sizing; if (!z || !z.full) return "";
     var n = (state.data.bets || []).filter(function (x) { return rated(x).stake > 0; }).length;
     return '<div class="sizing' + (z.scale < 1 ? " on" : "") + '"><b>' + (z.scale < 1 ? "Busy night: stakes scaled to " + Math.round(z.scale * 100) + "%" : "Stakes grow with the edge") + "</b>" +
-      "<span>Each bet is sized by its edge (1.5 pts = 0.5u, 2 = 1u, 3 = 2u, max 2.5u). " +
+      "<span>Each bet is sized by its edge (1.5 pts = 0.5u, 2 = 1u, 2.5+ = 1.5u). Bets are capped at 1.5u until the live bets beat the closing line over 100+ games; then 3 pts = 2u, max 2.5u. " +
       (z.scale < 1 ? "Tonight\u2019s " + n + " bets add up to " + u(z.full) + "u, over the " + u(z.cap) + "u nightly cap, so every stake is cut by the same share. One night\u2019s bets tend to win or lose together, so this keeps a bad night small."
         : "Tonight\u2019s card adds up to " + u(z.full) + "u, under the " + u(z.cap) + "u nightly cap.") + "</span></div>";
   }
@@ -2303,6 +2464,34 @@ body.on-home { overflow-anchor: none; }
     });
     return out;
   }
+  // ---------- live review: the rules for promoting / benching a setup, written before any live results (Nov 10, 2026) ----------
+  // Judged only on getting a better number than the closing line, over at least 150 tracked bets with a close (paper included).
+  //   avg worse than the close by 0.25+ pts (0.5+ win-chance pts on moneylines)  -> move to paper (tracked, not bet)
+  //   avg better by 1+ pts (2+ win-chance pts on moneylines) AND better than the close in at least half the bets -> one more star
+  //   anything else -> keep as is. Under 150 -> still collecting. A paper setup that earns the "one more star" verdict comes back at 1 star.
+  var REVIEW = { n: 150, down: -0.25, up: 1.0, downPct: -0.5, upPct: 2.0 };   // Nov 12 2026 review: +1 pt (not +0.5) to earn a star; +0.5 is about break-even at -110
+  function reviewOf(n, avg, beat, unit) {
+    var pctU = unit === "pct", dn = pctU ? REVIEW.downPct : REVIEW.down, up = pctU ? REVIEW.upPct : REVIEW.up;
+    if (!n) return { cls: "", label: "No closes yet", sub: "fills in as bets settle" };
+    if (n < REVIEW.n) return { cls: "", label: "Collecting", sub: n + " of " + REVIEW.n, prog: n / REVIEW.n };
+    if (avg <= dn) return { cls: "down", label: "Rule: move to paper", sub: "losing to the close" };
+    if (avg >= up && beat / n >= 0.5) return { cls: "up", label: "Rule: earns a star", sub: "beating the close" };
+    return { cls: "", label: "Keep as is", sub: "no clear signal" };
+  }
+  function reviewPanel(rows) {
+    rows = rows.filter(function (r) { return r && r.name; }).sort(function (a, b) { return (b.n || 0) - (a.n || 0); });
+    if (!rows.length) return "";
+    return '<div class="panel rvw"><h3>Live review: is each setup beating the closing line?</h3><p class="note">Our rules, set before any live results: once a setup has <b>' + REVIEW.n +
+      ' bets</b> with a closing line, it moves to paper if it averages ' + Math.abs(REVIEW.down) + "+ points worse than the close (" + Math.abs(REVIEW.downPct) + "+ win-chance points on moneylines), and earns a star if it averages " + REVIEW.up +
+      "+ points better (" + REVIEW.upPct + "+ on moneylines) and beats the close at least half the time. Win–loss doesn\u2019t decide it: the closing line shows a real edge much sooner.</p>" +
+      '<div class="scroll"><table><thead><tr><th>Setup</th><th class="ra">Bets with a close</th><th class="ra">Avg vs close</th><th class="ra">Beat it</th><th>Status</th></tr></thead><tbody>' +
+      rows.map(function (r) {
+        var v = reviewOf(r.n || 0, r.avg || 0, r.beat || 0, r.unit), pctU = r.unit === "pct";
+        return "<tr><td><b>" + esc(r.name) + "</b>" + (r.note ? "<small class=\"rv-n\">" + esc(r.note) + "</small>" : "") + '</td><td class="ra tnum">' + (r.n || 0) + '</td><td class="ra tnum ' + (r.n ? (r.avg > 0 ? "up" : r.avg < 0 ? "down" : "") : "") + '">' +
+          (r.n ? clvTxt(Math.round(r.avg * 100) / 100) + (pctU ? "%" : "") : "\u2014") + '</td><td class="ra tnum">' + (r.n ? Math.round(100 * r.beat / r.n) + "%" : "\u2014") + '</td><td><span class="rv ' + v.cls + '">' + esc(v.label) + "</span><small class=\"rv-s\">" + esc(v.sub) + "</small>" +
+          (v.prog != null ? '<span class="rv-bar"><i style="width:' + Math.round(v.prog * 100) + '%"></i></span>' : "") + "</td></tr>";
+      }).join("") + "</tbody></table></div></div>";
+  }
   function renderRecord(el) {
     var d = state.data, r = d.record || {}, ud = unitDollars();
     var counted = (r.by_week || []).some(function (w) { return String(w.week) === String(d.week); });
@@ -2354,6 +2543,7 @@ body.on-home { overflow-anchor: none; }
       '<div class="panel"><h3>Season units</h3><p class="note">' + (live.length ? esc(wkName(d.week)) + " at " + (state.mode === "sheet" ? "the stakes as posted" : "proven-rating stakes") + "; earlier weeks as bet." : "Every settled bet at the stake it was bet at.") + "</p>" + weekChart(weeks) + "</div></div>" +
       '<div class="panel"><h3>By setup</h3><p class="note">Tap a setup to see every game it produced, ' + (isCBB() ? "day by day" : "week by week") + '. A bet with two setups counts for both.</p>' +
       (sl.length ? sl.map(setupRow).join("") : '<p class="note">No settled bets yet.</p>') + "</div></div>" +
+      reviewPanel(sl.map(function (s) { return { name: s.name, n: s.cn || 0, avg: s.cn ? s.cs / s.cn : 0, beat: s.cb || 0 }; })) +
       '<div class="panel"><h3>Every bet</h3><p class="note">Newest first.</p><div class="scroll"><table><thead><tr><th>' + (isCBB() ? "Day" : "Wk") + '</th><th>Game</th><th>Setup</th><th>Bet</th><th class="ra">Stake</th><th>Final</th><th>Result</th><th class="ra">vs close</th><th class="ra">Units</th><th class="ra">$</th></tr></thead><tbody>' +
       (log.length ? log.map(function (x) {
         var pend = x.result === "pending";
@@ -3073,6 +3263,15 @@ body.on-home { overflow-anchor: none; }
     return '<div class="pickbar fs" title="' + esc(v.backtest || "") + '"><div><span class="stars">' + "\u2605".repeat(v.stars || 1) + '</span><b>' + esc(v.name) + "</b><i>Bet " + esc(v.pick) + " \u00b7 " + (v.stake || 0.5) + "u \u00b7 bet near tip</i>" +
       (nums ? "<small>" + esc(nums) + "</small>" : "") + "<small>" + esc(v.why || "") + "</small></div>" + res + "</div>";
   }
+  // Line Held / Follow the Move (Nov 11 2026): betting-splits setups, live 0.5u test bets; their backtest record shows under every pick
+  function spBar(g, key) {
+    var v = g[key]; if (!v) return "";
+    var s = nbaScore(g), res = "", home = v.team === g.home_abbr;
+    if (s && s.status === "final" && v.line != null) { var c = key === "ft" ? (+s.home + +s.away) - v.line : (home ? +s.home - +s.away : +s.away - +s.home) + v.line; res = c > 0 ? '<span class="res W">\u2713 Won</span>' : c < 0 ? '<span class="res L">\u2717 Lost</span>' : '<span class="res P">Push</span>'; }
+    return '<div class="pickbar fs" title="' + esc(v.backtest || "") + '"><div><span class="stars">' + "\u2605".repeat(v.stars || 1) + '</span><b>' + esc(v.name) + "</b><i>Bet " + esc(v.pick) + " \u00b7 " + (v.stake || 0.5) + "u \u00b7 live test</i>" +
+      (v.note ? "<small>" + esc(v.note) + "</small>" : "") + "<small>" + esc(v.why || "") + "</small>" +
+      '<small class="sp-rec"><b>Backtest record: ' + esc(v.record || "") + ".</b> " + esc(v.backtest || "") + "</small></div>" + res + "</div>";
+  }
   function angleNumber(g, L) {
     var a = g.angle, s = nbaScore(g), ln = s && s.ln, ab = g.home_abbr;
     if (L == null) return "";
@@ -3089,6 +3288,20 @@ body.on-home { overflow-anchor: none; }
     return html + "</div>";
   }
   function gameHref(g) { return "#nba/" + state.data.date + "/" + g.id; }
+  function nbaTile(g) {
+    var s = nbaScore(g), st = s ? s.status : "pre", fc = teamColors(g.our_home_win != null && g.our_home_win < .5 ? g.away_abbr : g.home_abbr);
+    var dS = g.mkt_spread == null || g.our_spread == null ? null : r2(g.mkt_spread - g.our_spread), dT = g.mkt_total == null || g.our_total == null ? null : r2(g.our_total - g.mkt_total);
+    var picks = [];
+    [["angle", "\u2605"], ["mk", "\u25c6"], ["fs", "\u2605"], ["lh", "\u2605"], ["fm", "\u2605"], ["rm", "\u2605"], ["ft", "\u2605"], ["vk", "\u26a0"], ["combo", "\u25ce"]].forEach(function (k) {
+      var v = g[k[0]]; if (v && v.pick) picks.push('<button type="button" class="sg-pick" data-nbapicks="1" title="' + esc(v.name || "") + '">' + k[1] + " " + esc(v.pick) + "</button>");
+    });
+    var flags = []; var lb = luBadge(g); if (lb) flags.push(lb); if (nbaFlag(g)) flags.push('<span class="badge">Big gap</span>');
+    return gameTile({ aAb: g.away_abbr, hAb: g.home_abbr, aName: g.away, hName: g.home, aRank: nbaRank(g.away_abbr), hRank: nbaRank(g.home_abbr),
+      aBadge: badge(g.away_abbr, g.away_abbr, "sm", tc(g.away_abbr, g.away)), hBadge: badge(g.home_abbr, g.home_abbr, "sm", tc(g.home_abbr, g.home)),
+      when: nbaTip(g.tip), status: st === "live" || st === "final" ? st : "pre", liveTxt: s && s.period ? (s.period > 4 ? "OT" : "Q" + s.period) : "", sa: s ? s.away : null, sh: s ? s.home : null,
+      pH: g.our_home_win, ls: g.mkt_spread, ms: g.our_spread, lt: g.mkt_total, mt: g.our_total, dS: dS, dT: dT, fc: fc ? fc.d : NBA_COL[g.home_abbr], fcl: fc ? fc.l : NBA_COL[g.home_abbr],
+      flags: flags, picks: picks, href: gameHref(g), go: '<a class="gt-go" href="' + gameHref(g) + '">Full game page \u203a</a>' });
+  }
   function nbaCard(g) {
     var flag = nbaFlag(g);
     return '<article class="mc' + (isFavGame(g) ? " favd" : "") + '">' +
@@ -3133,7 +3346,7 @@ body.on-home { overflow-anchor: none; }
     }).join("") + "</div>";
   }
   // ---------- board: sort, cards or list ----------
-  var NSORT = [["time", "Start time"], ["gap", "Biggest gap"], ["close", "Closest"]], NVIEW = [["cards", "Cards"], ["list", "List"]];
+  var NSORT = [["time", "Start time"], ["gap", "Biggest gap"], ["close", "Closest"]], NVIEW = [["cards", "Cards"], ["full", "Detailed"], ["list", "List"]];
   function sortGames(list) {
     var k = state.nsort || "time";
     return list.slice().sort(function (a, b) {
@@ -3169,6 +3382,10 @@ body.on-home { overflow-anchor: none; }
       if (g.angle) out.push({ g: g, k: "tt", rank: 0, bar: angleBar(g) });
       if (g.mk) out.push({ g: g, k: "mk", rank: 1, bar: mkBar(g) });
       if (g.fs) out.push({ g: g, k: "fs", rank: 1.5, bar: fsBar(g) });
+      if (g.lh) out.push({ g: g, k: "lh", rank: 1.7, bar: spBar(g, "lh") });
+      if (g.fm) out.push({ g: g, k: "fm", rank: 1.8, bar: spBar(g, "fm") });
+      if (g.rm) out.push({ g: g, k: "rm", rank: 1.85, bar: spBar(g, "rm") });
+      if (g.ft) out.push({ g: g, k: "ft", rank: 1.9, bar: spBar(g, "ft") });
       if (g.vk) out.push({ g: g, k: "vk", rank: 2, bar: vkBar(g) });
       if (g.combo) out.push({ g: g, k: "cw", rank: 3, bar: comboBar(g) });
     });
@@ -3178,13 +3395,15 @@ body.on-home { overflow-anchor: none; }
     var d = state.data || {}, s = ((d.tracking || {}).summary) || {};
     var SET = [["tt", "\u2605 Tired Traveler", "bet \u00b7 0.5u", s.tired], ["mk", "\u25c6 Model Knows", "bet \u00b7 1u moneyline", s.mk_real || s.mk],
                ["fs", "\u2605 Fade the Sim", "bet \u00b7 0.5u spread", s.fs],
+               ["lh", "\u2605 Line Held", "live test \u00b7 0.5u spread", s.lh], ["fm", "\u2605 Follow the Move", "live test \u00b7 0.5u spread", s.fm],
+               ["rm", "\u2605 Reverse Line Move", "live test \u00b7 0.5u spread", s.rm], ["ft", "\u2605 Falling Total Over", "live test \u00b7 0.5u total", s.ft],
                ["vk", "\u26a0 Vegas Knows", "bet \u00b7 1u moneyline", s.vk_real || s.vk], ["cw", "\u25ce Combo watch", "bet \u00b7 0.5u spread", s.combo_real || s.combo]];
     var recs = '<div class="np-recs">' + SET.map(function (x) {
       var r = x[3] || {}, n = (r.w || 0) + (r.l || 0);
       return '<div class="np-rec"><b>' + x[1] + "</b><small>" + x[2] + '</small><span class="tnum">' + (n ? r.w + "\u2013" + r.l : "no games yet") + "</span>" +
         (n ? '<span class="tnum ' + (r.units > 0 ? "up" : r.units < 0 ? "down" : "") + '">' + signed(r.units || 0) + "u</span>" : "") + "</div>";
     }).join("") + "</div>";
-    var head = '<div class="panel np-head"><h3>Tonight\u2019s flagged plays</h3><p class="note"><b>Tired Traveler</b>, <b>Fade the Sim</b>, <b>Combo watch</b>, <b>Model Knows</b> and <b>Vegas Knows</b> are bets (Combo watch since Nov 9). If two setups land on opposite sides of a game, only the higher-star one is bet. Fade the Sim can appear or drop off during the day as lines and lineups move, so check it near tip. Model Knows and Vegas Knows are moneyline bets judged at the price just before tip, so check them once lineups are in; their records count real bets from Nov 9.</p>' + recs + "</div>";
+    var head = '<div class="panel np-head"><h3>Tonight\u2019s flagged plays</h3><p class="note"><b>Tired Traveler</b>, <b>Fade the Sim</b>, <b>Combo watch</b>, <b>Model Knows</b> and <b>Vegas Knows</b> are bets (Combo watch since Nov 9). <b>Line Held</b>, <b>Follow the Move</b>, <b>Reverse Line Move</b> and <b>Falling Total Over</b> are live 0.5u tests from Nov 11, built on DraftKings betting splits; each pick shows its backtest record. If two setups land on opposite sides of a game, only the higher-star one is bet. Fade the Sim can appear or drop off during the day as lines and lineups move, so check it near tip. Model Knows and Vegas Knows are moneyline bets judged at the price just before tip, so check them once lineups are in; their records count real bets from Nov 9.</p>' + recs + "</div>";
     if (d.members_only) { el.innerHTML = head + lockPanel(); bindLock(el); return; }
     var L = nbaPickList(d);
     var cnt = document.getElementById("cntPicks"); if (cnt) cnt.textContent = L.length ? String(L.length) : "";
@@ -3221,10 +3440,12 @@ body.on-home { overflow-anchor: none; }
       "</div>" + segHtml("nsort", NSORT, state.nsort || "time", "Sort") + segHtml("nview", NVIEW, state.nview || "cards", "View") +
       '<input class="search" id="q" type="search" placeholder="Search team" value="' + esc(state.q) + '" aria-label="Search team"></div>' +
       '<details class="howto"><summary>Our line for every game, next to the market. Predictions, not bets. <u>How this works</u></summary><p>Each game is built from the players expected to play (ratings × projected minutes) and simulated 10,000 times; the market is Pinnacle with its margin removed. Over five seasons the simulator landed within about 2 points of the closing line but didn’t beat it, so a big gap usually means news we don’t have. Spreads show the favorite. Tap ☆ to pin your teams to the top.</p></details>';
-    html += !list.length ? '<div class="empty"><h2>No games match</h2><p>Try All games.</p></div>' : (state.nview === "list" ? listHtml(list) : '<div class="grid nbag">' + list.map(nbaCard).join("") + "</div>");
+    html += !list.length ? '<div class="empty"><h2>No games match</h2><p>Try All games.</p></div>' : (state.nview === "list" ? listHtml(list) : state.nview === "full" ? '<div class="grid nbag">' + list.map(nbaCard).join("") + "</div>" :
+      '<div class="gt-grid">' + list.map(nbaTile).join("") + '</div><p class="note" style="margin-top:14px">The bar under each number runs toward the side our number leans to; the highlighted end shows by how many points. Chips are tonight\u2019s flagged plays. Tap a game for the full page, or choose Detailed for everything at once.</p>');
     el.innerHTML = html;
     el.querySelectorAll("[data-seg]").forEach(function (b) { b.addEventListener("click", function () { var k = b.getAttribute("data-seg"), v = b.getAttribute("data-val"); state[k] = v; if (k !== "market") storeSet("gte." + k, v); render(); }); });
     bindCommon(el);
+    el.querySelectorAll("[data-nbapicks]").forEach(function (b) { b.addEventListener("click", function () { state.view = "picks"; storeSet("gte.view", "picks"); render(); window.scrollTo(0, 0); }); });
     var qi = document.getElementById("q");
     qi.addEventListener("input", function () { state.q = qi.value; var pos = qi.selectionStart; render(); var n = document.getElementById("q"); n.focus(); try { n.setSelectionRange(pos, pos); } catch (e) {} });
   }
@@ -3302,7 +3523,7 @@ body.on-home { overflow-anchor: none; }
   function depthLoad(team) {
     var T = { id: tid(team) }; if (!T.id) return Promise.resolve(null);
     var lg = state.sport === "nfl" ? "nfl" : "college-football", S = muSeason();
-    function tryHost(h) { return fetch(h + "/apis/site/v2/sports/football/" + lg + "/teams/" + T.id + "/depthcharts", { cache: "no-store" }).then(function (r) { if (!r.ok) throw 0; return r.json(); }); }
+    function tryHost() { return espnGet("/apis/site/v2/sports/football/" + lg + "/teams/" + T.id + "/depthcharts"); }
     function https(u) { return String(u || "").replace(/^http:/, "https:"); }
     function core() {
       return fetch("https://sports.core.api.espn.com/v2/sports/football/leagues/" + lg + "/seasons/" + S + "/teams/" + T.id + "/depthcharts?limit=10", { cache: "no-store" })
@@ -3317,9 +3538,63 @@ body.on-home { overflow-anchor: none; }
           });
         });
     }
-    return tryHost("https://site.api.espn.com").catch(function () { return tryHost("https://site.web.api.espn.com"); }).then(function (j) {
-      var dc = j && (j.depthchart || j.depthCharts || j.items); if (!dc || !dc.length) throw 0; return { depthchart: dc };
-    }).catch(core).then(function (j) { return parseDepth(j); }).catch(function () { return null; });
+    return tryHost().then(function (j) {
+      var dc = j && (j.depthchart || j.depthCharts || j.items); if (!dc || !dc.length) throw (j && j._none ? "none" : 0); return { depthchart: dc };
+    }).catch(function (e) { if (e === "none") throw e; return core(); })      // "none": our saved copy says ESPN has no chart for this team
+      .then(function (j) { return parseDepth(j); }, function () { return null; })
+      .then(function (d) {                                       // no ESPN depth chart (most of college): fill in from the last game
+        if (d && d.off && d.def) return d;
+        return boxDepth(team).then(function (b) { if (!b) return d; if (!d) return b; return { off: d.off || b.off, def: d.def || b.def, box: b.box }; });
+      }).catch(function () { return null; });          // no ESPN depth chart (most of college): build it from the last game
+  }
+  // projected starters from the team's last box score: offense by touches, defense by tackles; positions from ESPN's roster.
+  // Box scores don't list offensive linemen, so the line is drawn without names.
+  function boxDepth(team) {
+    var id = tid(team); if (!id) return Promise.resolve(null);
+    var P = muPath();
+    return Promise.all([
+      espnGet("/apis/site/v2/sports/" + P + "/teams/" + id + "/schedule?season=" + muSeason()).catch(function () { return null; }),
+      espnGet("/apis/site/v2/sports/" + P + "/teams/" + id + "/roster").catch(function () { return null; })
+    ]).then(function (r) {
+      var done = ((r[0] && r[0].events) || []).filter(function (ev) { var c = ev.competitions && ev.competitions[0]; return c && ((c.status || {}).type || {}).completed; })
+        .sort(function (a, b) { return a.date < b.date ? 1 : -1; });
+      if (!done.length) return null;
+      var pos = {};
+      ((r[1] && r[1].athletes) || []).forEach(function (grp) { (grp.items || [grp]).forEach(function (a) { if (a && a.id) pos[String(a.id)] = String((a.position && (a.position.abbreviation || a.position.name)) || "").toUpperCase(); }); });
+      return espnGet("/apis/site/v2/sports/" + P + "/summary?event=" + done[0].id).then(function (b) {
+        var mine = ((b.boxscore && b.boxscore.players) || []).filter(function (t) { return String((t.team || {}).id) === String(id); })[0];
+        if (!mine) return null;
+        function cat(name) { return (mine.statistics || []).filter(function (x) { return String(x.name || "").toLowerCase() === name; })[0] || { athletes: [], keys: [] }; }
+        function list(name) { return (cat(name).athletes || []).map(function (a) { var x = a.athlete || {}; return { name: x.displayName || "", id: String(x.id || ""), stats: a.stats || [] }; }).filter(function (a) { return a.name; }); }
+        function pp(a, dflt) { return pos[a.id] || dflt; }
+        var qbs = list("passing"), rush = list("rushing"), rec = list("receiving"), dk = cat("defensive"), def = list("defensive");
+        var ti = (dk.keys || []).indexOf("totalTackles"); if (ti < 0) ti = (dk.labels || []).indexOf("TOT");
+        def.sort(function (a, b) { return (parseFloat(b.stats[ti]) || 0) - (parseFloat(a.stats[ti]) || 0); });
+        var off = [], used = {};
+        function take(arr, n, want, dflt) { var out = []; arr.forEach(function (a) { if (out.length < n && !used[a.name] && (!want || want.test(pp(a, dflt)))) { used[a.name] = 1; out.push(a); } }); return out; }
+        var qb = take(qbs, 1), rb = take(rush, 1, /^(RB|HB|FB|TB)$/, "RB"); if (!rb.length) rb = take(rush, 1);
+        var te = take(rec, 1, /^TE$/, ""), wr = take(rec, 3, /^(WR|SB|SE|FL)$/, "WR");
+        if (wr.length < 3) wr = wr.concat(take(rec, 3 - wr.length));
+        function slot(p, a, next) { return { pos: p, key: p, ath: [{ name: a ? a.name : "" }].concat((next || []).map(function (n) { return { name: n.name }; })) }; }
+        if (qb.length) off.push(slot("QB", qb[0], qbs.filter(function (a) { return a.name !== qb[0].name; }).slice(0, 1)));
+        if (rb.length) off.push(slot("RB", rb[0], rush.filter(function (a) { return !used[a.name]; }).slice(0, 1)));
+        wr.forEach(function (a) { off.push(slot("WR", a, rec.filter(function (x) { return !used[x.name]; }).slice(0, 1))); });
+        te.forEach(function (a) { off.push(slot("TE", a)); });
+        ["LT", "LG", "C", "RG", "RT"].forEach(function (p) { off.push({ pos: p, key: p, ath: [{ name: "" }] }); });
+        // a normal shape (4 linemen, 3 backers, 2 corners, 2 safeties), each spot going to that group's top tackler
+        var QUOTA = { dl: 4, lb: 3, cb: 2, s: 2 }, G = { dl: [], lb: [], cb: [], s: [] };
+        def.forEach(function (a) { var p = pp(a, "LB"); if (!/^(DE|DT|NT|DL|EDGE|LB|OLB|ILB|MLB|WLB|SLB|CB|S|SS|FS|DB|NB)$/.test(p)) p = "LB"; a.p = p; G[grp(p, true)].push(a); });
+        var pick = [], left = [];
+        Object.keys(QUOTA).forEach(function (g) { pick = pick.concat(G[g].slice(0, QUOTA[g])); left = left.concat(G[g].slice(QUOTA[g])); });
+        left.sort(function (a, b) { return (parseFloat(b.stats[ti]) || 0) - (parseFloat(a.stats[ti]) || 0); });
+        pick = pick.concat(left.splice(0, Math.max(0, 11 - pick.length)));
+        var D = pick.map(function (a, i) {
+          var g = grp(a.p, true), nx = G[g].filter(function (x) { return pick.indexOf(x) < 0; })[0];
+          return { pos: a.p, key: a.p + i, ath: [{ name: a.name }].concat(nx ? [{ name: nx.name }] : []) };
+        });
+        return off.length >= 6 && D.length >= 8 ? { off: { name: "From the last game", slots: off }, def: { name: "From the last game", slots: D }, box: done[0].date } : null;
+      });
+    }).catch(function () { return null; });
   }
   var OFF_POS = /^(QB|RB|HB|FB|WR|TE|LT|LG|C|RG|RT|OT|OG|T|G|OL)$/, DEF_POS = /^(LDE|RDE|DE|EDGE|LDT|RDT|DT|NT|DL|WLB|MLB|SLB|LILB|RILB|LOLB|ROLB|OLB|ILB|LB|LCB|RCB|CB|NB|NCB|SS|FS|S|DB)$/;
   function parseDepth(j) {
@@ -3408,7 +3683,11 @@ body.on-home { overflow-anchor: none; }
     }
     var outs = [];
     [[away, ia], [home, ih]].forEach(function (t) { Object.keys(t[1]).forEach(function (n) { if (isOut(t[1][n])) outs.push(shortName(t[0]) + ": " + n.replace(/\b\w/g, function (c) { return c.toUpperCase(); }) + " (" + t[1][n] + ")"); }); });
-    return hd + body + '<p class="note">From ESPN’s depth charts' + (eid ? " and this game’s injury report" : "") + ". Out or doubtful starters are replaced by the next man up; (Q) = questionable." +
+    var fromBox = (v.a && v.a.box) || (v.h && v.h.box);
+    if (fromBox) hd = hd.replace("depth chart with the injury report applied", "from each team\u2019s last game, with the injury report applied");
+    return hd + body + '<p class="note">' + (fromBox ? "ESPN doesn\u2019t post a depth chart for " + ((v.a && v.a.box) && (v.h && v.h.box) ? "these teams" : "one of these teams") +
+      ", so the starters come from each team\u2019s last game: offense by who touched the ball, defense by who made the most tackles. Box scores don\u2019t list offensive linemen, so the line is shown without names."
+      : "From ESPN\u2019s depth charts.") + (eid ? " This game\u2019s injury report is applied." : "") + " Out or doubtful starters are replaced by the next man up; (Q) = questionable." +
       (outs.length ? " Out: " + esc(outs.slice(0, 12).join(" · ")) + (outs.length > 12 ? " …" : "") : "") + "</p></div>";
   }
   // ---- basketball: a starting five on a half court
@@ -3514,7 +3793,7 @@ body.on-home { overflow-anchor: none; }
       add("Offense", A.off, H.off, 1, s1, null, null, "Points scored per 100 vs average");
       add("Defense", A.def, H.def, 1, s1, null, null, "Points prevented per 100 vs average (+ = better)");
       add("Fully healthy", A.healthy, H.healthy, 1, s1, A.healthy_rank, H.healthy_rank, "Rating if everyone played");
-      add("Lost to injuries", A.missing_pts, H.missing_pts, -1, f1, null, null, "Points per game the players out tonight are worth (lower is better)", 1);
+      add("Lost to injuries", A.missing_pts, H.missing_pts, 1, s1, null, null, "Rating points lost to the players out tonight (closer to 0 is better: fewer or less important players out)", 1);
       add("Last 10 games", A.recent, H.recent, 1, s1, null, null, "Rating over the last 10 games");
       add("Schedule so far", A.sos, H.sos, 0, s1, A.sos_rank, H.sos_rank, "How tough the opponents have been (+ = tougher)");
       add("Pace", A.pace, H.pace, 0, f1, null, null, "Possessions per game (style, no edge)");
@@ -3632,7 +3911,7 @@ body.on-home { overflow-anchor: none; }
     return hd + '<div class="fm-g">' + col(away, v.a) + col(home, v.h) + "</div></div>";
   }
   // ---- the page
-  function openMatchup(m) { state.mu = m; state.muFrom = state.view; state.view = "matchup"; render(); window.scrollTo(0, 0); }
+  function openMatchup(m) { trk("matchup", m.away + "@" + m.home); state.mu = m; state.muFrom = state.view; state.view = "matchup"; render(); window.scrollTo(0, 0); }
   var MUID = {};                                          // team name -> ESPN id learned from a game summary (when the team list is missing it)
   function tid(name) { var t = teamInfo(name); return (t && t.id) || MUID[sportKey() + "|" + name] || ""; }
   function idsFromEvent(m) {                             // ESPN's summary for this game lists both teams' ids
@@ -3746,12 +4025,16 @@ body.on-home { overflow-anchor: none; }
         (s.combo && s.combo.clv && s.combo.clv.n ? '<div class="lrow"><div>Combo watch vs the closing line<small>' + s.combo.clv.n + ' picks · last line before tip</small></div><div class="tnum">' + s.combo.clv.beat + " of " + s.combo.clv.n + ' better</div><div class="tnum ' + (s.combo.clv.avg > 0 ? "up" : s.combo.clv.avg < 0 ? "down" : "") + '">' + clvTxt(s.combo.clv.avg) + " pts</div></div>" : "") +
         sig("\u2605 Fade the Sim: the simulator 2+ one way, the morning market model 0.5+ the other; bet against the simulator (0.5u at \u2212110, from Nov 9)", s.fs) +
         sig("\u25c6 Model Knows: we and Vegas pick different winners, ours by 2+; our team\u2019s moneyline before tip (1u bet from Nov 9, paper before)", s.mk) +
+        sig("\u2605 Line Held: our number 3+ off, 60%+ of DraftKings tickets on the other side, the line didn\u2019t move toward them (0.5u live test from Nov 11; backtest 20\u201315)", s.lh) +
+        sig("\u2605 Follow the Move: 60%+ of DraftKings tickets on a side and the line moved 1+ toward it (0.5u live test from Nov 11; backtest 115\u201387)", s.fm) +
+        sig("\u2605 Reverse Line Move: 65%+ of DraftKings tickets on a side, yet the line moved 0.5+ against them: bet the other side (0.5u live test from Nov 11; backtest 159\u2013126)", s.rm) +
+        sig("\u2605 Falling Total Over: 75%+ of DraftKings tickets on the over, total dropped or held since the opener: the over (0.5u live test from Nov 11; backtest 270\u2013218)", s.ft) +
         sig("\u26a0 Vegas Knows: we have it within 4, Vegas has the favorite 3+ pts bigger; the favorite\u2019s moneyline, 1u at its price (1u bet from Nov 9, paper before; backtest: won 62%, lost ~11% per bet)" + (s.vk && s.vk.won_outright != null ? "<small>favorite won outright " + s.vk.won_outright + " of " + (s.vk.w + s.vk.l + (s.vk.p || 0)) + "</small>" : ""), s.vk) +
         sig("Tracked at 0 units: our win % 5+ pts above the market (moneyline)", s.ml_edge) + sig("Tracked at 0 units: underdog moneyline 3+ pts cheaper than its spread", s.cheap_dog)
         : '<p class="note">Nothing graded yet. The first games grade the morning after they’re played.</p>') + "</div>" +
       ((t.picks || []).length ? '<div class="panel"><h3>Tracked picks</h3><p class="note">The line when we flagged it, where it closed, and the result. “vs close” = points our number beat the close by (+ is good): the earliest sign an edge is real.</p><div class="scroll"><table><thead><tr><th>Date</th><th>Game</th><th>Bet</th><th class="ra">Closed</th><th class="ra">vs close</th><th>Result</th><th class="ra">Units</th></tr></thead><tbody>' +
         t.picks.map(function (p) {
-          return "<tr><td>" + esc(nbaDay(p.date)) + "</td><td>" + esc(p.game) + "</td><td><b>" + esc(pretty(p.pick)) + "</b>" + (p.angle ? '<span class="pk-ang">' + esc(p.angle === "Tired Traveler" ? "\u2605 " + p.angle : (p.angle === "Vegas Knows" ? "\u26a0 " : p.angle === "Model Knows" ? "\u25c6 " : p.angle === "Fade the Sim" ? "\u2605 " : "\u25ce ") + p.angle + (p.paper ? " \u00b7 paper" : "")) + "</span>" : "") + '</td><td class="ra">' + (p.close == null ? "" : lineTxt(p.close)) + '</td><td class="ra ' + (p.clv > 0 ? "up" : p.clv < 0 ? "down" : "") + '">' + (p.clv == null ? "" : clvTxt(p.clv)) + "</td><td>" +
+          return "<tr><td>" + esc(nbaDay(p.date)) + "</td><td>" + esc(p.game) + "</td><td><b>" + esc(pretty(p.pick)) + "</b>" + (p.angle ? '<span class="pk-ang">' + esc(p.angle === "Tired Traveler" ? "\u2605 " + p.angle : (p.angle === "Vegas Knows" ? "\u26a0 " : p.angle === "Model Knows" ? "\u25c6 " : (p.angle === "Fade the Sim" || p.angle === "Line Held" || p.angle === "Follow the Move" || p.angle === "Falling Total Over" || p.angle === "Reverse Line Move") ? "\u2605 " : "\u25ce ") + p.angle + (p.paper ? " \u00b7 paper" : "")) + "</span>" : "") + '</td><td class="ra">' + (p.close == null ? "" : lineTxt(p.close)) + '</td><td class="ra ' + (p.clv > 0 ? "up" : p.clv < 0 ? "down" : "") + '">' + (p.clv == null ? "" : clvTxt(p.clv)) + "</td><td>" +
             (p.result ? '<span class="pill ' + esc(p.result) + '">' + (p.result === "W" ? "Won" : p.result === "L" ? "Lost" : "Push") + "</span>" : '<span class="pill">Open</span>') + '</td><td class="ra ' + (p.units > 0 ? "up" : p.units < 0 ? "down" : "") + '">' + (p.units == null ? "" : signed(p.units)) + "</td></tr>";
         }).join("") + "</tbody></table></div></div>" : "") +
       (rec.length ? '<div class="panel span2"><h3>Recent games</h3><div class="scroll"><table><thead><tr><th>Date</th><th>Game</th><th class="ra">Ours</th><th class="ra">Market</th><th class="ra">Final</th><th>Closer</th></tr></thead><tbody>' +
@@ -3759,7 +4042,10 @@ body.on-home { overflow-anchor: none; }
           var o = Math.abs(r.margin + r.ours), m = r.mkt == null ? null : Math.abs(r.margin + r.mkt);
           return "<tr><td>" + esc(nbaDay(r.date)) + "</td><td>" + esc(r.game) + '</td><td class="ra">' + (r.ours > 0 ? "+" : "") + r.ours + '</td><td class="ra">' + (r.mkt == null ? "—" : (r.mkt > 0 ? "+" : "") + r.mkt) + '</td><td class="ra">' + esc(r.final) + "</td><td>" +
             (m == null ? "" : '<span class="pill ' + (o < m ? "W" : o > m ? "L" : "") + '">' + (o < m ? "Ours" : o > m ? "Market" : "Even") + "</span>") + "</td></tr>";
-        }).join("") + '</tbody></table></div><p class="note">Spreads are the home team’s number (− = home favored). Final is away–home.</p></div>' : "") + "</div>";
+        }).join("") + '</tbody></table></div><p class="note">Spreads are the home team’s number (− = home favored). Final is away–home.</p></div>' : "") +
+      (s.games ? '<div class="span2">' + reviewPanel([["Tired Traveler", s.tired], ["Combo watch", s.combo], ["Fade the Sim", s.fs], ["Line Held", s.lh], ["Follow the Move", s.fm], ["Reverse Line Move", s.rm], ["Falling Total Over", s.ft, "total: + = our total was lower than the close"], ["Vegas Knows", s.vk, "moneyline bet; measured on the spread"], ["Model Knows", s.mk, "moneyline: win-chance points"]].map(function (x) {
+        var c = x[1] && x[1].clv; return { name: x[0], n: c ? c.n || 0 : 0, avg: c && c.avg != null ? c.avg : 0, beat: c ? c.beat || 0 : 0, unit: c && c.unit, note: x[2] || "" };
+      })) + "</div>" : "") + "</div>";
   }
   // ESPN's public scoreboard: try the main host, then its mirror
   // ESPN's betting line on a scoreboard event: home team's spread (− = home favored) and the total. Before kickoff it's the
@@ -3777,7 +4063,32 @@ body.on-home { overflow-anchor: none; }
     if (sp == null && tot == null) return null;
     return { sp: sp, tot: tot, by: (o.provider && o.provider.name) || "" };
   }
+  // ESPN data saved on our own site (data/espn/, refreshed every 2 hours by a GitHub Action) is read first; ESPN itself is the
+  // fallback. Live scoreboards always go to ESPN first (they change by the minute). A file name is the request with the
+  // path prefix dropped and anything unusual turned into "_" (the Action builds names the same way).
+  var ESPN_STAMP = null;
+  function espnKey(q) { return "data/espn/" + q.replace(/^\/apis\/site\/v2\/sports\//, "").replace(/[^A-Za-z0-9.\-]+/g, "_").replace(/^_+|_+$/g, "") + ".json"; }
+  function espnStamp() {
+    if (!ESPN_STAMP) ESPN_STAMP = fetch("data/espn/_stamp.json", { cache: "no-cache" }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; });
+    return ESPN_STAMP;
+  }
+  function espnCached(q) { return fetch(espnKey(q), { cache: "no-cache" }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }); }
+  function espnFresh(q, j, st) {
+    if (/\/teams\?limit=/.test(q)) return true;                                   // team lists barely change
+    var m = /\/schedule\?season=(\d+)/.exec(q);
+    if (m) { var d = new Date(), y = d.getFullYear(), mo = d.getMonth() + 1, cur = /football/.test(q) ? (mo >= 3 ? y : y - 1) : (mo >= 8 ? y + 1 : y); if (+m[1] < cur) return true; }
+    if (/\/summary\?/.test(q)) { var c = j && j.header && j.header.competitions && j.header.competitions[0]; if (c && c.status && c.status.type && c.status.type.completed) return true; }
+    return !!(st && st.t && Date.now() - Date.parse(st.t) < 3 * 3600000);            // the Action ran in the last 3 hours
+  }
   function espnGet(q) {
+    if (/\/scoreboard\?/.test(q)) return espnLive(q);
+    return Promise.all([espnCached(q), espnStamp()]).then(function (r) {
+      var j = r[0];
+      if (j && espnFresh(q, j, r[1])) return j;
+      return espnLive(q).catch(function (e) { if (j) return j; throw e; });
+    });
+  }
+  function espnLive(q) {
     function one(host) {                                   // gives up after 15 seconds so one slow answer can't stall the page
       var ac = window.AbortController ? new AbortController() : null, tm = ac ? setTimeout(function () { ac.abort(); }, 15000) : null;
       return fetch(host + q, ac ? { cache: "no-store", signal: ac.signal } : { cache: "no-store" }).then(function (r) { if (tm) clearTimeout(tm); if (!r.ok) throw new Error(r.status); return r.json(); }, function (e) { if (tm) clearTimeout(tm); throw e; });
@@ -3844,6 +4155,41 @@ body.on-home { overflow-anchor: none; }
     return o.pick || "";
   }
   function trackedBy(id) { return (MB.list || []).filter(function (b) { return b.from_pick && (b.from_pick === id || b.from_pick.indexOf(id + ":") === 0); })[0]; }
+  // ---------- free pick of the day: the site owner picks it here; the social poster (GitHub Actions) posts it on X and Instagram
+  function etDay(ms) { var d = new Date(ms == null ? Date.now() : ms), y = d.getUTCFullYear(), off = 5;
+    var de = new Date(Date.UTC(y, 10, 1)); de.setUTCDate(1 + (7 - de.getUTCDay()) % 7); var ds = new Date(Date.UTC(y, 2, 1)); ds.setUTCDate(1 + (7 - ds.getUTCDay()) % 7 + 7);
+    if (d.getTime() >= ds.getTime() + 7 * 3600000 && d.getTime() < de.getTime() + 6 * 3600000) off = 4;
+    return new Date(d.getTime() - off * 3600000).toISOString().slice(0, 10); }
+  function freeLoad(uid) {
+    AUTH.admin = false; FREE.choice = null;
+    SB.from("site_admins").select("user_id").eq("user_id", uid).maybeSingle().then(function (r) {
+      if (!r || r.error || !r.data) return;                 // not the owner (or the table isn't set up): no button
+      AUTH.admin = true;
+      SB.from("free_pick_choice").select("*").eq("day", etDay()).maybeSingle().then(function (q) { FREE.choice = (q && !q.error && q.data) || null; render(); }, function () { render(); });
+    }, function () {});
+  }
+  function freeBtn(x, rt) {
+    if (!AUTH.admin || !rt.stake || x.market === "Teaser" || String(x.kickoff || "").slice(0, 10) !== etDay() || started(x.kickoff)) return "";
+    var c = FREE.choice, mine = c && c.sport === sportKey() && String(c.bet_id) === String(x.id), posted = c && c.posted_at;
+    if (posted && !mine) return "";
+    return '<button type="button" class="freebtn' + (mine ? " on" : "") + '" data-free="' + esc(x.id) + '"' + (posted ? " disabled" : "") + ' aria-label="' + (mine ? (posted ? "Posted as today\u2019s free pick" : "Today\u2019s free pick (tap to undo)") : "Make this today\u2019s free pick") + '">' +
+      (mine ? (posted ? "\u2713 Posted free" : "\u2713 Free pick") : "\ud83d\udce3 Free pick") + "</button>";
+  }
+  function freeChoose(id) {
+    if (FREE.busy || !SB || !AUTH.admin) return;
+    var x = ((state.data && state.data.bets) || []).filter(function (y) { return String(y.id) === String(id); })[0]; if (!x) return;
+    var c = FREE.choice, day = etDay();
+    if (c && c.posted_at) return;
+    FREE.busy = true;
+    var undo = c && c.sport === sportKey() && String(c.bet_id) === String(id);
+    var q = undo ? SB.from("free_pick_choice").delete().eq("day", day)
+      : SB.from("free_pick_choice").upsert({ day: day, sport: sportKey(), card: String(state.weekId), bet_id: String(x.id), pick: pretty(x.pick), game: x.game || "", kickoff: x.kickoff || "", chosen_by: AUTH.user.id, chosen_at: new Date().toISOString() }, { onConflict: "day" }).select().maybeSingle();
+    q.then(function (r) {
+      FREE.busy = false;
+      if (r && r.error) { alert("Couldn\u2019t save the free pick: " + r.error.message); return; }
+      FREE.choice = undo ? null : (r && r.data) || null; render();
+    }, function (e) { FREE.busy = false; alert("Couldn\u2019t save the free pick: " + ((e && e.message) || e)); });
+  }
   function trackBtn(id) {
     if (!AUTH.on || !AUTH.user) return "";
     var t = trackedBy(id);
@@ -4288,6 +4634,42 @@ body.on-home { overflow-anchor: none; }
   // reference, never as picks: on its own the model didn't beat closing lines in the backtests; only the proven setups did.
   function teamRow0(name) { var R = state.ratings, t = null; if (R && R.teams) R.teams.forEach(function (x) { if (!t && x.team === name) t = x; }); return t; }
   function amerExact(p) { if (!(p > 0 && p < 1)) return null; return Math.round(p >= .5 ? -100 * p / (1 - p) : 100 * (1 - p) / p); }
+  // ---------- GAME TILES (Nov 12 2026): the Games tab as scoreboard cards, one design for every sport ----------
+  // The bar under each number is a tug-of-war: it runs from the middle toward the side our number leans to, and the
+  // highlighted end shows by how many points. It is our number vs the line, not a pick; picks are the orange chips.
+  function gtMeter(v, cap, lo, hi, what) {
+    if (v == null || isNaN(v)) return "";
+    var a = Math.abs(v), flat = a < .5, w = flat ? 0 : Math.max(5, Math.min(1, a / cap) * 50);
+    var say = flat ? "Our " + what + " matches the line" : "Our " + what + " leans " + (v > 0 ? hi : lo) + " by " + u(a);
+    return '<div class="gt-meter' + (flat ? " flat" : "") + '" role="img" aria-label="' + esc(say) + '" title="' + esc(say) + '">' +
+      '<span class="gt-end' + (!flat && v < 0 ? " on" : "") + '">' + esc(lo) + (!flat && v < 0 ? " <b>" + u(a) + "</b>" : "") + "</span>" +
+      '<span class="gt-track"><i style="' + (v >= 0 ? "left" : "right") + ":50%;width:" + w.toFixed(1) + '%"></i></span>' +
+      '<span class="gt-end r' + (!flat && v > 0 ? " on" : "") + '">' + (!flat && v > 0 ? "<b>" + u(a) + "</b> " : "") + esc(hi) + "</span></div>";
+  }
+  function gtNum(lbl, lineTxt, oursTxt, meter, tag) {
+    return '<div class="gt-num"><div class="gt-line"><span class="gt-k">' + lbl + "</span><span>Line <b>" + esc(lineTxt) + "</b>" + (tag ? " <small>" + esc(tag) + "</small>" : "") + "</span><span>Ours <b>" + esc(oursTxt) + "</b></span></div>" + meter + "</div>";
+  }
+  function gameTile(o) {
+    var live = o.status === "live", fin = o.status === "final" && o.sh != null && o.sa != null && !isNaN(+o.sh), started = live || fin;
+    var wA = fin ? (+o.sa > +o.sh ? " w" : +o.sa < +o.sh ? " l" : "") : "", wH = fin ? (+o.sh > +o.sa ? " w" : +o.sh < +o.sa ? " l" : "") : "";
+    var pA = o.pH == null ? null : Math.round((1 - o.pH) * 100), pHm = pA == null ? null : 100 - pA, homeFav = o.pH != null && o.pH >= .5;
+    function team(bd, rank, name, home, cls, score, pct) {
+      return '<div class="gt-team' + cls + '">' + bd + '<span class="gt-name">' + (rank ? '<i class="rk">' + esc(rank) + "</i>" : "") + esc(name) + (home && !o.neutral ? "<small>home</small>" : "") + "</span>" +
+        (started ? '<b class="gt-val">' + esc(score == null ? "" : score) + "</b>" : '<span class="gt-val pct' + (pct != null && pct >= 50 ? " fav" : "") + '">' + (pct == null ? "" : pct + "%") + "</span>") + "</div>";
+    }
+    var teams = team(o.aBadge, o.aRank, o.aName, false, wA, o.sa, pA) + team(o.hBadge, o.hRank, o.hName, true, wH, o.sh, pHm);
+    var prob = o.pH == null ? "" : '<div class="gt-prob' + (homeFav ? " r" : "") + '" style="' + (o.fc ? "--fc:" + esc(o.fc) + ";--fcl:" + esc(o.fcl || o.fc) : "") + '" title="' + esc("Our win chance: " + o.aAb + " " + pA + "%, " + o.hAb + " " + pHm + "%") + '"><i style="width:' + (homeFav ? pHm : pA) + '%"></i></div>';
+    var nums = (o.ls != null || o.ms != null ? gtNum("Spread", fmtSpread(o.hAb, o.aAb, o.ls), fmtSpread(o.hAb, o.aAb, o.ms), gtMeter(o.dS, 7, o.aAb, o.hAb, "spread"), "") : "") +
+      (o.lt != null || o.mt != null ? gtNum("Total", o.lt == null ? "\u2014" : u(o.lt), o.mt == null ? "\u2014" : u(o.mt), gtMeter(o.dT, 10, "Under", "Over", "total"), "") : "");
+    var when = '<span class="gt-when' + (live ? " live" : fin ? " fin" : "") + '">' + esc(live ? "Live" + (o.liveTxt ? " " + o.liveTxt : "") : fin ? "Final" : o.when) + (started && o.when ? " <small>" + esc(o.when) + "</small>" : "") + "</span>";
+    return '<article class="gt' + (o.picks && o.picks.length ? " haspick" : "") + (live ? " live" : "") + '">' +
+      '<div class="gt-top">' + when + '<span class="gt-flags">' + (o.clo || "") + (o.flags || []).join("") +
+        (o.lineTag && !started ? '<span class="sg-flag mute" title="ESPN has no current line for this game yet; this is the line from when the card was built">' + (o.lineTag === "morning" ? "Morning line" : "Sheet line") + "</span>" : "") + "</span></div>" +
+      (o.href ? '<a class="gt-teams" href="' + esc(o.href) + '">' : '<div class="gt-teams"' + (o.mu || "") + ">") + teams + (o.href ? "</a>" : "</div>") + prob +
+      (nums ? '<div class="gt-nums">' + nums + "</div>" : "") +
+      '<div class="gt-foot"><span class="gt-picks">' + (o.picks || []).join("") + "</span>" + (o.go || "") + "</div></article>";
+  }
+  function gtDayLabel(day) { var m = /^(\d{4})-(\d{2})-(\d{2})/.exec(day || ""); return m ? new Date(Date.UTC(+m[1], +m[2] - 1, +m[3], 12)).toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", timeZone: "UTC" }) : "Date to be announced"; }
   function slateRows() {
     var d = state.data || {}, sd = rkCfg().sd, picks = {};
     (d.bets || []).forEach(function (x) { legGames(x).forEach(function (gm) { (picks[gm.game] = picks[gm.game] || []).push(x); }); });
@@ -4309,6 +4691,7 @@ body.on-home { overflow-anchor: none; }
     var all = slateRows(), nfl = state.sport === "nfl";
     if (!all.length) { el.innerHTML = '<div class="empty"><h2>No games list yet</h2><p>It posts with the week’s sheet, starting with the next notebook run.</p></div>'; return; }
     var q = (state.gq || "").trim().toLowerCase(), gf = state.gf || "all", gs = state.gs || "time", gc = state.gc || "all";
+    var gv = state.gv || storeGet("gte.gv") || "cards";
     var confs = {}; all.forEach(function (r) { r.conf.forEach(function (c) { confs[c] = 1; }); });
     var list = all.filter(function (r) {
       if (gf === "picks" && !r.picks.length) return false;
@@ -4332,6 +4715,7 @@ body.on-home { overflow-anchor: none; }
       var fav = r.pH == null ? null : r.pH >= .5 ? [ha, r.pH] : [aa, 1 - r.pH];
       var notes = r.picks.map(function (x) { return '<button type="button" class="sg-pick" data-gopick="' + esc(x.home || "") + '">' + starsHtml(rated(x).stars) + " " + esc(pretty(x.pick)) + "</button>"; });
       if (clo) notes.unshift(closerTag(clo));
+      var nFix = notes.length;
       if (g.qb) notes.push('<span class="sg-flag" title="' + esc(g.qb) + '">⚠ QB</span>');
       if (g.wind_flag || (g.wind != null && g.wind >= 12 && g.roof !== "dome" && g.roof !== "closed")) notes.push('<span class="sg-flag">Wind' + (g.wind != null ? " " + g.wind + " mph" : " 12+ mph") + "</span>");
       if (g.roof === "dome" || g.roof === "closed") notes.push('<span class="sg-flag mute">Dome</span>');
@@ -4340,7 +4724,15 @@ body.on-home { overflow-anchor: none; }
       if (isCBB() && g.event) notes.push('<span class="sg-flag mute">' + esc(g.event) + "</span>");
       if (isCBB() && g.taller) notes.push('<span class="sg-flag' + (g.taller_by >= 2 ? " ht2" : " mute") + '" title="' + esc("Average height, weighted by minutes: " + shortName(g.away) + " " + (g.away_ht_txt || "") + " \u00b7 " + shortName(g.home) + " " + (g.home_ht_txt || "") + ". Taller teams rebound and score inside better, but the line already prices it (tested: no betting edge).") + '">\u2195 ' + esc(abbr(g.taller)) + " taller by " + u(g.taller_by) + '\u2033</span>');
       if (nfl) { var mm = bigMismatch(g.away, g.home); if (mm) notes.push('<button type="button" class="sg-flag mute tbtn" data-tpage="' + esc(mm[0]) + '" title="' + esc(mm[0] + "’s " + mm[1] + " offense vs a defense ranked " + mm[2] + " spots worse. A matchup, not a pick.") + '">' + esc(mm[0]) + " " + mm[1] + " mismatch</button>"); }
-      return '<tr><td class="nw">' + esc(kickText(g.kickoff)) + (st ? '<small class="' + (sc.status === "live" ? "live" : "") + '">' + esc(st) + "</small>" : "") + "</td>" +
+      var muAttr = ' data-mu-a="' + esc(g.away) + '" data-mu-h="' + esc(g.home) + '" data-mu-k="' + esc(r.key) + '" data-mu-id="' + esc(g.id != null ? g.id : "") + '" data-mu-t="' + esc(g.kickoff || "") + '" data-mu-n="' + (g.neutral ? 1 : 0) + '"';
+      var fcol = teamColors(r.pH != null && r.pH < .5 ? g.away : g.home);
+      var tile = gameTile({ aAb: aa, hAb: ha, aName: nfl ? g.away : shortName(g.away) || g.away, hName: nfl ? g.home : shortName(g.home) || g.home,
+        aRank: r.ra && !nfl ? r.ra.rank : null, hRank: r.rh && !nfl ? r.rh.rank : null, aBadge: badge(g.away, nfl ? g.away : null, "sm"), hBadge: badge(g.home, nfl ? g.home : null, "sm"),
+        when: kickText(g.kickoff), status: sc ? sc.status : "pre", sa: sc && sc.status !== "pre" ? sc.away : null, sh: sc && sc.status !== "pre" ? sc.home : null,
+        pH: r.pH, ls: r.ls, ms: g.model_spread, lt: r.lt, mt: g.model_total, dS: r.dS, dT: r.dT, neutral: g.neutral, fc: fcol && fcol.d, fcl: fcol && fcol.l,
+        lineTag: r.live || r.ls == null ? "" : (isCBB() ? "morning" : "sheet"), clo: clo ? closerTag(clo) : "", flags: notes.slice(nFix), picks: notes.slice(clo ? 1 : 0, nFix),
+        mu: muAttr + ' title="Open the matchup: head to head and projected starters"', go: '<button type="button" class="gt-go"' + muAttr + ">Matchup \u203a</button>" });
+      return { day: String(g.kickoff || "").slice(0, 10), tile: tile, tr: '<tr><td class="nw">' + esc(kickText(g.kickoff)) + (st ? '<small class="' + (sc.status === "live" ? "live" : "") + '">' + esc(st) + "</small>" : "") + "</td>" +
         '<td class="sg-mu" data-mu-a="' + esc(g.away) + '" data-mu-h="' + esc(g.home) + '" data-mu-k="' + esc(r.key) + '" data-mu-id="' + esc(g.id != null ? g.id : "") + '" data-mu-t="' + esc(g.kickoff || "") + '" data-mu-n="' + (g.neutral ? 1 : 0) + '" title="Open the matchup: head to head and projected starters"><div class="sg-g">' + nm(g.away, r.ra, wA, sc && sc.status !== "pre" ? sc.away : null) + '<span class="at">' + (g.neutral && isCBB() ? "vs" : "@") + "</span>" + nm(g.home, r.rh, wH, sc && sc.status !== "pre" ? sc.home : null) + "</div>" + (function () { if (!nfl && state.sport !== "cfb") return ""; var h = historyFor(g.away, g.home); if (!h || !(h.facts || []).length) return "";
           return '<small class="sg-hist" title="' + esc((h.facts || []).concat(h.last ? [h.last] : []).join("\n")) + '">\ud83d\udcdc ' + esc(h.facts[0]) + "</small>"; })() + "</td>" +
         '<td class="ra nw">' + esc(fmtSpread(ha, aa, r.ls)) + (r.live || r.ls == null ? "" : ' <small title="The line when the sheet was built">' + (isCBB() ? "morning" : "sheet") + "</small>") +
@@ -4352,8 +4744,19 @@ body.on-home { overflow-anchor: none; }
         '<td class="ra nw sg-d">' + (r.dT == null ? "" : Math.abs(r.dT) < .5 ? "—" : (r.dT > 0 ? "Over " : "Under ") + u(Math.abs(r.dT))) + "</td>" +
         '<td class="ra nw">' + (fav ? esc(fav[0]) + " " + Math.round(fav[1] * 100) + "%" : "") + "</td>" +
         '<td class="ra nw sg-ml">' + (r.pH == null ? "" : '<span>' + esc(aa) + " " + ml(1 - r.pH) + " <small>" + Math.round((1 - r.pH) * 100) + "¢</small></span><span>" + esc(ha) + " " + ml(r.pH) + " <small>" + Math.round(r.pH * 100) + "¢</small></span>") + "</td>" +
-        '<td class="sg-notes">' + notes.join(" ") + "</td></tr>";
-    }).join("");
+        '<td class="sg-notes">' + notes.join(" ") + "</td></tr>" };
+    });
+    var tiles = "", rowsHtml = rows.map(function (x) { return x.tr; }).join("");
+    if (gs === "time") {                                   // cards grouped by day, in kickoff order
+      var dayN = {}, lastDay = null, opened = false;
+      rows.forEach(function (x) { dayN[x.day] = (dayN[x.day] || 0) + 1; });
+      var multi = Object.keys(dayN).length > 1;
+      rows.forEach(function (x) {
+        if (x.day !== lastDay) { if (opened) tiles += "</div>"; if (multi) tiles += '<h3 class="gt-day">' + esc(gtDayLabel(x.day)) + "<small>" + dayN[x.day] + " game" + (dayN[x.day] === 1 ? "" : "s") + "</small></h3>"; tiles += '<div class="gt-grid">'; opened = true; lastDay = x.day; }
+        tiles += x.tile;
+      });
+      if (opened) tiles += "</div>";
+    } else tiles = rows.length ? '<div class="gt-grid">' + rows.map(function (x) { return x.tile; }).join("") + "</div>" : "";
     var nPicks = all.filter(function (r) { return r.picks.length; }).length;
     all.forEach(function (r) { var sc = r.sc; if (sc && sc.status === "final" && !isNaN(+sc.home)) { var c = closerOf(+sc.home - +sc.away, r.g.model_spread, r.ls); if (c) CL.push(c); } });
     el.innerHTML = '<div class="sg-warn" role="note"><b>Our numbers, not picks.</b> This is our model’s spread, total and win chance for every game on the board. ' +
@@ -4361,15 +4764,19 @@ body.on-home { overflow-anchor: none; }
       'Only the setups on the <button type="button" class="lnk" data-gopick="">Picks</button> tab did, and those are the bets.</div>' +
       '<div class="tbar">' + segHtml("gf", [["all", "All games"], ["picks", "With a pick (" + nPicks + ")"], ["open", "Not started"]], gf, "Show") +
       segHtml("gs", [["time", isCBB() ? "Tip time" : "Kickoff"], ["diff", "Biggest difference"], ["close", "Closest"]], gs, "Sort") +
+      segHtml("gv", [["cards", "Cards"], ["table", "Table"]], gv, "View") +
       (Object.keys(confs).length > 1 ? '<select id="gconf" class="search" style="max-width:200px" aria-label="Conference"><option value="all">All conferences</option>' + Object.keys(confs).sort().map(function (c) { return '<option' + (c === gc ? " selected" : "") + ">" + esc(c) + "</option>"; }).join("") + "</select>" : "") +
       '<input class="search" id="gq" type="search" placeholder="Search team' + (nfl ? " or QB" : "") + '" value="' + esc(state.gq || "") + '" aria-label="Search team"></div>' +
       tallyHtml(CL, isCBB() ? "today" : "this week") +
-      '<div class="panel sg-panel"><div class="scroll"><table class="slt"><thead><tr><th>' + (isCBB() ? "Tip" : "Kickoff") + '</th><th>Game</th><th class="ra">Line</th><th class="ra">Our spread</th><th class="ra">Difference</th><th class="ra">Total</th><th class="ra">Our total</th><th class="ra">Difference</th><th class="ra">Win chance</th><th class="ra" title="What each side is worth at our win chance: American odds, and cents on an exchange">Fair price</th><th>Notes</th></tr></thead><tbody>' +
-      (rows || '<tr><td colspan="11" class="note">No games match.</td></tr>') + "</tbody></table></div>" +
+      (gv !== "table" ? (tiles || '<div class="empty"><h2>No games match</h2><p>Clear the search or choose All games.</p></div>') +
+        '<p class="note" style="margin-top:14px">The bar under each number runs toward the side our number leans to; the highlighted end shows by how many points. Win chance comes from our spread alone. ' +
+        "Line = ESPN\u2019s current line before " + (isCBB() ? "tip (\u201cmorning\u201d = the line when the card was built)" : "kickoff (\u201csheet\u201d = the line when the sheet was built)") + ". Orange chips are our picks. " + all.length + " games.</p>" : "") +
+      '<div class="panel sg-panel"' + (gv !== "table" ? " hidden" : "") + '><div class="scroll"><table class="slt"><thead><tr><th>' + (isCBB() ? "Tip" : "Kickoff") + '</th><th>Game</th><th class="ra">Line</th><th class="ra">Our spread</th><th class="ra">Difference</th><th class="ra">Total</th><th class="ra">Our total</th><th class="ra">Difference</th><th class="ra">Win chance</th><th class="ra" title="What each side is worth at our win chance: American odds, and cents on an exchange">Fair price</th><th>Notes</th></tr></thead><tbody>' +
+      (rowsHtml || '<tr><td colspan="11" class="note">No games match.</td></tr>') + "</tbody></table></div>" +
       '<p class="note" style="margin-top:10px">Spreads are shown as the favorite and its number. ' + (isCBB() ? "Line = ESPN’s current line before tip (“morning” = the line when the card was built). " : "Line = ESPN’s current line before kickoff (“sheet” = the line when the sheet was built). ") +
       (isCBB() ? "Our spread and total = the market model\u2019s fair number (our ratings plus luck, schedule, travel and what the market itself is doing); \u201cRatings\u201d in the notes = the box-score ratings alone. " : "") +
       "Win chance and fair price come from our spread alone (fees not included). Difference = how far our number is from the line, and which side it leans to. " + all.length + " games.</p></div>";
-    el.querySelectorAll('[data-seg="gf"],[data-seg="gs"]').forEach(function (b) { b.addEventListener("click", function () { state[b.getAttribute("data-seg")] = b.getAttribute("data-val"); render(); }); });
+    el.querySelectorAll('[data-seg="gf"],[data-seg="gs"],[data-seg="gv"]').forEach(function (b) { b.addEventListener("click", function () { var k = b.getAttribute("data-seg"); state[k] = b.getAttribute("data-val"); if (k === "gv") storeSet("gte.gv", state[k]); render(); }); });
     var cs = document.getElementById("gconf"); if (cs) cs.addEventListener("change", function () { state.gc = cs.value; render(); });
     var gq = document.getElementById("gq");
     gq.addEventListener("input", function () { state.gq = gq.value; var pos = gq.selectionStart; render(); var n = document.getElementById("gq"); n.focus(); try { n.setSelectionRange(pos, pos); } catch (e) {} });
@@ -4814,8 +5221,46 @@ body.on-home { overflow-anchor: none; }
     });
     el.innerHTML = '<span class="t">' + esc(wk) + "</span>" + parts.join("");
   }
+  // ---------- owner-only: visitors and conversions (Supabase admin_stats, which refuses anyone not in site_admins) ----------
+  var STATS = { days: 30, v: null, busy: false, err: "" };
+  function renderStats(el) {
+    if (!AUTH.admin || !SB) { el.innerHTML = '<div class="empty"><h2>Owner only</h2><p>Log in with the owner account to see site stats.</p></div>'; return; }
+    if (!STATS.v && !STATS.busy && !STATS.err) {
+      STATS.busy = true;
+      SB.rpc("admin_stats", { days: STATS.days }).then(function (r) { STATS.busy = false; if (r.error) STATS.err = r.error.message; else STATS.v = r.data; render(); }, function (e) { STATS.busy = false; STATS.err = String(e && e.message || e); render(); });
+    }
+    var v = STATS.v;
+    var head = '<div class="panel"><h3>Site stats <small>· last ' + STATS.days + ' days</small></h3><div class="seg st-days">' + [7, 30, 90].map(function (d) { return '<button type="button" data-days="' + d + '"' + (d === STATS.days ? ' class="on"' : "") + ">" + d + " days</button>"; }).join("") +
+      '</div><p class="note">Visitors who aren’t members. Counted without cookies or personal data; people with “Do Not Track” on aren’t counted, so real traffic is a little higher.</p>';
+    if (STATS.err) { el.innerHTML = head + '<p class="note"><b>Couldn’t load the numbers:</b> ' + esc(STATS.err) + ". Has supabase_stats.sql been run?</p></div>"; bindStats(el); return; }
+    if (!v) { el.innerHTML = head + '<p class="note">Loading…</p></div>'; bindStats(el); return; }
+    function tile(k, val, sub, cls) { return '<div class="st-t"><i>' + k + '</i><b class="' + (cls || "") + '">' + val + "</b><small>" + (sub || "") + "</small></div>"; }
+    function rate(a, b) { return b ? Math.round(100 * a / b) + "%" : "\u2014"; }
+    var funnel = '<div class="st-tiles">' +
+      tile("Visitors", v.visitors, (v.visits || 0) + " visits · " + (v.views || 0) + " page views") +
+      tile("Clicked “Start free trial”", v.checkout, rate(v.checkout, v.visitors) + " of visitors") +
+      tile("Accounts created", v.signups, (v.signup_open || 0) + " opened the sign-up form") +
+      tile("Trials started", v.trials, rate(v.trials, v.checkout) + " of trial clicks") +
+      tile("Trials \u2192 paying", v.converted, (v.canceled || 0) + " canceled", v.converted ? "up" : "") +
+      tile("Paying now", v.paying_now, (v.trialing_now || 0) + " in a free trial · " + (v.free_members || 0) + " free members") + "</div>";
+    var days = (v.by_day || []).slice(-31), mx = Math.max.apply(null, days.map(function (d) { return d.visitors; }).concat([1]));
+    var chart = days.length ? '<div class="st-bars">' + days.map(function (d) { return '<div class="st-b" title="' + esc(d.day) + ": " + d.visitors + " visitors, " + d.views + " views, " + d.checkout + ' trial clicks"><i style="height:' + Math.max(3, Math.round(100 * d.visitors / mx)) + '%"></i>' + (d.checkout ? "<em></em>" : "") + "</div>"; }).join("") + '</div><p class="note">Visitors per day (orange dot = someone clicked the free-trial button that day).</p>' : "";
+    function tbl(title, rows, cols) {
+      return '<div class="panel"><h3>' + title + '</h3>' + (rows && rows.length ? '<div class="scroll"><table class="st-tbl"><thead><tr>' + cols.map(function (c) { return "<th" + (c[2] ? ' class="ra"' : "") + ">" + c[0] + "</th>"; }).join("") + "</tr></thead><tbody>" +
+        rows.map(function (r) { return "<tr>" + cols.map(function (c) { return "<td" + (c[2] ? ' class="ra tnum"' : "") + ">" + esc(r[c[1]] == null ? "" : r[c[1]]) + "</td>"; }).join("") + "</tr>"; }).join("") + "</tbody></table></div>" : '<p class="note">Nothing yet.</p>') + "</div>";
+    }
+    el.innerHTML = '<div class="cards">' + head + funnel + chart + "</div>" +
+      '<div class="cards two-up">' + tbl("Where visitors came from", v.sources, [["Source", "src"], ["Visitors", "visitors", 1], ["Trial clicks", "checkout", 1]]) +
+      tbl("Most viewed pages", v.pages, [["Page", "page"], ["Sport", "sport"], ["Views", "views", 1]]) + "</div>" +
+      '<p class="note">Tip: links you post use <b>?utm_source=</b> so they show up here by name (the X posts already do; set your Instagram bio link to gaintheedge.io/?utm_source=instagram).</p></div>';
+    bindStats(el);
+  }
+  function bindStats(el) {
+    el.querySelectorAll("[data-days]").forEach(function (b) { b.addEventListener("click", function () { STATS.days = +b.getAttribute("data-days"); STATS.v = null; STATS.err = ""; render(); }); });
+  }
   function render() {
     renderMain();
+    trkView();
     var el = document.getElementById("view");
     if (!state.home && (state.view === "week" || state.view === "picks") && state.data && state.data.unlocked && !isMember() && !el.querySelector(".pastb")) {
       el.insertAdjacentHTML("afterbegin", pastBanner()); bindLock(el.querySelector(".pastb"));
@@ -4829,6 +5274,7 @@ body.on-home { overflow-anchor: none; }
     document.querySelectorAll("[role=tab]").forEach(function (t) { t.setAttribute("aria-selected", String(t.getAttribute("data-view") === state.view)); });
     el.setAttribute("aria-labelledby", "tab-" + state.view);
     if (state.view === "mybets") { renderMyBets(el); return; }
+    if (state.view === "stats") { renderStats(el); return; }
     if (state.view === "bank") { renderBank(el); return; }
     if (!state.data && state.load === "loading") {
       var sk = '<div class="sk"><i style="width:40%"></i><i style="width:85%;height:28px"></i><i style="width:85%;height:28px"></i><i style="height:70px"></i><i style="width:70%"></i></div>';
@@ -4857,9 +5303,12 @@ body.on-home { overflow-anchor: none; }
   unitInput.addEventListener("change", function () { var v = parseFloat(unitInput.value); if (v > 0) { state.unit = v; storeSet("gte.unit", String(v)); } else unitInput.value = unitDollars(); render(); });
   setInterval(function () { if (state.data && !document.hidden && !document.querySelector("details[open]")) render(); }, 60000);
   document.getElementById("view").addEventListener("click", function (e) {
+    var fb = e.target.closest && e.target.closest("[data-free]");
+    if (fb) { e.preventDefault(); e.stopPropagation(); if (!fb.disabled) freeChoose(fb.getAttribute("data-free")); return; }
     var tb = e.target.closest && e.target.closest("[data-track]");
     if (tb) { e.preventDefault(); e.stopPropagation(); var sp = trackSpec(tb.getAttribute("data-track")); if (sp) openTrack(sp); return; }
     var b = e.target.closest && e.target.closest("[data-share],[data-share-nba]"); if (!b || !state.data) return;
+    trk("share", state.view);
     e.preventDefault(); e.stopPropagation();
     if (b.hasAttribute("data-share")) {
       var id = b.getAttribute("data-share"), x = (state.data.bets || []).filter(function (y) { return String(y.id) === id; })[0];
@@ -5166,7 +5615,7 @@ body.on-home { overflow-anchor: none; }
   function setSport(sp) {
     state.sport = sp; state.tpage = null;
     ["cfb", "nfl", "nba", "cbb"].forEach(function (k) { document.body.classList.toggle("lg-" + k, k === sp); });
-    var ft = document.getElementById("foot"); if (ft && FOOT[sp]) ft.textContent = FOOT[sp];
+    var ft = document.getElementById("foot"); if (ft && FOOT[sp]) { ft.textContent = FOOT[sp] + " 21+. If gambling stops being fun, call 1-800-GAMBLER."; ft.insertAdjacentHTML("beforeend", legalLinks()); }
     document.querySelectorAll("[data-sport]").forEach(function (x) { x.setAttribute("aria-pressed", String(x.getAttribute("data-sport") === sp)); });
     var nba = sp === "nba", daily = nba;          // college basketball is daily but uses the full card pages
     document.getElementById("tabWeekLbl").textContent = nba ? "Board" : "Picks";
@@ -5357,7 +5806,7 @@ body.on-home { overflow-anchor: none; }
       "<li>Every past card in full, once its games are done</li><li>The full record of every bet, week by week</li><li>Team rankings for every sport</li><li>How each setup is rated, with its backtest</li>" +
       "</ul></div></div></section>" +
       '<section class="hm-final"><div><h2>Bet with a tested edge</h2><p>Expect 55–58% over hundreds of bets, not 70% in a week. That’s where the best bettors live.</p></div>' + homeCta("end") + "</section>" +
-      '<p class="hm-foot">Past results don’t promise future ones. Backtests use the lines that were available at the time. Bets grade at −110 unless a price is shown. For entertainment and research, not financial advice. 21+. If gambling stops being fun, call 1-800-GAMBLER.</p>' +
+      '<p class="hm-foot">Past results don’t promise future ones. Backtests use the lines that were available at the time. Bets grade at −110 unless a price is shown. For entertainment and research, not financial advice. 21+. If gambling stops being fun, call 1-800-GAMBLER.' + legalLinks() + "</p>" +
       "</div>";
     bindLock(el);
   }
@@ -5388,6 +5837,7 @@ body.on-home { overflow-anchor: none; }
 
   boot();
   afterCheckout();
+  if (/^#(terms|privacy|refunds|contact)$/.test(location.hash)) setTimeout(function () { openLegal(location.hash.slice(1)); }, 0);
   if (location.hash === "#home") showHome(true);
   else if (!location.hash && storeGet("gte.member") !== "1") showHome(true, true);
 })();
