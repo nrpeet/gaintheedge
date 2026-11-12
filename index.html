@@ -1076,6 +1076,51 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
 .bk.dk { background: #2e9b3e; } .bk.circa { background: #2f5bd3; }
 .spl-book { display: flex; align-items: center; gap: 6px; margin-top: 10px; } .spl-book small { color: var(--ink-2); font-size: 11.5px; }
 .spl-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 8px 24px; }
+
+.spl-chip.warn, .spl-dot.warn { color: #ff9f43; background: rgba(255, 159, 67, .14); }
+.spl-chip small { font-weight: 700; opacity: .8; margin-left: 4px; }
+.spl-warn { font-size: 13px; background: rgba(255, 159, 67, .12); color: var(--ink); border-radius: 10px; padding: 8px 10px; margin: 4px 0 6px; }
+.gl-sharp { margin-top: 5px; display: flex; flex-wrap: wrap; gap: 4px; }
+.gl-sharp .spl-chip { font-size: 11px; white-space: nowrap; }
+.spl-track { font-size: 12.5px; color: var(--ink-2); margin: 10px 0 0; }
+
+/* NBA game page v3 (Nov 12 2026) */
+body.on-game .hero { display: none; }
+.gp-sum { position: sticky; top: var(--barH, 56px); z-index: 15; display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 10px 14px; margin: 8px 0 14px; }
+.gp-sum .gs-l { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.gp-sum .gs-t { display: inline-flex; align-items: center; gap: 6px; font-size: 18px; }
+.gp-sum .gs-t em { font-style: normal; font-weight: 800; margin-left: 2px; }
+.gp-sum .gs-at { color: var(--ink-3); }
+.gp-sum .gs-l small { color: var(--ink-2); font-size: 12px; margin-left: 6px; }
+.gp-sum .gs-r { display: flex; gap: 18px; }
+.gp-sum .gs-n { display: flex; flex-direction: column; align-items: flex-end; }
+.gp-sum .gs-n i { font-style: normal; font-size: 11px; color: var(--ink-3); }
+.gp-sum .gs-n b { font-size: 15px; white-space: nowrap; }
+.gp-sum .gs-n b small { color: var(--ink-3); font-weight: 600; }
+.gp-sum .gs-n.hot b { color: var(--accent); }
+.gp3 { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; align-items: start; }
+.gp3 .panel { margin-bottom: 14px; }
+.gp3 { grid-template-areas: "v" "r" "m"; } .gp-v { grid-area: v; } .gp-rail { grid-area: r; } .gp-main { grid-area: m; }
+@media (min-width: 1000px) { .gp3 { grid-template-columns: minmax(0, 1fr) 330px; grid-template-rows: auto 1fr; grid-template-areas: "v r" "m r"; row-gap: 0; } .gp-rail { position: sticky; top: calc(var(--barH, 56px) + 78px); align-self: start; } }
+@media (max-width: 999px) { .gp-rail .rl-sharp { display: none; } .gp3 { gap: 0; } }
+.gp-verdict { border: 1.5px solid color-mix(in srgb, #2fbf71 55%, var(--line)); }
+.gp-verdict p { font-size: 15.5px; line-height: 1.6; margin: 0; }
+.vd-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.vd-chip.gap { font-size: 12px; font-weight: 700; padding: 3px 9px; border-radius: 999px; color: var(--accent); background: color-mix(in srgb, var(--accent) 14%, transparent); }
+.gp-more { margin-top: 10px; }
+.gp-more > summary { cursor: pointer; color: var(--ink-2); font-weight: 700; font-size: 13px; padding: 6px 0; }
+.gp-tabs { display: flex; gap: 6px; overflow-x: auto; margin: 4px 0 12px; padding-bottom: 2px; scroll-margin-top: calc(var(--barH, 56px) + 80px); }
+.gp-tabs button { flex: none; font: inherit; font-size: 13.5px; font-weight: 700; padding: 8px 14px; border-radius: 999px; border: 1px solid var(--line); background: transparent; color: var(--ink-2); cursor: pointer; }
+.gp-tabs button[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.gp-rail .pickbar small { display: none; }
+.gp-rail .pickbar { margin: 0 0 8px; }
+.gp-rail .pickbar:last-child { margin-bottom: 0; }
+.gp-rail .nb { margin: 0 0 8px; }
+.gp-rail .nb > div { grid-template-columns: 62px minmax(0, 1fr) minmax(0, 1fr) 64px; }
+.gp-rail .nb > div > * { padding: 6px 5px; font-size: 13px; }
+.gp-rail .nb .lb, .gp-rail .nb .hd > * { letter-spacing: 0; font-size: 10px; }
+.linkish { font: inherit; font-size: 13px; font-weight: 700; color: var(--accent); background: none; border: 0; padding: 8px 0 0; cursor: pointer; }
+@media (max-width: 640px) { .gp-sum { position: static; padding: 8px 10px; } .gp-sum .gs-r { gap: 12px; width: 100%; justify-content: space-between; } .gp-sum .gs-t { font-size: 16px; } }
 /* Games tab v2 (Nov 12 2026) */
 .gt.v2 { padding: 14px; gap: 10px; }
 .gt.v2 .gt-top { padding: 0; }
@@ -3399,7 +3444,7 @@ body.on-home { overflow-anchor: none; }
     var flag = nbaFlag(g);
     return '<article class="mc' + (isFavGame(g) ? " favd" : "") + '">' +
       '<div class="mc-top"><span class="mkt">' + esc(nbaStatus(g)) + "</span><span>" + luBadge(g) + (flag ? ' <span class="badge">Big gap</span>' : "") + "</span></div>" +
-      '<div class="teams">' + nbaTeamRow(g, "away", nbaScore(g)) + nbaTeamRow(g, "home", nbaScore(g)) + "</div>" + resultLine(g) + angleBar(g) + comboBar(g) + vkBar(g) + mkBar(g) + changeChip(g) +
+      '<div class="teams">' + nbaTeamRow(g, "away", nbaScore(g)) + nbaTeamRow(g, "home", nbaScore(g)) + "</div>" + resultLine(g) + (function () { var m = sharpMini(g.away_abbr, g.home_abbr, g.away_abbr, g.home_abbr); return m ? '<div class="spl-pick">' + m + "</div>" : ""; })() + angleBar(g) + comboBar(g) + vkBar(g) + mkBar(g) + changeChip(g) +
       curveSVG(g) + rangeLine(g) + linesTable(g) + moveNote(g) + gapHint(g) + whyBlock(g) +
       '<div class="openrow"><a class="open" href="' + gameHref(g) + '">Full game page<span aria-hidden="true">›</span></a>' + trackBtn("nba:" + g.id) + '<button type="button" class="sharebtn" data-share-nba="' + esc(g.id) + '" aria-label="Share this game as an image">' + SHARE_ICO + "Share</button></div>" +
       '<details><summary>Preview \u00b7 the game in a few sentences</summary><div class="why">' + nbaPreview(g) + "</div></details>" +
@@ -3455,7 +3500,7 @@ body.on-home { overflow-anchor: none; }
         var s = nbaScore(g), score = s && (s.status === "live" || s.status === "final") ? " <small>" + s.away + "–" + s.home + "</small>" : "";
         if (s && s.status === "final") score += " " + closerTag(closerOf(+s.home - +s.away, g.our_spread, g.mkt_spread));
         var hotS = g.spread_gap != null && Math.abs(g.spread_gap) >= 3, hotT = g.total_gap != null && Math.abs(g.total_gap) >= 4;
-        return '<tr data-go="' + gameHref(g) + '" tabindex="0"><td>' + esc(nbaStatus(g)) + "</td><td><b>" + esc(g.away_abbr) + "</b> @ <b>" + esc(g.home_abbr) + "</b>" + (isFavGame(g) ? ' <span class="favd-dot">★</span>' : "") + score + (g.changes && g.changes.length ? ' <span class="badge">new</span>' : "") + "</td>" +
+        return '<tr data-go="' + gameHref(g) + '" tabindex="0"><td>' + esc(nbaStatus(g)) + "</td><td><b>" + esc(g.away_abbr) + "</b> @ <b>" + esc(g.home_abbr) + "</b>" + (isFavGame(g) ? ' <span class="favd-dot">★</span>' : "") + score + (g.changes && g.changes.length ? ' <span class="badge">new</span>' : "") + (function () { var m = sharpMini(g.away_abbr, g.home_abbr, g.away_abbr, g.home_abbr); return m ? '<div class="gl-sharp">' + m + "</div>" : ""; })() + "</td>" +
           '<td class="ra"><b>' + esc(favTxt(g, g.our_spread)) + '</b></td><td class="ra">' + esc(favTxt(g, g.mkt_spread)) + '</td><td class="ra' + (hotS ? " acc2" : "") + '">' + gapCell(g) + "</td>" +
           '<td class="ra"><b>' + (g.our_total == null ? "" : g.our_total.toFixed(1)) + '</b></td><td class="ra' + (hotT ? " acc2" : "") + '">' + (g.mkt_total == null ? "—" : g.mkt_total.toFixed(1)) + '</td><td class="ra">' + esc(g.home_abbr) + " " + Math.round(g.our_home_win * 100) + "%</td></tr>";
       }).join("") + "</tbody></table></div></div>";
@@ -3597,12 +3642,14 @@ body.on-home { overflow-anchor: none; }
     var lead = hw === aw ? "Series tied " + hw + "–" + aw : (hw > aw ? shortName(home) : shortName(away)) + " lead " + Math.max(hw, aw) + "–" + Math.min(hw, aw);
     var avg = mg / h.rows.length;
     return hd + '<div class="mu-sum"><b>' + esc(lead) + "</b><span>" + h.rows.length + " meeting" + (h.rows.length === 1 ? "" : "s") + " · average margin " + esc(shortName(avg >= 0 ? home : away)) + " +" + Math.abs(avg).toFixed(1) + "</span></div>" +
-      '<div class="scroll"><table class="mu-tbl"><thead><tr><th>Date</th><th>Where</th><th>Final</th><th>Winner</th></tr></thead><tbody>' +
-      h.rows.map(function (r) {
+      (function () { var tr = function (r) {
         var d = new Date(r.date), w = r.us > r.them ? home : away, where = r.at === "neutral" ? "Neutral" : r.at === "home" ? "at " + shortName(home) : "at " + shortName(away);
         return "<tr><td>" + esc(d.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" })) + (r.post ? ' <small class="mu-post">' + esc(/play|post|tourn/i.test(r.name) ? r.name : "Postseason") + "</small>" : "") +
-          "</td><td>" + esc(where) + '</td><td class="tnum">' + esc(shortName(away)) + " " + r.them + " – " + r.us + " " + esc(shortName(home)) + "</td><td>" + (r.us === r.them ? "Tie" : '<span class="mu-w">' + badge(w, isNBA() || state.sport === "nfl" ? w : null, "sm") + " " + esc(shortName(w)) + " by " + Math.abs(r.us - r.them) + "</span>") + "</td></tr>";
-      }).join("") + '</tbody></table></div><p class="note">History, not a pick: head-to-head records didn’t beat the closing line in our tests.</p></div>';
+          "</td><td>" + esc(where) + '</td><td class="tnum">' + esc(shortName(away)) + " " + r.them + " – " + r.us + " " + esc(shortName(home)) + "</td><td>" + (r.us === r.them ? "Tie" : '<span class="mu-w">' + badge(w, isNBA() || state.sport === "nfl" ? w : null, "sm") + " " + esc(shortName(w)) + " by " + Math.abs(r.us - r.them) + "</span>") + "</td></tr>"; };
+        var th = '<div class="scroll"><table class="mu-tbl"><thead><tr><th>Date</th><th>Where</th><th>Final</th><th>Winner</th></tr></thead><tbody>';
+        return th + h.rows.slice(0, 5).map(tr).join("") + "</tbody></table></div>" +
+          (h.rows.length > 5 ? '<details class="gp-more"><summary>Show all ' + h.rows.length + " meetings</summary>" + th + h.rows.slice(5).map(tr).join("") + "</tbody></table></div></details>" : "");
+      })() + '<p class="note">History, not a pick: head-to-head records didn’t beat the closing line in our tests.</p></div>';
   }
   // ---- injuries for one game (ESPN's game summary), by team id -> {name lowercased: status}
   function injLoad(eid) {
@@ -4020,7 +4067,7 @@ body.on-home { overflow-anchor: none; }
     });
     return out;
   }
-  function edgesHtml(away, home) {
+  function edgesHtml(away, home, part) {
     var R = edgeRows(away, home), M = muPairs(away, home);
     if (!R.length && !M.length) return "";
     var nfl = state.sport === "nfl" || isNBA(), ca = 0, ch = 0;
@@ -4035,6 +4082,32 @@ body.on-home { overflow-anchor: none; }
     }).join("");
     var nm = function (t) { return esc(isNBA() ? t : shortName(t)); };
     var best = M.filter(function (m) { return m.edge && m.real; }).sort(function (a, b) { return b.gap - a.gap; })[0];
+    var mList = M.map(function (m, i) { return { m: m, i: i, k: m.edge && m.real ? m.gap : -1 }; }).sort(function (a, b) { return b.k - a.k || a.i - b.i; });
+    var top3 = mList.slice(0, 3).map(function (x) { return x.m; }), rest = mList.slice(3).map(function (x) { return x.m; });
+    var mrow = function (m) {
+        var awayAtt = m.oT === away, lv = awayAtt ? m.oR : m.dR, rv = awayAtt ? m.dR : m.oR;
+        var e = m.edge && m.real ? (m.edge === away ? -1 : 1) : 0, w = Math.max(3, Math.min(50, 50 * m.gap / (m.n / 1.5)));
+        var bar = e ? '<span class="eg-bar ' + (e < 0 ? "l" : "r") + '" style="width:' + w.toFixed(0) + '%"></span>' : "";
+        return '<div class="eg-row mxe-row" title="' + esc(nm(m.oT) + " offense #" + m.oR + " vs " + nm(m.dT) + " defense #" + m.dR + " (of " + m.n + ", 1 = best)") + '">' +
+          '<span class="eg-v' + (e < 0 ? " b" : "") + '">#' + lv + "<small>" + (awayAtt ? "off" : "def") + "</small></span>" +
+          '<span class="eg-mid"><i>' + esc(m.l) + "<small>" + nm(m.oT) + " offense vs " + nm(m.dT) + " defense</small></i><span class=\"eg-track\">" + bar + "</span></span>" +
+          '<span class="eg-v r' + (e > 0 ? " b" : "") + '"><small>' + (awayAtt ? "def" : "off") + "</small>#" + rv + "</span></div>";
+    };
+    if (part === "mu") {
+      if (!M.length) return '<div class="panel"><h3>Matchups</h3><p class="note">Style numbers for these teams aren\u2019t in yet.</p></div>';
+      return '<div class="panel mu-edges"><h3>Matchups <small>\u00b7 one team\u2019s strength vs the other\u2019s weakness</small></h3>' +
+        (best ? '<p class="mu-best"><b>Biggest mismatch:</b> ' + esc(best.l.toLowerCase()) + ", " + nm(best.oT) + " #" + best.oR + " vs " + nm(best.dT) + " #" + best.dR + " (of " + best.n + "), edge " + nm(best.edge) + ".</p>" : '<p class="note">No big mismatches in this game.</p>') +
+        '<div class="eg-head"><span>' + badge(away, nfl ? away : null, "sm") + " " + esc(shortName(away)) + "</span><span>" + esc(shortName(home)) + " " + badge(home, nfl ? home : null, "sm") + "</span></div>" +
+        '<div class="eg-sub">The 3 biggest <small>(ranks this season, 1 = best)</small></div>' + top3.map(mrow).join("") +
+        (rest.length ? '<details class="gp-more"><summary>Show all ' + M.length + " matchups</summary>" + rest.map(mrow).join("") + "</details>" : "") + (isCBB() ? talentBars(away, home) : "") +
+        '<p class="note">Vegas prices much of this already. We\u2019re testing which mismatches still beat the line; those will get a \u2605.</p></div>';
+    }
+    if (part === "edge") {
+      return '<div class="panel mu-edges"><h3>Who has the edge</h3>' + edgePointsHtml(away, home) +
+        '<div class="eg-sub">The numbers behind it <small>(\u2605 = moves the line most; the bar shows who\u2019s better and by how much)</small></div>' +
+        '<div class="eg-head"><span>' + badge(away, nfl ? away : null, "sm") + " " + esc(shortName(away)) + "</span><span>" + esc(shortName(home)) + " " + badge(home, nfl ? home : null, "sm") + "</span></div>" + rows +
+        luckRow(away, home) + '<p class="note">' + (isNBA() || isCBB() ? "Luck and recent form are shown because they mislead: lucky records and hot streaks tend to fade. " : "") + "The points breakdown at the top is our model\u2019s actual math.</p></div>";
+    }
     var mrows = (best ? '<p class="mu-best"><b>Biggest mismatch:</b> ' + esc(best.l.toLowerCase()) + ", " + nm(best.oT) + " #" + best.oR + " vs " + nm(best.dT) + " #" + best.dR + " (of " + best.n + "), edge " + nm(best.edge) + ".</p>" : "") +
       M.map(function (m) {
         var awayAtt = m.oT === away, lv = awayAtt ? m.oR : m.dR, rv = awayAtt ? m.dR : m.oR;
@@ -4143,17 +4216,72 @@ body.on-home { overflow-anchor: none; }
       (isFootball() && historyFor(m.away, m.home) ? '<div class="panel" style="margin-top:16px">' + historyHtml(historyFor(m.away, m.home)) + "</div>" : "");
     el.querySelector(".mu-back").addEventListener("click", function () { state.view = state.muFrom || "week"; state.mu = null; render(); });
   }
+  // ---- NBA game page (v3, Nov 12 2026): one summary bar, the verdict first, five tabs, and a side rail with our bets, lines and sharp money
+  var GTABS = [["edge", "Who has the edge"], ["mu", "Matchups"], ["lineups", "Lineups"], ["market", "Market"], ["history", "History"]];
+  function gpTabs() {
+    var cur = state.gtab || "edge";
+    return '<div class="gp-tabs" role="group" aria-label="Sections">' + GTABS.map(function (t) { return '<button type="button" data-gtab="' + t[0] + '" aria-pressed="' + (t[0] === cur) + '">' + t[1] + "</button>"; }).join("") + "</div>";
+  }
+  function gpSum(g) {
+    var s = nbaScore(g), live = s && (s.status === "live" || s.status === "final");
+    function tm(ab, sc) { return '<span class="gs-t">' + badge(ab, ab, "sm", tc(ab, ab)) + "<b>" + esc(ab) + "</b>" + (live ? "<em>" + sc + "</em>" : "") + "</span>"; }
+    function n(l, v, cls) { return '<span class="gs-n' + (cls ? " " + cls : "") + '"><i>' + l + "</i><b>" + v + "</b></span>"; }
+    var hot = g.spread_gap != null && Math.abs(g.spread_gap) >= 3;
+    return '<div class="gp-sum"><div class="gs-l">' + tm(g.away_abbr, s && s.away) + '<span class="gs-at">@</span>' + tm(g.home_abbr, s && s.home) + '<small>' + esc(nbaStatus(g)) + "</small></div>" +
+      '<div class="gs-r">' + n("Ours", esc(favTxt(g, g.our_spread))) + n("Vegas", esc(favTxt(g, g.mkt_spread))) + n("Gap", gapCell(g), hot ? "hot" : "") +
+      n("Total", (g.our_total == null ? "—" : g.our_total.toFixed(1)) + ' <small>/ ' + (g.mkt_total == null ? "—" : g.mkt_total.toFixed(1)) + "</small>") + "</div></div>";
+  }
+  function nbaVerdict(g) {
+    var H = g.home_abbr, A = g.away_abbr, sg = g.spread_gap, out = [];
+    if (g.our_spread != null && g.mkt_spread != null) {
+      var t = "We have " + favTxt(g, g.our_spread) + ", Vegas has " + favTxt(g, g.mkt_spread) + ". ";
+      if (sg != null && Math.abs(sg) >= 3) t += "That’s a big gap: Vegas leans " + Math.abs(sg).toFixed(1) + " points more to " + (sg > 0 ? H : A) + " than we do.";
+      else if (sg != null && Math.abs(sg) >= 1.5) t += "Vegas leans a little more to " + (sg > 0 ? H : A) + " (" + Math.abs(sg).toFixed(1) + " pts).";
+      else t += "We’re right in line with Vegas.";
+      out.push(esc(t));
+    }
+    var C = ((g.why && (g.why.comps || g.why.parts)) || []).filter(function (c) { return c.v && Math.abs(c.v) >= 0.5; }).sort(function (a, b) { return Math.abs(b.v) - Math.abs(a.v); }).slice(0, 2);
+    if (C.length) out.push("What drives our number: " + C.map(function (c) { return esc(String(c.label).replace(/\s*\(.*\)$/, "").toLowerCase()) + " (" + esc(c.v > 0 ? H : A) + " +" + Math.abs(c.v).toFixed(1) + ")"; }).join(" and ") + ".");
+    var outs = []; [[A, g.away_out], [H, g.home_out]].forEach(function (x) { (x[1] || []).slice(0, 2).forEach(function (p) { var nm = typeof p === "string" ? p : p && (p.name || p.player); if (nm) outs.push(nbaShort(nm) + " (" + x[0] + ")"); }); });
+    if (outs.length) out.push("Out tonight: " + esc(outs.join(", ")) + ".");
+    var bets = [g.angle && g.angle.pick, g.vk && g.vk.pick, g.mk && g.mk.pick, g.combo && !g.combo.paper && g.combo.pick].filter(Boolean);
+    out.push(bets.length ? "Our bet" + (bets.length > 1 ? "s" : "") + ": <b>" + esc(bets.join(" · ")) + "</b>." : "No bet on this game; it’s here to analyze.");
+    var chips = (nbaFlag(g) ? '<span class="vd-chip gap">Big gap</span>' : "") + sharpMini(A, H, A, H);
+    return '<div class="panel gp-verdict"><h3>The verdict</h3><p>' + out.join(" ") + "</p>" + (chips ? '<div class="vd-chips">' + chips + "</div>" : "") +
+      (nbaPreview(g) ? '<details class="gp-more"><summary>Game preview</summary>' + nbaPreview(g) + "</details>" : "") + "</div>";
+  }
+  function gpRail(g) {
+    var bets = angleBar(g) + vkBar(g) + mkBar(g) + comboBar(g), sm = sharpMini(g.away_abbr, g.home_abbr, g.away_abbr, g.home_abbr);
+    return '<aside class="gp-rail">' +
+      '<div class="panel rl-bets"><h3>Our bets</h3>' + (bets || '<p class="note">No bet on this game.</p>') + "</div>" +
+      '<div class="panel"><h3>Lines</h3>' + linesTable(g) + moreLines(g) + resultLine(g) + "</div>" +
+      '<div class="panel rl-sharp"><h3>Sharp money</h3>' + (sm ? '<div class="vd-chips">' + sm + "</div>" : '<p class="note">No splits posted for this game yet.</p>') +
+      '<button type="button" class="linkish" data-gtab="market">Full splits ›</button></div></aside>';
+  }
+  function gpTab(g) {
+    var A = g.away_abbr, H = g.home_abbr, t = state.gtab || "edge", ids = idsReady(A, H, { away: A, home: H, eid: g.id }) === true;
+    if (t === "mu") return edgesHtml(A, H, "mu");
+    if (t === "lineups") return nbaCourtPanel(g) + '<div class="panel"><h3>Who plays</h3><p class="note">' + VALUE_NOTE + '</p><div class="rot two-col">' + rotList(g.away_players, g.away_out, A, g.away_lineup) + rotList(g.home_players, g.home_out, H, g.home_lineup) + "</div></div>";
+    if (t === "market") {
+      var mk = mktSeries(g, "s"), moved = mk.length > 1 && Math.max.apply(null, mk.map(function (p) { return p.v; })) - Math.min.apply(null, mk.map(function (p) { return p.v; })) >= 0.5;
+      return (splitsPanel(A, H, A, H) || '<div class="panel"><h3>Betting splits &amp; handle</h3><p class="note">No splits posted for this game yet. They post around 3 PM PT.</p></div>') +
+        '<div class="panel"><h3>Line movement today</h3>' + (moved || state.mvk === "tot" ? moveChart(g) : '<p class="note">The spread hasn’t really moved today (' + esc(favTxt(g, g.mkt_spread)) + "). " + '<button type="button" class="linkish" data-mvk="tot">See the total</button></p>') +
+        ((g.changes || []).length ? '<div class="eg-sub">What changed</div>' + changeChip(g, true) : "") + "</div>";
+    }
+    if (t === "history") return (ids ? formHtml(A, H) : "") + (ids ? h2hHtml(A, H, muGet("h2h|nba|" + A + "|" + H, function () { return h2hLoad(A, H); })) : h2hHtml(A, H, null));
+    var ep = edgesHtml(A, H, "edge");
+    return (/ep-/.test(ep) ? "" : '<div class="panel"><h3>Why our line</h3>' + whyBlock(g) + "</div>") + ep +
+      '<div class="panel"><h3>10,000 simulated finishes</h3>' + curveSVG(g, 560) + rangeLine(g) + gapHint(g) + "</div>";
+  }
   function renderNbaGame(el, g) {
-    el.innerHTML = '<a class="back" href="#nba">‹ All games</a>' +
-      '<div class="gp-head"><div class="teams big">' + nbaTeamRow(g, "away", nbaScore(g)) + nbaTeamRow(g, "home", nbaScore(g)) + '</div><div class="mkt">' + esc(nbaStatus(g)) + (nbaFlag(g) ? ' · <span class="badge">Big gap</span>' : "") + "</div></div>" +
-      angleBar(g) + (nbaPreview(g) ? '<div class="panel gp-prev"><h3>Preview</h3>' + nbaPreview(g) + "</div>" : "") + '<div class="two"><div class="panel"><h3>10,000 simulated finishes</h3>' + curveSVG(g, 560) + rangeLine(g) + linesTable(g) + gapHint(g) + resultLine(g) + moreLines(g) + "</div>" +
-      '<div class="panel"><h3>Why our line</h3>' + whyBlock(g) + "</div></div>" +
-      '<div class="two" style="margin-top:16px"><div class="panel"><h3>Line movement today</h3>' + moveChart(g) + "</div>" +
-      '<div class="panel"><h3>What changed</h3>' + ((g.changes || []).length ? changeChip(g, true) : '<p class="note">No changes since the first update today.</p>') + "</div></div>" +
-      '<div class="panel" style="margin-top:16px"><h3>Who plays</h3><p class="note">' + VALUE_NOTE + '</p><div class="rot two-col">' + rotList(g.away_players, g.away_out, g.away_abbr, g.away_lineup) + rotList(g.home_players, g.home_out, g.home_abbr, g.home_lineup) + "</div></div>" +
-      nbaCourtPanel(g) + splitsPanel(g.away_abbr, g.home_abbr, g.away_abbr, g.home_abbr) + edgesHtml(g.away_abbr, g.home_abbr) + (idsReady(g.away_abbr, g.home_abbr, { away: g.away_abbr, home: g.home_abbr, eid: g.id }) === true ? formHtml(g.away_abbr, g.home_abbr) : "") + (idsReady(g.away_abbr, g.home_abbr, { away: g.away_abbr, home: g.home_abbr, eid: g.id }) === true ? h2hHtml(g.away_abbr, g.home_abbr, muGet("h2h|nba|" + g.away_abbr + "|" + g.home_abbr, function () { return h2hLoad(g.away_abbr, g.home_abbr); })) : h2hHtml(g.away_abbr, g.home_abbr, null));
+    if (lastGame !== g.id) state.gtab = "edge";
+    document.body.classList.add("on-game");
+    el.innerHTML = '<a class="back" href="#nba">‹ All games</a>' + gpSum(g) +
+      '<div class="gp3"><div class="gp-v">' + nbaVerdict(g) + "</div>" + gpRail(g) + '<div class="gp-main">' + gpTabs() + '<div class="gp-tab">' + gpTab(g) + "</div></div></div>";
     bindCommon(el);
     el.querySelectorAll("[data-mvk]").forEach(function (b) { b.addEventListener("click", function () { state.mvk = b.getAttribute("data-mvk"); render(); }); });
+    el.querySelectorAll("[data-gtab]").forEach(function (b) { b.addEventListener("click", function () { state.gtab = b.getAttribute("data-gtab"); render(); var tb = el.querySelector(".gp-tabs"); if (tb && tb.getBoundingClientRect().top < 0) tb.scrollIntoView({ block: "start" }); }); });
+    var bar = document.querySelector(".bar"); if (bar) document.documentElement.style.setProperty("--barH", bar.offsetHeight + "px");
     if (lastGame !== g.id) { lastGame = g.id; window.scrollTo(0, 0); }
   }
   var NBA_TSORT = [["net", "Now"], ["off", "Offense"], ["def", "Defense"], ["healthy", "Healthy"], ["missing_pts", "Missing"]];
@@ -4871,8 +4999,19 @@ body.on-home { overflow-anchor: none; }
   function splNorm(t) {                     // forgiving team-name match: "San José St" = "San Jose State", "Texas A&M" = "Texas AM"
     return String(t || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/&/g, "and").replace(/\bstate\b/g, "st").replace(/[^a-z0-9]/g, "");
   }
+  function splitsAll() {                    // data/splits.json: every sport's latest splits, posted on their own (no model re-run)
+    if (!state.splitsReq && SB && isMember()) {
+      state.splitsReq = 1;
+      getData("data/splits.json").then(function (j) { if (j && typeof j === "object") { state.splitsAll = j; render(); } }).catch(function () {});
+    }
+    var A = state.splitsAll && state.splitsAll[state.sport];
+    return A && typeof A === "object" ? A : {};
+  }
   function splitsOf(away, home) {
-    var S = (state.data || {}).splits || {}; if (S[away + " @ " + home]) return S[away + " @ " + home];
+    var S = {}, A = splitsAll(), D = (state.data || {}).splits || {}, k;
+    for (k in D) S[k] = D[k];
+    for (k in A) S[k] = A[k];                // the splits file is posted after the screenshot lands, so it's the newest
+    if (S[away + " @ " + home]) return S[away + " @ " + home];
     var a = splNorm(away), h = splNorm(home), sa = splNorm(shortName(away)), sh = splNorm(shortName(home));
     for (var k in S) {
       var p = k.split(" @ "); if (p.length !== 2) continue;
@@ -4911,6 +5050,7 @@ body.on-home { overflow-anchor: none; }
   function splitChip(S, mkt, side) {
     var L = splitBooks(S).map(function (x) { return [x[0], splitLabel(x[1], mkt, side)]; }).filter(function (x) { return x[1]; });
     if (!L.length) return "";
+    if (splitConflict(S, mkt)) return '<span class="spl-chip warn">\u26a0 Books disagree</span>' + L.map(function (x) { return '<span class="spl-chip ' + x[1].cls + '">' + bookTag(x[0]) + esc(x[1].txt) + "</span>"; }).join("");
     if (L.length === 2 && L[0][1].cls === L[1][1].cls) return '<span class="spl-chip ' + L[0][1].cls + '" title="' + esc(L[0][1].tip) + '">' + esc(L[0][1].txt) + " \u00b7 DK + Circa</span>";
     return L.map(function (x) { return '<span class="spl-chip ' + x[1].cls + '" title="' + esc(x[1].tip) + '">' + bookTag(x[0]) + esc(x[1].txt) + "</span>"; }).join("");
   }
@@ -4932,14 +5072,15 @@ body.on-home { overflow-anchor: none; }
     var B = splitBooks(S), dots = [], body = "";
     B.forEach(function (x) {
       var b = x[0], R = x[1], rs = splitRead(R, "spread"), rt = splitRead(R, "total"), notes = [];
-      if (rs && rs.sharp) dots.push('<span class="spl-dot sharp">' + bookTag(b) + "Sharp: " + esc(rs.sharp === "home" ? hAb : aAb) + "</span>");
+      if (rs && rs.sharp && !splitConflict(S, "spread")) dots.push('<span class="spl-dot sharp">' + bookTag(b) + "Sharp: " + esc(rs.sharp === "home" ? hAb : aAb) + "</span>");
       else if (rs && rs.pub) dots.push('<span class="spl-dot public">' + bookTag(b) + "Public: " + esc(rs.pub === "home" ? hAb : aAb) + "</span>");
       if (models && models.s && rs && rs.sharp) notes.push(rs.sharp === (models.s > 0 ? "home" : "away") ? '<span class="spl-chip sharp">Models + sharps agree</span>' : '<span class="spl-chip against">Models vs the sharps</span>');
       if (models && models.t && rt && rt.sharp) notes.push(rt.sharp === (models.t > 0 ? "over" : "under") ? '<span class="spl-chip sharp">Total: models + sharps agree</span>' : '<span class="spl-chip against">Total: models vs the sharps</span>');
       body += '<div class="spl-book">' + bookTag(b) + "<small>" + esc(R.taken || "") + "</small></div>" + splitBars(R, "spread", aAb, hAb) + splitBars(R, "total", "Over", "Under") +
         (notes.length ? '<div class="spl-tags">' + notes.join("") + "</div>" : "");
     });
-    return '<details class="gt-spl"><summary>Splits &amp; handle ' + dots.join("") + "</summary>" + body + "</details>";
+    var cf = ["spread", "total"].map(function (m) { var c = splitConflict(S, m); return c ? '<span class="spl-dot warn">\u26a0 Books disagree' + (m === "total" ? " (total)" : "") + "</span>" : ""; }).join("");
+    return '<details class="gt-spl"><summary>Splits &amp; handle ' + cf + dots.join("") + "</summary>" + body + "</details>";
   }
   function splitsPanel(away, home, aAb, hAb) {          // the game page
     var S = splitsOf(away, home);
@@ -4947,8 +5088,33 @@ body.on-home { overflow-anchor: none; }
     var cols = splitBooks(S).map(function (x) {
       return '<div class="spl-col"><div class="spl-book">' + bookTag(x[0]) + "<small>" + esc(x[1].taken || "") + "</small></div>" + splitBars(x[1], "spread", aAb, hAb) + splitBars(x[1], "total", "Over", "Under") + "</div>";
     }).join("");
-    return '<div class="panel spl-panel"><h3>Betting splits &amp; handle</h3><div class="spl-cols">' + cols + "</div>" +
+    var cfl = ["spread", "total"].map(function (m) { var c = splitConflict(S, m); return c ? '<div class="spl-warn">\u26a0 <b>The books disagree on the ' + m + ":</b> DraftKings\u2019 sharp money is on " + esc(sideName(c.dk, aAb, hAb)) + ", Circa\u2019s on " + esc(sideName(c.circa, aAb, hAb)) + ".</div>" : ""; }).join("");
+    return '<div class="panel spl-panel"><h3>Betting splits &amp; handle</h3>' + cfl + '<div class="spl-cols">' + cols + "</div>" + trackerLine() +
       '<p class="note"><b>Tickets</b> = share of bets placed; <b>Money</b> = share of dollars (the handle). <b>Sharp</b> = the money is 10+ points above the tickets (fewer, bigger bets). <b>Public heavy</b> = 65%+ of tickets without the money. Circa takes bigger, sharper bets than DraftKings, so a Circa sharp signal carries more weight; small Circa games can show 100%/0% from a handful of bets. Context, not a pick: our tests found splits alone don\u2019t beat the line.</p></div>';
+  }
+  function splitConflict(S, mkt) {         // DraftKings and Circa sharp on OPPOSITE sides
+    var B = {}; splitBooks(S).forEach(function (x) { var r = splitRead(x[1], mkt); B[x[0]] = r && r.sharp; });
+    return B.DK && B.CIRCA && B.DK !== B.CIRCA ? { dk: B.DK, circa: B.CIRCA } : null;
+  }
+  function sideName(side, aAb, hAb) { return side === "home" ? hAb : side === "away" ? aAb : side === "over" ? "Over" : side === "under" ? "Under" : side; }
+  function sharpMini(away, home, aAb, hAb) {  // one-line sharp summary (NBA Detailed and List views, Table view)
+    var S = splitsOf(away, home); if (!S) return "";
+    var out = [];
+    ["spread", "total"].forEach(function (mkt) {
+      var c = splitConflict(S, mkt);
+      if (c) { out.push('<span class="spl-chip warn" title="DraftKings sharp money on ' + esc(sideName(c.dk, aAb, hAb)) + ", Circa on " + esc(sideName(c.circa, aAb, hAb)) + '">\u26a0 Books disagree' + (mkt === "total" ? " (total)" : "") + ": DK " + esc(sideName(c.dk, aAb, hAb)) + " / Circa " + esc(sideName(c.circa, aAb, hAb)) + "</span>"); return; }
+      var seen = {};
+      splitBooks(S).forEach(function (x) { var r = splitRead(x[1], mkt); if (r && r.sharp) (seen[r.sharp] = seen[r.sharp] || []).push(x[0]); });
+      Object.keys(seen).forEach(function (sd) { out.push('<span class="spl-chip sharp">Sharp: ' + esc(sideName(sd, aAb, hAb)) + " <small>" + seen[sd].map(function (b) { return b === "DK" ? "DK" : "Circa"; }).join(" + ") + "</small></span>"); });
+    });
+    return out.join(" ");
+  }
+  function trackerLine() {                 // the record when the two books disagree
+    var T = state.splitsAll && state.splitsAll.tracker, d = T && T.disagree; if (!d) return "";
+    var c = d.circa || {}, k = d.dk || {}, n = (c.w || 0) + (c.l || 0);
+    return '<p class="spl-track"><b>When DraftKings and Circa disagree</b> (all sports, graded at the screenshot line): ' +
+      (n ? "Circa\u2019s sharp side " + c.w + "\u2013" + c.l + ", DraftKings\u2019 " + (k.w || 0) + "\u2013" + (k.l || 0) + "." : "no graded games yet.") +
+      (d.open ? " " + d.open + " still to play." : "") + " We\u2019re tracking it; it\u2019s not a bet signal until it has hundreds of games.</p>";
   }
   function pickSide(x) {
     var p = String(x.pick || "").trim();
@@ -5128,7 +5294,7 @@ body.on-home { overflow-anchor: none; }
         '<td class="ra nw sg-d">' + (r.dT == null ? "" : Math.abs(r.dT) < .5 ? "—" : (r.dT > 0 ? "Over " : "Under ") + u(Math.abs(r.dT))) + "</td>" +
         '<td class="ra nw">' + (fav ? esc(fav[0]) + " " + Math.round(fav[1] * 100) + "%" : "") + "</td>" +
         '<td class="ra nw sg-ml">' + (r.pH == null ? "" : '<span>' + esc(aa) + " " + ml(1 - r.pH) + " <small>" + Math.round((1 - r.pH) * 100) + "¢</small></span><span>" + esc(ha) + " " + ml(r.pH) + " <small>" + Math.round(r.pH * 100) + "¢</small></span>") + "</td>" +
-        '<td class="sg-notes">' + notes.join(" ") + "</td></tr>" };
+        '<td class="sg-notes">' + sharpMini(g.away, g.home, aa, ha) + " " + notes.join(" ") + "</td></tr>" };
     });
     var tiles = "", rowsHtml = rows.map(function (x) { return x.tr; }).join("");
     if (gs === "time") {                                   // cards grouped by day, in kickoff order
@@ -5643,6 +5809,7 @@ body.on-home { overflow-anchor: none; }
     el.querySelectorAll("[data-days]").forEach(function (b) { b.addEventListener("click", function () { STATS.days = +b.getAttribute("data-days"); STATS.v = null; STATS.err = ""; render(); }); });
   }
   function render() {
+    document.body.classList.remove("on-game");
     renderMain();
     trkView();
     var el = document.getElementById("view");
