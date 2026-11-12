@@ -1143,6 +1143,7 @@ body.on-game .hero { display: none; }
 .gp-rail .nb > div { grid-template-columns: 62px minmax(0, 1fr) minmax(0, 1fr) 64px; }
 .gp-rail .nb > div > * { padding: 6px 5px; font-size: 13px; }
 .gp-rail .nb .lb, .gp-rail .nb .hd > * { letter-spacing: 0; font-size: 10px; }
+.mu-grp { font-size: 12px; font-weight: 800; color: var(--ink-2); margin: 14px 0 2px; padding-top: 8px; border-top: 1px solid var(--line); }
 .linkish { font: inherit; font-size: 13px; font-weight: 700; color: var(--accent); background: none; border: 0; padding: 8px 0 0; cursor: pointer; }
 @media (max-width: 640px) { .gp-sum { position: static; padding: 8px 10px; } .gp-sum .gs-r { gap: 12px; width: 100%; justify-content: space-between; } .gp-sum .gs-t { font-size: 16px; } }
 /* Games tab v2 (Nov 12 2026) */
@@ -4201,16 +4202,23 @@ body.on-home { overflow-anchor: none; }
         var bar = e ? '<span class="eg-bar ' + (e < 0 ? "l" : "r") + '" style="width:' + w.toFixed(0) + '%"></span>' : "";
         return '<div class="eg-row mxe-row" title="' + esc(nm(m.oT) + " offense #" + m.oR + " vs " + nm(m.dT) + " defense #" + m.dR + " (of " + m.n + ", 1 = best)") + '">' +
           '<span class="eg-v' + (e < 0 ? " b" : "") + '">#' + lv + "<small>" + (awayAtt ? "off" : "def") + "</small></span>" +
-          '<span class="eg-mid"><i>' + esc(m.l) + "<small>" + nm(m.oT) + " offense vs " + nm(m.dT) + " defense</small></i><span class=\"eg-track\">" + bar + "</span></span>" +
+          '<span class="eg-mid"><i>' + (grp ? nm(m.oT) + " with the ball" : esc(m.l) + " \u00b7 " + nm(m.oT) + " with the ball") + "<small>" + nm(m.oT) + " offense vs " + nm(m.dT) + " defense</small></i><span class=\"eg-track\">" + bar + "</span></span>" +
           '<span class="eg-v r' + (e > 0 ? " b" : "") + '"><small>' + (awayAtt ? "def" : "off") + "</small>#" + rv + "</span></div>";
+    };
+    var grp = false;
+    var byStat = function () {               // every stat with both ends of the floor together
+      grp = true; var out = "", seen = {};
+      M.forEach(function (m) { if (seen[m.l]) return; seen[m.l] = 1;
+        out += '<div class="mu-grp">' + esc(m.l) + "</div>" + M.filter(function (x) { return x.l === m.l; }).map(mrow).join(""); });
+      grp = false; return out;
     };
     if (part === "mu") {
       if (!M.length) return '<div class="panel"><h3>Matchups</h3><p class="note">Style numbers for these teams aren\u2019t in yet.</p></div>';
       return '<div class="panel mu-edges"><h3>Matchups <small>\u00b7 one team\u2019s strength vs the other\u2019s weakness</small></h3>' +
         (best ? '<p class="mu-best"><b>Biggest mismatch:</b> ' + esc(best.l.toLowerCase()) + ", " + nm(best.oT) + " #" + best.oR + " vs " + nm(best.dT) + " #" + best.dR + " (of " + best.n + "), edge " + nm(best.edge) + ".</p>" : '<p class="note">No big mismatches in this game.</p>') +
         '<div class="eg-head"><span>' + badge(away, nfl ? away : null, "sm") + " " + esc(shortName(away)) + "</span><span>" + esc(shortName(home)) + " " + badge(home, nfl ? home : null, "sm") + "</span></div>" +
-        '<div class="eg-sub">The 3 biggest <small>(ranks this season, 1 = best)</small></div>' + top3.map(mrow).join("") +
-        (rest.length ? '<details class="gp-more"><summary>Show all ' + M.length + " matchups</summary>" + rest.map(mrow).join("") + "</details>" : "") + (isCBB() ? talentBars(away, home) : "") +
+        '<div class="eg-sub">The 3 biggest <small>(ranks this season, 1 = best; every stat counts twice, once for each team\u2019s offense)</small></div>' + top3.map(mrow).join("") +
+        (rest.length ? '<details class="gp-more"><summary>All ' + (M.length / 2) + " stats, both ends of the floor</summary>" + byStat() + "</details>" : "") + (isCBB() ? talentBars(away, home) : "") +
         '<p class="note">Vegas prices much of this already. We\u2019re testing which mismatches still beat the line; those will get a \u2605.</p></div>';
     }
     if (part === "edge") {
