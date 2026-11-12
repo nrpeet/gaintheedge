@@ -1393,7 +1393,7 @@ body.on-home { overflow-anchor: none; }
   // interval. Small samples get a wide interval and a low floor, so they have to earn their stars.
   var MIN_SAMPLE = 100;
   var TIERS = [[5, .57], [4, .545], [3, .535], [2, .53], [1, .524]];
-  var STAKE = { 5: 1.5, 4: 1, 3: 1, 2: 0.5, 1: 0.5, 0: 0 };
+  var STAKE = { 5: 1.5, 4: 1.25, 3: 1, 2: 0.75, 1: 0.5, 0: 0 };   // the same stakes the models use (stars.py)
   // setups under MIN_SAMPLE still play when their raw record is strong, flagged low trust and capped
   var LOW_MIN_RATE = .58, LOW_STAKE = 0.5;
   function wilson(w, n, z) { if (!n) return [0, 0]; var p = w / n, z2 = z * z, den = 1 + z2 / n, c = p + z2 / (2 * n), m = z * Math.sqrt(p * (1 - p) / n + z2 / (4 * n * n)); return [(c - m) / den, (c + m) / den]; }
@@ -1525,6 +1525,11 @@ body.on-home { overflow-anchor: none; }
     var hits = Object.keys(P).filter(function (q) { return P[q][stat] != null && P[q].last === last && P[q].first === first; });
     return hits.length === 1 ? P[hits[0]][stat] : null;
   }
+  function boxHas(bx, name) {
+    var P = bx.p, k = norm(name); if (P[k]) return true;
+    var parts = String(name).toLowerCase().replace(/\b(jr|sr|ii|iii|iv|v)\b\.?/g, "").trim().split(/\s+/), last = norm(parts[parts.length - 1] || ""), first = (parts[0] || "")[0];
+    return Object.keys(P).filter(function (q) { return P[q].last === last && P[q].first === first; }).length === 1;
+  }
   function gradeProp(x) {
     var g = state.scores && state.scores.games && state.scores.games[x.game], pp = propParts(x);
     if (!g) return { r: started(x.kickoff) ? "wait" : "open" };
@@ -1534,7 +1539,8 @@ body.on-home { overflow-anchor: none; }
     var v = boxLookup(bx, pp.player, pp.stat);
     if (g.status !== "final" || !bx.final) return { r: "live", g: g, pv: v == null ? 0 : v, pp: pp };
     var stake = rated(x).stake;
-    if (v == null) return { r: "P", perUnit: 0, units: 0, g: g, stake: stake, pp: pp, pv: null, voided: true, A: +g.away, H: +g.home };   // didn't play: the book voids it
+    if (v == null && boxHas(bx, pp.player)) v = 0;          // in the box score but no line for this stat: they played, it's 0
+    if (v == null) return { r: "wait", g: g, pp: pp };       // not found at all: wait for the official grade (a DNP is voided there)
     var diff = pp.ou === "over" ? v - pp.line : pp.line - v, r = diff > 0 ? "W" : diff < 0 ? "L" : "P";
     return { r: r, perUnit: r === "W" ? winUnits(1, x.price) : r === "L" ? -1 : 0, units: r === "W" ? winUnits(stake, x.price) : r === "L" ? -stake : 0, A: +g.away, H: +g.home, g: g, stake: stake, pv: v, pp: pp };
   }
@@ -1832,7 +1838,18 @@ body.on-home { overflow-anchor: none; }
   function onSession(session) {
     var u = session && session.user, uid = u ? u.id : null;
     AUTH.user = u || null;
-    if (!uid) { AUTH.admin = false; FREE.choice = null; AUTH.member = null; AUTH.ready = true; lastUid = null; MB.list = null; MB.set = null; renderAcct(); syncData(); return; }
+    if (!uid) {
+      var was = lastUid;
+      AUTH.admin = false; FREE.choice = null; AUTH.member = null; AUTH.ready = true; lastUid = null; MB.list = null; MB.set = null;
+      storeSet("gte.member", "");
+      if (was) {                                   // a real log-out: wipe the member picks from memory and the page NOW, then load the free view
+        state.data = null; state.scores = null;
+        var mn = document.querySelector("main"); if (mn) mn.innerHTML = '<p class="note" style="padding:24px 0">Logged out. Loading the free view\u2026</p>';
+        try { location.reload(); } catch (e) {}      // a clean page: nothing from the member session is left in memory
+        return;
+      }
+      renderAcct(); syncData(); return;
+    }
     if (uid === lastUid && AUTH.member) { AUTH.ready = true; renderAcct(); return; }
     lastUid = uid;
     freeLoad(uid);
@@ -2482,7 +2499,7 @@ body.on-home { overflow-anchor: none; }
     rows = rows.filter(function (r) { return r && r.name; }).sort(function (a, b) { return (b.n || 0) - (a.n || 0); });
     if (!rows.length) return "";
     return '<div class="panel rvw"><h3>Live review: is each setup beating the closing line?</h3><p class="note">Our rules, set before any live results: once a setup has <b>' + REVIEW.n +
-      ' bets</b> with a closing line, it moves to paper if it averages ' + Math.abs(REVIEW.down) + "+ points worse than the close (" + Math.abs(REVIEW.downPct) + "+ win-chance points on moneylines), and earns a star if it averages " + REVIEW.up +
+      ' bets</b> with a closing line, it is flagged to move to paper (the owner makes the change, and it\u2019s noted here) if it averages ' + Math.abs(REVIEW.down) + "+ points worse than the close (" + Math.abs(REVIEW.downPct) + "+ win-chance points on moneylines), and earns a star if it averages " + REVIEW.up +
       "+ points better (" + REVIEW.upPct + "+ on moneylines) and beats the close at least half the time. Win–loss doesn\u2019t decide it: the closing line shows a real edge much sooner.</p>" +
       '<div class="scroll"><table><thead><tr><th>Setup</th><th class="ra">Bets with a close</th><th class="ra">Avg vs close</th><th class="ra">Beat it</th><th>Status</th></tr></thead><tbody>' +
       rows.map(function (r) {
@@ -3029,7 +3046,7 @@ body.on-home { overflow-anchor: none; }
     var TT = [[5, "58.5%+", "1.5u"], [4, "57–58.4%", "1.25u"], [3, "56–56.9%", "1u"], [2, "55–55.9%", "0.75u"], [1, "53.5–54.9%", "0.5u"]];
     var html = '<div class="cards"><div class="panel"><h3>How the stars work</h3>' +
       '<p class="note">The stars here are the stars on our sheet. Each setup is rated by its <b>honest win rate</b>: its backtest record pulled toward 52.4% (the break-even at −110) by how many games it has. A setup that only comes up twice a season still counts; a short record just gets pulled in more, so a 32–16 record (66.7%) is rated like a 55.8% bet, and 269–176 (60.4%) like 58.4%. Teasers are rated as the −110 bet with the same return as a two-leg ticket.' +
-      (state.sport === "nba" ? " NBA setups use the same scale. Tired Traveler, Fade the Sim, Combo watch, Model Knows and Vegas Knows are bets (Combo watch since Nov 9; it was paper before). Model Knows and Vegas Knows are 1u moneyline bets (1u risked). Vegas Knows gets 1 star on purpose: its favorites won 375-231 (61.9%) outright, but at their usual price (around \u2212230) a bet needs about 70% to pay, so its backtest lost about 11% per bet. We\u2019re betting it to test it live." : "") +
+      (state.sport === "nba" ? " NBA setups use the same scale. Tired Traveler, Fade the Sim and Combo watch are bets (Combo watch since Nov 9). Vegas Knows (paper since Nov 12) and Model Knows (paper since Nov 13) are tracked, not bet: Vegas Knows\u2019 favorites won 375-231 (61.9%) outright, but at their usual price (around \u2212230) a bet needs about 70% to pay, so its backtest lost about 11% per bet; Model Knows\u2019 backtest knew final lineups, which a bet placed earlier doesn\u2019t. The four betting-splits setups are paper from Nov 13 too." : "") +
       (nfl ? " A setup goes on the NFL card when its honest rate is <b>54% or better</b>. There are no paper bets: everything listed here is bet. Setups new this season bet 0.5u until they have a live season behind them." : "") + "</p>" +
       '<div class="how">' + TT.map(function (t) { return "<div>" + starsHtml(t[0]) + "<b>" + t[1] + "</b><small>honest rate · " + t[2] + "</small></div>"; }).join("") + "</div></div>" +
       '<div class="panel"><h3>Every setup, by historical win rate</h3><div class="scroll"><table class="tt sr-t"><thead><tr><th class="ra">#</th><th>Setup</th><th>Stars</th><th class="ra">Win rate</th><th class="ra">Record</th><th class="ra">Honest rate</th><th class="ra">Stake</th></tr></thead><tbody>' +
@@ -3268,7 +3285,7 @@ body.on-home { overflow-anchor: none; }
     var v = g[key]; if (!v) return "";
     var s = nbaScore(g), res = "", home = v.team === g.home_abbr;
     if (s && s.status === "final" && v.line != null) { var c = key === "ft" ? (+s.home + +s.away) - v.line : (home ? +s.home - +s.away : +s.away - +s.home) + v.line; res = c > 0 ? '<span class="res W">\u2713 Won</span>' : c < 0 ? '<span class="res L">\u2717 Lost</span>' : '<span class="res P">Push</span>'; }
-    return '<div class="pickbar fs" title="' + esc(v.backtest || "") + '"><div><span class="stars">' + "\u2605".repeat(v.stars || 1) + '</span><b>' + esc(v.name) + "</b><i>Bet " + esc(v.pick) + " \u00b7 " + (v.stake || 0.5) + "u \u00b7 live test</i>" +
+    return '<div class="pickbar fs" title="' + esc(v.backtest || "") + '"><div><span class="stars">' + "\u2605".repeat(v.stars || 1) + '</span><b>' + esc(v.name) + "</b><i>" + (v.paper || !(+v.stake > 0) ? "Paper (tracked, not bet): " + esc(v.pick) : "Bet " + esc(v.pick) + " \u00b7 " + v.stake + "u \u00b7 live test") + "</i>" +
       (v.note ? "<small>" + esc(v.note) + "</small>" : "") + "<small>" + esc(v.why || "") + "</small>" +
       '<small class="sp-rec"><b>Backtest record: ' + esc(v.record || "") + ".</b> " + esc(v.backtest || "") + "</small></div>" + res + "</div>";
   }
@@ -3287,7 +3304,7 @@ body.on-home { overflow-anchor: none; }
     if (ln && ln.sp != null) { var good = ln.sp >= lim.line; html += '<span class="now ' + (good ? "up" : "down") + '"><i>Line now' + (ln.by ? " (" + esc(ln.by) + ")" : "") + "</i><b>" + esc(spot(ln.sp)) + (good ? " \u2713 still good" : " \u2717 past the limit") + "</b></span>"; }
     return html + "</div>";
   }
-  function gameHref(g) { return "#nba/" + state.data.date + "/" + g.id; }
+  function gameHref(g) { return "#nba/" + String(state.data.date).replace(/[^0-9-]/g, "") + "/" + String(g.id).replace(/[^0-9A-Za-z_-]/g, ""); }
   function nbaTile(g) {
     var s = nbaScore(g), st = s ? s.status : "pre", fc = teamColors(g.our_home_win != null && g.our_home_win < .5 ? g.away_abbr : g.home_abbr);
     var dS = g.mkt_spread == null || g.our_spread == null ? null : r2(g.mkt_spread - g.our_spread), dT = g.mkt_total == null || g.our_total == null ? null : r2(g.our_total - g.mkt_total);
@@ -3324,7 +3341,7 @@ body.on-home { overflow-anchor: none; }
     var cw = pick(games.filter(function (g) { return g.combo; }).sort(function (a, b) { return (b.combo.p || 0) - (a.combo.p || 0); }));
     if (cw) add(cw, "\u25ce Combo watch \u00b7 0.5u", "Our combined model\u2019s strongest lean tonight: " + cw.combo.pick + (cw.combo.p != null ? " (" + Math.round(cw.combo.p * 100) + "% to cover)" : "") + ". A 0.5u bet.");
     var mg = pick(games.filter(function (g) { return g.mk; }));
-    if (mg) add(mg, "\u25c6 Model Knows \u00b7 1u", "We pick " + mg.mk.team + " to win; Vegas picks the other side. When we\u2019re this sure (2+ pts), our side has usually been right. 1u on the moneyline; check the price near tip.");
+    if (mg && !mg.mk.paper) add(mg, "\u25c6 Model Knows \u00b7 " + mg.mk.stake + "u", "We pick " + mg.mk.team + " to win; Vegas picks the other side. When we\u2019re this sure (2+ pts), our side has usually been right. 1u on the moneyline; check the price near tip.");
     var fg = pick(games.filter(function (g) { return g.fs; }));
     if (fg) add(fg, "\u2605 Fade the Sim \u00b7 0.5u", "Bet " + fg.fs.pick + ": our simulator likes the other side, but the morning market model disagrees. In the backtest, betting against the simulator here won 54%.");
     var vg = pick(games.filter(function (g) { return g.vk; }));
@@ -3393,17 +3410,17 @@ body.on-home { overflow-anchor: none; }
   }
   function renderNbaPicks(el) {
     var d = state.data || {}, s = ((d.tracking || {}).summary) || {};
-    var SET = [["tt", "\u2605 Tired Traveler", "bet \u00b7 0.5u", s.tired], ["mk", "\u25c6 Model Knows", "bet \u00b7 1u moneyline", s.mk_real || s.mk],
+    var SET = [["tt", "\u2605 Tired Traveler", "bet \u00b7 0.5u", s.tired], ["mk", "\u25c6 Model Knows", "paper from Nov 13 \u00b7 moneyline", s.mk_real || s.mk],
                ["fs", "\u2605 Fade the Sim", "bet \u00b7 0.5u spread", s.fs],
-               ["lh", "\u2605 Line Held", "live test \u00b7 0.5u spread", s.lh], ["fm", "\u2605 Follow the Move", "live test \u00b7 0.5u spread", s.fm],
-               ["rm", "\u2605 Reverse Line Move", "live test \u00b7 0.5u spread", s.rm], ["ft", "\u2605 Falling Total Over", "live test \u00b7 0.5u total", s.ft],
-               ["vk", "\u26a0 Vegas Knows", "bet \u00b7 1u moneyline", s.vk_real || s.vk], ["cw", "\u25ce Combo watch", "bet \u00b7 0.5u spread", s.combo_real || s.combo]];
+               ["lh", "\u2605 Line Held", "paper from Nov 13 \u00b7 spread", s.lh], ["fm", "\u2605 Follow the Move", "paper from Nov 13 \u00b7 spread", s.fm],
+               ["rm", "\u2605 Reverse Line Move", "paper from Nov 13 \u00b7 spread", s.rm], ["ft", "\u2605 Falling Total Over", "paper from Nov 13 \u00b7 total", s.ft],
+               ["vk", "\u26a0 Vegas Knows", "paper since Nov 12 \u00b7 moneyline", s.vk_real || s.vk], ["cw", "\u25ce Combo watch", "bet \u00b7 0.5u spread", s.combo_real || s.combo]];
     var recs = '<div class="np-recs">' + SET.map(function (x) {
       var r = x[3] || {}, n = (r.w || 0) + (r.l || 0);
       return '<div class="np-rec"><b>' + x[1] + "</b><small>" + x[2] + '</small><span class="tnum">' + (n ? r.w + "\u2013" + r.l : "no games yet") + "</span>" +
         (n ? '<span class="tnum ' + (r.units > 0 ? "up" : r.units < 0 ? "down" : "") + '">' + signed(r.units || 0) + "u</span>" : "") + "</div>";
     }).join("") + "</div>";
-    var head = '<div class="panel np-head"><h3>Tonight\u2019s flagged plays</h3><p class="note"><b>Tired Traveler</b>, <b>Fade the Sim</b>, <b>Combo watch</b>, <b>Model Knows</b> and <b>Vegas Knows</b> are bets (Combo watch since Nov 9). <b>Line Held</b>, <b>Follow the Move</b>, <b>Reverse Line Move</b> and <b>Falling Total Over</b> are live 0.5u tests from Nov 11, built on DraftKings betting splits; each pick shows its backtest record. If two setups land on opposite sides of a game, only the higher-star one is bet. Fade the Sim can appear or drop off during the day as lines and lineups move, so check it near tip. Model Knows and Vegas Knows are moneyline bets judged at the price just before tip, so check them once lineups are in; their records count real bets from Nov 9.</p>' + recs + "</div>";
+    var head = '<div class="panel np-head"><h3>Tonight\u2019s flagged plays</h3><p class="note"><b>Tired Traveler</b>, <b>Fade the Sim</b> and <b>Combo watch</b> are bets (Combo watch since Nov 9). <b>Vegas Knows</b> (since Nov 12) and <b>Model Knows</b> (since Nov 13) are paper: tracked, not bet. <b>Line Held</b>, <b>Follow the Move</b>, <b>Reverse Line Move</b> and <b>Falling Total Over</b> are paper from Nov 13 (tracked live, not bet): they\u2019re built on DraftKings betting splits and none passed our full test, so each needs 200+ live bets that beat the closing line before it becomes a bet. Each shows its backtest record. If two setups land on opposite sides of a game, only the higher-star one is bet. Fade the Sim can appear or drop off during the day as lines and lineups move, so check it near tip. Model Knows and Vegas Knows are moneyline bets judged at the price just before tip, so check them once lineups are in; their records count real bets from Nov 9.</p>' + recs + "</div>";
     if (d.members_only) { el.innerHTML = head + lockPanel(); bindLock(el); return; }
     var L = nbaPickList(d);
     var cnt = document.getElementById("cntPicks"); if (cnt) cnt.textContent = L.length ? String(L.length) : "";
@@ -4024,11 +4041,11 @@ body.on-home { overflow-anchor: none; }
         sig("\u25ce Combo watch: the combined model\u2019s most confident 5% of games (0.5u bet from Nov 9; 1u on paper before)", s.combo) +
         (s.combo && s.combo.clv && s.combo.clv.n ? '<div class="lrow"><div>Combo watch vs the closing line<small>' + s.combo.clv.n + ' picks · last line before tip</small></div><div class="tnum">' + s.combo.clv.beat + " of " + s.combo.clv.n + ' better</div><div class="tnum ' + (s.combo.clv.avg > 0 ? "up" : s.combo.clv.avg < 0 ? "down" : "") + '">' + clvTxt(s.combo.clv.avg) + " pts</div></div>" : "") +
         sig("\u2605 Fade the Sim: the simulator 2+ one way, the morning market model 0.5+ the other; bet against the simulator (0.5u at \u2212110, from Nov 9)", s.fs) +
-        sig("\u25c6 Model Knows: we and Vegas pick different winners, ours by 2+; our team\u2019s moneyline before tip (1u bet from Nov 9, paper before)", s.mk) +
-        sig("\u2605 Line Held: our number 3+ off, 60%+ of DraftKings tickets on the other side, the line didn\u2019t move toward them (0.5u live test from Nov 11; backtest 20\u201315)", s.lh) +
-        sig("\u2605 Follow the Move: 60%+ of DraftKings tickets on a side and the line moved 1+ toward it (0.5u live test from Nov 11; backtest 115\u201387)", s.fm) +
-        sig("\u2605 Reverse Line Move: 65%+ of DraftKings tickets on a side, yet the line moved 0.5+ against them: bet the other side (0.5u live test from Nov 11; backtest 159\u2013126)", s.rm) +
-        sig("\u2605 Falling Total Over: 75%+ of DraftKings tickets on the over, total dropped or held since the opener: the over (0.5u live test from Nov 11; backtest 270\u2013218)", s.ft) +
+        sig("\u25c6 Model Knows: we and Vegas pick different winners, ours by 2+; our team\u2019s moneyline before tip (a bet Nov 9\u201312; paper before and from Nov 13: its backtest knew final lineups)", s.mk) +
+        sig("\u2605 Line Held: our number 3+ off, 60%+ of DraftKings tickets on the other side, the line didn\u2019t move toward them (paper from Nov 13, tracked not bet; a 0.5u live test Nov 11\u201312; backtest 20\u201315)", s.lh) +
+        sig("\u2605 Follow the Move: 60%+ of DraftKings tickets on a side and the line moved 1+ toward it (paper from Nov 13, tracked not bet; a 0.5u live test Nov 11\u201312; backtest 115\u201387)", s.fm) +
+        sig("\u2605 Reverse Line Move: 65%+ of DraftKings tickets on a side, yet the line moved 0.5+ against them: bet the other side (paper from Nov 13, tracked not bet; a 0.5u live test Nov 11\u201312; backtest 159\u2013126)", s.rm) +
+        sig("\u2605 Falling Total Over: 75%+ of DraftKings tickets on the over, total dropped or held since the opener: the over (paper from Nov 13, tracked not bet; a 0.5u live test Nov 11\u201312; backtest 270\u2013218)", s.ft) +
         sig("\u26a0 Vegas Knows: we have it within 4, Vegas has the favorite 3+ pts bigger; the favorite\u2019s moneyline, 1u at its price (1u bet from Nov 9, paper before; backtest: won 62%, lost ~11% per bet)" + (s.vk && s.vk.won_outright != null ? "<small>favorite won outright " + s.vk.won_outright + " of " + (s.vk.w + s.vk.l + (s.vk.p || 0)) + "</small>" : ""), s.vk) +
         sig("Tracked at 0 units: our win % 5+ pts above the market (moneyline)", s.ml_edge) + sig("Tracked at 0 units: underdog moneyline 3+ pts cheaper than its spread", s.cheap_dog)
         : '<p class="note">Nothing graded yet. The first games grade the morning after they’re played.</p>') + "</div>" +
@@ -4054,6 +4071,8 @@ body.on-home { overflow-anchor: none; }
     var o = (c && c.odds || [])[0]; if (!o) return null;
     function num(v) { if (v == null) return null; var t = String(v).replace("−", "-"); if (/^\s*(pk|even)/i.test(t)) return 0; var m = /[-+]?\d+(?:\.\d+)?/.exec(t); return m ? +m[0] : null; }
     function pickLine(x) { if (!x) return null; var y = x.close || x.current || x.open; return y && y.line != null ? num(y.line) : null; }
+    function isClose(x) { return !!(x && x.close && x.close.line != null); }
+    var spClose = isClose(o.pointSpread && o.pointSpread.home), totClose = isClose(o.total && o.total.over);
     var sp = pickLine(o.pointSpread && o.pointSpread.home);
     if (sp == null && o.spread != null && !isNaN(+o.spread)) sp = +o.spread;
     var d = String(o.details || "").trim(), m = /^(\S+)\s+([-+−]?\d+(?:\.\d+)?)$/.exec(d), hab = H && H.team && H.team.abbreviation;
@@ -4061,7 +4080,7 @@ body.on-home { overflow-anchor: none; }
     else if (m && hab) { var mag = sp != null ? Math.abs(sp) : Math.abs(num(m[2])); sp = m[1] === hab ? -mag : mag; }
     var tot = pickLine(o.total && o.total.over); if (tot == null && o.overUnder != null && !isNaN(+o.overUnder)) tot = +o.overUnder;
     if (sp == null && tot == null) return null;
-    return { sp: sp, tot: tot, by: (o.provider && o.provider.name) || "" };
+    return { sp: sp, tot: tot, by: (o.provider && o.provider.name) || "", spClose: spClose, totClose: totClose };
   }
   // ESPN data saved on our own site (data/espn/, refreshed every 2 hours by a GitHub Action) is read first; ESPN itself is the
   // fallback. Live scoreboards always go to ESPN first (they change by the minute). A file name is the request with the
@@ -4213,8 +4232,16 @@ body.on-home { overflow-anchor: none; }
       var def = ms != null && g.our_spread != null && g.our_spread > ms ? "sa" : "sh";
       if (g.combo && g.combo.team) def = g.combo.team === g.away_abbr ? "sa" : "sh";
       var ang = g.angle && String(g.angle.pick || ""); if (ang) def = ang.indexOf(g.away_abbr) === 0 || ang.indexOf(g.away) === 0 ? "sa" : "sh";
+      // the bet we actually flagged on this game (Nov 12 2026, outside audit): its own stars, stake, side and line, never a default
+      var P = null, PK = [["angle", g.home_abbr], ["combo"], ["fs"], ["mk"], ["lh"], ["fm"], ["rm"], ["ft"]];
+      for (var pi = 0; pi < PK.length && !P; pi++) { var c = g[PK[pi][0]]; if (c && !c.paper && +c.stake > 0) P = { k: PK[pi][0], x: c, team: c.team || PK[pi][1] }; }
+      if (P) {
+        var opt = P.k === "ft" ? "ov" : P.k === "mk" ? (P.team === g.away_abbr ? "ma" : "mh") : (P.team === g.away_abbr ? "sa" : "sh");
+        def = opt;
+        opts.forEach(function (o) { if (o.key === opt) { if (P.x.line != null && o.market !== "Moneyline") o.line = +P.x.line; if (P.x.price != null && o.market === "Moneyline") o.price = +P.x.price; } });
+      }
       return { sport: "nba", game: g.away + " @ " + g.home, away: g.away, home: g.home, starts_at: new Date(g.tip).toISOString(), espn_id: String(g.id),
-        opts: opts, def: def, stars: g.angle ? 3 : null, units: g.angle ? 1 : 0, from: "nba:" + g.id };
+        opts: opts, def: def, stars: P ? (+P.x.stars || 1) : null, units: P ? +P.x.stake : 0, from: "nba:" + g.id };
     }
     var x = (d.bets || []).filter(function (y) { return sportKey() + ":" + y.id === id; })[0]; if (!x) return null;
     var rt = rated(x), mk = x.market, kind = mk.indexOf("Total") >= 0 && mk !== "Team Total" ? "total" : mk.indexOf("Spread") >= 0 ? "spread" : "other";
@@ -4339,6 +4366,7 @@ body.on-home { overflow-anchor: none; }
   function sbDay(sport, day) {
     var k = sport + day; if (MB_SB[k]) return MB_SB[k];
     var q = sport === "nba" ? "/apis/site/v2/sports/basketball/nba/scoreboard?dates=" + day
+      : sport === "cbb" ? "/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard?limit=400&groups=50&dates=" + day
       : "/apis/site/v2/sports/football/" + (sport === "nfl" ? "nfl" : "college-football") + "/scoreboard?limit=400&dates=" + day + (sport === "cfb" ? "&groups=80" : "");
     return (MB_SB[k] = espnGet(q).catch(function () { delete MB_SB[k]; return null; }));
   }
@@ -4358,13 +4386,17 @@ body.on-home { overflow-anchor: none; }
         if (hn[hk] && an[ak]) flip = false; else if (hn[ak] && an[hk]) flip = true; else continue;
       }
       var hT = flip ? A : H, aT = flip ? H : A, st = c.status || ev.status || {}, ty = st.type || {};
-      var ln = espnLine(c, H); if (ln && flip) ln = { sp: ln.sp == null ? null : -ln.sp, tot: ln.tot };
+      var ln = espnLine(c, H); if (ln && flip) ln = { sp: ln.sp == null ? null : -ln.sp, tot: ln.tot, spClose: ln.spClose, totClose: ln.totClose };
       return { status: ty.state === "post" ? (ty.completed === false || /postpon|cancel|suspend/i.test(ty.name || "") ? "void" : "final") : ty.state === "in" ? "live" : "pre",
-        home: +hT.score || 0, away: +aT.score || 0, h1_home: h1of(hT), h1_away: h1of(aT), ln: ln };
+        home: +hT.score || 0, away: +aT.score || 0, h1_home: h1of(hT, b.sport), h1_away: h1of(aT, b.sport), ln: ln };
     }
     return null;
   }
-  function h1of(t) { var ls = t.linescores || []; return ls.length >= 2 ? (+(ls[0].value || 0)) + (+(ls[1].value || 0)) : null; }
+  function h1of(t, sport) {          // college basketball plays two halves (first half = period 1); everything else, quarters 1 + 2
+    var ls = t.linescores || [];
+    if (sport === "cbb") return ls.length >= 1 ? +(ls[0].value || 0) : null;
+    return ls.length >= 2 ? (+(ls[0].value || 0)) + (+(ls[1].value || 0)) : null;
+  }
   function gradeOne(b, e) {
     if (!e) return null;
     if (e.status === "void") return { result: "V", profit: 0, graded_at: new Date().toISOString() };
@@ -4376,7 +4408,8 @@ body.on-home { overflow-anchor: none; }
     else if (mk === "Moneyline") { if (b.side !== "home" && b.side !== "away") return null; diff = b.side === "home" ? H - A : A - H; }
     else return null;
     var r = diff > 0 ? "W" : diff < 0 ? "L" : "P", close = null;
-    if (!half && e.ln) { if (mk === "Spread" && e.ln.sp != null) close = b.side === "home" ? e.ln.sp : -e.ln.sp; if (mk === "Total" && e.ln.tot != null) close = e.ln.tot; }
+    // only a line ESPN marks as the CLOSE is saved as the close (not the opener or a mid-day number)
+    if (!half && e.ln) { if (mk === "Spread" && e.ln.sp != null && e.ln.spClose) close = b.side === "home" ? e.ln.sp : -e.ln.sp; if (mk === "Total" && e.ln.tot != null && e.ln.totClose) close = e.ln.tot; }
     return { result: r, profit: betProfit(r, b.stake, b.price), close_line: close, final: (half ? "1H " : "") + e.away + "–" + e.home, graded_at: new Date().toISOString() };
   }
   var gradingNow = false;
@@ -4451,7 +4484,7 @@ body.on-home { overflow-anchor: none; }
     if (isNBA()) {
       var seen = {};
       (d.games || []).forEach(function (g) { var a = g.angle; if (a && a.name && !seen[a.name]) { seen[a.name] = 1; out.push({ name: a.name, stars: a.stars || 0, stake: a.stake || 0, p: a.win || null, paper: !a.stake }); } });
-      if (!seen["Tired Traveler"]) out.push({ name: "Tired Traveler", stars: 3, stake: 1, p: 0.545, paper: false });
+      if (!seen["Tired Traveler"]) out.push({ name: "Tired Traveler", stars: 1, stake: 0.5, p: 0.545, paper: false });
       return out;
     }
     var R = ratings();
@@ -4860,7 +4893,7 @@ body.on-home { overflow-anchor: none; }
     }
     if (g.angle) S.push("★ Tired Traveler: " + esc(g.away_abbr) + " are on a back-to-back after crossing a time zone; the play is " + esc(g.angle.pick || g.home_abbr) + ".");
     if (g.combo) S.push("◎ Combo watch leans " + esc(g.combo.pick) + (g.combo.p != null ? " (" + Math.round(g.combo.p * 100) + "% to cover)" : "") + ". A 0.5u bet.");
-    if (g.mk) S.push("\u25c6 Model Knows: we pick " + esc(g.mk.team) + " to win and Vegas picks the other side; a 1u moneyline bet (" + esc(g.mk.pick) + ").");
+    if (g.mk) S.push("\u25c6 Model Knows: we pick " + esc(g.mk.team) + " to win and Vegas picks the other side; " + (g.mk.paper ? "paper, tracked not bet" : "a " + g.mk.stake + "u moneyline bet") + " (" + esc(g.mk.pick) + ").");
     if (g.vk) S.push("\u26a0 Vegas Knows: we have this one close but Vegas has " + esc(g.vk.team) + " as a clear favorite (" + esc(g.vk.pick) + "). A 1u moneyline bet: favorites like this won 62% in our backtest, but at these prices it lost money, so it\u2019s a live test.");
     if (g.dist && g.dist.close != null) S.push(Math.round(g.dist.close * 100) + "% of our simulations finish within 5 points.");
     return '<p class="preview">' + S.join(" ") + "</p>";
@@ -5733,7 +5766,7 @@ body.on-home { overflow-anchor: none; }
   // the free pick of the day (posted on X and Instagram) and every free pick's result so far
   function freeBox() {
     var L = HOME.free || []; if (!L.length) return "";
-    var now = new Date(Date.now() - 5 * 3600000).toISOString().slice(0, 10), today = L.filter(function (x) { return x.date === now; })[0];
+    var now = etDay(), today = L.filter(function (x) { return x.date === now; })[0];
     var last = L.filter(function (x) { return x.result; }).slice(-1)[0], w = 0, l = 0, un = 0;
     L.forEach(function (x) { if (x.result === "W") w++; if (x.result === "L") l++; un += +x.units || 0; });
     var nm = { cfb: "NCAAF", nfl: "NFL", nba: "NBA", cbb: "NCAAB" };
