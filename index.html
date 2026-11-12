@@ -23,7 +23,7 @@
 <meta name="apple-mobile-web-app-title" content="GainTheEdge">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230d1324'/%3E%3Cpath d='M28 12h12L28 52H16z' fill='%23ff6b2c'/%3E%3C/svg%3E">
 <link rel="icon" type="image/png" sizes="64x64" href="favicon.png">
-<script>window.GTE_CFG = { url: "https://lswipztkythkhoaattlq.supabase.co", key: "sb_publishable_kcmlrR9u9B3raRnUWCbxBA_lbVXuWTz", pay: "__GTE_PAY_URL__", portal: "__GTE_PORTAL_URL__" };</script>
+<script>window.GTE_CFG = { url: "https://lswipztkythkhoaattlq.supabase.co", key: "sb_publishable_kcmlrR9u9B3raRnUWCbxBA_lbVXuWTz", pay: "", portal: "" };</script>
 <script>try { var gt = localStorage.getItem("gte.theme"); if (gt === "light" || gt === "dark") document.documentElement.setAttribute("data-theme", gt); } catch (e) {}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1028,7 +1028,48 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
 .sg-warn { background: color-mix(in srgb, var(--gold) 14%, var(--card)); border: 1px solid color-mix(in srgb, var(--gold) 45%, var(--line)); border-radius: 12px; padding: 11px 14px; font-size: 13.5px; color: var(--ink); margin-bottom: 14px; line-height: 1.45; }
 .gt-day { display: flex; align-items: baseline; gap: 10px; margin: 24px 0 10px; font-family: var(--f-display); font-weight: 800; font-size: 24px; line-height: 1.1; }
 .gt-day:first-of-type { margin-top: 8px; } .gt-day small { font-family: var(--f-body); font-weight: 600; font-size: 12.5px; color: var(--ink-2); }
-.gt-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(296px, 1fr)); gap: 12px; }
+.gt-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 12px; }
+
+.ep { display: flex; flex-direction: column; gap: 10px; margin: 6px 0 14px; }
+.ep-ends { display: flex; justify-content: space-between; font-size: 11px; font-weight: 700; color: var(--ink-2); }
+.ep-row { display: flex; flex-direction: column; gap: 4px; }
+.ep-top { display: flex; justify-content: space-between; gap: 10px; font-size: 13px; }
+.ep-top b { font-variant-numeric: tabular-nums; white-space: nowrap; } .ep-top b.r { color: var(--accent); } .ep-top b.l { color: #4cc3ff; }
+.ep-row small { font-size: 11.5px; color: var(--ink-2); }
+.ep-track { position: relative; height: 10px; background: linear-gradient(var(--line), var(--line)) center/100% 2px no-repeat; }
+.ep-track::after { content: ""; position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: var(--ink-3); }
+.ep-track i { position: absolute; top: 1px; height: 8px; border-radius: 3px; } .ep-track i.r { left: 50%; background: var(--accent); } .ep-track i.l { right: 50%; background: #4cc3ff; }
+.ep-sum { display: flex; justify-content: space-between; font-size: 14px; font-weight: 800; border-top: 1px solid var(--line); padding-top: 8px; }
+.ep-sum.mute { color: var(--ink-2); font-weight: 600; border-top: 0; padding-top: 0; } .ep-sum.hi { color: var(--accent); border-top: 0; padding-top: 0; }
+
+.mu-best { margin: 6px 0 8px; font-size: 13px; line-height: 1.45; }
+.eg-mu { display: flex; flex-direction: column; gap: 5px; }
+.eg-mu .mu-l { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.mu-bar { height: 5px; background: var(--card-2); border-radius: 3px; overflow: hidden; } .mu-bar i { display: block; height: 100%; background: var(--accent); border-radius: 3px; }
+/* Games tab v2 (Nov 12 2026) */
+.gt.v2 { padding: 14px; gap: 10px; }
+.gt.v2 .gt-top { padding: 0; }
+.gt.v2 .gt-teams { padding: 0; display: flex; flex-direction: column; gap: 2px; text-decoration: none; color: inherit; }
+.gt.v2 .gt-team { padding: 3px 0; }
+.gt.v2 .gt-name { font-weight: 800; font-size: 15px; }
+.gt.v2 .rk2 { font-style: normal; font-weight: 600; font-size: 12px; color: var(--ink-2); }
+.gt.v2 .gt-val { font-size: 19px; }
+.gt-prev { margin: 0; font-size: 13px; line-height: 1.45; color: var(--ink); opacity: .92; }
+.gt-spot { display: flex; flex-wrap: wrap; gap: 6px; }
+.gt-spot span { font-size: 11.5px; font-weight: 700; color: var(--ink-2); background: var(--card-2); border-radius: 999px; padding: 4px 9px; }
+.gt-tbl { display: grid; gap: 4px 8px; align-items: center; font-variant-numeric: tabular-nums; }
+.gt-tbl .h { font-size: 11px; font-weight: 700; color: var(--ink-2); text-align: right; }
+.gt-tbl .k { font-size: 12px; font-weight: 700; color: var(--ink-2); padding: 6px 0; border-top: 1px solid var(--line); }
+.gt-tbl .c { font-family: var(--f-mono, "JetBrains Mono", monospace); font-size: 13px; font-weight: 600; text-align: right; padding: 6px 0; border-top: 1px solid var(--line); white-space: nowrap; }
+.gt-tbl .c.ag { color: var(--win); font-weight: 800; }
+.gt-agree { align-self: flex-start; font-size: 12px; font-weight: 800; color: var(--win); background: color-mix(in srgb, var(--win) 14%, transparent); border-radius: 999px; padding: 5px 10px; }
+.gt-res { font-size: 12.5px; background: var(--card-2); border-radius: 10px; padding: 8px 10px; display: flex; flex-direction: column; gap: 4px; }
+.gt-res.live { color: var(--ink); }
+.gt-resm { display: flex; flex-wrap: wrap; gap: 4px 12px; color: var(--ink-2); }
+.gt-resm i { font-style: normal; font-weight: 800; } .gt-resm i.ok { color: var(--win); } .gt-resm i.no { color: var(--loss); }
+.gt.v2.agreed { border-color: color-mix(in srgb, var(--win) 35%, var(--line)); }
+.gt.v2 .gt-foot { padding: 0; }
+
 .gt { background: var(--card); border: 1px solid var(--line); border-radius: 14px; display: flex; flex-direction: column; min-width: 0; overflow: hidden; position: relative; }
 .gt.haspick { border-color: color-mix(in srgb, var(--accent) 50%, var(--line)); } .gt.haspick::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--accent); }
 .gt-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; padding: 11px 14px 0; font-size: 12.5px; font-weight: 700; color: var(--ink-2); }
@@ -3317,6 +3358,9 @@ body.on-home { overflow-anchor: none; }
       aBadge: badge(g.away_abbr, g.away_abbr, "sm", tc(g.away_abbr, g.away)), hBadge: badge(g.home_abbr, g.home_abbr, "sm", tc(g.home_abbr, g.home)),
       when: nbaTip(g.tip), status: st === "live" || st === "final" ? st : "pre", liveTxt: s && s.period ? (s.period > 4 ? "OT" : "Q" + s.period) : "", sa: s ? s.away : null, sh: s ? s.home : null,
       pH: g.our_home_win, ls: g.mkt_spread, ms: g.our_spread, lt: g.mkt_total, mt: g.our_total, dS: dS, dT: dT, fc: fc ? fc.d : NBA_COL[g.home_abbr], fcl: fc ? fc.l : NBA_COL[g.home_abbr],
+      models: [{ n: "Simulator", s: g.our_spread, t: g.our_total }].concat(g.mm_spread != null ? [{ n: "Market", s: g.mm_spread, t: null }] : []),
+      spot: ((g.why && g.why.flags) || []).filter(function (f) { return !f.priced; }).map(function (f) { return String(f.text || ""); }).filter(Boolean),
+      notes: (function () { var c = ((g.why && g.why.comps) || []).filter(function (x) { return x.key === "injuries"; })[0]; return c && Math.abs(c.v) >= 1.5 ? ["Injuries swing this game " + u(Math.abs(c.v)) + " points toward " + (c.v > 0 ? g.home_abbr : g.away_abbr) + "."] : []; })(),
       flags: flags, picks: picks, href: gameHref(g), go: '<a class="gt-go" href="' + gameHref(g) + '">Full game page \u203a</a>' });
   }
   function nbaCard(g) {
@@ -3839,6 +3883,12 @@ body.on-home { overflow-anchor: none; }
         add("Special teams", A3.st, H3.st, 1, s1, null, null, "Points per game from special teams");
         add("Schedule so far", A3.sos, H3.sos, 0, s1, A3.sos_rank, H3.sos_rank, "How tough the opponents have been (+ = tougher)");
       }
+      var SD = styleData(), sA = SD && SD.teams[away], sH = SD && SD.teams[home];      // luck and form (Nov 12 2026)
+      if (sA && sH) {
+        add("Last 5 games (avg margin)", sA.last5, sH.last5, 1, s1, null, null, "Average scoring margin over the last 5 games. Form counts a little; full-season ratings count more");
+        add("Turnover margin per game (luck)", sA.luck_to, sH.luck_to, 0, s2, null, null, "Takeaways minus giveaways per game. Mostly luck: teams far above 0 tend to fall back, and our Lucky Team Fade bets on that");
+        add("Kicking luck (FG points over expected)", sA.luck_fg, sH.luck_fg, 0, s2, null, null, "Field-goal points per game above what the kicks' distances predict. Mostly luck: it fades");
+      }
     }
     return R;
   }
@@ -3852,8 +3902,88 @@ body.on-home { overflow-anchor: none; }
     m("Big plays", away, A.expl_off_rank, home, H.expl_def_rank); m("Big plays", home, H.expl_off_rank, away, A.expl_def_rank);
     return out;
   }
+  // ---------- Who has the edge, in points (Nov 12 2026) ----------
+  function edgePieces(away, home) {      // [{l, v (+ = helps home), note}], our home margin, Vegas home margin
+    var P = [], ours = null, vegas = null;
+    function add(l, v, note) { if (v != null && !isNaN(v)) P.push({ l: l, v: Math.round(v * 10) / 10, note: note || "" }); }
+    if (isNBA()) {
+      var g = ((state.data || {}).games || []).filter(function (x) { return x.away_abbr === away && x.home_abbr === home; })[0];
+      if (!g || !g.why || !g.why.comps) return null;
+      g.why.comps.forEach(function (c) { add(c.label, c.v, ""); });
+      ours = g.our_spread == null ? null : -g.our_spread; vegas = g.mkt_spread == null ? null : -g.mkt_spread;
+      return { P: P, ours: ours, vegas: vegas, model: "simulator" };
+    }
+    var sg = slateGame(away, home), A = teamRow0(away), H = teamRow0(home); if (!sg || !A || !H) return null;
+    vegas = sg.line_spread == null ? null : -sg.line_spread;
+    if (isCBB()) {
+      var poss = sg.poss || 68, st = (H.net - A.net) * poss / 100, rm = sg.ratings_spread != null ? -sg.ratings_spread : -sg.model_spread;
+      add("Team ratings (offense + defense, schedule-adjusted)", st, "net rating gap \u00d7 " + poss + " possessions");
+      add(sg.neutral ? "Neutral site: no home court" : "Home court", rm - st, "");
+      if (sg.model_kind === "market" && sg.ratings_spread != null) add("Market model adjustment (line moves, books, form)", -sg.model_spread - rm, "");
+      ours = -sg.model_spread;
+      return { P: P, ours: ours, vegas: vegas, model: sg.model_kind === "market" ? "market model" : "ratings" };
+    }
+    // football: only the model's own pieces (sent by the notebook as sg.pieces), never a guess from the ratings table
+    if (sg.model_spread == null || !sg.pieces || !sg.pieces.length) return null;
+    ours = -sg.model_spread;
+    sg.pieces.forEach(function (x) { add(x.l, x.v, x.note); });
+    return { P: P, ours: ours, vegas: vegas, model: "model" };
+  }
+  function edgePointsHtml(away, home) {
+    var E = edgePieces(away, home); if (!E || !E.P.length) return "";
+    var big = Math.max(3, Math.max.apply(null, E.P.map(function (x) { return Math.abs(x.v); })));
+    var sh = function (t) { return esc(isNBA() ? t : shortName(t)); };
+    var rows = E.P.map(function (x) {
+      var w = Math.min(50, 50 * Math.abs(x.v) / big), side = x.v > 0 ? "r" : x.v < 0 ? "l" : "";
+      return '<div class="ep-row"><div class="ep-top"><span>' + esc(x.l) + '</span><b class="' + side + '">' + (x.v === 0 ? "even" : sh(x.v > 0 ? home : away) + " +" + u(Math.abs(x.v))) + "</b></div>" +
+        '<div class="ep-track"><i class="' + side + '" style="width:' + w.toFixed(1) + '%"></i></div>' + (x.note ? "<small>" + esc(x.note) + "</small>" : "") + "</div>";
+    }).join("");
+    var fav = function (m) { return m == null ? "\u2014" : m === 0 ? "Even" : sh(m > 0 ? home : away) + " by " + u(Math.abs(m)); };
+    var diff = E.ours != null && E.vegas != null ? E.ours - E.vegas : null;
+    return '<div class="ep"><div class="ep-ends"><span>\u2190 helps ' + sh(away) + "</span><span>helps " + sh(home) + " \u2192</span></div>" + rows +
+      '<div class="ep-sum"><span>Adds up to our ' + esc(E.model) + " line</span><b>" + fav(E.ours) + "</b></div>" +
+      '<div class="ep-sum mute"><span>Vegas</span><b>' + fav(E.vegas) + "</b></div>" +
+      (diff != null && Math.abs(diff) >= .5 ? '<div class="ep-sum hi"><span>We\u2019re higher on ' + sh(diff > 0 ? home : away) + " by</span><b>" + u(Math.abs(diff)) + "</b></div>" : "") + "</div>";
+  }
+  function luckRow(away, home) {         // record vs point margin: wins above or below what the margin says (NBA), or the card's luck number
+    if (isNBA()) {
+      var T = {}; ((state.data || {}).teams || []).forEach(function (t) { T[t.abbr] = t; });
+      function luck(t) { if (!t || !t.record || t.net == null) return null; var m = /(\d+)-(\d+)/.exec(t.record); if (!m) return null; var w = +m[1], l = +m[2], n = w + l; if (!n) return null; return Math.round((w - n * Math.min(.97, Math.max(.03, .5 + .03 * t.net))) * 10) / 10; }
+      var a = luck(T[away]), h = luck(T[home]); if (a == null || h == null) return "";
+      return '<div class="eg-row" title="Wins above (+) or below (\u2212) what their point margin says. Close-game luck doesn\u2019t last."><span class="eg-v">' + signed(a, 1) + '</span><span class="eg-mid"><i>Luck (wins vs margin)</i><span class="eg-track"></span></span><span class="eg-v r">' + signed(h, 1) + "</span></div>";
+    }
+    return "";
+  }
+  // ---------- Matchup evaluator, every sport (Nov 12 2026): one team's offense against the other team's defense, by rank ----------
+  var MU_PAIRS = {
+    nfl: [["Pass game", "pass_off", "pass_def"], ["Run game", "run_off", "run_def"], ["Pass rush vs protection", "pres_made", "pres_allowed", 1], ["Big plays", "expl_off", "expl_def"]],
+    cfb: [["Run game", "run_off", "run_def"], ["Pass game", "pass_off", "pass_def"], ["Staying on schedule (success rate)", "sr_off", "sr_def"],
+          ["Big plays", "expl_off", "expl_def"], ["Turnovers", "to_off", "to_def"], ["Field position", "fp_off", "fp_def"]],
+    bb: [["Shooting (effective FG%)", "efg_off", "efg_def"], ["Ball security vs pressure (turnovers)", "tov_off", "tov_def"],
+         ["Offensive rebounding", "orb_off", "orb_def"], ["Getting to the free-throw line", "ftr_off", "ftr_def"],
+         ["3-point volume", "fg3r_off", "fg3r_def"], ["Paint scoring", "paint_off", "paint_def"]]
+  };
+  function muStyle() {
+    if (isNBA() || isCBB()) { var s = (state.data || {}).style; return s && s.teams && Object.keys(s.teams).length ? s : null; }
+    return styleData();
+  }
+  function muPairs(away, home) {
+    var S = muStyle(); if (!S) return [];
+    var A = S.teams[away], H = S.teams[home]; if (!A || !H) return [];
+    var n = S.n_all || S.n || Object.keys(S.teams).length || 30, P = MU_PAIRS[isNBA() || isCBB() ? "bb" : state.sport === "nfl" ? "nfl" : "cfb"] || [];
+    var out = [];
+    P.forEach(function (p) {
+      [[away, A, home, H], [home, H, away, A]].forEach(function (x) {
+        var att = p[3] ? x[2] : x[0], atT = p[3] ? x[3] : x[1], dfn = p[3] ? x[0] : x[2], dfT = p[3] ? x[1] : x[3];   // pass rush: the defense attacks
+        var oR = atT[p[1] + "_rank"], dR = dfT[p[2] + "_rank"]; if (oR == null || dR == null) return;
+        var gap = Math.abs(oR - dR), edge = oR < dR ? att : dR < oR ? dfn : null;
+        out.push({ l: p[0], oT: att, oR: oR, dT: dfn, dR: dR, edge: edge, gap: gap, n: n, big: gap >= n / 2, real: gap >= n / 5 });
+      });
+    });
+    return out;
+  }
   function edgesHtml(away, home) {
-    var R = edgeRows(away, home), M = state.sport === "nfl" ? styleMatchups(away, home) : [];
+    var R = edgeRows(away, home), M = muPairs(away, home);
     if (!R.length && !M.length) return "";
     var nfl = state.sport === "nfl" || isNBA(), ca = 0, ch = 0;
     var rows = R.map(function (r) {
@@ -3865,15 +3995,25 @@ body.on-home { overflow-anchor: none; }
         '<span class="eg-mid"><i>' + esc(r.l) + (r.main ? " ★" : "") + '</i><span class="eg-track">' + bar + "</span></span>" +
         '<span class="eg-v r' + (e > 0 ? " b" : "") + '">' + (r.rh ? "<small>#" + r.rh + "</small>" : "") + esc(r.f(r.h)) + "</span></div>";
     }).join("");
-    var mrows = M.map(function (m) {
-      return '<div class="eg-mu"><span>' + esc(m.l) + ": <b>" + esc(shortName(m.oT)) + "</b> offense #" + m.oR + " vs <b>" + esc(shortName(m.dT)) + "</b> defense #" + m.dR + "</span>" +
-        (m.edge && m.gap >= 6 ? '<span class="eg-who">' + badge(m.edge, nfl ? m.edge : null, "sm") + " edge" + (m.gap >= 15 ? " (big)" : "") + "</span>" : '<span class="eg-who mute">even</span>') + "</div>";
+    var nm = function (t) { return esc(isNBA() ? t : shortName(t)); };
+    var best = M.filter(function (m) { return m.edge && m.real; }).sort(function (a, b) { return b.gap - a.gap; })[0];
+    var mrows = (best ? '<p class="mu-best"><b>Biggest mismatch:</b> ' + esc(best.l.toLowerCase()) + ", " + nm(best.oT) + " #" + best.oR + " vs " + nm(best.dT) + " #" + best.dR + " (of " + best.n + "), edge " + nm(best.edge) + ".</p>" : "") +
+      M.map(function (m) {
+      var w = Math.max(4, Math.min(100, 100 * m.gap / (m.n / 1.5)));
+      return '<div class="eg-mu"><div class="mu-l"><span>' + esc(m.l) + ': <b>' + nm(m.oT) + "</b> #" + m.oR + " vs <b>" + nm(m.dT) + "</b> #" + m.dR + "</span>" +
+        (m.edge && m.real ? '<span class="eg-who">' + badge(m.edge, nfl ? m.edge : null, "sm") + " " + (m.big ? "big edge" : "edge") + "</span>" : '<span class="eg-who mute">even</span>') + "</div>" +
+        (m.edge && m.real ? '<span class="mu-bar"><i style="width:' + w.toFixed(0) + '%"></i></span>' : "") + "</div>";
     }).join("");
     var tb = isCBB() ? talentBars(away, home) : "";
-    return '<div class="panel mu-edges"><h3>Who has the edge</h3><div class="eg-head"><span>' + badge(away, nfl ? away : null, "sm") + " " + esc(shortName(away)) + "<small>" + ca + " edge" + (ca === 1 ? "" : "s") + "</small></span><span>" +
-      "<small>" + ch + " edge" + (ch === 1 ? "" : "s") + "</small>" + esc(shortName(home)) + " " + badge(home, nfl ? home : null, "sm") + "</span></div>" + rows +
-      (mrows ? '<div class="eg-sub">Offense vs defense <small>(ranks, 1 = best)</small></div>' + mrows : "") + tb +
-      '<p class="note">★ = matters most. The bar shows who’s better and by how much. The line already prices most of this; our picks come from the models, not from counting edges.</p></div>';
+    // Nov 12 2026: no more counting "edges" (5 small wins could hide a 10-point underdog). The top is our line in points, piece by
+    // piece; below it, the other numbers that matter, with what each one tells you.
+    return '<div class="panel mu-edges"><h3>Who has the edge</h3>' + edgePointsHtml(away, home) +
+      '<div class="eg-sub">The numbers behind it <small>(★ = moves the line most; the bar shows who\u2019s better and by how much)</small></div>' +
+      '<div class="eg-head"><span>' + badge(away, nfl ? away : null, "sm") + " " + esc(shortName(away)) + "</span><span>" + esc(shortName(home)) + " " + badge(home, nfl ? home : null, "sm") + "</span></div>" + rows +
+      luckRow(away, home) +
+      (mrows ? '<div class="eg-sub">Matchup evaluator <small>(one team\u2019s strength vs the other\u2019s weakness: ranks this season, 1 = best)</small></div>' + mrows +
+        '<p class="note">Vegas prices much of this already. We\u2019re testing which mismatches still beat the line; those will get a \u2605.</p>' : "") + tb +
+      '<p class="note">' + (isNBA() || isCBB() ? "Luck and recent form are shown because they mislead: lucky records and hot streaks tend to fade. " : "") + "The points breakdown at the top is our model\u2019s actual math.</p></div>";
   }
   function talentBars(away, home) {
     var A = teamRow0(away), H = teamRow0(home); if (!A || !H || A.talent == null || H.talent == null) return "";
@@ -4682,27 +4822,99 @@ body.on-home { overflow-anchor: none; }
   function gtNum(lbl, lineTxt, oursTxt, meter, tag) {
     return '<div class="gt-num"><div class="gt-line"><span class="gt-k">' + lbl + "</span><span>Line <b>" + esc(lineTxt) + "</b>" + (tag ? " <small>" + esc(tag) + "</small>" : "") + "</span><span>Ours <b>" + esc(oursTxt) + "</b></span></div>" + meter + "</div>";
   }
+  // ---------- Games tab v2 (Nov 12 2026): every game, Vegas next to each of our models, green when both models agree ----------
+  function v2Agree(ls, lt, M) {          // +1 / -1 when every model (2+) is 1+ point the same way from Vegas; 0 otherwise
+    function side(vals) {
+      if (vals.length < 2) return 0;
+      if (vals.every(function (x) { return x >= 1; })) return 1;
+      if (vals.every(function (x) { return x <= -1; })) return -1;
+      return 0;
+    }
+    var dS = ls == null ? [] : M.filter(function (m) { return m.s != null && !isNaN(m.s); }).map(function (m) { return ls - m.s; });   // + = likes home more
+    var dT = lt == null ? [] : M.filter(function (m) { return m.t != null && !isNaN(m.t); }).map(function (m) { return m.t - lt; });   // + = higher total
+    return { s: side(dS), t: side(dT) };
+  }
+  function v2Preview(o, ag) {
+    if (o.preview) return o.preview;
+    var bits = [], M = o.models || [];
+    if (o.picks && o.picks.length) bits.push("Our pick is on this game.");
+    if (ag.s) bits.push("Both models like " + (ag.s > 0 ? o.hName : o.aName) + " more than Vegas does.");
+    else if (M.length > 1 && o.ls != null && M[0].s != null && M[1].s != null && (o.ls - M[0].s) * (o.ls - M[1].s) < 0 && Math.abs(M[0].s - M[1].s) >= 1.5) bits.push("Our models split on the side.");
+    if (ag.t) bits.push("Both models lean " + (ag.t > 0 ? "over" : "under") + ".");
+    (o.notes || []).slice(0, 2).forEach(function (t) { bits.push(t); });
+    if (!bits.length) {
+      var near = M.length && M.every(function (m) { return (m.s == null || o.ls == null || Math.abs(m.s - o.ls) < 1) && (m.t == null || o.lt == null || Math.abs(m.t - o.lt) < 1.5); });
+      bits.push(near ? "Our models are close to Vegas on this one: no edge either way." : "Our model differs from Vegas here, but not by enough to bet on its own.");
+    }
+    return bits.join(" ");
+  }
   function gameTile(o) {
     var live = o.status === "live", fin = o.status === "final" && o.sh != null && o.sa != null && !isNaN(+o.sh), started = live || fin;
+    var M = (o.models && o.models.length ? o.models : [{ n: "Ours", s: o.ms, t: o.mt }]).filter(function (m) { return m.s != null || m.t != null; });
+    var ag = v2Agree(o.ls, o.lt, M);
     var wA = fin ? (+o.sa > +o.sh ? " w" : +o.sa < +o.sh ? " l" : "") : "", wH = fin ? (+o.sh > +o.sa ? " w" : +o.sh < +o.sa ? " l" : "") : "";
-    var pA = o.pH == null ? null : Math.round((1 - o.pH) * 100), pHm = pA == null ? null : 100 - pA, homeFav = o.pH != null && o.pH >= .5;
-    function team(bd, rank, name, home, cls, score, pct) {
-      return '<div class="gt-team' + cls + '">' + bd + '<span class="gt-name">' + (rank ? '<i class="rk">' + esc(rank) + "</i>" : "") + esc(name) + (home && !o.neutral ? "<small>home</small>" : "") + "</span>" +
-        (started ? '<b class="gt-val">' + esc(score == null ? "" : score) + "</b>" : '<span class="gt-val pct' + (pct != null && pct >= 50 ? " fav" : "") + '">' + (pct == null ? "" : pct + "%") + "</span>") + "</div>";
+    function team(bd, rank, name, home, cls, score) {
+      return '<div class="gt-team' + cls + '">' + bd + '<span class="gt-name">' + esc(name) + (rank ? ' <i class="rk2">#' + esc(rank) + "</i>" : "") + (home && !o.neutral ? "<small>home</small>" : "") + "</span>" +
+        (started ? '<b class="gt-val">' + esc(score == null ? "" : score) + "</b>" : "") + "</div>";
     }
-    var teams = team(o.aBadge, o.aRank, o.aName, false, wA, o.sa, pA) + team(o.hBadge, o.hRank, o.hName, true, wH, o.sh, pHm);
-    var prob = o.pH == null ? "" : '<div class="gt-prob' + (homeFav ? " r" : "") + '" style="' + (o.fc ? "--fc:" + esc(o.fc) + ";--fcl:" + esc(o.fcl || o.fc) : "") + '" title="' + esc("Our win chance: " + o.aAb + " " + pA + "%, " + o.hAb + " " + pHm + "%") + '"><i style="width:' + (homeFav ? pHm : pA) + '%"></i></div>';
-    var nums = (o.ls != null || o.ms != null ? gtNum("Spread", fmtSpread(o.hAb, o.aAb, o.ls), fmtSpread(o.hAb, o.aAb, o.ms), gtMeter(o.dS, 7, o.aAb, o.hAb, "spread"), "") : "") +
-      (o.lt != null || o.mt != null ? gtNum("Total", o.lt == null ? "\u2014" : u(o.lt), o.mt == null ? "\u2014" : u(o.mt), gtMeter(o.dT, 10, "Under", "Over", "total"), "") : "");
-    var when = '<span class="gt-when' + (live ? " live" : fin ? " fin" : "") + '">' + esc(live ? "Live" + (o.liveTxt ? " " + o.liveTxt : "") : fin ? "Final" : o.when) + (started && o.when ? " <small>" + esc(o.when) + "</small>" : "") + "</span>";
-    return '<article class="gt' + (o.picks && o.picks.length ? " haspick" : "") + (live ? " live" : "") + '">' +
-      '<div class="gt-top">' + when + '<span class="gt-flags">' + (o.clo || "") + (o.flags || []).join("") +
-        (o.lineTag && !started ? '<span class="sg-flag mute" title="ESPN has no current line for this game yet; this is the line from when the card was built">' + (o.lineTag === "morning" ? "Morning line" : "Sheet line") + "</span>" : "") + "</span></div>" +
-      (o.href ? '<a class="gt-teams" href="' + esc(o.href) + '">' : '<div class="gt-teams"' + (o.mu || "") + ">") + teams + (o.href ? "</a>" : "</div>") + prob +
-      (nums ? '<div class="gt-nums">' + nums + "</div>" : "") +
+    var teams = team(o.aBadge, o.aRank, o.aName, false, wA, o.sa) + team(o.hBadge, o.hRank, o.hName, true, wH, o.sh);
+    var spot = [o.neutral ? "Neutral site" : "Home court: " + o.hName].concat(o.spot || []);
+    function cell(txt, on) { return '<span class="c' + (on ? " ag" : "") + '">' + esc(txt == null || txt === "" ? "—" : txt) + "</span>"; }
+    var cols = M.length + 1, tbl = '<div class="gt-tbl" style="grid-template-columns:58px repeat(' + cols + ',minmax(0,1fr))"><span></span><span class="h">Vegas</span>' +
+      M.map(function (m) { return '<span class="h">' + esc(m.n) + "</span>"; }).join("");
+    if (o.ls != null || M.some(function (m) { return m.s != null; }))
+      tbl += '<span class="k">Spread</span>' + cell(o.ls == null ? null : fmtSpread(o.hAb, o.aAb, o.ls)) + M.map(function (m) { return cell(m.s == null ? null : fmtSpread(o.hAb, o.aAb, m.s), !!ag.s); }).join("");
+    if (o.lt != null || M.some(function (m) { return m.t != null; }))
+      tbl += '<span class="k">Total</span>' + cell(o.lt == null ? null : u(o.lt)) + M.map(function (m) { return cell(m.t == null ? null : u(m.t), !!ag.t); }).join("");
+    tbl += "</div>";
+    var agree = ag.s || ag.t ? '<span class="gt-agree">● Both models agree: ' + [ag.s ? (ag.s > 0 ? o.hAb : o.aAb) + " spread" : "", ag.t ? (ag.t > 0 ? "Over" : "Under") : ""].filter(Boolean).join(" + ") + "</span>" : "";
+    var res = "";
+    if (fin && o.ls != null) {
+      var m = +o.sh - +o.sa, cov = m + o.ls, T = +o.sh + +o.sa;
+      var who = cov > 0 ? o.hAb + " covered by " + u(cov) : cov < 0 ? o.aAb + " covered by " + u(-cov) : "Push on the spread";
+      var tot = o.lt == null ? "" : T > o.lt ? "Over hit (" + T + ")" : T < o.lt ? "Under hit (" + T + ")" : "Total pushed";
+      var rows = M.map(function (mm) {
+        var sp = mm.s == null || cov === 0 ? "" : ((o.ls - mm.s > 0) === (cov > 0) ? '<i class="ok">✓ side</i>' : '<i class="no">✗ side</i>');
+        var tt = mm.t == null || o.lt == null || T === o.lt ? "" : ((mm.t > o.lt) === (T > o.lt) ? '<i class="ok">✓ total</i>' : '<i class="no">✗ total</i>');
+        return "<span>" + esc(mm.n) + " " + sp + " " + tt + "</span>";
+      }).join("");
+      res = '<div class="gt-res"><b>' + esc(who) + "</b>" + (tot ? " · " + esc(tot) : "") + '<div class="gt-resm">' + rows + "</div></div>";
+    } else if (live && o.ls != null && o.sh != null) {
+      var mL = +o.sh - +o.sa, favHome = o.ls <= 0, fav = favHome ? o.hAb : o.aAb, by = (favHome ? mL : -mL) - Math.abs(o.ls);
+      res = '<div class="gt-res live">' + esc(fav + " " + (o.ls === 0 ? "PK" : MIN + u(Math.abs(o.ls)))) + ": " + (by > 0 ? "covering by " + u(by) : by < 0 ? "not covering (short " + u(-by) + ")" : "right on the number") +
+        (o.lt != null ? " · total on pace " + esc(String(+o.sh + +o.sa)) + " so far" : "") + "</div>";
+    }
+    var when = '<span class="gt-when' + (live ? " live" : fin ? " fin" : "") + '">' + esc(live ? "Live" + (o.liveTxt ? " · " + o.liveTxt : "") : fin ? "Final" : o.when) + "</span>";
+    return '<article class="gt v2' + (o.picks && o.picks.length ? " haspick" : "") + (live ? " live" : "") + (ag.s || ag.t ? " agreed" : "") + '">' +
+      '<div class="gt-top">' + when + '<span class="gt-flags">' + (o.clo || "") + (o.flags || []).join("") + "</span></div>" +
+      (o.href ? '<a class="gt-teams" href="' + esc(o.href) + '">' : '<div class="gt-teams"' + (o.mu || "") + ">") + teams + (o.href ? "</a>" : "</div>") +
+      '<p class="gt-prev">' + esc(v2Preview(o, ag)) + "</p>" +
+      '<div class="gt-spot">' + spot.map(function (t) { return "<span>" + esc(t) + "</span>"; }).join("") + "</div>" +
+      tbl + agree + res +
       '<div class="gt-foot"><span class="gt-picks">' + (o.picks || []).join("") + "</span>" + (o.go || "") + "</div></article>";
   }
   function gtDayLabel(day) { var m = /^(\d{4})-(\d{2})-(\d{2})/.exec(day || ""); return m ? new Date(Date.UTC(+m[1], +m[2] - 1, +m[3], 12)).toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", timeZone: "UTC" }) : "Date to be announced"; }
+  function slateModels(g) {                // each of our models for this game, by sport
+    if (isCBB()) return g.model_kind === "market" ? [{ n: "Market", s: g.model_spread, t: g.model_total }, { n: "Ratings", s: g.ratings_spread, t: g.ratings_total }]
+      : [{ n: "Ratings", s: g.ratings_spread != null ? g.ratings_spread : g.model_spread, t: g.ratings_total != null ? g.ratings_total : g.model_total }];
+    var M = [{ n: "Model", s: g.model_spread, t: g.model_total }];
+    if (g.mkt_spread != null || g.mkt_total != null) M.push({ n: "Market", s: g.mkt_spread, t: g.mkt_total });
+    return M;
+  }
+  function slateNotes(g, aa, ha) {
+    var n = [];
+    if (g.qb) n.push("QB watch: " + String(g.qb).replace(/^\W*QB CHECK:\s*/i, "") + ".");
+    if (g.wind != null && g.wind >= 12 && g.roof !== "dome" && g.roof !== "closed") n.push("Wind " + g.wind + " mph in the forecast.");
+    else if (g.wind_flag) n.push("Wind 12+ mph in the forecast.");
+    if (isCBB() && g.taller && g.taller_by >= 2) n.push(shortName(g.taller) + " is taller by " + g.taller_by + " inches.");
+    return n;
+  }
+  function slateSpot(g) {                  // rest and travel, when the card sends them
+    var o = [];
+    (g.spot || []).forEach(function (t) { o.push(t); });
+    if (g.roof === "dome" || g.roof === "closed") o.push("Dome");
+    return o;
+  }
   function slateRows() {
     var d = state.data || {}, sd = rkCfg().sd, picks = {};
     (d.bets || []).forEach(function (x) { legGames(x).forEach(function (gm) { (picks[gm.game] = picks[gm.game] || []).push(x); }); });
@@ -4753,7 +4965,7 @@ body.on-home { overflow-anchor: none; }
       if (g.wind_flag || (g.wind != null && g.wind >= 12 && g.roof !== "dome" && g.roof !== "closed")) notes.push('<span class="sg-flag">Wind' + (g.wind != null ? " " + g.wind + " mph" : " 12+ mph") + "</span>");
       if (g.roof === "dome" || g.roof === "closed") notes.push('<span class="sg-flag mute">Dome</span>');
       if (g.neutral) notes.push('<span class="sg-flag mute">Neutral site</span>');
-      if (isCBB() && g.model_kind === "market" && g.ratings_spread != null) notes.push('<span class="sg-flag mute" title="Our box-score ratings alone, before the market model">Ratings ' + esc(fmtSpread(ha, aa, g.ratings_spread)) + "</span>");
+      if (isCBB() && g.model_kind === "market" && g.ratings_spread != null && state.gv === "table") notes.push('<span class="sg-flag mute" title="Our box-score ratings alone, before the market model">Ratings ' + esc(fmtSpread(ha, aa, g.ratings_spread)) + "</span>");
       if (isCBB() && g.event) notes.push('<span class="sg-flag mute">' + esc(g.event) + "</span>");
       if (isCBB() && g.taller) notes.push('<span class="sg-flag' + (g.taller_by >= 2 ? " ht2" : " mute") + '" title="' + esc("Average height, weighted by minutes: " + shortName(g.away) + " " + (g.away_ht_txt || "") + " \u00b7 " + shortName(g.home) + " " + (g.home_ht_txt || "") + ". Taller teams rebound and score inside better, but the line already prices it (tested: no betting edge).") + '">\u2195 ' + esc(abbr(g.taller)) + " taller by " + u(g.taller_by) + '\u2033</span>');
       if (nfl) { var mm = bigMismatch(g.away, g.home); if (mm) notes.push('<button type="button" class="sg-flag mute tbtn" data-tpage="' + esc(mm[0]) + '" title="' + esc(mm[0] + "’s " + mm[1] + " offense vs a defense ranked " + mm[2] + " spots worse. A matchup, not a pick.") + '">' + esc(mm[0]) + " " + mm[1] + " mismatch</button>"); }
@@ -4763,6 +4975,7 @@ body.on-home { overflow-anchor: none; }
         aRank: r.ra && !nfl ? r.ra.rank : null, hRank: r.rh && !nfl ? r.rh.rank : null, aBadge: badge(g.away, nfl ? g.away : null, "sm"), hBadge: badge(g.home, nfl ? g.home : null, "sm"),
         when: kickText(g.kickoff), status: sc ? sc.status : "pre", sa: sc && sc.status !== "pre" ? sc.away : null, sh: sc && sc.status !== "pre" ? sc.home : null,
         pH: r.pH, ls: r.ls, ms: g.model_spread, lt: r.lt, mt: g.model_total, dS: r.dS, dT: r.dT, neutral: g.neutral, fc: fcol && fcol.d, fcl: fcol && fcol.l,
+        models: slateModels(g), notes: slateNotes(g, aa, ha), spot: slateSpot(g),
         lineTag: r.live || r.ls == null ? "" : (isCBB() ? "morning" : "sheet"), clo: clo ? closerTag(clo) : "", flags: notes.slice(nFix), picks: notes.slice(clo ? 1 : 0, nFix),
         mu: muAttr + ' title="Open the matchup: head to head and projected starters"', go: '<button type="button" class="gt-go"' + muAttr + ">Matchup \u203a</button>" });
       return { day: String(g.kickoff || "").slice(0, 10), tile: tile, tr: '<tr><td class="nw">' + esc(kickText(g.kickoff)) + (st ? '<small class="' + (sc.status === "live" ? "live" : "") + '">' + esc(st) + "</small>" : "") + "</td>" +
@@ -5651,7 +5864,7 @@ body.on-home { overflow-anchor: none; }
     var ft = document.getElementById("foot"); if (ft && FOOT[sp]) { ft.textContent = FOOT[sp] + " 21+. If gambling stops being fun, call 1-800-GAMBLER."; ft.insertAdjacentHTML("beforeend", legalLinks()); }
     document.querySelectorAll("[data-sport]").forEach(function (x) { x.setAttribute("aria-pressed", String(x.getAttribute("data-sport") === sp)); });
     var nba = sp === "nba", daily = nba;          // college basketball is daily but uses the full card pages
-    document.getElementById("tabWeekLbl").textContent = nba ? "Board" : "Picks";
+    document.getElementById("tabWeekLbl").textContent = nba ? "Games" : "Picks";
     document.getElementById("tab-record").textContent = nba ? "Tracking" : "Record";
     document.getElementById("tab-ratings").hidden = false;
     document.getElementById("tab-games").hidden = daily;
