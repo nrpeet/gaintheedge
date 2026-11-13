@@ -1146,6 +1146,8 @@ body.on-game .hero { display: none; }
 .gp-rail .nb > div > * { padding: 6px 5px; font-size: 13px; }
 .gp-rail .nb .lb, .gp-rail .nb .hd > * { letter-spacing: 0; font-size: 10px; }
 .mu-grp { font-size: 12px; font-weight: 800; color: var(--ink-2); margin: 14px 0 2px; padding-top: 8px; border-top: 1px solid var(--line); }
+.h-split { margin-top: 2px; opacity: .85; }
+.rec-split .clvhead { margin-top: 6px; }
 .linkish { font: inherit; font-size: 13px; font-weight: 700; color: var(--accent); background: none; border: 0; padding: 8px 0 0; cursor: pointer; }
 @media (max-width: 640px) { .gp-sum { position: static; padding: 8px 10px; } .gp-sum .gs-r { gap: 12px; width: 100%; justify-content: space-between; } .gp-sum .gs-t { font-size: 16px; } }
 /* Games tab v2 (Nov 12 2026) */
@@ -1864,7 +1866,8 @@ body.on-home { overflow-anchor: none; }
       '<div><div class="k">Season</div><div class="v">' + rec(ss.w, ss.l, ss.p) + '</div><div class="s ' + (ss.units > 0 ? "h-up" : ss.units < 0 ? "h-down" : "") + '">' + signed(ss.units) + "u · ROI " + signed(roi * 100, 1) + "%</div></div>" :
       '<div><div class="k">' + (isCBB() ? "Today" : "This week") + '</div><div class="v">' + (graded ? rec(wk.w, wk.l, wk.p) : "0–0") + '</div><div class="s ' + (wk.units > 0 ? "h-up" : wk.units < 0 ? "h-down" : "") + '">' + signed(wk.units) + "u · " + smoney(wk.units * ud) + "</div></div>" +
       '<div><div class="k">Open</div><div class="v">' + wk.open + '</div><div class="s">' + (wk.open ? u(wk.openU) + "u at risk" : "all settled") + "</div></div>" +
-      '<div><div class="k">Season</div><div class="v">' + rec(ss.w, ss.l, ss.p) + '</div><div class="s ' + (ss.units > 0 ? "h-up" : ss.units < 0 ? "h-down" : "") + '">' + signed(ss.units) + "u · ROI " + signed(roi * 100, 1) + "%</div></div>";
+      '<div><div class="k">Season</div><div class="v">' + rec(ss.w, ss.l, ss.p) + '</div><div class="s ' + (ss.units > 0 ? "h-up" : ss.units < 0 ? "h-down" : "") + '">' + signed(ss.units) + "u · ROI " + signed(roi * 100, 1) + "%</div>" +
+      (function () { var sp = splitRecord(); return sp ? '<div class="s h-split">Setups we bet now: ' + rec(sp.now.w, sp.now.l, sp.now.p) + " \u00b7 " + signed(sp.now.units) + "u</div>" : ""; })() + "</div>";
     // ticker: each finished game once
     var seen = {}, items = [];
     d.bets.forEach(function (x) {
@@ -2653,6 +2656,18 @@ body.on-home { overflow-anchor: none; }
           (v.prog != null ? '<span class="rv-bar"><i style="width:' + Math.round(v.prog * 100) + '%"></i></span>' : "") + "</td></tr>";
       }).join("") + "</tbody></table></div></div>";
   }
+  // Nov 13 2026: setups the cut rule took off the card (benched / paper). Their past bets stay in the record (they were posted as
+  // real bets); the site also shows the record of the setups we bet NOW, side by side, clearly labeled.
+  function retiredSet() {
+    var o = {}; ((state.data || {}).setups || []).forEach(function (x) { if (x && x.name && /benched|paper/i.test(String(x.where || ""))) o[x.name] = 1; });
+    return o;
+  }
+  function splitRecord() {
+    var R = retiredSet(), log = (((state.data || {}).record || {}).log || []), a = { w: 0, l: 0, p: 0, units: 0 }, b = { w: 0, l: 0, p: 0, units: 0, names: {} };
+    if (!Object.keys(R).length) return null;
+    log.forEach(function (x) { if (!/^[WLP]$/.test(x.result)) return; var t = R[x.setup] ? b : a; t[x.result.toLowerCase()]++; t.units += x.units || 0; if (R[x.setup]) b.names[x.setup] = 1; });
+    return b.w + b.l + b.p ? { now: a, ret: b } : null;
+  }
   function renderRecord(el) {
     var d = state.data, r = d.record || {}, ud = unitDollars();
     var counted = (r.by_week || []).some(function (w) { return String(w.week) === String(d.week); });
@@ -2688,7 +2703,7 @@ body.on-home { overflow-anchor: none; }
           }).join("") + "</div>";
       }).join("");
       var st = rr ? (state.mode === "sheet" ? rr.old : rr.stars) : 0;
-      return '<details class="srow2"' + (state.openSetup === s.name ? " open" : "") + ' data-setup="' + esc(s.name) + '"><summary><div class="sr-n"><b>' + esc(s.name) + "</b><small>" + starsHtml(st || 0) + (rr && rr.low && state.mode !== "sheet" ? ' <span class="badge red">Low sample</span>' : "") + " · " + list.length + " game" + (list.length === 1 ? "" : "s") +
+      return '<details class="srow2"' + (state.openSetup === s.name ? " open" : "") + ' data-setup="' + esc(s.name) + '"><summary><div class="sr-n"><b>' + esc(s.name) + "</b><small>" + starsHtml(st || 0) + (rr && rr.low && state.mode !== "sheet" ? ' <span class="badge red">Low sample</span>' : "") + (retiredSet()[s.name] ? ' <span class="badge">Retired</span>' : "") + " · " + list.length + " game" + (list.length === 1 ? "" : "s") +
         (s.cn ? ' · <span class="' + (s.cs > 0 ? "up" : s.cs < 0 ? "down" : "") + '">CLV ' + clvTxt(Math.round(s.cs / s.cn * 10) / 10) + "</span> (" + s.cb + " of " + s.cn + " better)" : "") + "</small></div>" +
         '<span class="tnum sr-rec">' + rec(s.w, s.l, s.p) + '</span><b class="tnum sr-u ' + (s.units > 0 ? "up" : s.units < 0 ? "down" : "") + '">' + signed(s.units) + "u</b></summary>" +
         '<div class="sr-body">' + (body || '<p class="note">No games logged for this setup yet.</p>') + "</div></details>";
@@ -2700,7 +2715,12 @@ body.on-home { overflow-anchor: none; }
        cn ? '<div class="clvhead"><div><i>Beat the close</i><b>' + cb + " of " + cn + "</b><small>" + pct(cb / cn, 0) + " · " + cs0 + ' same number</small></div><div><i>Average</i><b class="' + (csum > 0 ? "up" : csum < 0 ? "down" : "") + '">' + clvTxt(Math.round(csum / cn * 100) / 100) + "</b><small>points per bet</small></div>" +
         "<div><i>Verdict so far</i><b>" + (cn < 20 ? "Too early" : csum / cn >= 0.5 && cb / cn >= .5 ? "Real edge signs" : csum / cn > 0 ? "Slightly ahead" : "Not beating it") + "</b><small>" + (cn < 20 ? "needs 20+ bets" : cn + " bets with a close") + "</small></div></div>"
         : '<p class="note"><b>No closing lines yet.</b> They fill in as bets settle, starting with the next notebook run.</p>') + "</div>";
-    var html = '<div class="cards"><div class="rec-top"><div class="rec-l">' + clvPanel +
+    var spl = splitRecord(), splitPanel = !spl ? "" : '<div class="panel rec-split"><h3>Setups we bet now vs retired</h3><p class="note">Every bet we posted stays in the season record, losing ones included. When a setup stops earning its place, our cut rule takes it off the card (it keeps a paper record and can come back). Here is the season split by where each setup stands today.</p>' +
+      '<div class="clvhead"><div><i>Setups we bet now</i><b>' + rec(spl.now.w, spl.now.l, spl.now.p) + '</b><small class="' + (spl.now.units > 0 ? "up" : spl.now.units < 0 ? "down" : "") + '">' + signed(spl.now.units) + "u</small></div>" +
+      "<div><i>Retired setups</i><b>" + rec(spl.ret.w, spl.ret.l, spl.ret.p) + '</b><small class="' + (spl.ret.units > 0 ? "up" : spl.ret.units < 0 ? "down" : "") + '">' + signed(spl.ret.units) + "u</small></div>" +
+      "<div><i>Whole season</i><b>" + rec(spl.now.w + spl.ret.w, spl.now.l + spl.ret.l, spl.now.p + spl.ret.p) + '</b><small class="' + (spl.now.units + spl.ret.units > 0 ? "up" : "down") + '">' + signed(spl.now.units + spl.ret.units) + "u</small></div></div>" +
+      '<p class="note">Retired: ' + esc(Object.keys(spl.ret.names).sort().join(", ")) + ".</p></div>";
+    var html = '<div class="cards">' + splitPanel + '<div class="rec-top"><div class="rec-l">' + clvPanel +
       '<div class="panel"><h3>Season units</h3><p class="note">' + (live.length ? esc(wkName(d.week)) + " at " + (state.mode === "sheet" ? "the stakes as posted" : "proven-rating stakes") + "; earlier weeks as bet." : "Every settled bet at the stake it was bet at.") + "</p>" + weekChart(weeks) + "</div></div>" +
       '<div class="panel"><h3>By setup</h3><p class="note">Tap a setup to see every game it produced, ' + (isCBB() ? "day by day" : "week by week") + '. A bet with two setups counts for both.</p>' +
       (sl.length ? sl.map(setupRow).join("") : '<p class="note">No settled bets yet.</p>') + "</div></div>" +
@@ -2708,7 +2728,7 @@ body.on-home { overflow-anchor: none; }
       '<div class="panel"><h3>Every bet</h3><p class="note">Newest first.</p><div class="scroll"><table><thead><tr><th>' + (isCBB() ? "Day" : "Wk") + '</th><th>Game</th><th>Setup</th><th>Bet</th><th class="ra">Stake</th><th>Final</th><th>Result</th><th class="ra">vs close</th><th class="ra">Units</th><th class="ra">$</th></tr></thead><tbody>' +
       (log.length ? log.map(function (x) {
         var pend = x.result === "pending";
-        return "<tr><td>" + esc(isCBB() ? dayShort(x.week) : x.week) + "</td><td>" + esc(x.game) + "</td><td>" + esc(x.setup) + "</td><td><b>" + esc(pretty(x.pick)) + '</b></td><td class="ra">' + u(x.stake) + "u</td><td>" + esc(x.final || "") +
+        return "<tr><td>" + esc(isCBB() ? dayShort(x.week) : x.week) + "</td><td>" + esc(x.game) + "</td><td>" + esc(x.setup) + (retiredSet()[x.setup] ? ' <span class="badge">Retired</span>' : "") + "</td><td><b>" + esc(pretty(x.pick)) + '</b></td><td class="ra">' + u(x.stake) + "u</td><td>" + esc(x.final || "") +
           '</td><td><span class="pill ' + (pend ? "" : esc(x.result)) + '">' + (pend ? "Open" : x.result === "W" ? "Won" : x.result === "L" ? "Lost" : "Push") + '</span></td><td class="ra ' + (x.clv > 0 ? "up" : x.clv < 0 ? "down" : "") + '">' + (x.clv == null ? "" : clvTxt(x.clv)) + '</td><td class="ra ' + (x.units > 0 ? "up" : x.units < 0 ? "down" : "") + '">' + (pend ? "" : signed(x.units)) +
           '</td><td class="ra">' + (pend ? "" : smoney(x.units * ud)) + "</td></tr>";
       }).join("") : '<tr><td colspan="10">No bets logged yet.</td></tr>') + "</tbody></table></div></div></div>";
@@ -3391,11 +3411,17 @@ body.on-home { overflow-anchor: none; }
     sub.innerHTML = "<span>" + nGames + " games · each played out 10,000 times" + (tzn ? " \u00b7 members only" : "") + "</span>" +
       (d.injury_report ? "<span>Injury report " + esc(d.injury_report.replace(/_/g, ":").replace(/^0/, "")) + " ET</span>" : "") +
       '<span class="pulse' + (live ? "" : " idle") + '">' + (up ? "Updated " + esc(up.toLocaleString("en-US", { weekday: "short", hour: "numeric", minute: "2-digit" })) : "") + "</span>";
-    var t = (d.tracking && d.tracking.summary) || {};
+    // Same three boxes as the other models: Today / Open / Season, real bets only (paper picks are tracked, not counted)
+    var T = d.tracking || {}, SB = ((T.summary || {}).bets) || null;
+    var tp = (T.picks || []).filter(function (p) { return p.date === d.date && p.paper !== true; });
+    var tw = { w: 0, l: 0, p: 0, u: 0 }, open = 0;
+    tp.forEach(function (p) { if (p.result === "W") tw.w++; else if (p.result === "L") tw.l++; else if (p.result === "P") tw.p++; else { open++; return; } tw.u += +p.units || 0; });
+    var tg = tw.w + tw.l + tw.p, nTp = tzn ? (tzn.bets != null ? tzn.bets : null) : tp.length;
     board.innerHTML =
-      '<div><div class="k">Games</div><div class="v">' + nGames + '</div><div class="s">' + (live ? live + " live · " : "") + fin + " final</div></div>" +
-      '<div><div class="k">Big gaps</div><div class="v">' + flagged + '</div><div class="s">vs the market</div></div>' +
-      '<div><div class="k">Spread miss</div><div class="v">' + (t.spread_ours != null ? t.spread_ours.toFixed(1) : "—") + '</div><div class="s">' + (t.spread_mkt != null ? "market " + t.spread_mkt.toFixed(1) + " · " + t.n_spread + " games" : "tracking starts tonight") + "</div></div>";
+      '<div><div class="k">Today</div><div class="v">' + (tg ? rec(tw.w, tw.l, tw.p) : nTp != null ? nTp : "\u2014") + '</div><div class="s' + (tg ? (tw.u > 0 ? " h-up" : tw.u < 0 ? " h-down" : "") : "") + '">' +
+        (tg ? signed(tw.u) + "u" : nTp ? "bet" + (nTp === 1 ? "" : "s") + " tonight" : "no bets yet tonight") + "</div></div>" +
+      '<div><div class="k">Open</div><div class="v">' + (tzn ? "\u2014" : open) + '</div><div class="s">' + (tzn ? "members only" : open ? (live ? live + " game" + (live === 1 ? "" : "s") + " live" : "waiting on tip") : tp.length ? "all settled" : "nothing open") + "</div></div>" +
+      '<div><div class="k">Season</div><div class="v">' + (SB ? rec(SB.w || 0, SB.l || 0, SB.p || 0) : "0\u20130") + '</div><div class="s' + (SB && SB.units > 0 ? " h-up" : SB && SB.units < 0 ? " h-down" : "") + '">' + (SB ? signed(SB.units || 0) + "u \u00b7 real bets only" : "starts with tonight\u2019s bets") + "</div></div>";
     var items = games.map(function (g) { return { g: g, s: nbaScore(g) }; }).filter(function (it) { return it.s && (it.s.status === "live" || it.s.status === "final"); });
     items.sort(function (a, b) { return (a.s.status === "live" ? 0 : 1) - (b.s.status === "live" ? 0 : 1); });
     tick.innerHTML = items.map(function (it) {
