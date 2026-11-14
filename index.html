@@ -23,7 +23,7 @@
 <meta name="apple-mobile-web-app-title" content="GainTheEdge">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230d1324'/%3E%3Cpath d='M28 12h12L28 52H16z' fill='%23ff6b2c'/%3E%3C/svg%3E">
 <link rel="icon" type="image/png" sizes="64x64" href="favicon.png">
-<script>window.GTE_CFG = { url: "https://lswipztkythkhoaattlq.supabase.co", key: "sb_publishable_kcmlrR9u9B3raRnUWCbxBA_lbVXuWTz", pay: "", portal: "" };</script>
+<script>window.GTE_CFG = { url: "https://lswipztkythkhoaattlq.supabase.co", key: "sb_publishable_kcmlrR9u9B3raRnUWCbxBA_lbVXuWTz", pay: "__GTE_PAY_URL__", portal: "__GTE_PORTAL_URL__" };</script>
 <script>try { var gt = localStorage.getItem("gte.theme"); if (gt === "light" || gt === "dark") document.documentElement.setAttribute("data-theme", gt); } catch (e) {}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -338,8 +338,8 @@ details.watchd:not([open]) > summary { margin-bottom: 0; }
 .chyron .lbl { display: flex; align-items: center; gap: 10px; padding: 9px 12px; min-width: 0; }
 .chyron .lbl i { font-style: normal; font-size: 10.5px; font-weight: 800; letter-spacing: .14em; color: var(--ink-2); }
 .chyron .pk { display: grid; gap: 2px; min-width: 0; }
-.chyron .gt { font-size: 12px; font-weight: 600; color: var(--ink-2); font-variant-numeric: tabular-nums; line-height: 1.3; }
-.chyron .lbl .gt b { font-family: var(--f-body); line-height: inherit; font-size: 12.5px; font-weight: 800; text-transform: none; color: var(--ink); letter-spacing: 0; }
+.chyron .gtn { font-size: 12px; font-weight: 600; color: var(--ink-2); font-variant-numeric: tabular-nums; line-height: 1.3; }
+.chyron .lbl .gtn b { font-family: var(--f-body); line-height: inherit; font-size: 12.5px; font-weight: 800; text-transform: none; color: var(--ink); letter-spacing: 0; }
 .chyron .lbl b { font-family: var(--f-display); font-weight: 800; font-size: 21px; line-height: 1.05; text-transform: uppercase; letter-spacing: .01em; min-width: 0; }
 .res { display: flex; align-items: center; padding: 0 14px 0 18px; font-size: 12.5px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; clip-path: polygon(10px 0, 100% 0, 100% 100%, 0 100%); background: var(--line); color: var(--ink-2); font-variant-numeric: tabular-nums; }
 .res.W { background: var(--win); color: #04170c; }
@@ -1065,7 +1065,7 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
 .spl-chip, .spl-dot { display: inline-flex; align-items: center; font-size: 11.5px; font-weight: 800; border-radius: 999px; padding: 4px 9px; }
 .spl-chip.sharp, .spl-dot.sharp { color: var(--win); background: var(--win-soft); }
 .spl-chip.public, .spl-dot.public { color: var(--gold, #ffc53d); background: color-mix(in srgb, var(--gold, #ffc53d) 15%, transparent); }
-.spl-chip.against { color: var(--loss); background: var(--loss-soft); }
+.spl-chip.against { color: #fff; background: var(--loss); }
 .spl-pick { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin: 6px 0 2px; }
 .spl-pick small { color: var(--ink-2); font-size: 11.5px; }
 .spl-panel h3 small { font-weight: 600; color: var(--ink-2); font-size: 12px; margin-left: 6px; }
@@ -1255,6 +1255,8 @@ body.on-game .hero { display: none; }
 .why .preview { margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid var(--line); }
 .gp-prev { margin-bottom: 16px; } .gp-prev .preview { font-size: 15px; max-width: 95ch; }
 .slt td small.opn { display: block; color: var(--ink-3); font-size: 11px; }
+.slt td small.so { white-space: nowrap; }
+.sg-flag.gap { background: rgba(255, 159, 67, .16); color: #ff9f43; } .sg-flag.gap.against { background: rgba(255, 77, 94, .16); color: var(--loss); }
 
 .mb-ins .ins-list { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 10px; }
 .mb-ins li { display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 10px; font-size: 13.5px; line-height: 1.45; align-items: start; }
@@ -1801,12 +1803,12 @@ body.on-home { overflow-anchor: none; }
     var kind = pickKind(x); if (!kind) return "";
     var gr = grade(x); if (settled(gr.r) || gr.r === "live") return "";
     var L = lineOf(x), lim = limitOf(floorOf(x), kind, L, x.price); if (!lim) return "";
-    if (!lim.ok) return '<span class="gt">Good to <b>this number only</b></span>';
+    if (!lim.ok) return '<span class="gtn">Good to <b>this number only</b></span>';
     var spot = kind === "spread" ? function (v) { return (sideOf(x) === "home" ? abbr(x.home) : abbr(x.away)) + " " + lineTxt(v); } : kind === "price" ? null : function (v) { return (kind === "over" ? "Over " : "Under ") + u(v); };
-    if (!spot) return '<span class="gt">Good to <b>' + esc(amerTxt(lim.worst)) + " or better</b></span>";
+    if (!spot) return '<span class="gtn">Good to <b>' + esc(amerTxt(lim.worst)) + " or better</b></span>";
     var moves = lim.line != null && lim.steps;
     var alt = moves ? "Or " + amerTxt(lim.worst) + " at " + (kind === "spread" ? lineTxt(L) : u(L)) : amerTxt(lim.worst) + " or better";
-    return '<span class="gt" title="' + esc(alt) + '">Good to <b>' + esc(moves ? spot(lim.line) : spot(L) + " only") + "</b></span>";
+    return '<span class="gtn" title="' + esc(alt) + '">Good to <b>' + esc(moves ? spot(lim.line) : spot(L) + " only") + "</b></span>";
   }
   function numberBox(x, paper, slim) {
     if (x.market === "Prop") { var gp = grade(x); if (gp.g && gp.g.status !== "pre") return propBox(x); }
@@ -2398,11 +2400,11 @@ body.on-home { overflow-anchor: none; }
     if (x.market === "Spread" && g.model_spread != null) {
       var line = lineOf(x), s = sideOf(x), mkt = s === "home" ? line : s === "away" ? -line : g.line_spread;
       var gap = Math.abs(g.model_spread - (mkt != null && !isNaN(mkt) ? mkt : g.line_spread));
-      return '<div class="mstrip"><div><i>Model</i><b>' + esc(fmtSpread(abbr(x.home), abbr(x.away), g.model_spread)) + "</b></div><div><i>Line</i><b>" + esc(fmtSpread(abbr(x.home), abbr(x.away), mkt)) + '</b></div><div class="gap"><i>Gap</i><b>' + gap.toFixed(1) + " pts</b></div></div>";
+      return '<div class="mstrip"><div><i>' + (state.sport === "cfb" ? "Stats only" : "Model") + '</i><b>' + esc(fmtSpread(abbr(x.home), abbr(x.away), g.model_spread)) + "</b></div><div><i>Line</i><b>" + esc(fmtSpread(abbr(x.home), abbr(x.away), mkt)) + '</b></div><div class="gap"><i>Gap</i><b>' + gap.toFixed(1) + " pts</b></div></div>";
     }
     if (x.market === "Total" && g.model_total != null) {
       var L = lineOf(x), d = g.model_total - L;
-      return '<div class="mstrip"><div><i>Model</i><b>' + g.model_total.toFixed(1) + "</b></div><div><i>Line</i><b>" + u(L) + '</b></div><div class="gap"><i>Gap</i><b>' + Math.abs(d).toFixed(1) + " " + (d < 0 ? "under" : "over") + "</b></div></div>";
+      return '<div class="mstrip"><div><i>' + (state.sport === "cfb" ? "Stats only" : "Model") + '</i><b>' + g.model_total.toFixed(1) + "</b></div><div><i>Line</i><b>" + u(L) + '</b></div><div class="gap"><i>Gap</i><b>' + Math.abs(d).toFixed(1) + " " + (d < 0 ? "under" : "over") + "</b></div></div>";
     }
     return "";
   }
@@ -4183,7 +4185,7 @@ body.on-home { overflow-anchor: none; }
     if (sg.model_spread == null || !sg.pieces || !sg.pieces.length) return null;
     ours = -sg.model_spread;
     sg.pieces.forEach(function (x) { add(x.l, x.v, x.note); });
-    return { P: P, ours: ours, vegas: vegas, model: "model" };
+    return { P: P, ours: ours, vegas: vegas, model: state.sport === "cfb" ? "stats-only" : "model" };
   }
   function edgePointsHtml(away, home) {
     var E = edgePieces(away, home); if (!E || !E.P.length) return "";
@@ -4195,9 +4197,12 @@ body.on-home { overflow-anchor: none; }
         '<div class="ep-track"><i class="' + side + '" style="width:' + w.toFixed(1) + '%"></i></div>' + (x.note ? "<small>" + esc(x.note) + "</small>" : "") + "</div>";
     }).join("");
     var fav = function (m) { return m == null ? "\u2014" : m === 0 ? "Even" : sh(m > 0 ? home : away) + " by " + u(Math.abs(m)); };
-    var diff = E.ours != null && E.vegas != null ? E.ours - E.vegas : null;
+    var mix = null;                       // college football: the stats line mixed with the market = our line
+    if (state.sport === "cfb" && E.vegas != null) { var sg0 = slateGame(away, home), tl0 = sg0 ? trueLine(sg0, -E.vegas, sg0.line_total) : null; if (tl0 && tl0.s != null) mix = -tl0.s; }
+    var diff = (mix != null ? mix : E.ours) != null && E.vegas != null ? (mix != null ? mix : E.ours) - E.vegas : null;
     return '<div class="ep"><div class="ep-ends"><span>\u2190 helps ' + sh(away) + "</span><span>helps " + sh(home) + " \u2192</span></div>" + rows +
       '<div class="ep-sum"><span>Adds up to our ' + esc(E.model) + " line</span><b>" + fav(E.ours) + "</b></div>" +
+      (mix != null ? '<div class="ep-sum"><span title="Our stats mixed with the market, weighted the way that predicted best over 2015-2025">Our line (mixed with the market)</span><b>' + fav(Math.round(mix * 10) / 10) + "</b></div>" : "") +
       '<div class="ep-sum mute"><span>Vegas</span><b>' + fav(E.vegas) + "</b></div>" +
       (diff != null && Math.abs(diff) >= .5 ? '<div class="ep-sum hi"><span>We\u2019re higher on ' + sh(diff > 0 ? home : away) + " by</span><b>" + u(Math.abs(diff)) + "</b></div>" : "") + "</div>";
   }
@@ -4326,12 +4331,13 @@ body.on-home { overflow-anchor: none; }
     var g = slateGame(away, home); if (!g) return "";
     var ha = abbr(home), aa = abbr(away), sc = state.scores && state.scores.games && (state.scores.games[away + " @ " + home] || (g.id != null && state.scores.games[String(g.id)]));
     var ls = sc && sc.ln && sc.ln.sp != null && sc.status === "pre" ? sc.ln.sp : g.line_spread, lt = sc && sc.ln && sc.ln.tot != null && sc.status === "pre" ? sc.ln.tot : g.line_total;
-    var pH = g.model_spread == null ? null : normCdf(-g.model_spread / rkCfg().sd);
+    var tl = trueLine(g, ls, lt), ms = tl ? tl.s : g.model_spread, mt = tl ? tl.t : g.model_total;
+    var pH = ms == null ? null : normCdf(-ms / rkCfg().sd);
     var picks = ((state.data || {}).bets || []).filter(function (x) { return x.away === away && x.home === home && rated(x).stake > 0; });
     function cell(l, v, sub) { return '<div class="on-c"><i>' + l + "</i><b>" + v + "</b>" + (sub ? "<small>" + sub + "</small>" : "") + "</div>"; }
     return '<div class="panel mu-our"><h3>Our number</h3><div class="on-g">' +
-      cell("Our line", esc(fmtSpread(ha, aa, g.model_spread)), "Vegas " + esc(fmtSpread(ha, aa, ls))) +
-      cell("Our total", g.model_total == null ? "—" : u(g.model_total), "Vegas " + (lt == null ? "—" : u(lt))) +
+      cell(tl ? "Our stats" : "Our line", esc(fmtSpread(ha, aa, g.model_spread)), "Vegas " + esc(fmtSpread(ha, aa, ls)) + (tl && ms != null ? " · our line " + esc(fmtSpread(ha, aa, ms)) : "")) +
+      cell("Our total", g.model_total == null ? "—" : u(g.model_total), "Vegas " + (lt == null ? "—" : u(lt)) + (tl && mt != null ? " · our line " + u(mt) : "")) +
       cell("Win chance", pH == null ? "—" : esc(pH >= .5 ? ha : aa) + " " + Math.round(100 * Math.max(pH, 1 - pH)) + "%", "from our line") + "</div>" +
       (picks.length ? '<div class="on-p">' + picks.map(function (x) { return '<span class="sg-pick">' + starsHtml(rated(x).stars) + " " + esc(pretty(x.pick)) + " · " + u(rated(x).stake) + "u</span>"; }).join("") + "</div>" : '<p class="note">No pick on this game.</p>') + "</div>";
   }
@@ -4583,7 +4589,15 @@ body.on-home { overflow-anchor: none; }
     if (sp == null && o.spread != null && !isNaN(+o.spread)) sp = +o.spread;
     var d = String(o.details || "").trim(), m = /^(\S+)\s+([-+−]?\d+(?:\.\d+)?)$/.exec(d), hab = H && H.team && H.team.abbreviation;
     if (/^(pk|even)/i.test(d)) sp = 0;
-    else if (m && hab) { var mag = sp != null ? Math.abs(sp) : Math.abs(num(m[2])); sp = m[1] === hab ? -mag : mag; }
+    else if (m && hab) {
+      // "AF -13.5": the favorite's code and number. Only trust the code when it matches one of the two teams (Nov 13 2026:
+      // a code that matched neither was read as the AWAY team favored, flipping San Jose State @ Air Force by 26 points)
+      var aw = ((c.competitors || []).filter(function (t) { return t.homeAway === "away"; })[0] || {}).team || {};
+      var codes = function (t) { return [t.abbreviation, t.shortDisplayName, t.location, t.name].filter(Boolean).map(function (x) { return String(x).toUpperCase(); }); };
+      var who = codes(H.team || {}).indexOf(m[1].toUpperCase()) >= 0 ? "home" : codes(aw).indexOf(m[1].toUpperCase()) >= 0 ? "away" : null;
+      var mag = sp != null ? Math.abs(sp) : Math.abs(num(m[2]));
+      if (who) sp = who === "home" ? -mag : mag;            // otherwise keep the home line ESPN gives directly (already signed)
+    }
     var tot = pickLine(o.total && o.total.over); if (tot == null && o.overUnder != null && !isNaN(+o.overUnder)) tot = +o.overUnder;
     if (sp == null && tot == null) return null;
     return { sp: sp, tot: tot, by: (o.provider && o.provider.name) || "", spClose: spClose, totClose: totClose };
@@ -5330,6 +5344,7 @@ body.on-home { overflow-anchor: none; }
       if (vals.every(function (x) { return x <= -1; })) return -1;
       return 0;
     }
+    M = M.filter(function (m) { return !m.ref; });            // our line is built from our stats: not a second opinion
     var dS = ls == null ? [] : M.filter(function (m) { return m.s != null && !isNaN(m.s); }).map(function (m) { return ls - m.s; });   // + = likes home more
     var dT = lt == null ? [] : M.filter(function (m) { return m.t != null && !isNaN(m.t); }).map(function (m) { return m.t - lt; });   // + = higher total
     return { s: side(dS), t: side(dT) };
@@ -5401,6 +5416,12 @@ body.on-home { overflow-anchor: none; }
     if (g.mkt_spread != null || g.mkt_total != null) M.push({ n: "Market", s: g.mkt_spread, t: g.mkt_total });
     return M;
   }
+  function slateModelsR(r) {               // college football: our line (the mix) first, our stats alone second
+    if (!r.tl) return slateModels(r.g);
+    var g = r.g, M = [{ n: "Our stats", s: g.model_spread, t: g.model_total }, { n: "Our line", s: r.ms, t: r.mt, ref: true }];
+    if (g.mkt_spread != null || g.mkt_total != null) M.push({ n: "Market", s: g.mkt_spread, t: g.mkt_total });
+    return M;
+  }
   function slateNotes(g, aa, ha) {
     var n = [];
     if (g.qb) n.push("QB watch: " + String(g.qb).replace(/^\W*QB CHECK:\s*/i, "") + ".");
@@ -5415,17 +5436,36 @@ body.on-home { overflow-anchor: none; }
     if (g.roof === "dome" || g.roof === "closed") o.push("Dome");
     return o;
   }
+  // College football's TRUE line (Nov 13 2026): our stats number mixed with the line, with the weights the sheet uses
+  // (fitted on 2015-2025, each season only on earlier ones; tested Nov 13: no other mix beat it). Early = the opener hasn't
+  // moved (stats count ~24%); Late = it has (stats ~13%). Recomputed with the line on screen, so it stays current.
+  var CFB_BLEND = { s: { early: [-0.09423, 0.23969, 0.7905], late: [-0.06739, 0.1308, 0.88354] },
+                    t: { early: [2.65506, 0.28318, 0.65933], late: [5.6863, 0.00116, 0.9006] } };
+  function trueLine(g, ls, lt) {
+    if (state.sport !== "cfb") return null;
+    var moved = ls != null && g.open_spread != null && Math.abs(ls - g.open_spread) >= .5;
+    var when = moved || g.timing === "late" ? "late" : "early";
+    var B = g.blend && g.blend.s && g.blend.s[when] ? g.blend : CFB_BLEND;
+    var bs = B.s[when] || CFB_BLEND.s[when], bt = (B.t && B.t[when]) || CFB_BLEND.t[when];
+    var sp = g.model_spread == null || ls == null ? null : -(bs[0] + bs[1] * -g.model_spread + bs[2] * -ls);
+    var tt = g.model_total == null || lt == null ? null : bt[0] + bt[1] * g.model_total + bt[2] * lt;
+    return { s: sp == null ? null : Math.round(sp * 10) / 10, t: tt == null ? null : Math.round(tt * 10) / 10, when: when };
+  }
   function slateRows() {
     var d = state.data || {}, sd = rkCfg().sd, picks = {};
     (d.bets || []).forEach(function (x) { legGames(x).forEach(function (gm) { (picks[gm.game] = picks[gm.game] || []).push(x); }); });
     return (d.slate || []).map(function (g) {
       var key = g.away + " @ " + g.home, sc = state.scores && state.scores.games && (state.scores.games[key] || (g.id != null && state.scores.games[String(g.id)]));
       var liveS = sc && sc.ln && sc.ln.sp != null && sc.status === "pre" ? sc.ln.sp : null, liveT = sc && sc.ln && sc.ln.tot != null && sc.status === "pre" ? sc.ln.tot : null;
+      if (liveS != null && g.line_spread != null && Math.abs(liveS - g.line_spread) >= 10) liveS = null;   // a flipped or broken live line: keep the sheet's
       var ls = liveS != null ? liveS : g.line_spread, lt = liveT != null ? liveT : g.line_total;
-      var pH = g.model_spread == null ? null : normCdf(-g.model_spread / sd), ta = teamRow0(g.away), th = teamRow0(g.home);
-      return { g: g, key: key, sc: sc, ls: ls, lt: lt, live: liveS != null || liveT != null, pH: pH,
-        dS: ls == null || g.model_spread == null ? null : r2(ls - g.model_spread),       // + = our number likes the home team more than the line
-        dT: lt == null || g.model_total == null ? null : r2(g.model_total - lt),          // + = our total is higher than the line
+      // college football (Nov 13 2026, owner's call): our STATS number stays the headline and the gap to Vegas is the tell;
+      // our line (stats mixed with the market) is shown under it and drives win chance / fair price
+      var tl = trueLine(g, ls, lt), ms = tl ? tl.s : g.model_spread, mt = tl ? tl.t : g.model_total;
+      var pH = ms == null ? null : normCdf(-ms / sd), ta = teamRow0(g.away), th = teamRow0(g.home);
+      return { g: g, key: key, sc: sc, ls: ls, lt: lt, live: liveS != null || liveT != null, pH: pH, tl: tl, ms: ms, mt: mt,
+        dS: ls == null || g.model_spread == null ? null : r2(ls - g.model_spread),       // + = our stats like the home team more than the line
+        dT: lt == null || g.model_total == null ? null : r2(g.model_total - lt),          // + = our stats total is higher than the line
         ra: ta, rh: th, conf: [ta && ta.conf, th && th.conf].filter(Boolean), picks: (picks[key] || []).filter(function (x) { return rated(x).stake > 0; }),
         t: (parseET(g.kickoff) || {}).utc || 0 };
     });
@@ -5456,11 +5496,19 @@ body.on-home { overflow-anchor: none; }
       var g = r.g, ha = abbr(g.home), aa = abbr(g.away), sc = r.sc, st = sc && sc.status !== "pre" ? (sc.status === "final" ? "Final " : "Live ") + sc.away + "–" + sc.home : "";
       var fin = sc && sc.status === "final" && sc.home != null && sc.away != null && !isNaN(+sc.home), fm = fin ? +sc.home - +sc.away : null;
       var wH = fin ? (fm > 0 ? "sg-w" : fm < 0 ? "sg-l" : "") : "", wA = fin ? (fm < 0 ? "sg-w" : fm > 0 ? "sg-l" : "") : "";
-      var clo = fin ? closerOf(fm, g.model_spread, r.ls) : null;
+      var clo = fin ? closerOf(fm, g.model_spread, r.ls) : null, cfbT = !!r.tl;
       var fav = r.pH == null ? null : r.pH >= .5 ? [ha, r.pH] : [aa, 1 - r.pH];
       var notes = r.picks.map(function (x) { return '<button type="button" class="sg-pick" data-gopick="' + esc(x.home || "") + '">' + starsHtml(rated(x).stars) + " " + esc(pretty(x.pick)) + "</button>"; });
       if (clo) notes.unshift(closerTag(clo));
       var nFix = notes.length;
+      if (cfbT && r.dS != null && Math.abs(r.dS) >= 6) {     // the tell: our stats and Vegas far apart
+        var lk = r.dS > 0 ? ha : aa, mv = g.open_spread != null && r.ls != null ? r.ls - g.open_spread : 0;   // mv < 0: line moved toward home
+        var with_ = Math.abs(mv) >= .5 ? ((mv < 0) === (r.dS > 0) ? 1 : -1) : 0;
+        notes.push('<span class="sg-flag gap' + (with_ < 0 ? " against" : "") + '" title="' + esc("Our stats like " + lk + " by " + u(Math.abs(r.dS)) + " more than Vegas. " +
+          (with_ > 0 ? "The line has moved toward " + lk + " since it opened: the market is coming our way." : with_ < 0 ? "The line has moved AWAY from " + lk + " since it opened: the market may know something (injury, QB) or doesn't buy our numbers." : "The line hasn't moved since it opened.") +
+          " Check QB and injury news, and whether " + lk + "'s numbers come from blowouts of weak or FCS teams. Over 2020-25, our side covered 55-60% when the gap was 3-15 points; that's what the bet card's mix is built on.") + '">\u2691 ' + u(Math.abs(r.dS)) + "-pt gap" +
+          (with_ > 0 ? " \u00b7 line moving our way" : with_ < 0 ? " \u00b7 line moving against" : "") + "</span>");
+      }
       if (g.qb) notes.push('<span class="sg-flag" title="' + esc(g.qb) + '">⚠ QB</span>');
       if (g.wind_flag || (g.wind != null && g.wind >= 12 && g.roof !== "dome" && g.roof !== "closed")) notes.push('<span class="sg-flag">Wind' + (g.wind != null ? " " + g.wind + " mph" : " 12+ mph") + "</span>");
       if (g.roof === "dome" || g.roof === "closed") notes.push('<span class="sg-flag mute">Dome</span>');
@@ -5475,8 +5523,8 @@ body.on-home { overflow-anchor: none; }
         aRank: r.ra && !nfl ? r.ra.rank : null, hRank: r.rh && !nfl ? r.rh.rank : null, aBadge: badge(g.away, nfl ? g.away : null, "sm"), hBadge: badge(g.home, nfl ? g.home : null, "sm"),
         when: kickText(g.kickoff), status: sc ? sc.status : "pre", sa: sc && sc.status !== "pre" ? sc.away : null, sh: sc && sc.status !== "pre" ? sc.home : null,
         pH: r.pH, ls: r.ls, ms: g.model_spread, lt: r.lt, mt: g.model_total, dS: r.dS, dT: r.dT, neutral: g.neutral, fc: fcol && fcol.d, fcl: fcol && fcol.l,
-        models: slateModels(g), notes: slateNotes(g, aa, ha), spot: slateSpot(g),
-        splits: splitsBlock(g.away, g.home, aa, ha, v2Agree(r.ls, r.lt, slateModels(g))),
+        models: slateModelsR(r), notes: slateNotes(g, aa, ha), spot: slateSpot(g),
+        splits: splitsBlock(g.away, g.home, aa, ha, v2Agree(r.ls, r.lt, slateModelsR(r))),
         lineTag: r.live || r.ls == null ? "" : (isCBB() ? "morning" : "sheet"), clo: clo ? closerTag(clo) : "", flags: notes.slice(nFix), picks: notes.slice(clo ? 1 : 0, nFix),
         mu: muAttr + ' title="Open the matchup: head to head and projected starters"', go: '<button type="button" class="gt-go"' + muAttr + ">Matchup \u203a</button>" });
       return { day: String(g.kickoff || "").slice(0, 10), tile: tile, tr: '<tr><td class="nw">' + esc(kickText(g.kickoff)) + (st ? '<small class="' + (sc.status === "live" ? "live" : "") + '">' + esc(st) + "</small>" : "") + "</td>" +
@@ -5484,10 +5532,10 @@ body.on-home { overflow-anchor: none; }
           return '<small class="sg-hist" title="' + esc((h.facts || []).concat(h.last ? [h.last] : []).join("\n")) + '">\ud83d\udcdc ' + esc(h.facts[0]) + "</small>"; })() + "</td>" +
         '<td class="ra nw">' + esc(fmtSpread(ha, aa, r.ls)) + (r.live || r.ls == null ? "" : ' <small title="The line when the sheet was built">' + (isCBB() ? "morning" : "sheet") + "</small>") +
           (g.open_spread != null && r.ls != null && Math.abs(g.open_spread - r.ls) >= .5 ? '<small class="opn">opened ' + esc(fmtSpread(ha, aa, g.open_spread)) + " (" + u(Math.abs(r.ls - g.open_spread)) + " toward " + esc(r.ls < g.open_spread ? ha : aa) + ")</small>" : "") + "</td>" +
-        '<td class="ra nw"><b>' + esc(fmtSpread(ha, aa, g.model_spread)) + "</b></td>" +
+        '<td class="ra nw"><b>' + esc(fmtSpread(ha, aa, g.model_spread)) + "</b>" + (cfbT && r.ms != null ? '<small class="opn so" title="Our stats mixed with the market, weighted the way that predicted best over 2015-2025: the number bets come from">our line ' + esc(fmtSpread(ha, aa, r.ms)) + "</small>" : "") + "</td>" +
         '<td class="ra nw sg-d">' + (r.dS == null ? "" : Math.abs(r.dS) < .5 ? "—" : u(Math.abs(r.dS)) + " on " + esc(r.dS > 0 ? ha : aa)) + "</td>" +
         '<td class="ra nw">' + (r.lt == null ? "—" : u(r.lt)) + "</td>" +
-        '<td class="ra nw"><b>' + (g.model_total == null ? "—" : u(g.model_total)) + "</b></td>" +
+        '<td class="ra nw"><b>' + (g.model_total == null ? "—" : u(g.model_total)) + "</b>" + (cfbT && r.mt != null ? '<small class="opn so" title="Our stats mixed with the market: the number bets come from">our line ' + u(r.mt) + "</small>" : "") + "</td>" +
         '<td class="ra nw sg-d">' + (r.dT == null ? "" : Math.abs(r.dT) < .5 ? "—" : (r.dT > 0 ? "Over " : "Under ") + u(Math.abs(r.dT))) + "</td>" +
         '<td class="ra nw">' + (fav ? esc(fav[0]) + " " + Math.round(fav[1] * 100) + "%" : "") + "</td>" +
         '<td class="ra nw sg-ml">' + (r.pH == null ? "" : '<span>' + esc(aa) + " " + ml(1 - r.pH) + " <small>" + Math.round((1 - r.pH) * 100) + "¢</small></span><span>" + esc(ha) + " " + ml(r.pH) + " <small>" + Math.round(r.pH * 100) + "¢</small></span>") + "</td>" +
@@ -5506,6 +5554,7 @@ body.on-home { overflow-anchor: none; }
     } else tiles = rows.length ? '<div class="gt-grid">' + rows.map(function (x) { return x.tile; }).join("") + "</div>" : "";
     var nPicks = all.filter(function (r) { return r.picks.length; }).length;
     all.forEach(function (r) { var sc = r.sc; if (sc && sc.status === "final" && !isNaN(+sc.home)) { var c = closerOf(+sc.home - +sc.away, r.g.model_spread, r.ls); if (c) CL.push(c); } });
+    var cfbTL = state.sport === "cfb";
     el.innerHTML = '<div class="sg-warn" role="note"><b>Our numbers, not picks.</b> This is our model’s spread, total and win chance for every game on the board. ' +
       "Just because we have a game at a number doesn’t mean you should bet it: on its own, the model didn’t beat closing lines in our backtests. " +
       'Only the setups on the <button type="button" class="lnk" data-gopick="">Picks</button> tab did, and those are the bets.</div>' +
@@ -5522,7 +5571,8 @@ body.on-home { overflow-anchor: none; }
       (rowsHtml || '<tr><td colspan="11" class="note">No games match.</td></tr>') + "</tbody></table></div>" +
       '<p class="note" style="margin-top:10px">Spreads are shown as the favorite and its number. ' + (isCBB() ? "Line = ESPN’s current line before tip (“morning” = the line when the card was built). " : "Line = ESPN’s current line before kickoff (“sheet” = the line when the sheet was built). ") +
       (isCBB() ? "Our spread and total = the market model\u2019s fair number (our ratings plus luck, schedule, travel and what the market itself is doing); \u201cRatings\u201d in the notes = the box-score ratings alone. " : "") +
-      "Win chance and fair price come from our spread alone (fees not included). Difference = how far our number is from the line, and which side it leans to. " + all.length + " games.</p></div>";
+      (cfbTL ? "Our spread and total = our stats alone. Difference = how far our stats are from the line: a big one (6+ points, flagged \u2691) is the tell worth checking. Our line (small, under our spread) = our stats mixed with the market, weighted the way that predicted final scores best over 2015-2025: bets come from that number, and win chance and fair price use it (fees not included). " :
+        "Win chance and fair price come from our spread alone (fees not included). Difference = how far our number is from the line, and which side it leans to. ") + all.length + " games.</p></div>";
     el.querySelectorAll('[data-seg="gf"],[data-seg="gs"],[data-seg="gv"]').forEach(function (b) { b.addEventListener("click", function () { var k = b.getAttribute("data-seg"); state[k] = b.getAttribute("data-val"); if (k === "gv") storeSet("gte.gv", state[k]); render(); }); });
     var cs = document.getElementById("gconf"); if (cs) cs.addEventListener("change", function () { state.gc = cs.value; render(); });
     var gq = document.getElementById("gq");
