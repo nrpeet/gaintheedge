@@ -39,7 +39,7 @@
   --line: rgba(255, 255, 255, .08);
   --ink: #f2f4fa;
   --ink-2: #98a3bd;
-  --ink-3: #5b6782;
+  --ink-3: #8390ad;
   --accent: #ff6b2c;      /* broadcast signal orange */
   --accent-ink: #1a0c04;
   --accent-soft: rgba(255, 107, 44, .14);
@@ -56,9 +56,9 @@
 @media (prefers-color-scheme: light) {
   :root:not([data-theme="dark"]) {
     --bg: #eef1f7; --hero: #0d1324; --card: #ffffff; --card-2: #f3f5fa; --line: rgba(13, 22, 44, .09);
-    --ink: #0b1222; --ink-2: #56627d; --ink-3: #98a1b6;
+    --ink: #0b1222; --ink-2: #56627d; --ink-3: #646d82;
     --accent: #e8551a; --accent-ink: #ffffff; --accent-soft: rgba(232, 85, 26, .10);
-    --gold: #d99500; --win: #108a52; --win-soft: rgba(16, 138, 82, .11); --loss: #d42a3c; --loss-soft: rgba(212, 42, 60, .10);
+    --gold: #d99500; --win: #0d7a48; --win-soft: rgba(16, 138, 82, .11); --loss: #d42a3c; --loss-soft: rgba(212, 42, 60, .10);
     --live: #b26a00; --live-soft: rgba(255, 166, 0, .16); --alert: #e0122e;
     --shadow: 0 1px 2px rgba(13,22,44,.05), 0 10px 28px -18px rgba(13,22,44,.35);
     color-scheme: light;
@@ -66,9 +66,9 @@
 }
 :root[data-theme="light"] {
   --bg: #eef1f7; --hero: #0d1324; --card: #ffffff; --card-2: #f3f5fa; --line: rgba(13, 22, 44, .09);
-  --ink: #0b1222; --ink-2: #56627d; --ink-3: #98a1b6;
+  --ink: #0b1222; --ink-2: #56627d; --ink-3: #646d82;
   --accent: #e8551a; --accent-ink: #ffffff; --accent-soft: rgba(232, 85, 26, .10);
-  --gold: #d99500; --win: #108a52; --win-soft: rgba(16, 138, 82, .11); --loss: #d42a3c; --loss-soft: rgba(212, 42, 60, .10);
+  --gold: #d99500; --win: #0d7a48; --win-soft: rgba(16, 138, 82, .11); --loss: #d42a3c; --loss-soft: rgba(212, 42, 60, .10);
   --live: #b26a00; --live-soft: rgba(255, 166, 0, .16); --alert: #e0122e;
   --shadow: 0 1px 2px rgba(13,22,44,.05), 0 10px 28px -18px rgba(13,22,44,.35);
   color-scheme: light;
@@ -102,7 +102,7 @@ select.ctl option { color: #0b1222; }
 .ctl input { width: 56px; border: 0; background: transparent; padding: 0; color: var(--h-ink); font-variant-numeric: tabular-nums; }
 .ctl input:focus { outline: none; }
 .sport { display: inline-flex; background: rgba(255,255,255,.06); border: 1px solid var(--h-line); border-radius: 10px; padding: 3px; gap: 2px; }
-.sport button { border: 0; background: transparent; color: var(--h-ink-2); border-radius: 7px; height: 26px; padding: 0 12px; font-family: var(--f-display); font-weight: 800; font-size: 15px; letter-spacing: .06em; text-transform: uppercase; cursor: pointer; }
+.sport button { border: 0; background: transparent; color: #a9b3ca; border-radius: 7px; height: 26px; padding: 0 12px; font-family: var(--f-display); font-weight: 800; font-size: 15px; letter-spacing: .06em; text-transform: uppercase; cursor: pointer; }
 .sport button[aria-pressed="true"] { background: var(--h-accent); color: #1a0c04; }
 .leg { display: grid; grid-template-columns: 30px minmax(0, 1fr) auto; align-items: center; gap: 10px; padding: 6px 8px; border-radius: 10px; }
 .leg .tname small { display: block; margin: 0; }
@@ -134,6 +134,65 @@ select.ctl option { color: #0b1222; }
 .mu-h2h, .mu-lu, .mu-head + .hist { margin-top: 16px; }
 .mu-sum { display: flex; gap: 12px; align-items: baseline; flex-wrap: wrap; margin-bottom: 10px; } .mu-sum b { font-size: 17px; } .mu-sum span { color: var(--ink-2); font-size: 13px; }
 .mu-tbl td { vertical-align: middle; } .mu-post { color: var(--accent); font-weight: 700; }
+/* college football game page: full breakdown (Nov 14 2026) */
+.gx { margin-top: 16px; scroll-margin-top: calc(var(--barH, 64px) + 64px); }
+.mu-head h1.mu-vs { margin: 0; line-height: 1.05; }
+/* game page tiers (Nov 15 2026): verdict, a pinned three-link nav, The call open, Why and Background folded */
+.gx-verdict { margin-top: 14px; display: flex; gap: 12px 24px; align-items: center; justify-content: space-between; flex-wrap: wrap; padding: 16px 18px; border-radius: 16px; background: var(--card); border: 1px solid var(--line); box-shadow: var(--shadow); }
+.gx-verdict[data-tone="bet"] { background: var(--accent-soft); border-color: color-mix(in srgb, var(--accent) 40%, transparent); }
+.gx-verdict .gv-main { display: flex; flex-direction: column; gap: 4px; min-width: 0; max-width: 62ch; }
+.gx-verdict .gv-main b { font-family: var(--f-display); font-weight: 900; font-size: 26px; line-height: 1.05; text-transform: uppercase; letter-spacing: .01em; }
+.gx-verdict .gv-main span { font-size: 14px; line-height: 1.45; color: var(--ink-2); }
+.gx-verdict .gv-side { display: flex; flex-direction: column; gap: 4px; align-items: flex-end; font-size: 13px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.gx-verdict .gv-side span:first-child { color: var(--ink); font-weight: 700; }
+@media (max-width: 640px) { .gx-verdict .gv-side { align-items: flex-start; } .gx-verdict .gv-main b { font-size: 23px; } .mu-head h1.mu-vs { font-size: 22px; } }
+.gx-nav { position: sticky; top: var(--barH, 56px); z-index: 6; display: flex; gap: 6px; margin: 12px -16px 0; padding: 8px 16px; background: color-mix(in srgb, var(--bg) 92%, transparent); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+.gx-nav button { min-height: 36px; border: 1px solid var(--line); background: var(--card); color: var(--ink-2); border-radius: 999px; padding: 0 14px; font: inherit; font-size: 13.5px; font-weight: 700; cursor: pointer; }
+@media (pointer: coarse) { .gx-nav button { min-height: 44px; padding: 0 16px; } }
+.gx-nav button:hover, .gx-nav button:focus-visible { color: var(--ink); border-color: var(--accent); }
+.gx-tier { margin: 28px 0 0; font-family: var(--f-display); font-weight: 900; font-size: 22px; text-transform: uppercase; letter-spacing: .02em; scroll-margin-top: calc(var(--barH, 56px) + 64px); }
+.gx-page > .panel:first-of-type, .gx-tier + .panel, .gx-tier + .gx { margin-top: 10px; }
+.gx-fold { margin-top: 8px; border-radius: 16px; background: var(--card); border: 1px solid var(--line); box-shadow: var(--shadow); }
+.gx-fold > summary { list-style: none; cursor: pointer; display: flex; align-items: baseline; gap: 6px 14px; flex-wrap: wrap; padding: 14px 44px 14px 16px; position: relative; border-radius: 16px; }
+.gx-fold > summary::-webkit-details-marker { display: none; }
+.gx-fold > summary::after { content: ""; position: absolute; right: 18px; top: 50%; width: 8px; height: 8px; margin-top: -6px; border-right: 2px solid var(--ink-2); border-bottom: 2px solid var(--ink-2); transform: rotate(45deg); transition: transform .2s; }
+.gx-fold[open] > summary::after { transform: rotate(-135deg); margin-top: -2px; }
+.gx-fold > summary:hover .gx-ft { color: var(--accent); }
+.gx-fold .gx-ft { font-weight: 800; font-size: 15.5px; }
+.gx-fold .gx-fs { font-size: 13.5px; color: var(--ink-2); }
+.gx-fold > .panel { margin: 0 !important; border: 0; box-shadow: none; background: transparent; padding-top: 0; }
+.gx-fold > .panel > h3:first-child { display: none; }
+.gx-how { margin-top: 10px; } .gx-how > summary { cursor: pointer; font-size: 13px; font-weight: 600; color: var(--ink-2); width: max-content; }
+.gx-how > summary:hover { color: var(--ink); } .gx-how[open] > summary { margin-bottom: 4px; }
+.gx-q { color: var(--ink-2); }
+.gx-read { margin: 0; padding-left: 18px; display: grid; gap: 6px; font-size: 14.5px; line-height: 1.45; max-width: 80ch; }
+.gx-p { margin: 10px 0 0; font-size: 14px; line-height: 1.45; max-width: 75ch; }
+.gx-score { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-bottom: 12px; }
+.gx-score > div { display: flex; flex-direction: column; } .gx-score i { font-style: normal; font-size: 12px; color: var(--ink-2); }
+.gx-score b { font-family: var(--f-display); font-size: 34px; font-weight: 900; line-height: 1; } .gx-score > span { color: var(--ink-3); font-size: 22px; }
+.gx-score small { flex-basis: 100%; color: var(--ink-2); font-size: 12.5px; }
+.gx-bb .up { color: var(--win); } .gx-bb .dn { color: var(--ink-3); } .gx-pass { color: var(--ink-3); font-size: 12.5px; }
+.gx-steps { display: flex; align-items: stretch; gap: 8px; flex-wrap: wrap; }
+.gx-steps > div { background: var(--card-2); border: 1px solid var(--line); border-radius: 10px; padding: 8px 12px; display: flex; flex-direction: column; min-width: 130px; }
+.gx-steps i { font-style: normal; font-size: 11.5px; color: var(--ink-2); } .gx-steps b { font-size: 16px; } .gx-steps small { color: var(--ink-2); font-size: 12px; }
+.gx-steps .arr { align-self: center; color: var(--ink-3); }
+.gx-oth tr.ours td { color: var(--accent); } .gx-oth tr.vegas td { border-top: 1px solid var(--line); }
+.gx-facts, .gx-news { margin: 0 0 10px; padding-left: 18px; display: grid; gap: 8px; font-size: 14px; }
+.gx-news p { margin: 2px 0 0; color: var(--ink-2); font-size: 13px; } .gx-news small { color: var(--ink-3); }
+.gx-st td.gx-b { font-weight: 800; color: var(--ink); } .gx-st td { color: var(--ink-2); }
+.gx-two { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 18px; } .gx-two > * { min-width: 0; }
+.gx-pl h4 { margin: 0 0 8px; font-size: 15px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; } .gx-pl h4 small { color: var(--ink-2); font-weight: 500; font-size: 12.5px; }
+.gx-lead, .gx-inj, .gx-next { list-style: none; margin: 0 0 8px; padding: 0; display: grid; gap: 6px; font-size: 13.5px; }
+.gx-lead li { display: grid; grid-template-columns: 78px 1fr; column-gap: 8px; } .gx-lead i { font-style: normal; color: var(--ink-3); font-size: 12px; grid-row: span 2; }
+.gx-lead small, .gx-inj small, .gx-next small { color: var(--ink-2); }
+.gx-inj .otag, .gx-inj .qtag { margin-right: 6px; }
+.gx-wx { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(120px, 100%), 1fr)); gap: 8px; }
+.gx-wx-h { background: var(--card-2); border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; display: flex; flex-direction: column; gap: 2px; }
+.gx-wx-h i { font-style: normal; font-size: 11.5px; color: var(--ink-2); } .gx-wx-h b { font-size: 22px; } .gx-wx-h small { color: var(--ink-2); font-size: 12px; }
+.gx table { min-width: 0; } .gx table.gx-lg { min-width: 420px; } .gx-two .scroll { margin-inline: 0; padding-inline: 0; }
+.gx-stk { max-width: 420px; }
+.gx-news a { color: var(--accent); } .gx-oth td.ra { white-space: nowrap; }
+.gx-w { color: var(--win); } .gx-l { color: var(--loss); } .gx-lg small { font-size: 11.5px; }
 .mu-side + .mu-side { margin-top: 18px; }
 .mu-cap { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; font-size: 14px; margin-bottom: 8px; } .mu-cap span { color: var(--ink-3); font-size: 12px; }
 .mu-fill { font-size: 12.5px; color: var(--ink-2); margin: 6px 0 0; }
@@ -672,7 +731,7 @@ table.gl td small { color: var(--ink-2); margin-left: 4px; }
 .legalm .lg .lg-tabs button[aria-pressed="true"] { background: var(--ink); color: var(--card); border-color: var(--ink); }
 .legalm .lg .lg-close { display: block; margin: 14px auto 0; background: none; border: 0; color: var(--ink-3); font-weight: 700; cursor: pointer; }
 .legal-links { display: block; margin-top: 8px; }
-.legal-links a { color: inherit; text-decoration: underline; margin-right: 12px; cursor: pointer; }
+.legal-links a { color: inherit; text-decoration: underline; margin-right: 12px; cursor: pointer; display: inline-block; padding-block: 6px; }
 .authm .tabs2 { display: grid; grid-template-columns: 1fr 1fr; background: var(--card-2); border-radius: 10px; padding: 3px; }
 .authm .tabs2 button { border: 0; background: transparent; height: 34px; border-radius: 8px; font-weight: 700; color: var(--ink-2); cursor: pointer; }
 .authm .tabs2 button[aria-pressed="true"] { background: var(--card); color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,.15); }
@@ -1073,8 +1132,8 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
 .mxe-row .eg-mid i small { display: block; font-style: normal; font-weight: 500; font-size: 11px; color: var(--ink-2); }
 .mxe-row .eg-v small { font-size: 10px; color: var(--ink-2); margin: 0 3px; text-transform: uppercase; }
 
-.bk { display: inline-flex; font-size: 10.5px; font-weight: 900; letter-spacing: .02em; border-radius: 5px; padding: 1px 6px; margin-right: 6px; color: #fff; }
-.bk.dk { background: #2e9b3e; } .bk.circa { background: #2f5bd3; }
+.bkt { display: inline-flex; font-size: 11px; font-weight: 900; letter-spacing: .02em; border-radius: 5px; padding: 1px 6px; margin-right: 6px; color: #fff; }
+.bkt.dk { background: #237a30; } .bkt.circa { background: #2f5bd3; }
 .spl-book { display: flex; align-items: center; gap: 6px; margin-top: 10px; } .spl-book small { color: var(--ink-2); font-size: 11.5px; }
 .spl-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 8px 24px; }
 
@@ -1089,6 +1148,8 @@ footer { font-size: 12.5px; color: var(--ink-2); padding-block: 0 36px; max-widt
 .qtag, .otag { display: inline-block; font-size: 10.5px; font-weight: 800; letter-spacing: .02em; padding: 1px 7px; border-radius: 999px; margin: 0 4px; vertical-align: 1px; text-decoration: none; }
 .qtag { color: #f2b63c; background: rgba(242, 182, 60, .15); }
 .otag { color: #ff6b6b; background: rgba(255, 107, 107, .14); }
+@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) .qtag { color: #8a5600; background: #fdf0d2; } :root:not([data-theme="dark"]) .otag { color: #b0202f; background: #ffe6e8; } }
+:root[data-theme="light"] .qtag { color: #8a5600; background: #fdf0d2; } :root[data-theme="light"] .otag { color: #b0202f; background: #ffe6e8; }
 .pl.out .otag { text-decoration: none; }
 .ij-g { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
 .ij h4 { margin: 0 0 6px; display: flex; align-items: center; gap: 8px; }
@@ -1412,6 +1473,17 @@ body.on-home { overflow-anchor: none; }
 .hm-free b { font-family: var(--f-display); font-size: 26px; font-weight: 800; text-transform: uppercase; letter-spacing: .01em; }
 .hm-free small { color: var(--h-ink-2); font-size: 13px; } .hm-free small b { font-family: var(--f-num); font-size: 13px; color: var(--h-ink); }
 .hm-free .up { color: var(--h-win); } .hm-free .down { color: var(--h-loss); }
+.hm-hero .hm-board.row { grid-template-columns: repeat(4, 1fr); margin-top: 22px; }
+.hm-hero .hm-board.row > div { padding: 12px 14px 13px; border-top: 0; } .hm-hero .hm-board.row > div + div { border-left: 1px solid var(--h-line); }
+.hm-hero .hm-board.row b { font-size: 26px; } .hm-hero .hm-board.row small { display: none; }
+/* the hero picture sits in the hero's bottom-right corner, so its window runs off the screen's right edge and the hero's foot */
+.hm-hero .wrap { min-height: 500px; }
+.hm-hero .wrap > div:first-child { max-width: 590px; }
+.hm-hero .hm-board.row i { white-space: nowrap; letter-spacing: .1em; }
+/* centered beside the copy; the window runs off the screen's right edge and fades out at its foot */
+.hm-demo { position: absolute; right: 0; top: 50%; transform: translateY(-50%); width: min(560px, calc(100vw - 680px)); }
+@media (max-width: 1150px) { .hm-hero .wrap { grid-template-columns: minmax(0, 1fr); min-height: 0; } .hm-hero .wrap > div:first-child { max-width: none; } .hm-demo { position: relative; top: auto; transform: none; width: min(560px, calc(100% - 16px)); margin-left: auto; } }
+@media (max-width: 820px) { .hm-hero .hm-board.row { grid-template-columns: 1fr 1fr; } .hm-hero .hm-board.row > div:nth-child(n+3) { border-top: 1px solid var(--h-line); } .hm-hero .hm-board.row > div:nth-child(3) { border-left: 0; } }
 </style>
 
 </head>
@@ -1452,7 +1524,7 @@ body.on-home { overflow-anchor: none; }
       <div class="sub" id="sub"></div>
     </div>
     <div class="board" id="board" aria-live="polite"></div>
-    <div class="ticker" id="ticker" aria-label="Finals"></div>
+    <div class="ticker" id="ticker" role="marquee" aria-label="Finals"></div>
   </div>
 </section>
 
@@ -2650,7 +2722,7 @@ body.on-home { overflow-anchor: none; }
     return '<div class="panel rvw"><h3>Live review: is each setup beating the closing line?</h3><p class="note">Our rules, set before any live results: once a setup has <b>' + REVIEW.n +
       ' bets</b> with a closing line, it is flagged to move to paper (the owner makes the change, and it\u2019s noted here) if it averages ' + Math.abs(REVIEW.down) + "+ points worse than the close (" + Math.abs(REVIEW.downPct) + "+ win-chance points on moneylines), and earns a star if it averages " + REVIEW.up +
       "+ points better (" + REVIEW.upPct + "+ on moneylines) and beats the close at least half the time. Win–loss doesn\u2019t decide it: the closing line shows a real edge much sooner.</p>" +
-      '<div class="scroll"><table><thead><tr><th>Setup</th><th class="ra">Bets with a close</th><th class="ra">Avg vs close</th><th class="ra">Beat it</th><th>Status</th></tr></thead><tbody>' +
+      '<div class="scroll" tabindex="0" role="region" aria-label="Table, scrolls sideways"><table><thead><tr><th>Setup</th><th class="ra">Bets with a close</th><th class="ra">Avg vs close</th><th class="ra">Beat it</th><th>Status</th></tr></thead><tbody>' +
       rows.map(function (r) {
         var v = reviewOf(r.n || 0, r.avg || 0, r.beat || 0, r.unit), pctU = r.unit === "pct";
         return "<tr><td><b>" + esc(r.name) + "</b>" + (r.note ? "<small class=\"rv-n\">" + esc(r.note) + "</small>" : "") + '</td><td class="ra tnum">' + (r.n || 0) + '</td><td class="ra tnum ' + (r.n ? (r.avg > 0 ? "up" : r.avg < 0 ? "down" : "") : "") + '">' +
@@ -2727,7 +2799,7 @@ body.on-home { overflow-anchor: none; }
       '<div class="panel"><h3>By setup</h3><p class="note">Tap a setup to see every game it produced, ' + (isCBB() ? "day by day" : "week by week") + '. A bet with two setups counts for both.</p>' +
       (sl.length ? sl.map(setupRow).join("") : '<p class="note">No settled bets yet.</p>') + "</div></div>" +
       reviewPanel(sl.map(function (s) { return { name: s.name, n: s.cn || 0, avg: s.cn ? s.cs / s.cn : 0, beat: s.cb || 0 }; })) +
-      '<div class="panel"><h3>Every bet</h3><p class="note">Newest first.</p><div class="scroll"><table><thead><tr><th>' + (isCBB() ? "Day" : "Wk") + '</th><th>Game</th><th>Setup</th><th>Bet</th><th class="ra">Stake</th><th>Final</th><th>Result</th><th class="ra">vs close</th><th class="ra">Units</th><th class="ra">$</th></tr></thead><tbody>' +
+      '<div class="panel"><h3>Every bet</h3><p class="note">Newest first.</p><div class="scroll" tabindex="0" role="region" aria-label="Table, scrolls sideways"><table><thead><tr><th>' + (isCBB() ? "Day" : "Wk") + '</th><th>Game</th><th>Setup</th><th>Bet</th><th class="ra">Stake</th><th>Final</th><th>Result</th><th class="ra">vs close</th><th class="ra">Units</th><th class="ra">$</th></tr></thead><tbody>' +
       (log.length ? log.map(function (x) {
         var pend = x.result === "pending";
         return "<tr><td>" + esc(isCBB() ? dayShort(x.week) : x.week) + "</td><td>" + esc(x.game) + "</td><td>" + esc(x.setup) + (retiredSet()[x.setup] ? ' <span class="badge">Retired</span>' : "") + "</td><td><b>" + esc(pretty(x.pick)) + '</b></td><td class="ra">' + u(x.stake) + "u</td><td>" + esc(x.final || "") +
@@ -3073,7 +3145,7 @@ body.on-home { overflow-anchor: none; }
       (anyPlays ? '<button type="button" class="chip" id="tplays" aria-pressed="' + !!state.tplays + '">' + (nba ? "Playing today" : wkCard()) + "</button>" : "") +
       '<button type="button" class="chip colbtn" id="colsBtn" aria-expanded="' + !!state.colsOpen + '">Columns · ' + shown.length + " of " + cols.length + "</button>" + dl + "</div>" +
       '<div class="colgroups' + (state.colsOpen ? " open" : "") + '">' + groups + '<div class="cg cg-q"><button type="button" class="lnk2" data-cols="core">Core columns</button><button type="button" class="lnk2" data-cols="all">Show all</button></div></div>' +
-      '<div class="scroll"><table class="tt nflt"><thead><tr><th class="ra"><button type="button" class="ths' + (srt.k === "rank" ? " on" : "") + '" data-sortk="rank">#' + (srt.k === "rank" ? (srt.dir > 0 ? " ▴" : " ▾") : "") + "</button></th><th>Team</th>" + shown.map(th).join("") + "</tr></thead><tbody>" +
+      '<div class="scroll" tabindex="0" role="region" aria-label="Table, scrolls sideways"><table class="tt nflt"><thead><tr><th class="ra"><button type="button" class="ths' + (srt.k === "rank" ? " on" : "") + '" data-sortk="rank">#' + (srt.k === "rank" ? (srt.dir > 0 ? " ▴" : " ▾") : "") + "</button></th><th>Team</th>" + shown.map(th).join("") + "</tr></thead><tbody>" +
       list.map(function (t) {
         var cell = '<div class="tcell1">' + bdg(t) + "<b>" + esc(t.team) + '</b><small class="nick">' + esc(nickOf(t)) + "</small>" + (plays[t.team] ? '<span class="oncard" title="' + (nba ? "Plays today" : wkCard()) + '">' + (nba ? "today" : "card") + "</span>" : "") +
           '<span class="pl-tog">\u203a</span></div>';
@@ -3141,7 +3213,7 @@ body.on-home { overflow-anchor: none; }
       (hasConf ? '<select class="sel" id="tconf" aria-label="Conference"><option value="all">All conferences</option>' + Object.keys(confs).sort().map(function (c) { return '<option' + (c === state.tconf ? " selected" : "") + ">" + esc(c) + "</option>"; }).join("") + "</select>" : "") +
       '<button type="button" class="chip" id="tplays" aria-pressed="' + !!state.tplays + '">On this week\u2019s card</button>' +
       '<input class="search" id="tq" type="search" placeholder="Search team" value="' + esc(state.tq) + '" aria-label="Search team"></div>' +
-      '<div class="scroll"><table class="tt"><thead><tr><th class="ra">#</th><th></th><th>Team</th><th>' + (state.sport === "nfl" ? "Rating" : "Net") + '</th><th class="ra">Off</th><th class="ra">Def</th>' + (hasMkt ? '<th class="ra">Market</th><th class="ra">Model\u2212Mkt</th>' : "") + (hasEpa ? '<th class="ra">Off EPA</th><th class="ra">Def EPA</th>' : "") + (state.sport === "nfl" ? '<th>QB</th><th class="ra">Record</th><th class="ra">ATS</th>' : "") + "</tr></thead><tbody>" +
+      '<div class="scroll" tabindex="0" role="region" aria-label="Table, scrolls sideways"><table class="tt"><thead><tr><th class="ra">#</th><th></th><th>Team</th><th>' + (state.sport === "nfl" ? "Rating" : "Net") + '</th><th class="ra">Off</th><th class="ra">Def</th>' + (hasMkt ? '<th class="ra">Market</th><th class="ra">Model\u2212Mkt</th>' : "") + (hasEpa ? '<th class="ra">Off EPA</th><th class="ra">Def EPA</th>' : "") + (state.sport === "nfl" ? '<th>QB</th><th class="ra">Record</th><th class="ra">ATS</th>' : "") + "</tr></thead><tbody>" +
       list.map(function (r) {
         var t = r.t, w = Math.min(50, Math.abs(t.net) / maxNet * 50);
         return "<tr" + (plays[t.team] ? ' class="onslate"' : "") + '><td class="ra rkc">' + t.rank + "</td>" +
@@ -3215,7 +3287,7 @@ body.on-home { overflow-anchor: none; }
       (state.sport === "nba" ? " NBA setups use the same scale. Tired Traveler, Fade the Sim and Combo watch are bets (Combo watch since Nov 9). Vegas Knows (paper since Nov 12) and Model Knows (paper since Nov 13) are tracked, not bet: Vegas Knows\u2019 favorites won 375-231 (61.9%) outright, but at their usual price (around \u2212230) a bet needs about 70% to pay, so its backtest lost about 11% per bet; Model Knows\u2019 backtest knew final lineups, which a bet placed earlier doesn\u2019t. The four betting-splits setups are paper from Nov 13 too." : "") +
       (nfl ? " A setup goes on the NFL card when its honest rate is <b>54% or better</b>. There are no paper bets: everything listed here is bet. Setups new this season bet 0.5u until they have a live season behind them." : "") + "</p>" +
       '<div class="how">' + TT.map(function (t) { return "<div>" + starsHtml(t[0]) + "<b>" + t[1] + "</b><small>honest rate · " + t[2] + "</small></div>"; }).join("") + "</div></div>" +
-      '<div class="panel"><h3>Every setup, by historical win rate</h3><div class="scroll"><table class="tt sr-t"><thead><tr><th class="ra">#</th><th>Setup</th><th>Stars</th><th class="ra">Win rate</th><th class="ra">Record</th><th class="ra">Honest rate</th><th class="ra">Stake</th></tr></thead><tbody>' +
+      '<div class="panel"><h3>Every setup, by historical win rate</h3><div class="scroll" tabindex="0" role="region" aria-label="Table, scrolls sideways"><table class="tt sr-t"><thead><tr><th class="ra">#</th><th>Setup</th><th>Stars</th><th class="ra">Win rate</th><th class="ra">Record</th><th class="ra">Honest rate</th><th class="ra">Stake</th></tr></thead><tbody>' +
       S.map(function (s, i) {
         var r = parseRecord(s.record), hr = histRate(s), hon = honestOf(s), leg = /teaser/i.test(s.name);
         var stake = s.stake != null ? +s.stake : (/(\d+(?:\.\d+)?)u/.exec(s.where || "") || [])[1];
@@ -3667,7 +3739,7 @@ body.on-home { overflow-anchor: none; }
     });
   }
   function listHtml(list) {
-    return '<div class="panel" style="padding:6px 8px"><div class="scroll"><table class="gl"><thead><tr><th>Tip</th><th>Game</th><th class="ra">Ours</th><th class="ra">Market</th><th class="ra">Gap</th><th class="ra">Total</th><th class="ra">Mkt total</th><th class="ra">Win %</th></tr></thead><tbody>' +
+    return '<div class="panel" style="padding:6px 8px"><div class="scroll" tabindex="0" role="region" aria-label="Table, scrolls sideways"><table class="gl"><thead><tr><th>Tip</th><th>Game</th><th class="ra">Ours</th><th class="ra">Market</th><th class="ra">Gap</th><th class="ra">Total</th><th class="ra">Mkt total</th><th class="ra">Win %</th></tr></thead><tbody>' +
       list.map(function (g) {
         var s = nbaScore(g), score = s && (s.status === "live" || s.status === "final") ? " <small>" + s.away + "–" + s.home + "</small>" : "";
         if (s && s.status === "final") score += " " + closerTag(closerOf(+s.home - +s.away, g.our_spread, g.mkt_spread));
@@ -3818,7 +3890,7 @@ body.on-home { overflow-anchor: none; }
         var d = new Date(r.date), w = r.us > r.them ? home : away, where = r.at === "neutral" ? "Neutral" : r.at === "home" ? "at " + shortName(home) : "at " + shortName(away);
         return "<tr><td>" + esc(d.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" })) + (r.post ? ' <small class="mu-post">' + esc(/play|post|tourn/i.test(r.name) ? r.name : "Postseason") + "</small>" : "") +
           "</td><td>" + esc(where) + '</td><td class="tnum">' + esc(shortName(away)) + " " + r.them + " – " + r.us + " " + esc(shortName(home)) + "</td><td>" + (r.us === r.them ? "Tie" : '<span class="mu-w">' + badge(w, isNBA() || state.sport === "nfl" ? w : null, "sm") + " " + esc(shortName(w)) + " by " + Math.abs(r.us - r.them) + "</span>") + "</td></tr>"; };
-        var th = '<div class="scroll"><table class="mu-tbl"><thead><tr><th>Date</th><th>Where</th><th>Final</th><th>Winner</th></tr></thead><tbody>';
+        var th = '<div class="scroll" tabindex="0" role="region" aria-label="Table, scrolls sideways"><table class="mu-tbl"><thead><tr><th>Date</th><th>Where</th><th>Final</th><th>Winner</th></tr></thead><tbody>';
         return th + h.rows.slice(0, 5).map(tr).join("") + "</tbody></table></div>" +
           (h.rows.length > 5 ? '<details class="gp-more"><summary>Show all ' + h.rows.length + " meetings</summary>" + th + h.rows.slice(5).map(tr).join("") + "</tbody></table></div></details>" : "");
       })() + '<p class="note">History, not a pick: head-to-head records didn’t beat the closing line in our tests.</p></div>';
@@ -4289,7 +4361,7 @@ body.on-home { overflow-anchor: none; }
       return '<div class="panel mu-edges"><h3>Who has the edge</h3>' + edgePointsHtml(away, home) +
         '<div class="eg-sub">The numbers behind it <small>(\u2605 = moves the line most; the bar shows who\u2019s better and by how much)</small></div>' +
         '<div class="eg-head"><span>' + badge(away, nfl ? away : null, "sm") + " " + esc(shortName(away)) + "</span><span>" + esc(shortName(home)) + " " + badge(home, nfl ? home : null, "sm") + "</span></div>" + rows +
-        luckRow(away, home) + '<p class="note">' + (isNBA() || isCBB() ? "Luck and recent form are shown because they mislead: lucky records and hot streaks tend to fade. " : "") + "The points breakdown at the top is our model\u2019s actual math.</p></div>";
+        luckRow(away, home) + '<p class="note">' + (isNBA() || isCBB() ? "Luck and recent form are shown because they mislead: lucky records and hot streaks tend to fade. " : "") + "The bars at the top of this card are our model\u2019s actual math.</p></div>";
     }
     var mrows = (best ? '<p class="mu-best"><b>Biggest mismatch:</b> ' + esc(best.l.toLowerCase()) + ", " + nm(best.oT) + " #" + best.oR + " vs " + nm(best.dT) + " #" + best.dR + " (of " + best.n + "), edge " + nm(best.edge) + ".</p>" : "") +
       M.map(function (m) {
@@ -4310,7 +4382,7 @@ body.on-home { overflow-anchor: none; }
       luckRow(away, home) +
       (mrows ? '<div class="eg-sub">Matchup evaluator <small>(one team\u2019s strength vs the other\u2019s weakness: ranks this season, 1 = best)</small></div>' + mrows +
         '<p class="note">Vegas prices much of this already. We\u2019re testing which mismatches still beat the line; those will get a \u2605.</p>' : "") + tb +
-      '<p class="note">' + (isNBA() || isCBB() ? "Luck and recent form are shown because they mislead: lucky records and hot streaks tend to fade. " : "") + "The points breakdown at the top is our model\u2019s actual math.</p></div>";
+      '<p class="note">' + (isNBA() || isCBB() ? "Luck and recent form are shown because they mislead: lucky records and hot streaks tend to fade. " : "") + "The bars at the top of this card are our model\u2019s actual math.</p></div>";
   }
   function talentBars(away, home) {
     var A = teamRow0(away), H = teamRow0(home); if (!A || !H || A.talent == null || H.talent == null) return "";
@@ -4365,6 +4437,331 @@ body.on-home { overflow-anchor: none; }
     }
     return hd + '<div class="fm-g">' + col(away, v.a) + col(home, v.h) + "</div></div>";
   }
+  // ---------- college football game page: the full pregame breakdown (Nov 14 2026, owner's request: "this kind of information for every game") ----------
+  // Built for every game from: our sheet (numbers, picks, the line when it was built, QB check), the publish step's extras (every game this season with
+  // closing lines, season stats, SP+/FPI/SRS/Elo, the venue), the season simulation (what a win or loss is worth), the splits, ESPN's game summary
+  // (news, leaders, injuries, matchup predictor) and Open-Meteo (the kickoff forecast). Display only: nothing here changes a number or a bet.
+  function gxRow(away, home) { var out = null; slateRows().forEach(function (r) { if (r.g.away === away && r.g.home === home) out = r; }); return out; }
+  function gxSum(eid) { return eid ? muGet("sum|" + sportKey() + "|" + eid, function () { return espnGet("/apis/site/v2/sports/" + muPath() + "/summary?event=" + eid); }) : { err: 1 }; }
+  function gxTeamId(j, side) { var c = j && j.header && j.header.competitions && j.header.competitions[0]; var out = ""; ((c && c.competitors) || []).forEach(function (t) { if (t.homeAway === side) out = String(t.id || (t.team && t.team.id) || ""); }); return out; }
+  function gxByTeam(arr, id) { var out = null; (arr || []).forEach(function (t) { if (String((t.team && t.team.id) || "") === String(id)) out = t; }); return out; }
+  function gxPanel(id, title, body) { return '<div class="panel gx" id="gx-' + id + '"><h3>' + title + "</h3>" + body + "</div>"; }
+  function gxFav(ha, aa, v) { return fmtSpread(ha, aa, v); }
+  function gxSide(v, ha, aa) { return v > 0 ? ha : aa; }                       // a home-spread gap (line - ours): + = we like home more
+  // Nov 15 2026 (design critique): the page reads in three tiers. The call stays open; Why and Background fold into rows with a one-line summary
+  var GX_NAV = [["t-call", "The call"], ["t-why", "Why"], ["t-bg", "Background"]];
+  function gxNav() { return '<nav class="gx-nav" aria-label="Sections of this game">' + GX_NAV.map(function (n) { return '<button type="button" data-jump="gx-' + n[0] + '">' + esc(n[1]) + "</button>"; }).join("") + "</nav>"; }
+  function gxTier(id, title) { return '<h2 class="gx-tier" id="gx-' + id + '">' + esc(title) + "</h2>"; }
+  function gxFold(id, title, summary, body) {
+    if (!body) return "";
+    var open = !!(state.gxOpen && state.gxOpen[id]);
+    return '<details class="gx-fold" data-fold="' + id + '"' + (open ? " open" : "") + '><summary><span class="gx-ft">' + esc(title) + '</span><span class="gx-fs">' + summary + "</span></summary>" + body + "</details>";
+  }
+  function gxVerdict(m, r, j) {
+    var g = r.g, ha = abbr(g.home), aa = abbr(g.away), tone = "pass", head, why;
+    if (r.picks.length) {
+      tone = "bet";
+      head = "Our bet: " + r.picks.map(function (x) { return esc(pretty(x.pick)); }).join(" \u00b7 ");
+      why = r.picks.map(function (x) { var q = rated(x); return starsHtml(q.stars) + " " + u(q.stake) + "u" + ((x.setups || [])[0] ? " \u00b7 " + esc(x.setups[0].name) : ""); }).join("<br>");
+    } else {
+      head = "No bet on this game";
+      why = r.dS == null || Math.abs(r.dS) < 1 ? "We\u2019re in line with Vegas." :
+        "Our stats like " + esc(gxSide(r.dS, ha, aa)) + " by " + u(Math.abs(r.dS)) + " more than Vegas, but none of our tested setups fired, so we pass.";
+      var mv = gxMove(r);
+      if (Math.abs(r.dS || 0) >= 6 && mv && mv.ours === -1 && Math.abs(mv.d) >= 1) why += " It fits Gap Reversal, which we track on paper.";
+    }
+    var sc = r.sc, k = (parseET(m.kickoff || g.kickoff) || {}).utc, when = "";
+    if (sc && sc.status === "live") when = "Live \u00b7 " + esc(aa) + " " + sc.away + ", " + esc(ha) + " " + sc.home;
+    else if (sc && sc.status === "final") when = "Final \u00b7 " + esc(aa) + " " + sc.away + ", " + esc(ha) + " " + sc.home;
+    else if (k) { var mins = Math.round((k - Date.now()) / 60000); when = mins > 0 && mins < 48 * 60 ? "Kickoff in " + (mins >= 60 ? Math.floor(mins / 60) + "h " : "") + (mins % 60) + "m" : esc(kickText(m.kickoff || g.kickoff)); }
+    var line = r.ls == null ? "" : "Vegas " + esc(gxFav(ha, aa, r.ls)) + (r.live ? " now" : " at our sheet");
+    return '<section class="gx-verdict" data-tone="' + tone + '" aria-label="Verdict"><div class="gv-main"><b>' + head + '</b><span>' + why + '</span></div><div class="gv-side">' +
+      (when ? "<span>" + when + "</span>" : "") + (line ? "<span>" + line + "</span>" : "") + "</div></section>";
+  }
+  function gxSumEdge(g) { var P = (g.pieces || []).filter(function (p) { return p && p.v; }).sort(function (a, b) { return Math.abs(b.v) - Math.abs(a.v); })[0]; return P ? "Biggest factor: " + esc(String(P.l).replace(/\s*\(.*\)$/, "").toLowerCase()) + ", " + esc(P.v > 0 ? abbr(g.home) : abbr(g.away)) + " +" + u(Math.abs(P.v)) : "How the two teams compare"; }
+  function gxSumOthers(r) { var O = r.g.others || {}, K = Object.keys(O).filter(function (k) { return O[k] != null; }); if (!K.length) return "Posts with the next notebook run"; var avg = K.reduce(function (a, k) { return a + O[k]; }, 0) / K.length; return "Average of " + K.length + " public ratings: " + esc(gxFav(abbr(r.g.home), abbr(r.g.away), Math.round(avg * 10) / 10)); }
+  function gxSumNews(j, g) { var n = j && !j.err && j.news && (j.news.articles || []).length; return (g.qb ? "QB check \u00b7 " : "") + (n ? n + " ESPN " + (n === 1 ? "story" : "stories") : j && !j.err ? "No ESPN stories yet" : "Kickoff, venue and TV"); }
+  function gxSumPlayers(j, g) { if (!j || j.err) return "Season leaders and ESPN\u2019s injury list"; var n = []; [["away", g.away], ["home", g.home]].forEach(function (x) { var t = gxByTeam(j.injuries, gxTeamId(j, x[0])), k = ((t && t.injuries) || []).filter(function (y) { return isOut(y.status); }).length; if (k) n.push(abbr(x[1]) + " " + k + " out"); }); return n.length ? esc(n.join(" \u00b7 ")) : "Nobody listed out"; }
+  function gxSumWx(m, g) { if (g.roof === "dome" || g.roof === "closed" || (g.venue && g.venue.dome)) return "Indoors"; var k = (parseET(m.kickoff || g.kickoff) || {}).utc, w = k && MU["wx|" + g.away + "|" + g.home + "|" + k]; w = w && w.v; var h = w && w.hrs && w.hrs[0]; return h ? Math.round(h.temp) + "\u00b0, wind " + Math.round(h.wind) + " mph at kickoff" : "The kickoff forecast"; }
+  function gxSumStats(g) { var R = g.rec || {}; function one(n, x) { return x ? abbr(n) + " " + x.w + "\u2013" + x.l + (x.ats ? " (ATS " + x.ats[0] + "\u2013" + x.ats[1] + ")" : "") : ""; } var t = [one(g.away, R.away), one(g.home, R.home)].filter(Boolean).join(" \u00b7 "); return t ? esc(t) : "Yards, points, third downs, turnovers"; }
+  function gxSumStakes(g) { var a = projOf(g.away), h = projOf(g.home), sw = function (t) { var s = t && t.stakes; return s ? (s.bowl_w - s.bowl_l) + ((s.ccg_w || 0) - (s.ccg_l || 0)) : null; }; var A = sw(a), H = sw(h); return A != null && H != null && Math.abs(A - H) >= .1 ? "More riding on " + esc(shortName(A > H ? g.away : g.home)) : "Bowl and title-game chances, win or lose"; }
+  function gxSumH2h(m) { var x = historyFor(m.away, m.home); return x && (x.facts || [])[0] ? esc(x.facts[0]) : "Past meetings"; }
+  // long explanation notes go behind "How to read this" (built after render so every panel gets the same treatment)
+  function gxHowTo(root) {
+    root.querySelectorAll(".gx-page .panel > p.note").forEach(function (p) {
+      if (p.closest("#gx-read") || p.textContent.length < 110 || p.parentNode.tagName === "DETAILS") return;
+      var rest = [].filter.call(p.parentNode.children, function (c) { return c !== p && c.tagName !== "H3"; });
+      if (!rest.length) return;                  // an empty state's message stays in view
+      var d = document.createElement("details"); d.className = "gx-how"; d.innerHTML = "<summary>How to read this</summary>";
+      p.parentNode.insertBefore(d, p); d.appendChild(p);
+    });
+  }
+
+  // ---- the quick read: the whole page in a few plain sentences
+  function gxRead(m, r, j) {
+    var g = r.g, ha = abbr(g.home), aa = abbr(g.away), out = [];
+    if (g.model_spread != null && r.ls != null) {
+      var t = "Our stats make it " + gxFav(ha, aa, g.model_spread) + "; Vegas has " + gxFav(ha, aa, r.ls) + ". ";
+      t += r.dS == null || Math.abs(r.dS) < 1 ? "We’re right in line with Vegas." : (Math.abs(r.dS) >= 6 ? "That’s a big gap: " : "That’s ") + u(Math.abs(r.dS)) + " points more on " + gxSide(r.dS, ha, aa) + " than the market.";
+      out.push(esc(t));
+    }
+    var mv = gxMove(r);
+    if (mv && Math.abs(mv.d) >= .5) out.push(esc("The line opened " + gxFav(ha, aa, g.open_spread) + " and is " + gxFav(ha, aa, r.ls) + " now: " + u(Math.abs(mv.d)) + " toward " + mv.to + (mv.keys.length ? ", through " + mv.keys.join(" and ") : "") + "." +
+      (mv.ours === 1 ? " That’s toward the side our stats like." : mv.ours === -1 ? " That’s away from the side our stats like." : "")));
+    if (Math.abs(r.dS || 0) >= 6 && mv && mv.ours === -1 && Math.abs(mv.d) >= 1) out.push("This fits our <b>Gap Reversal</b> setup (a big gap with the line moving against us), which we track on paper but don’t bet yet.");
+    var S = splitsOf(g.away, g.home);
+    if (S) {
+      var sh = [];
+      splitBooks(S).forEach(function (x) { ["spread", "total"].forEach(function (mk) { var q = splitRead(x[1], mk); if (q && q.sharp) sh.push((x[0] === "DK" ? "DraftKings" : "Circa") + " on " + sideName(q.sharp, aa, ha) + (mk === "total" ? "" : " (spread)")); }); });
+      out.push(sh.length ? "Sharp money (money 10+ points above tickets): " + esc(sh.join("; ")) + "." : "No sharp lean in the betting splits.");
+    }
+    var O = g.others || {}, keys = Object.keys(O);
+    if (keys.length && r.ls != null && g.model_spread != null && r.dS != null && Math.abs(r.dS) >= 1) {
+      var same = keys.filter(function (k) { return O[k] != null && (r.ls - O[k]) * r.dS > 0 && Math.abs(r.ls - O[k]) >= 1; });
+      out.push(esc(same.length + " of " + keys.length + " public ratings (" + keys.join(", ") + ") also like " + gxSide(r.dS, ha, aa) + " more than Vegas does."));
+    }
+    if (g.qb) out.push("QB check: " + esc(g.qb) + ".");
+    if (j && !j.err) {
+      var n = [];
+      [["away", aa], ["home", ha]].forEach(function (s) { var t = gxByTeam(j.injuries, gxTeamId(j, s[0])), k = ((t && t.injuries) || []).filter(function (x) { return isOut(x.status); }).length; if (k) n.push(s[1] + " " + k); });
+      if (n.length) out.push(esc("ESPN lists players out: " + n.join(", ") + " (see Players & injuries)."));
+    }
+    if (g.wind_flag) out.push("Wind 12+ mph is in the forecast, one of the signals behind our under bets.");
+    return gxPanel("read", "Quick read", "<ul class=\"gx-read\">" + out.map(function (s) { return "<li>" + s + "</li>"; }).join("") + "</ul>");
+  }
+
+  // ---- projected score and every market side by side
+  function gxBoard(r) {
+    var g = r.g, ha = abbr(g.home), aa = abbr(g.away), sd = rkCfg().sd;
+    if (g.model_spread == null || g.model_total == null) return "";
+    function score(sp, tot) { var mg = -sp; return { h: Math.round((tot + mg) / 2), a: Math.round((tot - mg) / 2) }; }
+    var s = score(g.model_spread, g.model_total);
+    var sc = '<div class="gx-score"><div><i>' + esc(shortName(g.away)) + "</i><b>" + s.a + '</b></div><span>–</span><div><i>' + esc(shortName(g.home)) + "</i><b>" + s.h + "</b></div>" +
+      '<small>From our stats: ' + esc(gxFav(ha, aa, g.model_spread)) + ", total " + u(g.model_total) + "</small></div>";
+    var mine = {}; r.picks.forEach(function (x) { var p = pickSide(x); if (p) mine[p.mkt + "|" + p.side] = x; });
+    function call(k) { var x = mine[k]; return x ? '<span class="sg-pick">' + starsHtml(rated(x).stars) + " Bet · " + u(rated(x).stake) + "u</span>" : '<span class="gx-pass">Pass</span>'; }
+    function gapCell(ed, k) { if (ed == null) return "—"; if (Math.abs(ed) < .5) return "0"; var t = (ed > 0 ? "+" : MIN) + u(Math.abs(ed)); return mine[k] && ed > 0 ? '<b class="up">' + t + "</b>" : '<span class="gx-q">' + t + "</span>"; }
+    var rows = [];
+    if (r.ls != null) {
+      var pHc = r.ms == null ? null : normCdf((r.ls - r.ms) / sd);           // home covers the line
+      [["away", aa, -r.ls, pHc == null ? null : 1 - pHc], ["home", ha, r.ls, pHc]].forEach(function (x) {
+        var ed = r.dS == null ? null : (x[0] === "home" ? r.dS : -r.dS);
+        rows.push("<tr><td>" + esc(x[1]) + " " + (x[2] > 0 ? "+" : x[2] < 0 ? MIN : "") + u(Math.abs(x[2])) + '</td><td>' + call("spread|" + x[0]) + '</td><td class="ra">' + gapCell(ed, "spread|" + x[0]) +
+          '</td><td class="ra">' + (x[3] == null ? "—" : Math.round(100 * x[3]) + "%") + "</td></tr>");
+      });
+    }
+    if (r.lt != null) {
+      [["over", "Over"], ["under", "Under"]].forEach(function (x) {
+        var ed = r.dT == null ? null : (x[0] === "over" ? r.dT : -r.dT);
+        rows.push("<tr><td>" + x[1] + " " + u(r.lt) + '</td><td>' + call("total|" + x[0]) + '</td><td class="ra">' + gapCell(ed, "total|" + x[0]) + '</td><td class="ra">—</td></tr>');
+      });
+    }
+    if (r.pH != null) {
+      [[aa, 1 - r.pH], [ha, r.pH]].forEach(function (x) { var a = amerExact(x[1]); rows.push("<tr><td>" + esc(x[0]) + ' to win</td><td><small class="gx-q">fair ' + (a == null ? "—" : (a > 0 ? "+" : MIN) + Math.abs(a)) + '</small></td><td class="ra">—</td><td class="ra">' + Math.round(100 * x[1]) + "%</td></tr>"); });
+    }
+    return gxPanel("board", "Projected score &amp; bet board", sc +
+      '<div class="scroll" tabindex="0" role="region" aria-label="Table, scrolls sideways"><table class="mu-tbl gx-bb"><thead><tr><th>Market</th><th>Call</th><th class="ra">Stats gap</th><th class="ra">Chance</th></tr></thead><tbody>' + rows.join("") + "</tbody></table></div>" +
+      '<p class="note"><b>Call</b> = what we’re betting: only the setups on the Picks tab beat closing lines in our backtests, so a gap alone is a pass. <b>Stats gap</b> = how many points better this side is by our stats than the number you can bet. <b>Chance</b> comes from our line (stats mixed with the market), the number that predicted best in testing. ' +
+      "<b>Fair</b> = the moneyline that chance is worth; a book price better than fair is value only if our line is right.</p>");
+  }
+
+  // ---- line movement: open -> when the sheet was built -> now, key numbers, and what our gap test says it means
+  var GX_KEYS = [3, 7, 10, 14];
+  function gxMove(r) {
+    var g = r.g, o = g.open_spread, n = r.ls; if (o == null || n == null) return null;
+    var d = n - o, keys = [];                                          // d < 0: moved toward home
+    if (o * n < 0 && Math.abs(o) >= .5 && Math.abs(n) >= .5) keys.push("a new favorite");
+    else GX_KEYS.forEach(function (k) { var lo = Math.min(Math.abs(o), Math.abs(n)), hi = Math.max(Math.abs(o), Math.abs(n)); if (lo < k && hi > k) keys.push(String(k)); });
+    var to = Math.abs(d) < .5 ? "" : d < 0 ? abbr(g.home) : abbr(g.away);
+    var ours = r.dS == null || Math.abs(r.dS) < 1 || Math.abs(d) < .5 ? 0 : ((d < 0) === (r.dS > 0) ? 1 : -1);
+    return { o: o, n: n, d: d, to: to, keys: keys, ours: ours };
+  }
+  function gxMoveHtml(r) {
+    var g = r.g, ha = abbr(g.home), aa = abbr(g.away), mv = gxMove(r);
+    var pts = [];
+    if (g.open_spread != null) pts.push(["Opened", gxFav(ha, aa, g.open_spread), g.open_total]);
+    if (g.line_spread != null) pts.push(["When our sheet ran", gxFav(ha, aa, g.line_spread), g.line_total]);
+    if (r.live && r.ls != null) pts.push(["Now (ESPN)", gxFav(ha, aa, r.ls), r.lt]);
+    if (!pts.length) return gxPanel("move", "Line movement", '<p class="note">No line recorded for this game yet.</p>');
+    var steps = '<div class="gx-steps">' + pts.map(function (p, i) { return (i ? '<span class="arr">→</span>' : "") + "<div><i>" + p[0] + "</i><b>" + esc(p[1]) + "</b><small>Total " + (p[2] == null ? "—" : u(p[2])) + "</small></div>"; }).join("") + "</div>";
+    var txt = "";
+    if (mv && Math.abs(mv.d) >= .5) {
+      txt = "The spread moved <b>" + u(Math.abs(mv.d)) + " points toward " + esc(mv.to) + "</b>" + (mv.keys.length ? ", through " + esc(mv.keys.join(" and ")) + (mv.keys[0] === "a new favorite" ? "" : " (key numbers: more games land on 3 and 7 than any others)") : "") + ". ";
+      if (Math.abs(r.dS || 0) >= 6) txt += mv.ours === 1 ? "With a gap this big and the line coming our way, our gap test had our side covering 59.4% at the opening number but only 51.6% at the close: the value gets bet out, so the earlier the better." :
+        mv.ours === -1 ? "With a gap this big and the line moving against us, our side covered just 47.4% at the opening number, but 56.1% at the closing number (98 games, a small sample). That’s the Gap Reversal setup we’re tracking on paper." : "";
+      else txt += "For gaps under 6 points our tests didn’t find that line movement predicts anything on its own.";
+    } else txt = "The spread hasn’t moved since it opened.";
+    if (g.open_total != null && r.lt != null && Math.abs(r.lt - g.open_total) >= .5) txt += " The total moved " + (r.lt > g.open_total ? "up " : "down ") + u(Math.abs(r.lt - g.open_total)) + " (" + u(g.open_total) + " → " + u(r.lt) + ").";
+    return gxPanel("move", "Line movement", steps + '<p class="gx-p">' + txt + '</p><p class="note">Opening = the consensus opener; the sheet line is what our numbers were built against; now = ESPN’s live line before kickoff.' + (splitsOf(g.away, g.home) ? " The betting splits show who’s moving it." : "") + "</p>");
+  }
+
+  // ---- other public ratings next to ours and Vegas
+  function gxOthers(r, j) {
+    var g = r.g, ha = abbr(g.home), aa = abbr(g.away), O = g.others || {}, rows = [];
+    function row(name, v, note, cls) {
+      var gap = v == null || r.ls == null ? null : r.ls - v;
+      rows.push("<tr" + (cls ? ' class="' + cls + '"' : "") + "><td>" + name + (note ? " <small>" + note + "</small>" : "") + '</td><td class="ra">' + esc(v == null ? "—" : gxFav(ha, aa, v)) + '</td><td class="ra">' + (gap == null || Math.abs(gap) < .5 ? "—" : u(Math.abs(gap)) + " more on " + esc(gxSide(gap, ha, aa))) + "</td></tr>");
+    }
+    row("Our stats", g.model_spread, "", "ours");
+    if (r.tl && r.ms != null) row("Our line", r.ms, "mixed with the market", "ours");
+    var names = { "SP+": "SP+ (Bill Connelly)", FPI: "FPI (ESPN)", Elo: "Elo", SRS: "SRS (schedule-adjusted margin)" };
+    var vals = [];
+    ["SP+", "FPI", "Elo", "SRS"].forEach(function (k) { if (O[k] != null) { row(names[k], O[k]); vals.push(O[k]); } });
+    if (vals.length >= 2) row("<b>Average of public ratings</b>", Math.round(10 * vals.reduce(function (a, b) { return a + b; }, 0) / vals.length) / 10);
+    if (r.ls != null) rows.push('<tr class="vegas"><td><b>Vegas</b></td><td class="ra"><b>' + esc(gxFav(ha, aa, r.ls)) + '</b></td><td class="ra"></td></tr>');
+    var pr = j && !j.err && j.predictor, pw = "";
+    if (pr && pr.homeTeam && pr.awayTeam) {
+      var ph = parseFloat(pr.homeTeam.gameProjection), pa = parseFloat(pr.awayTeam.gameProjection);
+      if (!isNaN(ph) && !isNaN(pa)) pw = '<p class="gx-p">ESPN’s matchup predictor: <b>' + esc(ph >= pa ? ha : aa) + " " + Math.round(Math.max(ph, pa)) + "%</b> to win" + (r.pH != null ? " (ours: " + esc(r.pH >= .5 ? ha : aa) + " " + Math.round(100 * Math.max(r.pH, 1 - r.pH)) + "%)" : "") + ".</p>";
+    }
+    if (!Object.keys(O).length && !pw) return gxPanel("others", "Other models vs Vegas", '<p class="note">The other ratings post with the next notebook run.</p>');
+    return gxPanel("others", "Other models vs Vegas", '<div class="scroll" tabindex="0" role="region" aria-label="Table, scrolls sideways"><table class="mu-tbl gx-oth"><thead><tr><th>Model</th><th class="ra">Line</th><th class="ra">vs Vegas</th></tr></thead><tbody>' + rows.join("") + "</tbody></table></div>" + pw +
+      '<p class="note">Each public rating is turned into a spread the simple way: the rating gap plus 2.5 points for home field (Elo: gap ÷ 25). They’re approximate and none of them is a bet signal; we haven’t tested whether agreeing with them helps. When most of them sit on Vegas’ side of our number, that’s worth a look at what our stats might be missing.</p>');
+  }
+
+  // ---- news (ESPN stories on this game and both teams)
+  function gxNews(m, r, j) {
+    var g = r.g, items = [];
+    if (j && !j.err) ((j.news && j.news.articles) || []).slice(0, 5).forEach(function (a) {
+      var href = a.links && a.links.web && a.links.web.href, when = a.published ? new Date(a.published) : null;
+      if (!a.headline) return;
+      items.push("<li>" + (href ? '<a href="' + esc(href) + '" target="_blank" rel="noopener">' + esc(a.headline) + "</a>" : esc(a.headline)) + (when && !isNaN(when) ? " <small>" + esc(when.toLocaleDateString(undefined, { month: "short", day: "numeric" })) + "</small>" : "") + (a.description ? "<p>" + esc(a.description) + "</p>" : "") + "</li>");
+    });
+    var notes = [];
+    if (g.qb) notes.push("<li><b>QB check (last game):</b> " + esc(g.qb) + "</li>");
+    var gi = j && !j.err && j.gameInfo, vn = gi && gi.venue;
+    if (vn && vn.fullName) notes.push("<li><b>Where:</b> " + esc(vn.fullName) + (vn.address && vn.address.city ? ", " + esc(vn.address.city) + (vn.address.state ? ", " + esc(vn.address.state) : "") : "") + (g.neutral ? " (neutral site)" : "") + "</li>");
+    var bc = j && !j.err && (j.broadcasts || []).map(function (b) { return (b.media && (b.media.shortName || b.media.name)) || b.station || ""; }).filter(Boolean);
+    if (m.kickoff) notes.push("<li><b>Kickoff:</b> " + esc(kickText(m.kickoff)) + (bc && bc.length ? " on " + esc(bc.join(", ")) : "") + "</li>");
+    var body = (notes.length ? '<ul class="gx-facts">' + notes.join("") + "</ul>" : "") +
+      (items.length ? '<ul class="gx-news">' + items.join("") + "</ul>" : '<p class="note">' + (j && j.err ? "ESPN didn’t answer, so no stories right now." : j ? "ESPN has no stories tagged to this game yet." : "Loading stories…") + "</p>") +
+      '<p class="note">Late news is where the market moves first: a QB’s status, travel trouble, a kickoff change. Read these before betting, especially when the line is moving away from our number.</p>';
+    return gxPanel("news", "News &amp; notes", body);
+  }
+
+  // ---- season stats side by side
+  function gxStats(r) {
+    var g = r.g, S = g.stats || {}, R = g.rec || {}, a = S.away || {}, h = S.home || {}, ra = R.away || {}, rh = R.home || {};
+    if (!g.stats && !g.rec) return gxPanel("stats", "Season stats", '<p class="note">Season stats post with the next notebook run.</p>');
+    function rec3(x) { return x ? x[0] + "–" + x[1] + (x[2] ? "–" + x[2] : "") : "—"; }
+    var L = [
+      ["Record", ra.w != null ? ra.w + "–" + ra.l : "—", rh.w != null ? rh.w + "–" + rh.l : "—", null],
+      ["Against the spread", rec3(ra.ats), rec3(rh.ats), null],
+      ["Over / under", rec3(ra.ou), rec3(rh.ou), null],
+      ["Points per game", ra.ppg, rh.ppg, 1], ["Points allowed", ra.papg, rh.papg, -1],
+      ["Yards per game", a.ypg, h.ypg, 1], ["Passing yards", a.pass, h.pass, 1], ["Rushing yards", a.rush, h.rush, 1],
+      ["Yards allowed", a.ypg_a, h.ypg_a, -1], ["Passing allowed", a.pass_a, h.pass_a, -1], ["Rushing allowed", a.rush_a, h.rush_a, -1],
+      ["3rd down %", a.third, h.third, 1], ["Turnover margin", a.to_m, h.to_m, 1], ["Sacks (defense)", a.sacks, h.sacks, 1], ["Sacks allowed", a.sacks_a, h.sacks_a, -1]
+    ].filter(function (x) { return x[1] != null || x[2] != null; });
+    var rows = L.map(function (x) {
+      var better = x[3] && typeof x[1] === "number" && typeof x[2] === "number" && x[1] !== x[2] ? ((x[1] > x[2]) === (x[3] > 0) ? "a" : "h") : "";
+      function c(v, side) { return '<td class="ra' + (better === side ? " gx-b" : "") + '">' + (v == null ? "—" : esc(typeof v === "number" && x[0] === "Turnover margin" && v > 0 ? "+" + v : String(v))) + "</td>"; }
+      return "<tr><td>" + x[0] + "</td>" + c(x[1], "a") + c(x[2], "h") + "</tr>";
+    }).join("");
+    return gxPanel("stats", "Season stats", '<div class="scroll" tabindex="0" role="region" aria-label="Table, scrolls sideways"><table class="mu-tbl gx-st"><thead><tr><th></th><th class="ra">' + badge(g.away, null, "sm") + " " + esc(shortName(g.away)) + '</th><th class="ra">' + badge(g.home, null, "sm") + " " + esc(shortName(g.home)) + "</th></tr></thead><tbody>" + rows + "</tbody></table></div>" +
+      '<p class="note">Raw season totals per game (bold = better), not adjusted for who they played: a team with a hard schedule looks worse here than it is. The opponent-adjusted version is <b>Who has the edge</b> above, and that’s what our numbers use. ATS and over/under are graded at the closing line.</p>');
+  }
+
+  // ---- season leaders and the injury list (ESPN)
+  function gxPlayers(r, j) {
+    var g = r.g, hd = "Players &amp; injuries";
+    if (!j) return gxPanel("players", hd, '<p class="note">Loading…</p>');
+    if (j.err) return gxPanel("players", hd, '<p class="note">ESPN didn’t answer, so the player list isn’t available right now.</p>');
+    function team(side, name) {
+      var id = gxTeamId(j, side), L = gxByTeam(j.leaders, id), I = gxByTeam(j.injuries, id);
+      var lead = ((L && L.leaders) || []).slice(0, 4).map(function (c) {
+        var x = (c.leaders || [])[0]; if (!x || !x.athlete) return "";
+        return "<li><i>" + esc(String(c.displayName || c.name || "").replace(/ Yards$/, "")) + "</i><b>" + esc(x.athlete.displayName || "") + "</b><small>" + esc(x.displayValue || "") + "</small></li>";
+      }).join("");
+      var inj = ((I && I.injuries) || []).slice().sort(function (a, b) { return (isOut(b.status) ? 1 : 0) - (isOut(a.status) ? 1 : 0); }).map(function (x) {
+        var a = x.athlete || {}, pos = a.position && a.position.abbreviation, det = x.details && (x.details.type || x.details.detail);
+        return '<li><span class="' + (isOut(x.status) ? "otag" : "qtag") + '">' + esc(x.status || "Injured") + "</span><b>" + esc(a.displayName || "") + "</b>" + (pos ? " <small>" + esc(pos) + "</small>" : "") + (det ? " <small>· " + esc(det) + "</small>" : "") + "</li>";
+      }).join("");
+      return '<div class="gx-pl"><h4>' + badge(name, null, "sm") + " " + esc(shortName(name)) + "</h4>" + (lead ? '<ul class="gx-lead">' + lead + "</ul>" : '<p class="note">No season leaders listed.</p>') +
+        '<div class="eg-sub">Injury report</div>' + (inj ? '<ul class="gx-inj">' + inj + "</ul>" : '<p class="note">Nobody listed.</p>') + "</div>";
+    }
+    return gxPanel("players", hd, '<div class="gx-two">' + team("away", g.away) + team("home", g.home) + "</div>" +
+      '<p class="note">Leaders and injuries come from ESPN. College injury lists are often thin or late; conferences that publish official availability reports (two hours before kickoff in some leagues) are the final word. Out players are taken out of the projected starters below.</p>');
+  }
+
+  // ---- weather at kickoff (Open-Meteo forecast, free and keyless)
+  var GX_ST = { AL: "Alabama", AK: "Alaska", AZ: "Arizona", AR: "Arkansas", CA: "California", CO: "Colorado", CT: "Connecticut", DE: "Delaware", DC: "District of Columbia", FL: "Florida", GA: "Georgia", HI: "Hawaii", ID: "Idaho", IL: "Illinois", IN: "Indiana", IA: "Iowa", KS: "Kansas", KY: "Kentucky", LA: "Louisiana", ME: "Maine", MD: "Maryland", MA: "Massachusetts", MI: "Michigan", MN: "Minnesota", MS: "Mississippi", MO: "Missouri", MT: "Montana", NE: "Nebraska", NV: "Nevada", NH: "New Hampshire", NJ: "New Jersey", NM: "New Mexico", NY: "New York", NC: "North Carolina", ND: "North Dakota", OH: "Ohio", OK: "Oklahoma", OR: "Oregon", PA: "Pennsylvania", RI: "Rhode Island", SC: "South Carolina", SD: "South Dakota", TN: "Tennessee", TX: "Texas", UT: "Utah", VT: "Vermont", VA: "Virginia", WA: "Washington", WV: "West Virginia", WI: "Wisconsin", WY: "Wyoming" };
+  function gxJson(url) { return fetch(url, { cache: "no-store" }).then(function (x) { if (!x.ok) throw 0; return x.json(); }); }
+  function gxWxLoad(g, j, kick) {
+    var v = g.venue, gi = j && !j.err && j.gameInfo, ad = gi && gi.venue && gi.venue.address;
+    var where = v && v.lat != null ? Promise.resolve({ lat: v.lat, lon: v.lon }) : ad && ad.city ? gxJson("https://geocoding-api.open-meteo.com/v1/search?count=10&language=en&format=json&name=" + encodeURIComponent(ad.city)).then(function (x) {
+      var st = GX_ST[String(ad.state || "").toUpperCase()] || ad.state, hit = null;
+      ((x && x.results) || []).forEach(function (p) { if (!hit && p.country_code === "US" && (!st || p.admin1 === st)) hit = p; });
+      return hit ? { lat: hit.latitude, lon: hit.longitude } : null;
+    }) : Promise.resolve(null);
+    return where.then(function (p) {
+      if (!p) return { none: 1 };
+      return gxJson("https://api.open-meteo.com/v1/forecast?latitude=" + p.lat + "&longitude=" + p.lon + "&hourly=temperature_2m,apparent_temperature,precipitation_probability,wind_speed_10m,wind_gusts_10m&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=GMT&forecast_days=16").then(function (w) {
+        var H = w && w.hourly; if (!H || !H.time) return { none: 1 };
+        var k0 = new Date(Math.floor(kick / 3600000) * 3600000).toISOString().slice(0, 13), i0 = -1;
+        H.time.forEach(function (t, i) { if (i0 < 0 && t.slice(0, 13) === k0) i0 = i; });
+        if (i0 < 0) return { far: 1 };
+        var hrs = []; for (var i = i0; i < Math.min(i0 + 4, H.time.length); i++) hrs.push({ t: Date.parse(H.time[i] + "Z"), temp: H.temperature_2m[i], feel: H.apparent_temperature[i], rain: H.precipitation_probability[i], wind: H.wind_speed_10m[i], gust: H.wind_gusts_10m[i] });
+        return { hrs: hrs };
+      });
+    });
+  }
+  function gxWx(m, r, j) {
+    var g = r.g, hd = "Weather at kickoff", kick = (parseET(m.kickoff || g.kickoff) || {}).utc;
+    var indoor = g.roof === "dome" || g.roof === "closed" || (g.venue && g.venue.dome) || (j && !j.err && j.gameInfo && j.gameInfo.venue && j.gameInfo.venue.indoor);
+    if (indoor) return gxPanel("wx", hd, '<p class="gx-p">Indoors: weather won’t matter.</p>');
+    if (!kick) return gxPanel("wx", hd, '<p class="note">Kickoff time isn’t set yet.</p>');
+    if (kick < Date.now() - 4 * 3600000) return gxPanel("wx", hd, '<p class="note">This game has been played.</p>');
+    if (!g.venue && !j) return gxPanel("wx", hd, '<p class="note">Loading…</p>');
+    var w = muGet("wx|" + g.away + "|" + g.home + "|" + kick, function () { return gxWxLoad(g, j, kick); });
+    if (!w) return gxPanel("wx", hd, '<p class="note">Loading the forecast…</p>');
+    if (w.err || w.none) return gxPanel("wx", hd, '<p class="note">No forecast for this stadium right now.</p>');
+    if (w.far) return gxPanel("wx", hd, '<p class="note">The forecast reaches 16 days out; check back closer to kickoff.</p>');
+    var mx = Math.max.apply(null, w.hrs.map(function (h) { return h.wind || 0; })), cells = w.hrs.map(function (h, i) {
+      return '<div class="gx-wx-h"><i>' + (i ? "+" + i + "h" : "Kickoff") + "</i><b>" + Math.round(h.temp) + "°</b><small>feels " + Math.round(h.feel) + "°</small><small>Wind " + Math.round(h.wind) + " mph" + (h.gust != null ? ", gusts " + Math.round(h.gust) : "") + "</small><small>Rain " + (h.rain == null ? "—" : h.rain + "%") + "</small></div>";
+    }).join("");
+    var k0 = w.hrs[0] || {}, flag = mx >= 12 ? '<p class="gx-p"><span class="sg-flag">Wind ' + Math.round(k0.wind || 0) + " mph at kickoff" + (Math.round(mx) > Math.round(k0.wind || 0) ? ", up to " + Math.round(mx) : "") + "</span> A 12+ mph wind forecast is one of the signals behind our under bets; our sheet checks it when it runs.</p>" : "";
+    return gxPanel("wx", hd, '<div class="gx-wx">' + cells + "</div>" + flag + '<p class="note">Forecast from Open-Meteo for the stadium, kickoff through the next three hours. Wind is the part that matters most for scoring.</p>');
+  }
+
+  // ---- what a win or a loss is worth (from the season simulation), and what's left on the schedule
+  function gxStakes(r) {
+    var g = r.g, P = projData();
+    if (!P) return gxPanel("stakes", "What’s at stake", '<p class="note">The season outlook posts with the weekly sheet.</p>');
+    function pc(p) { return p == null ? "—" : pc1(p); }
+    function team(name) {
+      var t = projOf(name); if (!t) return '<div class="gx-pl"><h4>' + esc(shortName(name)) + '</h4><p class="note">Not in our season outlook (FCS or not rated).</p></div>';
+      var s = t.stakes || null, nx = ((P.next || {})[name] || []).filter(function (x) { return !(s && x.opp === s.opp); });
+      var rows = '<tr><td>Bowl (6+ wins)</td><td class="ra">' + pc(t.bowl) + '</td><td class="ra">' + pc(s && s.bowl_w) + '</td><td class="ra">' + pc(s && s.bowl_l) + "</td></tr>";
+      if (t.ccg != null && (t.ccg > 0 || (s && s.ccg_w))) rows += '<tr><td>Conference title game</td><td class="ra">' + pc(t.ccg) + '</td><td class="ra">' + pc(s && s.ccg_w) + '</td><td class="ra">' + pc(s && s.ccg_l) + "</td></tr>";
+      return '<div class="gx-pl"><h4>' + badge(name, null, "sm") + " " + esc(shortName(name)) + " <small>" + t.w + "–" + t.l + " · projected " + t.wins.toFixed(1) + " wins</small></h4>" +
+        '<div class="scroll" tabindex="0" role="region" aria-label="Table, scrolls sideways"><table class="mu-tbl gx-stk"><thead><tr><th></th><th class="ra">Now</th><th class="ra">Win</th><th class="ra">Lose</th></tr></thead><tbody>' + rows + "</tbody></table></div>" +
+        (nx.length ? '<div class="eg-sub">Still to play</div><ul class="gx-next">' + nx.map(function (x) { return "<li>" + (x.home ? "vs " : "@ ") + esc(shortName(x.opp) || x.opp) + ' <small>our win chance ' + Math.round(100 * x.win) + "%</small></li>"; }).join("") + "</ul>" : "") + "</div>";
+    }
+    var swing = function (name) { var t = projOf(name), s = t && t.stakes; return s ? (s.bowl_w - s.bowl_l) + ((s.ccg_w || 0) - (s.ccg_l || 0)) : null; };
+    var sa = swing(g.away), sh = swing(g.home), who = "";
+    if (sa != null && sh != null && Math.abs(sa - sh) >= .1) who = '<p class="gx-p"><b>' + esc(shortName(sa > sh ? g.away : g.home)) + "</b> has more riding on this one (bowl and title-game chances swing more with the result).</p>";
+    return gxPanel("stakes", "What’s at stake", who + '<div class="gx-two">' + team(g.away) + team(g.home) + "</div>" +
+      '<p class="note">From 10,000 simulated seasons with our ratings: each team’s chances now, if it wins this game, and if it loses it. Motivation isn’t in our numbers, and we haven’t tested a “must-win” angle, so read this as context.</p>');
+  }
+
+  // ---- every game this season, with the closing line
+  function gxLog(r) {
+    var g = r.g, L = g.log;
+    if (!L) return "";
+    function team(name, rows, rec) {
+      var tr = rows.slice().reverse().map(function (x) {
+        var w = x.us > x.them, sp = x.sp == null ? "—" : x.sp === 0 ? "PK" : (x.sp > 0 ? "+" : MIN) + u(Math.abs(x.sp));
+        return "<tr><td>" + (x.wk != null ? x.wk : "") + "</td><td>" + (x.at === "n" ? "vs " : x.at === "@" ? "@ " : "vs ") + esc(shortName(x.opp) || x.opp) + (x.at === "n" ? " <small>(n)</small>" : "") + '</td><td class="' + (w ? "gx-w" : "gx-l") + '">' + (w ? "W" : "L") + " " + x.us + "–" + x.them + '</td><td class="ra">' + sp +
+          (x.ats ? ' <small class="' + (x.ats === "W" ? "gx-w" : x.ats === "L" ? "gx-l" : "") + '">' + (x.ats === "W" ? "covered" : x.ats === "L" ? "missed" : "push") + "</small>" : "") + '</td><td class="ra">' + (x.tot == null ? "—" : u(x.tot)) + (x.ou ? " <small>" + (x.ou === "O" ? "over" : x.ou === "U" ? "under" : "push") + "</small>" : "") + "</td></tr>";
+      }).join("");
+      return '<div class="gx-pl"><h4>' + badge(name, null, "sm") + " " + esc(shortName(name)) + (rec ? " <small>" + rec.w + "–" + rec.l + (rec.ats ? " · ATS " + rec.ats[0] + "–" + rec.ats[1] + (rec.ats[2] ? "–" + rec.ats[2] : "") : "") + "</small>" : "") + "</h4>" +
+        (tr ? '<div class="scroll" tabindex="0" role="region" aria-label="Table, scrolls sideways"><table class="mu-tbl gx-lg"><thead><tr><th>Wk</th><th>Opponent</th><th>Result</th><th class="ra">Spread</th><th class="ra">Total</th></tr></thead><tbody>' + tr + "</tbody></table></div>" : '<p class="note">No games yet.</p>') + "</div>";
+    }
+    var R = g.rec || {};
+    return gxPanel("log", "Every game this season", '<div class="gx-two">' + team(g.away, L.away || [], R.away) + team(g.home, L.home || [], R.home) + "</div>" +
+      '<p class="note">Newest first. Spread = the team’s closing line (− = favored); covered / missed and over / under are graded at that line. Look at who a team beat, not just the record: a blowout of an FCS team inflates the stats.</p>');
+  }
   // ---- the page
   function openMatchup(m) { trk("matchup", m.away + "@" + m.home); state.mu = m; state.muFrom = state.view; state.view = "matchup"; render(); window.scrollTo(0, 0); }
   var MUID = {};                                          // team name -> ESPN id learned from a game summary (when the team list is missing it)
@@ -4393,12 +4790,37 @@ body.on-home { overflow-anchor: none; }
     var h = rdy === "missing" ? { err: 1 } : muGet("h2h|" + sportKey() + "|" + m.away + "|" + m.home, function () { return h2hLoad(m.away, m.home); });
     var lu = isFootball() ? footballPanel(m.away, m.home, m.eid) : isCBB() ? cbbCourtPanel(m.away, m.home, m.eid) : "";
     var nfl = state.sport === "nfl";
+    var gx = state.sport === "cfb" ? gxRow(m.away, m.home) : null, sj = gx ? (m.eid ? gxSum(m.eid) : { err: 1 }) : null;   // the full breakdown (college football)
     el.innerHTML = '<button type="button" class="back mu-back">‹ Back</button>' +
-      '<div class="gp-head mu-head"><div class="mu-vs">' + badge(m.away, nfl ? m.away : null, "") + "<b>" + esc(shortName(m.away) || m.away) + '</b><span class="at">' + (m.neutral ? "vs" : "@") + "</span>" + badge(m.home, nfl ? m.home : null, "") + "<b>" + esc(shortName(m.home) || m.home) + "</b></div>" +
+      '<div class="gp-head mu-head"><h1 class="mu-vs">' + badge(m.away, nfl ? m.away : null, "") + "<b>" + esc(shortName(m.away) || m.away) + '</b><span class="at">' + (m.neutral ? "vs" : "@") + "</span>" + badge(m.home, nfl ? m.home : null, "") + "<b>" + esc(shortName(m.home) || m.home) + "</b></h1>" +
       (m.kickoff ? '<div class="mkt">' + esc(kickText(m.kickoff)) + "</div>" : "") + "</div>" +
-      ourNumberHtml(m.away, m.home) + splitsPanel(m.away, m.home, abbr(m.away), abbr(m.home)) + edgesHtml(m.away, m.home) + lu + formHtml(m.away, m.home) + h2hHtml(m.away, m.home, h) +
-      (isFootball() && historyFor(m.away, m.home) ? '<div class="panel" style="margin-top:16px">' + historyHtml(historyFor(m.away, m.home)) + "</div>" : "");
+      (gx ? (function () {
+        var hist = isFootball() && historyFor(m.away, m.home), noH2h = !h || h.err || !(h.rows || []).length;
+        var h2h = (noH2h && hist ? "" : h2hHtml(m.away, m.home, h)) + (hist ? '<div class="panel" style="margin-top:16px">' + historyHtml(hist) + "</div>" : "");
+        return '<div class="gx-page">' + gxVerdict(m, gx, sj) + gxNav() +
+          gxTier("t-call", "The call") + gxRead(m, gx, sj) + ourNumberHtml(m.away, m.home) + gxBoard(gx) + gxMoveHtml(gx) + splitsPanel(m.away, m.home, abbr(m.away), abbr(m.home)) +
+          gxTier("t-why", "Why") +
+          gxFold("edge", "Who has the edge", gxSumEdge(gx.g), edgesHtml(m.away, m.home)) +
+          gxFold("others", "Other models vs Vegas", gxSumOthers(gx), gxOthers(gx, sj)) +
+          gxFold("news", "News & notes", gxSumNews(sj, gx.g), gxNews(m, gx, sj)) +
+          gxFold("players", "Players & injuries", gxSumPlayers(sj, gx.g), gxPlayers(gx, sj)) +
+          gxFold("lineups", "Projected starters", "From each team\u2019s last game, injuries applied", lu) +
+          gxFold("wx", "Weather at kickoff", gxSumWx(m, gx.g), gxWx(m, gx, sj)) +
+          gxTier("t-bg", "Background") +
+          gxFold("stats", "Season stats", gxSumStats(gx.g), gxStats(gx)) +
+          gxFold("stakes", "What\u2019s at stake", gxSumStakes(gx.g), gxStakes(gx)) +
+          gxFold("log", "Every game this season", "Each result with its closing line", gx.g.log ? gxLog(gx) : formHtml(m.away, m.home)) +
+          gxFold("h2h", "Head to head", gxSumH2h(m), h2h) + "</div>";
+      })()
+      : ourNumberHtml(m.away, m.home) + splitsPanel(m.away, m.home, abbr(m.away), abbr(m.home)) + edgesHtml(m.away, m.home) + lu + formHtml(m.away, m.home) + h2hHtml(m.away, m.home, h) +
+        (isFootball() && historyFor(m.away, m.home) ? '<div class="panel" style="margin-top:16px">' + historyHtml(historyFor(m.away, m.home)) + "</div>" : ""));
     el.querySelector(".mu-back").addEventListener("click", function () { state.view = state.muFrom || "week"; state.mu = null; render(); });
+    el.querySelectorAll("[data-jump]").forEach(function (b) { b.addEventListener("click", function () { var t = document.getElementById(b.getAttribute("data-jump")); if (t) t.scrollIntoView({ behavior: "smooth", block: "start" }); }); });
+    if (gx) {
+      gxHowTo(el);
+      el.querySelectorAll("details.gx-fold").forEach(function (d) { d.addEventListener("toggle", function () { state.gxOpen = state.gxOpen || {}; state.gxOpen[d.getAttribute("data-fold")] = d.open; }); });
+      var bar = document.querySelector(".bar"); if (bar) document.documentElement.style.setProperty("--barH", bar.offsetHeight + "px");
+    }
   }
   // ---- NBA game page (v3, Nov 12 2026): one summary bar, the verdict first, five tabs, and a side rail with our bets, lines and sharp money
   var GTABS = [["edge", "Who has the edge"], ["mu", "Matchups"], ["lineups", "Lineups"], ["market", "Market"], ["history", "History"]];
@@ -4518,7 +4940,7 @@ body.on-home { overflow-anchor: none; }
       '<div class="panel"><div class="filters" style="margin-bottom:10px">' + segHtml("tsort", NBA_TSORT, key, "Sort") +
       '<button type="button" class="chip" id="tplays" aria-pressed="' + !!state.tplays + '">Playing today</button>' +
       '<input class="search" id="tq" type="search" placeholder="Search team" value="' + esc(state.tq) + '" aria-label="Search team"></div>' +
-      '<div class="scroll"><table class="tt"><thead><tr><th class="ra">#</th><th></th><th>Team</th><th>Now</th><th class="ra">Off</th><th class="ra">Def</th><th class="ra">Healthy</th><th class="ra">Missing</th><th>Out</th><th class="ra">Pace</th><th>Most valuable</th></tr></thead><tbody>' +
+      '<div class="scroll" tabindex="0" role="region" aria-label="Table, scrolls sideways"><table class="tt"><thead><tr><th class="ra">#</th><th></th><th>Team</th><th>Now</th><th class="ra">Off</th><th class="ra">Def</th><th class="ra">Healthy</th><th class="ra">Missing</th><th>Out</th><th class="ra">Pace</th><th>Most valuable</th></tr></thead><tbody>' +
       list.map(function (t) {
         var w = Math.min(50, Math.abs(t.net) / maxNet * 50);
         var cls = (playing[t.abbr] ? "onslate " : "") + (state.topen === t.abbr ? "tr-open" : "");
@@ -4561,12 +4983,12 @@ body.on-home { overflow-anchor: none; }
         sig("\u26a0 Vegas Knows: we have it within 4, Vegas has the favorite 3+ pts bigger; the favorite\u2019s moneyline, 1u at its price (1u bet from Nov 9, paper before; backtest: won 62%, lost ~11% per bet)" + (s.vk && s.vk.won_outright != null ? "<small>favorite won outright " + s.vk.won_outright + " of " + (s.vk.w + s.vk.l + (s.vk.p || 0)) + "</small>" : ""), s.vk) +
         sig("Tracked at 0 units: our win % 5+ pts above the market (moneyline)", s.ml_edge) + sig("Tracked at 0 units: underdog moneyline 3+ pts cheaper than its spread", s.cheap_dog)
         : '<p class="note">Nothing graded yet. The first games grade the morning after they’re played.</p>') + "</div>" +
-      ((t.picks || []).length ? '<div class="panel"><h3>Tracked picks</h3><p class="note">The line when we flagged it, where it closed, and the result. “vs close” = points our number beat the close by (+ is good): the earliest sign an edge is real.</p><div class="scroll"><table><thead><tr><th>Date</th><th>Game</th><th>Bet</th><th class="ra">Closed</th><th class="ra">vs close</th><th>Result</th><th class="ra">Units</th></tr></thead><tbody>' +
+      ((t.picks || []).length ? '<div class="panel"><h3>Tracked picks</h3><p class="note">The line when we flagged it, where it closed, and the result. “vs close” = points our number beat the close by (+ is good): the earliest sign an edge is real.</p><div class="scroll" tabindex="0" role="region" aria-label="Table, scrolls sideways"><table><thead><tr><th>Date</th><th>Game</th><th>Bet</th><th class="ra">Closed</th><th class="ra">vs close</th><th>Result</th><th class="ra">Units</th></tr></thead><tbody>' +
         t.picks.map(function (p) {
           return "<tr><td>" + esc(nbaDay(p.date)) + "</td><td>" + esc(p.game) + "</td><td><b>" + esc(pretty(p.pick)) + "</b>" + (p.angle ? '<span class="pk-ang">' + esc(p.angle === "Tired Traveler" ? "\u2605 " + p.angle : (p.angle === "Vegas Knows" ? "\u26a0 " : p.angle === "Model Knows" ? "\u25c6 " : (p.angle === "Fade the Sim" || p.angle === "Line Held" || p.angle === "Follow the Move" || p.angle === "Falling Total Over" || p.angle === "Reverse Line Move") ? "\u2605 " : "\u25ce ") + p.angle + (p.paper ? " \u00b7 paper" : "")) + "</span>" : "") + '</td><td class="ra">' + (p.close == null ? "" : lineTxt(p.close)) + '</td><td class="ra ' + (p.clv > 0 ? "up" : p.clv < 0 ? "down" : "") + '">' + (p.clv == null ? "" : clvTxt(p.clv)) + "</td><td>" +
             (p.result ? '<span class="pill ' + esc(p.result) + '">' + (p.result === "W" ? "Won" : p.result === "L" ? "Lost" : "Push") + "</span>" : '<span class="pill">Open</span>') + '</td><td class="ra ' + (p.units > 0 ? "up" : p.units < 0 ? "down" : "") + '">' + (p.units == null ? "" : signed(p.units)) + "</td></tr>";
         }).join("") + "</tbody></table></div></div>" : "") +
-      (rec.length ? '<div class="panel span2"><h3>Recent games</h3><div class="scroll"><table><thead><tr><th>Date</th><th>Game</th><th class="ra">Ours</th><th class="ra">Market</th><th class="ra">Final</th><th>Closer</th></tr></thead><tbody>' +
+      (rec.length ? '<div class="panel span2"><h3>Recent games</h3><div class="scroll" tabindex="0" role="region" aria-label="Table, scrolls sideways"><table><thead><tr><th>Date</th><th>Game</th><th class="ra">Ours</th><th class="ra">Market</th><th class="ra">Final</th><th>Closer</th></tr></thead><tbody>' +
         rec.map(function (r) {
           var o = Math.abs(r.margin + r.ours), m = r.mkt == null ? null : Math.abs(r.margin + r.mkt);
           return "<tr><td>" + esc(nbaDay(r.date)) + "</td><td>" + esc(r.game) + '</td><td class="ra">' + (r.ours > 0 ? "+" : "") + r.ours + '</td><td class="ra">' + (r.mkt == null ? "—" : (r.mkt > 0 ? "+" : "") + r.mkt) + '</td><td class="ra">' + esc(r.final) + "</td><td>" +
@@ -5054,7 +5476,7 @@ body.on-home { overflow-anchor: none; }
         "</b></td></tr>";
     }).join("");
     var table = '<div class="panel"><h3>Stake for each ' + sp + " setup</h3><p class=\"note\">“Win rate we plan on” is deliberately below the backtest: it’s the honest rate on the sheet: each backtest record pulled toward 52.4% by its sample size. Full Kelly is the size the formula calls for with no margin for error; your bet is a fraction of it.</p>" +
-      '<div class="scroll"><table class="tt"><thead><tr><th>Setup</th><th class="bk-h">Stars</th><th class="ra">Win rate we plan on</th><th class="ra bk-h">Full Kelly</th><th class="ra">Stake</th><th class="ra">Your bet</th></tr></thead><tbody>' +
+      '<div class="scroll" tabindex="0" role="region" aria-label="Table, scrolls sideways"><table class="tt"><thead><tr><th>Setup</th><th class="bk-h">Stars</th><th class="ra">Win rate we plan on</th><th class="ra bk-h">Full Kelly</th><th class="ra">Stake</th><th class="ra">Your bet</th></tr></thead><tbody>' +
       (rows || '<tr><td colspan="6" class="note">No setups on this card.</td></tr>') + "</tbody></table></div></div>";
     // today's card
     var d = state.data || {}, picks = [];
@@ -5066,7 +5488,7 @@ body.on-home { overflow-anchor: none; }
       (d.members_only ? '<p class="note">The picks are for members. Log in to size today’s card.</p>'
         : !picks.length ? '<p class="note">No bets on the card right now.</p>'
         : !(o.bank > 0) ? '<p class="note">Enter your bankroll above to size the card.</p>'
-        : '<div class="scroll"><table class="tt"><thead><tr><th>Pick</th><th class="bk-h">Game</th><th class="ra">Units</th><th class="ra">Stake</th>' + (scale < 1 ? '<th class="ra">Within your daily limit</th>' : "") + "</tr></thead><tbody>" +
+        : '<div class="scroll" tabindex="0" role="region" aria-label="Table, scrolls sideways"><table class="tt"><thead><tr><th>Pick</th><th class="bk-h">Game</th><th class="ra">Units</th><th class="ra">Stake</th>' + (scale < 1 ? '<th class="ra">Within your daily limit</th>' : "") + "</tr></thead><tbody>" +
           picks.map(function (x) { return "<tr><td><b>" + esc(x.label) + "</b>" + (x.stars ? " " + starsHtml(x.stars) : "") + '</td><td class="bk-h">' + esc(x.game) + '</td><td class="ra">' + u(x.units) + 'u</td><td class="ra">' + money(x.units * unit) + "</td>" + (scale < 1 ? '<td class="ra"><b>' + money(x.units * unit * scale) + "</b></td>" : "") + "</tr>"; }).join("") +
           '<tr class="bk-tot"><td>Total at risk</td><td class="bk-h"></td><td class="ra">' + u(Math.round(picks.reduce(function (a, x) { return a + x.units; }, 0) * 100) / 100) + 'u</td><td class="ra">' + money(tot) + "</td>" + (scale < 1 ? '<td class="ra">' + money(lim) + "</td>" : "") + "</tr></tbody></table></div>" +
           (scale < 1 ? '<div class="bk-warn">Today’s card adds up to ' + money(tot) + ", more than your daily limit of " + money(lim) + ". Every bet is trimmed by the same share (" + Math.round((1 - scale) * 100) + "%), so the stronger picks still get more.</div>" : "")) + "</div>";
@@ -5075,7 +5497,7 @@ body.on-home { overflow-anchor: none; }
     var pHalf = 0.524 + Math.max(0, pAvg - 0.524) / 2;
     var sims = BK_STYLES.map(function (x) { var sf = bkUnitPct(S, +x[0]) / 100 * uAvg; return { k: x[0], name: x[1], f: sf, r: bkSim(pAvg, sf), h: bkSim(pHalf, sf) }; });
     var simT = '<div class="panel"><h3>What the swings look like</h3><p class="note">2,000 simulated runs of the next 500 ' + sp + " bets at a " + pct(pAvg) + " win rate (the average of the setups above), each bet resized to your bankroll as it goes. Even with a real edge, losing stretches are normal; bigger bets grow faster on paper but fall much further.</p>" +
-      '<div class="scroll"><table class="tt bk-sim"><thead><tr><th></th>' + sims.map(function (x) { return '<th class="ra' + (x.k === o.k ? " on" : "") + '">' + esc(x.name.replace(/ \(.*/, "")) + "<br><small>" + (x.f * 100).toFixed(1) + "% a bet</small></th>"; }).join("") + "</tr></thead><tbody>" +
+      '<div class="scroll" tabindex="0" role="region" aria-label="Table, scrolls sideways"><table class="tt bk-sim"><thead><tr><th></th>' + sims.map(function (x) { return '<th class="ra' + (x.k === o.k ? " on" : "") + '">' + esc(x.name.replace(/ \(.*/, "")) + "<br><small>" + (x.f * 100).toFixed(1) + "% a bet</small></th>"; }).join("") + "</tr></thead><tbody>" +
       [["Typical bankroll after 500 bets", function (r) { return "×" + r.med.toFixed(2); }], ["Unlucky (1 run in 10 ends at or below)", function (r) { return "×" + r.lo.toFixed(2); }],
         ["Chance of ending below where you started", function (r) { return pct(r.lose, 0); }], ["Chance of a 25% drop from a high point", function (r) { return pct(r.dd25, 0); }],
         ["Chance of a 40% drop from a high point", function (r) { return pct(r.dd40, 0); }],
@@ -5151,7 +5573,7 @@ body.on-home { overflow-anchor: none; }
       '<div class="mb-mid"><div class="mb-main">' + (mbChart(all.filter(function (b) { return MB.sport === "all" || b.sport === MB.sport; })) || '<div class="panel mb-chart"><h3>Profit over time</h3><p class="note">Your running profit shows here once two bets are settled.</p></div>') +
       '<div class="panel"><div class="mb-bar"><h3>Your bets</h3><div class="chips">' + chips.map(function (x) { return '<button type="button" class="chip" data-mbs="' + x[0] + '" aria-pressed="' + (MB.sport === x[0]) + '">' + x[1] + "</button>"; }).join("") + "</div>" +
       segHtml("mbf", [["all", "All"], ["open", "Open"], ["settled", "Settled"]], MB.filter, "Show") + "</div>" +
-      (list.length ? '<div class="scroll"><table class="mbt"><thead><tr><th>Date</th><th>Game</th><th>Bet</th><th class="ra">Price</th><th class="ra">Stake</th><th>Where</th><th class="ra" title="Where the line closed, and how many points better (+) your number was">Close</th><th>Result</th><th class="ra">Profit</th><th></th></tr></thead><tbody>' + rows + "</tbody></table></div>"
+      (list.length ? '<div class="scroll" tabindex="0" role="region" aria-label="Table, scrolls sideways"><table class="mbt"><thead><tr><th>Date</th><th>Game</th><th>Bet</th><th class="ra">Price</th><th class="ra">Stake</th><th>Where</th><th class="ra" title="Where the line closed, and how many points better (+) your number was">Close</th><th>Result</th><th class="ra">Profit</th><th></th></tr></thead><tbody>' + rows + "</tbody></table></div>"
         : '<p class="note">' + (all.length ? "Nothing here with these filters." : "No bets yet. Tap <b>+ Track</b> on any pick or game, or add one of your own.") + "</p>") +
       '<p class="note" style="margin-top:10px">Spreads, totals and moneylines grade themselves a couple of hours after the game from ESPN’s final score; “Close” is where ESPN’s line closed. Only you can see your bets.</p></div></div>' +
       '<div class="mb-side">' + bank + mbInsightsHtml(all.filter(function (b) { return MB.sport === "all" || b.sport === MB.sport; })) + (bySport || bySrc ? '<div class="panel"><h3>Where you win</h3>' + (bySport ? '<div class="mb-sub">By sport</div>' + bySport : "") + (bySrc ? '<div class="mb-sub">Our picks vs your own</div>' + bySrc : "") + "</div>" : "") + "</div></div>" + "</div>";
@@ -5237,7 +5659,7 @@ body.on-home { overflow-anchor: none; }
     if (!S.books) return [[S.book || "DK", S]];
     return ["DK", "CIRCA"].filter(function (b) { return S.books[b]; }).map(function (b) { return [b, S.books[b]]; });
   }
-  function bookTag(b) { var x = BOOK[b] || { n: b, c: "" }; return '<span class="bk ' + x.c + '">' + esc(x.n) + "</span>"; }
+  function bookTag(b) { var x = BOOK[b] || { n: b, c: "" }; return '<span class="bkt ' + x.c + '">' + esc(x.n) + "</span>"; }
   function splitRead(S, mkt) {
     if (!S) return null;
     var x = mkt === "total" ? S.tot : S.sp; if (!x) return null;
@@ -5295,7 +5717,7 @@ body.on-home { overflow-anchor: none; }
   }
   function splitsPanel(away, home, aAb, hAb) {          // the game page
     var S = splitsOf(away, home);
-    if (!S) return '<div class="panel spl-panel"><h3>Betting splits &amp; handle</h3><p class="note">No splits for this game yet. They post when the owner\u2019s DraftKings and Circa splits screenshot comes in.</p></div>';
+    if (!S) return '<div class="panel spl-panel"><h3>Betting splits &amp; handle</h3><p class="note">No betting splits for this game yet. DraftKings and Circa splits are added on game days when they\u2019re available.</p></div>';
     var cols = splitBooks(S).map(function (x) {
       return '<div class="spl-col"><div class="spl-book">' + bookTag(x[0]) + "<small>" + esc(x[1].taken || "") + "</small></div>" + splitBars(x[1], "spread", aAb, hAb) + splitBars(x[1], "total", "Over", "Under") + "</div>";
     }).join("");
@@ -5567,7 +5989,7 @@ body.on-home { overflow-anchor: none; }
       (gv !== "table" ? (tiles || '<div class="empty"><h2>No games match</h2><p>Clear the search or choose All games.</p></div>') +
         '<p class="note" style="margin-top:14px">The bar under each number runs toward the side our number leans to; the highlighted end shows by how many points. Win chance comes from our spread alone. ' +
         "Line = ESPN\u2019s current line before " + (isCBB() ? "tip (\u201cmorning\u201d = the line when the card was built)" : "kickoff (\u201csheet\u201d = the line when the sheet was built)") + ". Orange chips are our picks. " + all.length + " games.</p>" : "") +
-      '<div class="panel sg-panel"' + (gv !== "table" ? " hidden" : "") + '><div class="scroll"><table class="slt"><thead><tr><th>' + (isCBB() ? "Tip" : "Kickoff") + '</th><th>Game</th><th class="ra">Line</th><th class="ra">Our spread</th><th class="ra">Difference</th><th class="ra">Total</th><th class="ra">Our total</th><th class="ra">Difference</th><th class="ra">Win chance</th><th class="ra" title="What each side is worth at our win chance: American odds, and cents on an exchange">Fair price</th><th>Notes</th></tr></thead><tbody>' +
+      '<div class="panel sg-panel"' + (gv !== "table" ? " hidden" : "") + '><div class="scroll" tabindex="0" role="region" aria-label="Table, scrolls sideways"><table class="slt"><thead><tr><th>' + (isCBB() ? "Tip" : "Kickoff") + '</th><th>Game</th><th class="ra">Line</th><th class="ra">Our spread</th><th class="ra">Difference</th><th class="ra">Total</th><th class="ra">Our total</th><th class="ra">Difference</th><th class="ra">Win chance</th><th class="ra" title="What each side is worth at our win chance: American odds, and cents on an exchange">Fair price</th><th>Notes</th></tr></thead><tbody>' +
       (rowsHtml || '<tr><td colspan="11" class="note">No games match.</td></tr>') + "</tbody></table></div>" +
       '<p class="note" style="margin-top:10px">Spreads are shown as the favorite and its number. ' + (isCBB() ? "Line = ESPN’s current line before tip (“morning” = the line when the card was built). " : "Line = ESPN’s current line before kickoff (“sheet” = the line when the sheet was built). ") +
       (isCBB() ? "Our spread and total = the market model\u2019s fair number (our ratings plus luck, schedule, travel and what the market itself is doing); \u201cRatings\u201d in the notes = the box-score ratings alone. " : "") +
@@ -5835,7 +6257,7 @@ body.on-home { overflow-anchor: none; }
       '<div class="panel tablep"><div class="tbar"><input class="search" id="oq" type="search" placeholder="Search team" value="' + esc(state.oq || "") + '" aria-label="Search team">' +
       '<select class="sel" id="og" aria-label="' + (sk === "nfl" ? "Division" : "Conference") + '"><option value="all">' + (sk === "nfl" ? "All divisions" : "All conferences") + "</option>" + Object.keys(groups).sort().map(function (g) { return "<option" + (g === og ? " selected" : "") + ">" + esc(g) + "</option>"; }).join("") + "</select>" +
       '<span class="note" style="margin:0 0 0 auto">' + (PR.games_left || 0) + " games left · " + (PR.sims || 10000).toLocaleString("en-US") + " seasons</span></div>" +
-      '<div class="scroll"><table class="tt olt"><thead><tr><th>Team</th><th class="ra">Record</th>' + cols.map(th).join("") + '<th class="ra" title="What the last column is worth">Fair price</th></tr></thead><tbody>' + rows + "</tbody></table></div>" +
+      '<div class="scroll" tabindex="0" role="region" aria-label="Table, scrolls sideways"><table class="tt olt"><thead><tr><th>Team</th><th class="ra">Record</th>' + cols.map(th).join("") + '<th class="ra" title="What the last column is worth">Fair price</th></tr></thead><tbody>' + rows + "</tbody></table></div>" +
       '<p class="note" style="margin-top:10px">Proj. wins = the average across simulations, with the middle 80% range. ' + (sk === "cfb" ? "Title game = finishing top two in the conference (tiebreakers are approximated); playoff selection isn’t projected because a committee picks it. " : "") +
       (nba ? "Games in the next week use tonight’s rosters; later games, full strength. " : "") + "Each simulated season also varies every team’s rating, since ours could be off.</p></div>";
     bindRkMode(el);
@@ -5912,7 +6334,7 @@ body.on-home { overflow-anchor: none; }
     var rk = {}; (R && R.teams || []).forEach(function (t) { rk[t.team] = t; });
     var list = Object.keys(S.teams).map(function (k) { return Object.assign({ team: k }, S.teams[k]); }).sort(function (a, b) { return ((a[srt.k + "_rank"] || 99) - (b[srt.k + "_rank"] || 99)) * srt.dir; });
     function th(c) { var on = srt.k === c[0]; return '<th class="ra"><button type="button" class="ths' + (on ? " on" : "") + '" data-ssort="' + c[0] + '">' + esc(c[1]) + (on ? (srt.dir > 0 ? " ▴" : " ▾") : "") + "</button></th>"; }
-    el.innerHTML = head + '<div class="panel"><h3>How they play</h3><p class="note">Every team’s rank in each part of the game, through Week ' + (S.week - 1) + ". Click a column to sort; click a team for its page. " + esc(STY_NOTE) + '</p><div class="scroll"><table class="tt sty-t"><thead><tr><th>Team</th><th>Style</th>' + STY_KEYS.map(th).join("") + "</tr></thead><tbody>" +
+    el.innerHTML = head + '<div class="panel"><h3>How they play</h3><p class="note">Every team’s rank in each part of the game, through Week ' + (S.week - 1) + ". Click a column to sort; click a team for its page. " + esc(STY_NOTE) + '</p><div class="scroll" tabindex="0" role="region" aria-label="Table, scrolls sideways"><table class="tt sty-t"><thead><tr><th>Team</th><th>Style</th>' + STY_KEYS.map(th).join("") + "</tr></thead><tbody>" +
       list.map(function (t) {
         return '<tr><td><button type="button" class="tbtn" data-tpage="' + esc(t.team) + '"><span class="tcell1">' + badge(t.team, t.team, "sm") + "<b>" + esc(t.team) + "</b>" + (rk[t.team] ? ' <small class="nick">#' + rk[t.team].rank + "</small>" : "") + "</span></button></td><td><small>" + esc(styTags(t).slice(0, 2).join(" · ")) + "</small></td>" +
           STY_KEYS.map(function (c) { return '<td class="ra" title="' + esc(styVal(c[0], t[c[0]])) + '">' + styRank(t[c[0] + "_rank"], c[0] === "run_rate" || c[0] === "blitz") + "</td>"; }).join("") + "</tr>";
@@ -5981,7 +6403,7 @@ body.on-home { overflow-anchor: none; }
         cols.map(function (c) { var p = pj[c[0]]; return "<div><i>" + esc(c[1]) + "</i><b>" + pc1(p) + "</b><small>" + (fairOk(p) ? "fair " + cents(p) + " · " + amer(p) : "") + "</small></div>"; }).join("") + "</div></div>";
     } else if (d.members_only || (d.teaser && d.teaser.proj)) outl = '<div class="panel"><h3>Season outlook</h3><p class="note">Projected wins and playoff and title chances are for members.</p></div>';
     var nxt = PR && PR.next && PR.next[key] || [];
-    var nx = nxt.length ? '<div class="panel"><h3>Next games</h3><div class="scroll"><table class="tt"><thead><tr><th>' + (nba ? "Date" : "Week") + '</th><th>Opponent</th><th class="ra">Our spread</th><th class="ra">Win chance</th><th class="ra">Fair price</th></tr></thead><tbody>' +
+    var nx = nxt.length ? '<div class="panel"><h3>Next games</h3><div class="scroll" tabindex="0" role="region" aria-label="Table, scrolls sideways"><table class="tt"><thead><tr><th>' + (nba ? "Date" : "Week") + '</th><th>Opponent</th><th class="ra">Our spread</th><th class="ra">Win chance</th><th class="ra">Fair price</th></tr></thead><tbody>' +
       nxt.map(function (g) {
         var oppRow = null; (R.teams || []).forEach(function (x) { if (x.team === g.opp) oppRow = x; });
         var on = nba ? (oppRow && oppRow.full) || g.opp : g.opp;
@@ -6043,7 +6465,7 @@ body.on-home { overflow-anchor: none; }
     var days = (v.by_day || []).slice(-31), mx = Math.max.apply(null, days.map(function (d) { return d.visitors; }).concat([1]));
     var chart = days.length ? '<div class="st-bars">' + days.map(function (d) { return '<div class="st-b" title="' + esc(d.day) + ": " + d.visitors + " visitors, " + d.views + " views, " + d.checkout + ' trial clicks"><i style="height:' + Math.max(3, Math.round(100 * d.visitors / mx)) + '%"></i>' + (d.checkout ? "<em></em>" : "") + "</div>"; }).join("") + '</div><p class="note">Visitors per day (orange dot = someone clicked the free-trial button that day).</p>' : "";
     function tbl(title, rows, cols) {
-      return '<div class="panel"><h3>' + title + '</h3>' + (rows && rows.length ? '<div class="scroll"><table class="st-tbl"><thead><tr>' + cols.map(function (c) { return "<th" + (c[2] ? ' class="ra"' : "") + ">" + c[0] + "</th>"; }).join("") + "</tr></thead><tbody>" +
+      return '<div class="panel"><h3>' + title + '</h3>' + (rows && rows.length ? '<div class="scroll" tabindex="0" role="region" aria-label="Table, scrolls sideways"><table class="st-tbl"><thead><tr>' + cols.map(function (c) { return "<th" + (c[2] ? ' class="ra"' : "") + ">" + c[0] + "</th>"; }).join("") + "</tr></thead><tbody>" +
         rows.map(function (r) { return "<tr>" + cols.map(function (c) { return "<td" + (c[2] ? ' class="ra tnum"' : "") + ">" + esc(r[c[1]] == null ? "" : r[c[1]]) + "</td>"; }).join("") + "</tr>"; }).join("") + "</tbody></table></div>" : '<p class="note">Nothing yet.</p>') + "</div>";
     }
     el.innerHTML = '<div class="cards">' + head + funnel + chart + "</div>" +
@@ -6188,7 +6610,7 @@ body.on-home { overflow-anchor: none; }
       (bets.length ? cbbPickCards(bets) : '<p class="note">No picks today: nothing cleared the bar.</p>') + "</div>";
     if (paper.length) html += '<div class="panel" style="margin-top:16px"><h3>Tracked on paper (0 units)</h3><p class="note">Ideas we grade before staking anything: the totals model (only when the referee crew is posted) and ratings-only edges.</p>' + cbbPickCards(paper) + "</div>";
     var gs = (d.games || []).slice().sort(function (a, b) { return new Date(a.tip) - new Date(b.tip); });
-    if (gs.length) html += '<div class="panel" style="margin-top:16px"><h3>Every game</h3><p class="note">The market line, our ratings’ line, and the market model’s lean (points it expects the home team to beat the line by; + = home). Totals: the line and our number.</p><div class="scroll"><table class="tt"><thead><tr><th>Tip</th><th>Game</th><th class="ra">Line</th><th class="ra">Our ratings</th><th class="ra">Lean</th><th class="ra">Total</th><th class="ra">Ours</th><th>Score</th></tr></thead><tbody>' +
+    if (gs.length) html += '<div class="panel" style="margin-top:16px"><h3>Every game</h3><p class="note">The market line, our ratings’ line, and the market model’s lean (points it expects the home team to beat the line by; + = home). Totals: the line and our number.</p><div class="scroll" tabindex="0" role="region" aria-label="Table, scrolls sideways"><table class="tt"><thead><tr><th>Tip</th><th>Game</th><th class="ra">Line</th><th class="ra">Our ratings</th><th class="ra">Lean</th><th class="ra">Total</th><th class="ra">Ours</th><th>Score</th></tr></thead><tbody>' +
       gs.map(function (g) {
         var s = cbbScore(g.id), lean = g.lean == null ? "" : (g.lean > 0 ? "+" : "") + g.lean.toFixed(1);
         return "<tr><td>" + esc(cbbTip(g.tip)) + '</td><td><span class="tcell1">' + badge(g.away, null, "sm") + esc(g.away) + (g.neutral ? " vs " : " @ ") + "</span>" + '<span class="tcell1">' + badge(g.home, null, "sm") + esc(g.home) + "</span></td>" +
@@ -6207,7 +6629,7 @@ body.on-home { overflow-anchor: none; }
           '</div><div class="tnum ' + (x.units > 0 ? "up" : x.units < 0 ? "down" : "") + '">' + (x.paper ? signed(x.units1 || 0) + "u at 1u" : signed(x.units || 0) + "u") + (x.clv != null ? " · close " + signed(x.clv, 2) : "") + "</div></div>";
       }).join("") : '<p class="note">Nothing graded yet. The first games grade the morning after they’re played.</p>') + "</div>" +
       '<div class="panel"><h3>The backtest</h3><p class="note">Market model, every season scored by a model trained only on earlier seasons. 2016-23: 1.5+ pts 56.8% (2,569 bets), 2+ pts 58.0%, 3+ pts 64.2%. Held-out 2024-26 at the 10am line: 60.8% / 61.8% / 64.3%; the line moved our way by tip. Break-even at −110 is 52.4%.</p></div>' +
-      (P.length ? '<div class="panel span2"><h3>Every graded pick</h3><div class="scroll"><table class="tt"><thead><tr><th>Date</th><th>Setup</th><th>Game</th><th>Bet</th><th class="ra">vs close</th><th>Result</th><th class="ra">Units</th></tr></thead><tbody>' +
+      (P.length ? '<div class="panel span2"><h3>Every graded pick</h3><div class="scroll" tabindex="0" role="region" aria-label="Table, scrolls sideways"><table class="tt"><thead><tr><th>Date</th><th>Setup</th><th>Game</th><th>Bet</th><th class="ra">vs close</th><th>Result</th><th class="ra">Units</th></tr></thead><tbody>' +
         P.map(function (p) {
           return "<tr><td>" + esc(nbaDay(p.date)) + "</td><td>" + (p.paper ? "Paper · " : "") + esc(p.setup) + "</td><td>" + esc(p.game) + "</td><td><b>" + esc(p.bet) + '</b></td><td class="ra">' + (p.clv == null ? "" : signed(p.clv, 1)) +
             '</td><td><span class="pill ' + esc(p.result) + '">' + (p.result === "W" ? "Won" : p.result === "L" ? "Lost" : "Push") + '</span></td><td class="ra ' + (p.units > 0 ? "up" : p.units < 0 ? "down" : "") + '">' + signed(p.units || 0) + "</td></tr>";
@@ -6218,7 +6640,7 @@ body.on-home { overflow-anchor: none; }
     var rows = T.filter(function (t) { return !q || String(t.team).toLowerCase().indexOf(q) >= 0; });
     el.innerHTML = '<div class="panel tablep"><div class="tbar"><input class="search" id="cbbq" type="search" placeholder="Search team" value="' + esc(state.cbbq || "") + '"></div>' +
       '<p class="note">Our power ratings from box scores only, luck taken out: points per 100 possessions better (+) or worse than an average Division I team, adjusted for every opponent. Preseason they start from each roster’s player values (transfers count).</p>' +
-      '<div class="scroll"><table class="tt"><thead><tr><th class="ra">#</th><th>Team</th><th>Record</th><th class="ra">Rating</th><th class="ra">Offense</th><th class="ra">Defense</th><th class="ra">Tempo</th></tr></thead><tbody>' +
+      '<div class="scroll" tabindex="0" role="region" aria-label="Table, scrolls sideways"><table class="tt"><thead><tr><th class="ra">#</th><th>Team</th><th>Record</th><th class="ra">Rating</th><th class="ra">Offense</th><th class="ra">Defense</th><th class="ra">Tempo</th></tr></thead><tbody>' +
       rows.slice(0, 400).map(function (t) {
         return '<tr><td class="ra">' + t.rank + '</td><td><span class="tcell1">' + badge(t.team, null, "sm") + "<b>" + esc(t.team) + "</b></span></td><td>" + esc(t.record || "") + '</td><td class="ra tnum"><b>' + signed(t.net, 1) +
           '</b></td><td class="ra tnum">' + signed(t.off, 1) + '</td><td class="ra tnum">' + signed(t.def, 1) + '</td><td class="ra tnum">' + (t.tempo == null ? "" : t.tempo.toFixed(1)) + "</td></tr>";
@@ -6563,6 +6985,18 @@ body.on-home { overflow-anchor: none; }
       (rows ? '<table class="hm-tbl"><thead><tr><th>Setup · backtest</th><th class="ra">Record</th><th class="ra">Win</th></tr></thead><tbody>' + rows + "</tbody></table>" : '<p class="hm-wait">Setups post with the next card.</p>') +
       '<div class="hm-links"><button type="button" data-hsport="' + S.k + '" data-hview="ratings">' + (more ? "All " + L.length + " setups" : "How the stars work") + ' ›</button><button type="button" data-hsport="' + S.k + '" data-hview="record">Every live bet ›</button></div></article>';
   }
+  // ---- home hero picture (Nov 15 2026): the Picks page, built with the Stageshow kit, in hero.js. It loads after the page
+  // has painted (about 41 KB), so it never slows the first view; reduced-motion visitors get its still frame.
+  var HERO = (function () {
+    var el = document.createElement("div"), asked = false;
+    el.className = "hm-demo"; el.setAttribute("aria-hidden", "true");
+    function go() { if (window.GTEHero) window.GTEHero.mount(el); }
+    return { el: el, load: function () {
+      if (asked) return go(); asked = true;
+      var start = function () { var sc = document.createElement("script"); sc.src = "hero.js?v=1"; sc.async = true; sc.onload = go; document.head.appendChild(sc); };
+      if (window.requestIdleCallback) requestIdleCallback(start, { timeout: 1500 }); else setTimeout(start, 300);
+    } };
+  })();
   function renderHome() {
     var el = document.getElementById("homeView"); if (!el) return;
     var nSet = 0, lw = 0, ll = 0, lp = 0, lu = 0, loaded = 0;
@@ -6572,12 +7006,12 @@ body.on-home { overflow-anchor: none; }
       '<section class="hm-hero"><div class="wrap"><div><div class="eyebrow">NCAAF · NFL · NBA · NCAAB</div>' +
       "<h1>Four betting models. <em>Every setup tested first.</em></h1>" +
       '<p class="lede">We build our own number for every game and compare it with the line. We only bet the spots that won on past seasons, including recent seasons the models never saw while being built. Every bet is graded in public, the losing weeks included.</p>' +
-      homeCta("top") + freeBox() + "</div>" +
-      '<div class="hm-board" aria-label="At a glance"><div><i>Models</i><b>4</b><small>College and pro, football and basketball</small></div>' +
+      homeCta("top") + freeBox() +
+      '<div class="hm-board row" aria-label="At a glance"><div><i>Models</i><b>4</b><small>College and pro, football and basketball</small></div>' +
       "<div><i>Rated setups</i><b>" + (dots || nSet) + "</b><small>Each with its own backtest record</small></div>" +
       "<div><i>Live bets graded</i><b>" + (dots || (lw + ll + lp).toLocaleString("en-US")) + "</b><small>This season, every one counted</small></div>" +
-      "<div><i>Live record</i><b>" + (dots || recTxt(lw, ll, lp)) + "</b><small>" + (dots ? "&nbsp;" : '<span style="color:' + (lu >= 0 ? "var(--h-win)" : "var(--h-loss)") + '">' + signed(lu) + "u</span> so far") + "</small></div></div>" +
-      "</div></section>" +
+      "<div><i>Live record</i><b>" + (dots || recTxt(lw, ll, lp)) + "</b><small>" + (dots ? "&nbsp;" : '<span style="color:' + (lu >= 0 ? "var(--h-win)" : "var(--h-loss)") + '">' + signed(lu) + "u</span> so far") + "</small></div></div></div>" +
+      "</div>" + '<div id="gteHeroSlot"></div>' + "</section>" +
       '<div class="wrap">' +
       '<section class="hm-sec"><h2>How it works</h2><p class="note">No hunches and no “locks.” A short list of tested spots, sized by how much we trust them.</p><div class="hm-steps">' +
       "<div><b>We make our own line</b><span>Each model rates every team from play-by-play data and the market, then predicts the margin and total of every game.</span></div>" +
@@ -6606,6 +7040,7 @@ body.on-home { overflow-anchor: none; }
       '<section class="hm-final"><div><h2>Bet with a tested edge</h2><p>Expect 55–58% over hundreds of bets, not 70% in a week. That’s where the best bettors live.</p></div>' + homeCta("end") + "</section>" +
       '<p class="hm-foot">Past results don’t promise future ones. Backtests use the lines that were available at the time. Bets grade at −110 unless a price is shown. For entertainment and research, not financial advice. 21+. If gambling stops being fun, call 1-800-GAMBLER.' + legalLinks() + "</p>" +
       "</div>";
+    var slot = el.querySelector("#gteHeroSlot"); if (slot) { slot.replaceWith(HERO.el); HERO.load(); }
     bindLock(el);
   }
   function showHome(on, auto) {
