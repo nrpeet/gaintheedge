@@ -1494,3 +1494,16 @@ body.on-home { overflow-anchor: none; }
 .spl-chip.against::before { background: var(--loss); }
 .spl-chip.warn::before, .spl-dot.warn::before { display: none; }
 .spl-chip small { margin-left: 0; color: var(--ink-2); opacity: 1; }
+
+/* ---- Games table: the two teams as a small scoreboard (Nov 16 2026) ---- */
+.sg-g { display: grid; gap: 6px; min-width: 210px; }
+.sg-r { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 8px; }
+.sg-r .sg-n { font-weight: 600; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sg-r .sg-pts { font-family: var(--f-display); font-size: 19px; font-weight: 800; line-height: 1; margin: 0; color: var(--ink); text-align: right; min-width: 2ch; font-variant-numeric: tabular-nums; }
+.sg-r .sg-pts::after { content: "\25C2"; font-size: 11px; margin-left: 4px; vertical-align: 2px; visibility: hidden; }
+.sg-r.sg-w .sg-n { font-weight: 800; }
+.sg-r.sg-w .sg-pts::after { visibility: visible; color: var(--accent-text); }
+.sg-r.sg-l .sg-n, .sg-r.sg-l .sg-pts { color: var(--ink-3); font-weight: 600; }
+.sg-r.sg-l .sg-n .rk { color: var(--ink-3); }
+.slt td.ra.nw { white-space: nowrap; } .slt td.ra.nw small.opn { white-space: normal; } .slt td.ra.nw small.opn.so { white-space: nowrap; }
+.sg-g { min-width: 200px; }
