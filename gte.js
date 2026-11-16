@@ -4416,11 +4416,13 @@
       if (gs === "close") return Math.abs((a.pH == null ? .5 : a.pH) - .5) - Math.abs((b.pH == null ? .5 : b.pH) - .5);
       return a.t - b.t || (a.key < b.key ? -1 : 1);
     });
-    function nm(team, row, wl, pts) { return badge(team, nfl ? team : null, "sm") + '<span class="sg-n' + (wl ? " " + wl : "") + '">' + (row && !nfl ? '<i class="rk">' + row.rank + "</i>" : "") + esc(nfl ? team : shortName(team) || team) + (pts != null && pts !== "" ? ' <b class="sg-pts">' + esc(pts) + "</b>" : "") + "</span>"; }
+    function nm(team, row, wl, pts) {          // one scoreboard row: logo, rank and name, score on the right; the winner bold, the loser quieter (Nov 16 2026)
+      return '<span class="sg-r' + (wl ? " " + wl : "") + '">' + badge(team, nfl ? team : null, "sm") + '<span class="sg-n">' + (row && !nfl ? '<i class="rk">' + row.rank + "</i>" : "") + esc(nfl ? team : shortName(team) || team) + "</span>" +
+        (pts != null && pts !== "" ? '<b class="sg-pts">' + esc(pts) + "</b>" : "") + "</span>"; }
     var CL = [];
     function ml(p) { var a = amerExact(p); return a == null ? "" : (a > 0 ? "+" : MIN) + Math.abs(a); }
     var rows = list.map(function (r) {
-      var g = r.g, ha = abbr(g.home), aa = abbr(g.away), sc = r.sc, st = sc && sc.status !== "pre" ? (sc.status === "final" ? "Final " : "Live ") + sc.away + "–" + sc.home : "";
+      var g = r.g, ha = abbr(g.home), aa = abbr(g.away), sc = r.sc, st = sc && sc.status !== "pre" ? (sc.status === "final" ? "Final" : "Live") : "";
       var fin = sc && sc.status === "final" && sc.home != null && sc.away != null && !isNaN(+sc.home), fm = fin ? +sc.home - +sc.away : null;
       var wH = fin ? (fm > 0 ? "sg-w" : fm < 0 ? "sg-l" : "") : "", wA = fin ? (fm < 0 ? "sg-w" : fm > 0 ? "sg-l" : "") : "";
       var clo = fin ? closerOf(fm, g.model_spread, r.ls) : null, cfbT = !!r.tl;
@@ -4455,7 +4457,7 @@
         lineTag: r.live || r.ls == null ? "" : (isCBB() ? "morning" : "sheet"), clo: clo ? closerTag(clo) : "", flags: notes.slice(nFix), picks: notes.slice(clo ? 1 : 0, nFix),
         mu: muAttr + ' title="Open the matchup: head to head and projected starters"', go: '<button type="button" class="gt-go"' + muAttr + ">Matchup \u203a</button>" });
       return { day: String(g.kickoff || "").slice(0, 10), tile: tile, tr: '<tr><td class="nw">' + esc(kickText(g.kickoff)) + (st ? '<small class="' + (sc.status === "live" ? "live" : "") + '">' + esc(st) + "</small>" : "") + "</td>" +
-        '<td class="sg-mu" data-mu-a="' + esc(g.away) + '" data-mu-h="' + esc(g.home) + '" data-mu-k="' + esc(r.key) + '" data-mu-id="' + esc(g.id != null ? g.id : "") + '" data-mu-t="' + esc(g.kickoff || "") + '" data-mu-n="' + (g.neutral ? 1 : 0) + '" title="Open the matchup: head to head and projected starters"><div class="sg-g">' + nm(g.away, r.ra, wA, sc && sc.status !== "pre" ? sc.away : null) + '<span class="at">' + (g.neutral && isCBB() ? "vs" : "@") + "</span>" + nm(g.home, r.rh, wH, sc && sc.status !== "pre" ? sc.home : null) + "</div>" + (function () { if (!nfl && state.sport !== "cfb") return ""; var h = historyFor(g.away, g.home); if (!h || !(h.facts || []).length) return "";
+        '<td class="sg-mu" data-mu-a="' + esc(g.away) + '" data-mu-h="' + esc(g.home) + '" data-mu-k="' + esc(r.key) + '" data-mu-id="' + esc(g.id != null ? g.id : "") + '" data-mu-t="' + esc(g.kickoff || "") + '" data-mu-n="' + (g.neutral ? 1 : 0) + '" title="Open the matchup: head to head and projected starters"><div class="sg-g" aria-label="' + esc((nfl ? g.away : shortName(g.away) || g.away) + (g.neutral ? " vs " : " at ") + (nfl ? g.home : shortName(g.home) || g.home)) + '">' + nm(g.away, r.ra, wA, sc && sc.status !== "pre" ? sc.away : null) + nm(g.home, r.rh, wH, sc && sc.status !== "pre" ? sc.home : null) + "</div>" + (function () { if (!nfl && state.sport !== "cfb") return ""; var h = historyFor(g.away, g.home); if (!h || !(h.facts || []).length) return "";
           return '<small class="sg-hist" title="' + esc((h.facts || []).concat(h.last ? [h.last] : []).join("\n")) + '">\ud83d\udcdc ' + esc(h.facts[0]) + "</small>"; })() + "</td>" +
         '<td class="ra nw">' + esc(fmtSpread(ha, aa, r.ls)) + (r.live || r.ls == null ? "" : ' <small title="The line when the sheet was built">' + (isCBB() ? "morning" : "sheet") + "</small>") +
           (g.open_spread != null && r.ls != null && Math.abs(g.open_spread - r.ls) >= .5 ? '<small class="opn">opened ' + esc(fmtSpread(ha, aa, g.open_spread)) + " (" + u(Math.abs(r.ls - g.open_spread)) + " toward " + esc(r.ls < g.open_spread ? ha : aa) + ")</small>" : "") + "</td>" +
