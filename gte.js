@@ -2712,9 +2712,9 @@
       var poss = sg.poss || 68, st = (H.net - A.net) * poss / 100, rm = sg.ratings_spread != null ? -sg.ratings_spread : -sg.model_spread;
       add("Team ratings (offense + defense, schedule-adjusted)", st, "net rating gap \u00d7 " + poss + " possessions");
       add(sg.neutral ? "Neutral site: no home court" : "Home court", rm - st, "");
-      if (sg.model_kind === "market" && sg.ratings_spread != null) add("Market model adjustment (line moves, books, form)", -sg.model_spread - rm, "");
-      ours = -sg.model_spread;
-      return { P: P, ours: ours, vegas: vegas, model: sg.model_kind === "market" ? "market model" : "ratings" };
+      ours = -sg.model_spread;            // Nov 17 2026: the market model isn't a piece of the ratings sum; it starts from Vegas and adds the value it finds
+      if (sg.model_kind === "market" && sg.ratings_spread != null) return { P: P, ours: rm, vegas: vegas, model: "ratings", mkt: ours, vlbl: "Vegas this morning" };
+      return { P: P, ours: ours, vegas: vegas, model: "ratings", vlbl: "Vegas this morning" };
     }
     // football: only the model's own pieces (sent by the notebook as sg.pieces), never a guess from the ratings table
     if (sg.model_spread == null || !sg.pieces || !sg.pieces.length) return null;
@@ -2738,8 +2738,11 @@
     return '<div class="ep"><div class="ep-ends"><span>\u2190 helps ' + sh(away) + "</span><span>helps " + sh(home) + " \u2192</span></div>" + rows +
       '<div class="ep-sum"><span>Adds up to our ' + esc(E.model) + " line</span><b>" + fav(E.ours) + "</b></div>" +
       (mix != null ? '<div class="ep-sum"><span title="Our stats mixed with the market, weighted the way that predicted best over 2015-2025">Our line (mixed with the market)</span><b>' + fav(Math.round(mix * 10) / 10) + "</b></div>" : "") +
-      '<div class="ep-sum mute"><span>Vegas</span><b>' + fav(E.vegas) + "</b></div>" +
-      (diff != null && Math.abs(diff) >= .5 ? '<div class="ep-sum hi"><span>We\u2019re higher on ' + sh(diff > 0 ? home : away) + " by</span><b>" + u(Math.abs(diff)) + "</b></div>" : "") + "</div>";
+      '<div class="ep-sum mute"><span>' + esc(E.vlbl || (isNBA() ? "Vegas" : "Vegas when our sheet was built")) + '</span><b>' + fav(E.vegas) + "</b></div>" +
+      (E.mkt != null ? (function () { var v = E.vegas == null ? null : E.mkt - E.vegas;
+        return '<div class="ep-sum"><span title="Our market model starts from the betting line and predicts how far off it is, using line moves, the books and our ratings. Bets come from this number.">Market model line (bets come from this)</span><b>' + fav(Math.round(E.mkt * 10) / 10) + "</b></div>" +
+          (v != null && Math.abs(v) >= .5 ? '<div class="ep-sum hi"><span>Value it found vs this morning\u2019s line</span><b>' + sh(v > 0 ? home : away) + " " + u(Math.abs(Math.round(v * 10) / 10)) + " pts</b></div>" : '<div class="ep-sum mute"><span>Value it found vs this morning\u2019s line</span><b>none</b></div>'); })()
+        : (diff != null && Math.abs(diff) >= .5 ? '<div class="ep-sum hi"><span>We\u2019re higher on ' + sh(diff > 0 ? home : away) + " by</span><b>" + u(Math.abs(diff)) + "</b></div>" : "")) + "</div>";
   }
   function luckRow(away, home) {         // record vs point margin: wins above or below what the margin says (NBA), or the card's luck number
     if (isNBA()) {
@@ -2757,7 +2760,7 @@
           ["Big plays", "expl_off", "expl_def"], ["Turnovers", "to_off", "to_def"], ["Field position", "fp_off", "fp_def"]],
     bb: [["Shooting (eFG%)", "efg_off", "efg_def"], ["Turnovers", "tov_off", "tov_def"],
          ["Offensive rebounding", "orb_off", "orb_def"], ["Free throws", "ftr_off", "ftr_def"],
-         ["3-point volume", "fg3r_off", "fg3r_def"], ["Paint scoring", "paint_off", "paint_def"]]
+         ["3-point volume", "fg3r_off", "fg3r_def", 0, 1], ["Paint scoring", "paint_off", "paint_def"]]
   };
   function muStyle() {
     if (isNBA() || isCBB()) { var s = (state.data || {}).style; return s && s.teams && Object.keys(s.teams).length ? s : null; }
@@ -2772,11 +2775,42 @@
       [[away, A, home, H], [home, H, away, A]].forEach(function (x) {
         var att = p[3] ? x[2] : x[0], atT = p[3] ? x[3] : x[1], dfn = p[3] ? x[0] : x[2], dfT = p[3] ? x[1] : x[3];   // pass rush: the defense attacks
         var oR = atT[p[1] + "_rank"], dR = dfT[p[2] + "_rank"]; if (oR == null || dR == null) return;
-        var gap = Math.abs(oR - dR), edge = oR < dR ? att : dR < oR ? dfn : null;
-        out.push({ l: p[0], oT: att, oR: oR, dT: dfn, dR: dR, edge: edge, gap: gap, n: n, big: gap >= n / 2, real: gap >= n / 5 });
+        var gap = Math.abs(oR - dR), edge = p[4] ? null : oR < dR ? att : dR < oR ? dfn : null;      // p[4]: a style stat (3-point volume), never an "edge"
+        out.push({ l: p[0], oT: att, oR: oR, dT: dfn, dR: dR, edge: edge, gap: gap, n: n, big: !p[4] && gap >= n / 2, real: !p[4] && gap >= n / 5, style: !!p[4] });
       });
     });
     return out;
+  }
+  // Nov 17 2026: the four factors with the actual rates, both teams side by side, and a plain note from the numbers (no hand-written text)
+  var FF_ROWS = [
+    ["Offense", "efg_off", "Shooting (effective FG%)", "pct", "shoots better"], ["", "tov_off", "Turnovers per 100 possessions", "n1", "protects the ball better"],
+    ["", "orb_off", "Offensive rebounding", "pct", "gets more second chances"], ["", "ftr_off", "Free throws per shot", "r3", "gets to the line more"],
+    ["Defense", "efg_def", "Shooting allowed (eFG%)", "pct", "holds teams to worse shooting"], ["", "tov_def", "Turnovers forced per 100", "n1", "forces more turnovers"],
+    ["", "orb_def", "Offensive rebounds allowed", "pct", "cleans the defensive glass better"], ["", "ftr_def", "Free throws allowed per shot", "r3", "fouls less"],
+    ["Style", "fg3r_off", "Share of shots from three", "pct", ""], ["", "pace", "Possessions per game", "n1", ""]];
+  function ffTable(away, home) {
+    var S = muStyle(); if (!S) return ""; var A = S.teams[away], H = S.teams[home]; if (!A || !H) return "";
+    var n = S.n_all || S.n || 0, sh = function (t) { return esc(isNBA() ? t : shortName(t)); };
+    var fmt = function (k, v) { if (v == null) return "\u2014"; return k === "pct" ? (100 * v).toFixed(1) + "%" : k === "r3" ? v.toFixed(3).replace(/^0/, "") : (+v).toFixed(1); };
+    var body = FF_ROWS.map(function (r) {
+      var a = A[r[1]], h = H[r[1]]; if (a == null || h == null) return "";
+      var ra = A[r[1] + "_rank"], rh = H[r[1] + "_rank"], note = "", win = 0;
+      if (!r[4]) {
+        if (r[1] === "fg3r_off") note = Math.abs(a - h) < .04 ? "Similar shot mix" : sh(a > h ? away : home) + " shoots far more threes: a style, not an edge by itself";
+        else note = Math.abs(a - h) < 1.5 ? "Similar pace" : sh(a > h ? away : home) + " plays faster";
+      } else if (ra != null && rh != null && n) {
+        var gap = Math.abs(ra - rh);
+        if (gap < n / 8) note = "About even";
+        else { win = ra < rh ? -1 : 1; note = (gap >= n / 2 ? "Big edge " : gap >= n / 4 ? "Edge " : "Slight edge ") + sh(win < 0 ? away : home) + ": " + r[4]; }
+      }
+      var cell = function (v, rk, w) { return '<td class="ra' + (w ? " ff-w" : "") + '">' + fmt(r[3], v) + (rk != null && r[4] ? "<small>#" + rk + "</small>" : "") + "</td>"; };
+      return (r[0] ? '<tr class="ff-grp"><th colspan="4">' + r[0] + "</th></tr>" : "") + "<tr><td>" + esc(r[2]) + "</td>" + cell(a, ra, win < 0) + cell(h, rh, win > 0) + '<td class="ff-n">' + note + "</td></tr>";
+    }).join("");
+    if (!body) return "";
+    var gA = A.games, gH = H.games;
+    return '<div class="eg-sub">The four factors <small>(this season\u2019s actual rates; # = rank' + (n ? " of " + n + (isCBB() ? " Division I teams" : " teams") : "") + ", 1 = best)</small></div>" +
+      '<div class="scroll" tabindex="0" role="region" aria-label="Table, scrolls sideways"><table class="tt ff-t"><thead><tr><th></th><th class="ra">' + badge(away, isNBA() ? away : null, "sm") + " " + sh(away) + '</th><th class="ra">' + badge(home, isNBA() ? home : null, "sm") + " " + sh(home) + "</th><th>What it tells us</th></tr></thead><tbody>" + body + "</tbody></table></div>" +
+      '<p class="note">Raw season numbers' + (gA && gH ? " through " + gA + " and " + gH + " games" : "") + ", not adjusted for who they played, so early in the season they can mislead. Our ratings above already include them; nothing in this table is added on top.</p>";
   }
   function edgesHtml(away, home, part) {
     var R = edgeRows(away, home), M = muPairs(away, home);
@@ -2813,7 +2847,7 @@
     };
     if (part === "mu") {
       if (!M.length) return '<div class="panel"><h3>Matchups</h3><p class="note">Style numbers for these teams aren\u2019t in yet.</p></div>';
-      return '<div class="panel mu-edges"><h3>Matchups <small>\u00b7 one team\u2019s strength vs the other\u2019s weakness</small></h3>' +
+      return '<div class="panel mu-edges"><h3>Matchups <small>\u00b7 one team\u2019s strength vs the other\u2019s weakness</small></h3>' + ((isCBB() || isNBA()) ? ffTable(away, home) : "") +
         (best ? '<p class="mu-best"><b>Biggest mismatch:</b> ' + esc(best.l.toLowerCase()) + ", " + nm(best.oT) + " #" + best.oR + " vs " + nm(best.dT) + " #" + best.dR + " (of " + best.n + "), edge " + nm(best.edge) + ".</p>" : '<p class="note">No big mismatches in this game.</p>') +
         '<div class="eg-head"><span>' + badge(away, nfl ? away : null, "sm") + " " + esc(shortName(away)) + "</span><span>" + esc(shortName(home)) + " " + badge(home, nfl ? home : null, "sm") + "</span></div>" +
         '<div class="eg-sub">The 3 biggest <small>(ranks this season, 1 = best; every stat counts twice, once for each team\u2019s offense)</small></div>' + top3.map(mrow).join("") +
@@ -2843,7 +2877,7 @@
       '<div class="eg-sub">The numbers behind it <small>(★ = moves the line most; the bar shows who\u2019s better and by how much)</small></div>' +
       '<div class="eg-head"><span>' + badge(away, nfl ? away : null, "sm") + " " + esc(shortName(away)) + "</span><span>" + esc(shortName(home)) + " " + badge(home, nfl ? home : null, "sm") + "</span></div>" + rows +
       luckRow(away, home) +
-      (mrows ? '<div class="eg-sub">Matchup evaluator <small>(one team\u2019s strength vs the other\u2019s weakness: ranks this season, 1 = best)</small></div>' + mrows +
+      ((isCBB() || isNBA()) && ffTable(away, home) ? ffTable(away, home) : mrows ? '<div class="eg-sub">Matchup evaluator <small>(one team\u2019s strength vs the other\u2019s weakness: ranks this season, 1 = best)</small></div>' + mrows +
         '<p class="note">Vegas prices much of this already. We\u2019re testing which mismatches still beat the line; those will get a \u2605.</p>' : "") + tb +
       '<p class="note">' + (isNBA() || isCBB() ? "Luck and recent form are shown because they mislead: lucky records and hot streaks tend to fade. " : "") + "The bars at the top of this card are our model\u2019s actual math.</p></div>";
   }
@@ -2925,7 +2959,7 @@
     if (r.picks.length) {
       tone = "bet";
       head = "Our bet: " + r.picks.map(function (x) { return esc(pretty(x.pick)); }).join(" \u00b7 ");
-      why = r.picks.map(function (x) { var q = rated(x); return starsHtml(q.stars) + " " + u(q.stake) + "u" + ((x.setups || [])[0] ? " \u00b7 " + esc(x.setups[0].name) : ""); }).join("<br>");
+      why = r.picks.map(function (x) { var q = rated(x); return starsHtml(q.stars) + " " + u(q.stake) + "u" + ((x.setups || [])[0] ? " \u00b7 " + esc(x.setups[0].name) : ""); }).join("<br>") + betNowHtml(r.picks);
     } else {
       head = "No bet on this game";
       why = r.dS == null || Math.abs(r.dS) < 1 ? "We\u2019re in line with Vegas." :
@@ -2942,6 +2976,25 @@
       (when ? "<span>" + when + "</span>" : "") + (line ? "<span>" + line + "</span>" : "") + "</div></section>";
   }
   // the verdict for sports without the college football extras: our bets on this game, or why we pass (from our line vs Vegas)
+  // Nov 17 2026 (game-page audit): the bet as posted stays; underneath, the line now and whether it's still worth betting at that number
+  function betNow(x) {
+    var kind = pickKind(x); if (!kind || kind === "price") return null;
+    var gr = grade(x); if (settled(gr.r) || gr.r === "live") return null;
+    var L = lineOf(x), es = espnFor(x); if (L == null || isNaN(L) || !es || es.closed) return null;
+    var side = sideOf(x), nm = kind === "spread" ? (side === "home" ? abbr(x.home) : abbr(x.away)) + " " : "";
+    var t = function (v) { return kind === "spread" ? nm + lineTxt(v) : (kind === "over" ? "Over " : "Under ") + u(v); };
+    var better = function (a, b) { return kind === "over" ? a <= b : a >= b; };        // a is at least as good as b for this bet
+    var lim = limitOf(floorOf(x), kind, L, x.price), worst = lim && lim.ok && lim.line != null ? lim.line : L;
+    var moved = Math.abs(es.v - L) >= .25, ok = better(es.v, worst);
+    return { posted: t(L), now: t(es.v), moved: moved, ok: ok, worst: t(worst), same: Math.abs(worst - L) < .01 };
+  }
+  function betNowHtml(picks) {
+    var out = picks.map(function (x) { var b = betNow(x); if (!b) return "";
+      if (!b.moved) return '<span class="gv-now ok">Posted at ' + esc(b.posted) + " \u00b7 line hasn\u2019t moved</span>";
+      return '<span class="gv-now ' + (b.ok ? "ok" : "no") + '">Posted at ' + esc(b.posted) + " \u00b7 now " + esc(b.now) + " \u00b7 " +
+        (b.ok ? "still a bet" + (b.same ? " at this number or better" : " down to " + esc(b.worst)) : "<b>past our number: don\u2019t bet it at " + esc(b.now) + "</b>") + "</span>"; }).join("");
+    return out ? '<div class="gv-nows">' + out + "</div>" : "";
+  }
   function gvVerdict(m) {
     var away = m.away, home = m.home, ha = abbr(home), aa = abbr(away), g = slateGame(away, home), tone = "pass", head, why;
     var picks = ((state.data || {}).bets || (state.data || {}).picks || []).filter(function (x) { return x.away === away && x.home === home && !x.paper && rated(x).stake > 0; });
@@ -2961,7 +3014,9 @@
     if (sc && sc.status === "live") when = "Live \u00b7 " + esc(aa) + " " + sc.away + ", " + esc(ha) + " " + sc.home;
     else if (sc && sc.status === "final") when = "Final \u00b7 " + esc(aa) + " " + sc.away + ", " + esc(ha) + " " + sc.home;
     else if (k) { var mins = Math.round((k - Date.now()) / 60000); when = mins > 0 && mins < 48 * 60 ? (isCBB() ? "Tip in " : "Kickoff in ") + (mins >= 60 ? Math.floor(mins / 60) + "h " : "") + (mins % 60) + "m" : esc(kickText(m.kickoff || g.kickoff)); }
-    var line = ls == null ? "" : "Vegas " + esc(gxFav(ha, aa, ls));
+    var live = sc && sc.ln && sc.ln.sp != null && sc.status === "pre";
+    var line = ls == null ? "" : "Vegas " + (live ? "now " : (isCBB() ? "this morning " : "at our sheet ")) + esc(gxFav(ha, aa, ls));
+    if (picks.length) why += betNowHtml(picks);
     return '<section class="gx-verdict" data-tone="' + tone + '" aria-label="Verdict"><div class="gv-main"><b>' + head + '</b><span>' + why + '</span></div><div class="gv-side">' +
       (when ? "<span>" + when + "</span>" : "") + (line ? "<span>" + line + "</span>" : "") + "</div></section>";
   }
@@ -2979,6 +3034,8 @@
       if (p.closest("#gx-read") || p.textContent.length < 110 || p.parentNode.tagName === "DETAILS") return;
       var rest = [].filter.call(p.parentNode.children, function (c) { return c !== p && c.tagName !== "H3"; });
       if (!rest.length) return;                  // an empty state's message stays in view
+      var prev = p.parentNode.querySelector(":scope > details.gx-how");
+      if (prev) { prev.appendChild(p); return; }   // a second long note joins the first, so each panel has one "How to read this"
       var d = document.createElement("details"); d.className = "gx-how"; d.innerHTML = "<summary>How to read this</summary>";
       p.parentNode.insertBefore(d, p); d.appendChild(p);
     });
