@@ -1530,3 +1530,49 @@ body.on-home { overflow-anchor: none; }
 .ff-t thead th { white-space: nowrap; }
 .ff-t thead .mono { display: inline-grid; vertical-align: middle; margin-right: 4px; }
 .gx-verdict .gv-now b { font: inherit; font-weight: 800; text-transform: none; letter-spacing: 0; display: inline; }
+
+/* ---- NFL audit (Nov 17 2026) ---- */
+.gv-tot { display: block; margin-top: 8px; font-size: 13.5px; color: var(--ink-2); }
+.ep-risk { margin: 10px 0 0; font-size: 13.5px; color: var(--ink-2); line-height: 1.5; } .ep-risk b { color: var(--ink); }
+/* Betting splits page (Nov 17 2026) */
+.sp-hd { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
+.sp-hd h3 { margin: 0; }
+.sp-ctl { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 12px; }
+.sp-ctl .seg { flex-wrap: wrap; }
+.sp-find { flex: 1 1 160px; min-width: 140px; max-width: 260px; font: inherit; font-size: 13px; color: var(--ink); background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 7px 10px; }
+.sp-key { font-size: 12px; color: var(--ink-2); margin: 10px 0 0; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.sp-key { gap: 4px 16px; } .sp-key > span { display: inline-flex; align-items: center; gap: 6px; }
+.sp-at { display: none; }
+.sp-list { padding: 4px 0; }
+.sp-r { display: grid; grid-template-columns: minmax(170px, 1.7fr) 58px 58px 58px 64px 58px 58px minmax(150px, 1.5fr); gap: 0 12px; align-items: center; padding: 10px 16px; border-top: 1px solid var(--line); }
+.sp-r[hidden] { display: none; }
+.sp-head { border-top: 0; font-size: 11.5px; font-weight: 700; color: var(--ink-2); padding-top: 8px; padding-bottom: 8px; }
+.sp-head span:nth-child(n+2):nth-child(-n+7) { text-align: right; }
+.sp-g { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.sp-g small { color: var(--ink-2); font-size: 11px; }
+.sp-t { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.sp-t b { font-weight: 700; font-size: 13.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sp-t .mono { width: 22px; height: 22px; flex: 0 0 22px; font-size: 8px; }
+.sp-c { display: flex; flex-direction: column; gap: 6px; align-items: flex-end; font-variant-numeric: tabular-nums; font-size: 13.5px; }
+.sp-c > span { height: 22px; display: inline-flex; align-items: center; }
+.sp-ln { color: var(--ink-2); font-weight: 600; }
+.sp-n { font-weight: 700; display: inline-flex; align-items: center; gap: 5px; }
+.sp-n.sharp::before, .sp-n.public::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--win); }
+.sp-n.public::before { background: var(--gold); }
+.sp-read { display: flex; flex-wrap: wrap; gap: 5px; justify-content: flex-start; }
+.sp-read .spl-chip { font-size: 11px; padding: 3px 8px; }
+.sp-few { font-size: 11px; color: var(--ink-2); border: 1px dashed var(--line); border-radius: 999px; padding: 3px 8px; }
+.sp-none { font-size: 12px; color: var(--ink-3, var(--ink-2)); }
+@media (max-width: 760px) {
+  .sp-head { display: none; }
+  .sp-r { grid-template-columns: repeat(3, minmax(0, 1fr)) 10px repeat(3, minmax(0, 1fr)); gap: 8px 6px; padding: 12px 14px; }
+  .sp-g { grid-column: 1 / -1; flex-direction: row; flex-wrap: wrap; gap: 4px 14px; }
+  .sp-g small { width: 100%; }
+  .sp-at { display: inline; color: var(--ink-2); font-size: 12px; align-self: center; }
+  .sp-g { gap: 4px 8px; }
+  .sp-c { align-items: flex-start; }
+  .sp-c::before { content: attr(data-l); font-size: 10.5px; font-weight: 700; color: var(--ink-2); }
+  .sp-c:nth-of-type(5) { grid-column: 5; }
+  .sp-read { grid-column: 1 / -1; }
+  .sp-find { max-width: none; }
+}
