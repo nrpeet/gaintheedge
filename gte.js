@@ -2735,6 +2735,13 @@
     var mix = null;                       // college football: the stats line mixed with the market = our line
     if (state.sport === "cfb" && E.vegas != null) { var sg0 = slateGame(away, home), tl0 = sg0 ? trueLine(sg0, -E.vegas, sg0.line_total) : null; if (tl0 && tl0.s != null) mix = -tl0.s; }
     var diff = (mix != null ? mix : E.ours) != null && E.vegas != null ? (mix != null ? mix : E.ours) - E.vegas : null;
+    var risk = "";                        // Nov 17 2026 (NFL audit): what could break this number
+    if (E.ours != null && Math.abs(E.ours) >= 1) {
+      var top = E.P.filter(function (x) { return x.v && Math.sign(x.v) === Math.sign(E.ours); }).sort(function (a, b) { return Math.abs(b.v) - Math.abs(a.v); })[0];
+      var share = top ? Math.abs(top.v) / Math.abs(E.ours) : 0;
+      if (top && share >= .6) risk = '<p class="ep-risk"><b>What could break it:</b> ' + (share >= 1 ? "all" : Math.round(100 * share) + "%") + " of this number is " +
+        esc(String(top.l).replace(/\s*\(.*\)$/, "").toLowerCase()) + ". If that\u2019s worth less than we think in this game, so is " + sh(E.ours > 0 ? home : away) + "\u2019s edge.</p>";
+    }
     return '<div class="ep"><div class="ep-ends"><span>\u2190 helps ' + sh(away) + "</span><span>helps " + sh(home) + " \u2192</span></div>" + rows +
       '<div class="ep-sum"><span>Adds up to our ' + esc(E.model) + " line</span><b>" + fav(E.ours) + "</b></div>" +
       (mix != null ? '<div class="ep-sum"><span title="Our stats mixed with the market, weighted the way that predicted best over 2015-2025">Our line (mixed with the market)</span><b>' + fav(Math.round(mix * 10) / 10) + "</b></div>" : "") +
@@ -2742,7 +2749,7 @@
       (E.mkt != null ? (function () { var v = E.vegas == null ? null : E.mkt - E.vegas;
         return '<div class="ep-sum"><span title="Our market model starts from the betting line and predicts how far off it is, using line moves, the books and our ratings. Bets come from this number.">Market model line (bets come from this)</span><b>' + fav(Math.round(E.mkt * 10) / 10) + "</b></div>" +
           (v != null && Math.abs(v) >= .5 ? '<div class="ep-sum hi"><span>Value it found vs this morning\u2019s line</span><b>' + sh(v > 0 ? home : away) + " " + u(Math.abs(Math.round(v * 10) / 10)) + " pts</b></div>" : '<div class="ep-sum mute"><span>Value it found vs this morning\u2019s line</span><b>none</b></div>'); })()
-        : (diff != null && Math.abs(diff) >= .5 ? '<div class="ep-sum hi"><span>We\u2019re higher on ' + sh(diff > 0 ? home : away) + " by</span><b>" + u(Math.abs(diff)) + "</b></div>" : "")) + "</div>";
+        : (diff != null && Math.abs(diff) >= .5 ? '<div class="ep-sum hi"><span>We\u2019re higher on ' + sh(diff > 0 ? home : away) + " by</span><b>" + u(Math.abs(diff)) + "</b></div>" : "")) + risk + "</div>";
   }
   function luckRow(away, home) {         // record vs point margin: wins above or below what the margin says (NBA), or the card's luck number
     if (isNBA()) {
@@ -3017,6 +3024,11 @@
     var live = sc && sc.ln && sc.ln.sp != null && sc.status === "pre";
     var line = ls == null ? "" : "Vegas " + (live ? "now " : (isCBB() ? "this morning " : "at our sheet ")) + esc(gxFav(ha, aa, ls));
     if (picks.length) why += betNowHtml(picks);
+    var lt0 = g ? (sc && sc.ln && sc.ln.tot != null && sc.status === "pre" ? sc.ln.tot : g.line_total) : null, mt0 = g ? g.model_total : null;
+    var hasTot = picks.some(function (x) { return /Total/.test(x.market || ""); });
+    if (!hasTot && lt0 != null && mt0 != null && Math.abs(mt0 - lt0) >= 3)          // Nov 17 2026 (NFL audit): the total gap, said plainly
+      why += '<span class="gv-tot">Our total ' + u(Math.round(mt0 * 10) / 10) + " vs Vegas " + u(lt0) + ": " + u(Math.round(Math.abs(mt0 - lt0) * 10) / 10) + " points " + (mt0 > lt0 ? "higher" : "lower") +
+        ". The model\u2019s total on its own isn\u2019t a tested bet, so no total bet either.</span>";
     return '<section class="gx-verdict" data-tone="' + tone + '" aria-label="Verdict"><div class="gv-main"><b>' + head + '</b><span>' + why + '</span></div><div class="gv-side">' +
       (when ? "<span>" + when + "</span>" : "") + (line ? "<span>" + line + "</span>" : "") + "</div></section>";
   }
@@ -3057,7 +3069,7 @@
     if (S) {
       var sh = [];
       splitBooks(S).forEach(function (x) { ["spread", "total"].forEach(function (mk) { var q = splitRead(x[1], mk); if (q && q.sharp) sh.push((x[0] === "DK" ? "DraftKings" : "Circa") + " on " + sideName(q.sharp, aa, ha) + (mk === "total" ? "" : " (spread)")); }); });
-      out.push(sh.length ? "Sharp money (money 10+ points above tickets): " + esc(sh.join("; ")) + "." : "No sharp lean in the betting splits.");
+      out.push(sh.length ? "Bigger bets (money share 10+ points above ticket share): " + esc(sh.join("; ")) + "." : "No side with clearly bigger bets in the splits.");
     }
     var O = g.others || {}, keys = Object.keys(O);
     if (keys.length && r.ls != null && g.model_spread != null && r.dS != null && Math.abs(r.dS) >= 1) {
@@ -3349,7 +3361,7 @@
           gxFold("others", "Other models vs Vegas", gxSumOthers(gx), gxOthers(gx, sj)) +
           gxFold("news", "News & notes", gxSumNews(sj, gx.g), gxNews(m, gx, sj)) +
           gxFold("players", "Players & injuries", gxSumPlayers(sj, gx.g), gxPlayers(gx, sj)) +
-          gxFold("lineups", "Projected starters", "From each team\u2019s last game, injuries applied", lu) +
+          gxFold("lineups", "Projected starters", (parseET(m.kickoff) || {}).utc < Date.now() - 4 * 3600000 ? "Today\u2019s depth chart, not who started this game" : "From each team\u2019s last game, injuries applied", lu) +
           gxFold("wx", "Weather at kickoff", gxSumWx(m, gx.g), gxWx(m, gx, sj)) +
           gxTier("t-bg", "Background") +
           gxFold("stats", "Season stats", gxSumStats(gx.g), gxStats(gx)) +
@@ -3360,11 +3372,14 @@
       : (function () {                          // NFL and college basketball (Nov 15 2026): the same verdict + three tiers as college football
         var hist = isFootball() && historyFor(m.away, m.home), noH2h = !h || h.err || !(h.rows || []).length;
         var h2h = (noH2h && hist ? "" : h2hHtml(m.away, m.home, h)) + (hist ? '<div class="panel" style="margin-top:16px">' + historyHtml(hist) + "</div>" : "");
+        var g0 = slateGame(m.away, m.home) || { away: m.away, home: m.home, kickoff: m.kickoff }, sj0 = isFootball() && m.eid ? gxSum(m.eid) : null;
+        var kk = (parseET(m.kickoff || g0.kickoff) || {}).utc, played = kk && kk < Date.now() - 4 * 3600000;   // Nov 17 2026 (NFL audit)
         return '<div class="gx-page">' + gvVerdict(m) + gxNav() +
           gxTier("t-call", "The call") + ourNumberHtml(m.away, m.home) + splitsPanel(m.away, m.home, abbr(m.away), abbr(m.home)) +
           gxTier("t-why", "Why") +
           gxFold("edge", "Who has the edge", "How the two teams compare, and the matchups that matter", edgesHtml(m.away, m.home), true) +
-          gxFold("lineups", isCBB() ? "Projected starting fives" : "Projected starters", "From each team\u2019s last game, injuries applied", lu) +
+          gxFold("lineups", isCBB() ? "Projected starting fives" : "Projected starters", played ? "Today\u2019s depth chart, not who started this game" : "From each team\u2019s last game, injuries applied", lu) +
+          (isFootball() ? gxFold("wx", "Weather at kickoff", gxSumWx(m, g0), gxWx(m, { g: g0 }, sj0)) : "") +
           gxTier("t-bg", "Background") +
           gxFold("form", "Recent form", "Each team\u2019s last 5 games", formHtml(m.away, m.home)) +
           gxFold("h2h", "Head to head", gxSumH2h(m), h2h) + "</div>";
@@ -3419,7 +3434,7 @@
     return '<aside class="gp-rail">' +
       '<div class="panel rl-bets"><h3>Our bets</h3>' + (bets || '<p class="note">No bet on this game.</p>') + "</div>" +
       '<div class="panel"><h3>Lines</h3>' + linesTable(g) + moreLines(g) + resultLine(g) + "</div>" +
-      '<div class="panel rl-sharp"><h3>Sharp money</h3>' + (sm ? '<div class="vd-chips">' + sm + "</div>" : '<p class="note">No splits posted for this game yet.</p>') +
+      '<div class="panel rl-sharp"><h3>Betting splits</h3>' + (sm ? '<div class="vd-chips">' + sm + "</div>" : '<p class="note">No splits posted for this game yet.</p>') +
       '<button type="button" class="linkish" data-gtab="market">Full splits ›</button></div></aside>';
   }
   function injuryBox(g) {                 // who's out and who's questionable tonight, from the NBA's official injury report
@@ -4237,8 +4252,8 @@
   }
   function splitLabel(S, mkt, side) {          // for a pick: Sharp Confirmed / Public Heavy / Sharps on the other side
     var r = splitRead(S, mkt); if (!r || !side) return null;
-    if (r.sharp === side) return { cls: "sharp", txt: "Sharp Confirmed", tip: "More of the money than the tickets is on this side: bigger bettors agree" };
-    if (r.sharp && r.sharp !== side) return { cls: "against", txt: "Sharps on the other side", tip: "The money outweighs the tickets on the other side" };
+    if (r.sharp === side) return { cls: "sharp", txt: "Bigger bets agree", tip: "More of the money than the tickets is on this side: the bets on it are bigger on average. That doesn\u2019t prove they\u2019re professionals." };
+    if (r.sharp && r.sharp !== side) return { cls: "against", txt: "Bigger bets on the other side", tip: "The money outweighs the tickets on the other side" };
     if (r.pub === side) return { cls: "public", txt: "Public Heavy", tip: "Most of the tickets are on this side without the money to match" };
     return null;
   }
@@ -4257,7 +4272,7 @@
       return '<div class="spl-row"><span class="spl-k">' + lbl + '</span><span class="spl-v">' + Math.round(va) + '%</span><span class="spl-bar"><i style="width:' + Math.max(0, Math.min(100, va)) + '%"></i></span><span class="spl-v r">' + Math.round(vh) + "%</span></div>";
     }
     var tags = [];
-    if (r.sharp) tags.push('<span class="spl-chip sharp">Sharp money: ' + esc(r.sharp === r.sides[0] ? lA : lH) + "</span>");
+    if (r.sharp) tags.push('<span class="spl-chip sharp" title="More of the money than the tickets: bigger bets on average, not proof of professional bettors">Bigger bets: ' + esc(r.sharp === r.sides[0] ? lA : lH) + "</span>");
     if (r.pub) tags.push('<span class="spl-chip public">Public heavy: ' + esc(r.pub === r.sides[0] ? lA : lH) + "</span>");
     return '<div class="spl-m"><div class="spl-h"><span>' + esc(lA) + "</span><b>" + (mkt === "total" ? "Total" : "Spread") + "</b><span>" + esc(lH) + "</span></div>" +
       row("Tickets", a.t, h.t) + row("Money", a.m, h.m) + (tags.length ? '<div class="spl-tags">' + tags.join("") + "</div>" : "") + "</div>";
@@ -4267,10 +4282,10 @@
     var B = splitBooks(S), dots = [], body = "";
     B.forEach(function (x) {
       var b = x[0], R = x[1], rs = splitRead(R, "spread"), rt = splitRead(R, "total"), notes = [];
-      if (rs && rs.sharp && !splitConflict(S, "spread")) dots.push('<span class="spl-dot sharp">' + bookTag(b) + "Sharp: " + esc(rs.sharp === "home" ? hAb : aAb) + "</span>");
+      if (rs && rs.sharp && !splitConflict(S, "spread")) dots.push('<span class="spl-dot sharp">' + bookTag(b) + "Bigger bets: " + esc(rs.sharp === "home" ? hAb : aAb) + "</span>");
       else if (rs && rs.pub) dots.push('<span class="spl-dot public">' + bookTag(b) + "Public: " + esc(rs.pub === "home" ? hAb : aAb) + "</span>");
-      if (models && models.s && rs && rs.sharp) notes.push(rs.sharp === (models.s > 0 ? "home" : "away") ? '<span class="spl-chip sharp">Models + sharps agree</span>' : '<span class="spl-chip against">Models vs the sharps</span>');
-      if (models && models.t && rt && rt.sharp) notes.push(rt.sharp === (models.t > 0 ? "over" : "under") ? '<span class="spl-chip sharp">Total: models + sharps agree</span>' : '<span class="spl-chip against">Total: models vs the sharps</span>');
+      if (models && models.s && rs && rs.sharp) notes.push(rs.sharp === (models.s > 0 ? "home" : "away") ? '<span class="spl-chip sharp">Models + bigger bets agree</span>' : '<span class="spl-chip against">Models vs bigger bets</span>');
+      if (models && models.t && rt && rt.sharp) notes.push(rt.sharp === (models.t > 0 ? "over" : "under") ? '<span class="spl-chip sharp">Total: models + bigger bets agree</span>' : '<span class="spl-chip against">Total: models vs bigger bets</span>');
       body += '<div class="spl-book">' + bookTag(b) + "<small>" + esc(R.taken || "") + "</small></div>" + splitBars(R, "spread", aAb, hAb) + splitBars(R, "total", "Over", "Under") +
         (notes.length ? '<div class="spl-tags">' + notes.join("") + "</div>" : "");
     });
@@ -4283,9 +4298,9 @@
     var cols = splitBooks(S).map(function (x) {
       return '<div class="spl-col"><div class="spl-book">' + bookTag(x[0]) + "<small>" + esc(x[1].taken || "") + "</small></div>" + splitBars(x[1], "spread", aAb, hAb) + splitBars(x[1], "total", "Over", "Under") + "</div>";
     }).join("");
-    var cfl = ["spread", "total"].map(function (m) { var c = splitConflict(S, m); return c ? '<div class="spl-warn">\u26a0 <b>The books disagree on the ' + m + ":</b> DraftKings\u2019 sharp money is on " + esc(sideName(c.dk, aAb, hAb)) + ", Circa\u2019s on " + esc(sideName(c.circa, aAb, hAb)) + ".</div>" : ""; }).join("");
+    var cfl = ["spread", "total"].map(function (m) { var c = splitConflict(S, m); return c ? '<div class="spl-warn">\u26a0 <b>The books disagree on the ' + m + ":</b> DraftKings\u2019 bigger bets are on " + esc(sideName(c.dk, aAb, hAb)) + ", Circa\u2019s on " + esc(sideName(c.circa, aAb, hAb)) + ".</div>" : ""; }).join("");
     return '<div class="panel spl-panel"><h3>Betting splits &amp; handle</h3>' + cfl + '<div class="spl-cols">' + cols + "</div>" + trackerLine() +
-      '<p class="note"><b>Tickets</b> = share of bets placed; <b>Money</b> = share of dollars (the handle). <b>Sharp</b> = the money is 10+ points above the tickets (fewer, bigger bets). <b>Public heavy</b> = 65%+ of tickets without the money. Circa takes bigger, sharper bets than DraftKings, so a Circa sharp signal carries more weight; small Circa games can show 100%/0% from a handful of bets. Context, not a pick: our tests found splits alone don\u2019t beat the line.</p></div>';
+      '<p class="note"><b>Tickets</b> = share of bets placed; <b>Money</b> = share of dollars (the handle). <b>Bigger bets</b> = the money share is 10+ points above the ticket share: fewer, bigger bets on that side. It doesn\u2019t tell us who placed them; people call it \u201csharp money,\u201d but it isn\u2019t proof of professional bettors. <b>Public heavy</b> = 65%+ of tickets without the money. Circa takes bigger, sharper bets than DraftKings, so a Circa bigger-bets signal may carry more weight; small Circa games can show 100%/0% from a handful of bets. Context, not a pick: our tests found splits alone don\u2019t beat the line.</p></div>';
   }
   function splitConflict(S, mkt) {         // DraftKings and Circa sharp on OPPOSITE sides
     var B = {}; splitBooks(S).forEach(function (x) { var r = splitRead(x[1], mkt); B[x[0]] = r && r.sharp; });
@@ -4297,10 +4312,10 @@
     var out = [];
     ["spread", "total"].forEach(function (mkt) {
       var c = splitConflict(S, mkt);
-      if (c) { out.push('<span class="spl-chip warn" title="DraftKings sharp money on ' + esc(sideName(c.dk, aAb, hAb)) + ", Circa on " + esc(sideName(c.circa, aAb, hAb)) + '">\u26a0 Books disagree' + (mkt === "total" ? " (total)" : "") + ": DK " + esc(sideName(c.dk, aAb, hAb)) + " / Circa " + esc(sideName(c.circa, aAb, hAb)) + "</span>"); return; }
+      if (c) { out.push('<span class="spl-chip warn" title="DraftKings\u2019 bigger bets on ' + esc(sideName(c.dk, aAb, hAb)) + ", Circa on " + esc(sideName(c.circa, aAb, hAb)) + '">\u26a0 Books disagree' + (mkt === "total" ? " (total)" : "") + ": DK " + esc(sideName(c.dk, aAb, hAb)) + " / Circa " + esc(sideName(c.circa, aAb, hAb)) + "</span>"); return; }
       var seen = {};
       splitBooks(S).forEach(function (x) { var r = splitRead(x[1], mkt); if (r && r.sharp) (seen[r.sharp] = seen[r.sharp] || []).push(x[0]); });
-      Object.keys(seen).forEach(function (sd) { out.push('<span class="spl-chip sharp">Sharp: ' + esc(sideName(sd, aAb, hAb)) + " <small>" + seen[sd].map(function (b) { return b === "DK" ? "DK" : "Circa"; }).join(" + ") + "</small></span>"); });
+      Object.keys(seen).forEach(function (sd) { out.push('<span class="spl-chip sharp">Bigger bets: ' + esc(sideName(sd, aAb, hAb)) + " <small>" + seen[sd].map(function (b) { return b === "DK" ? "DK" : "Circa"; }).join(" + ") + "</small></span>"); });
     });
     return out.join(" ");
   }
@@ -4308,8 +4323,116 @@
     var T = state.splitsAll && state.splitsAll.tracker, d = T && T.disagree; if (!d) return "";
     var c = d.circa || {}, k = d.dk || {}, n = (c.w || 0) + (c.l || 0);
     return '<p class="spl-track"><b>When DraftKings and Circa disagree</b> (all sports, graded at the screenshot line): ' +
-      (n ? "Circa\u2019s sharp side " + c.w + "\u2013" + c.l + ", DraftKings\u2019 " + (k.w || 0) + "\u2013" + (k.l || 0) + "." : "no graded games yet.") +
+      (n ? "Circa\u2019s bigger-bets side " + c.w + "\u2013" + c.l + ", DraftKings\u2019 " + (k.w || 0) + "\u2013" + (k.l || 0) + "." : "no graded games yet.") +
       (d.open ? " " + d.open + " still to play." : "") + " We\u2019re tracking it; it\u2019s not a bet signal until it has hundreds of games.</p>";
+  }
+  // ---------- Betting splits page: every game's splits for this sport, members only (Nov 17 2026) ----------
+  function splitsLockHtml() {
+    var acts = "";
+    if (AUTH.on && !AUTH.ready) acts = "<p>Checking your membership…</p>";
+    else if (AUTH.user && payOn()) acts = '<div class="acts">' + trialBtn() + "</div><small>" + priceLine() + "</small>";
+    else if (payOn()) acts = '<div class="acts">' + trialBtn() + '<button type="button" class="btn ghost" data-auth="login">Log in</button></div><small>' + priceLine() + "</small>";
+    else if (AUTH.on) acts = '<div class="acts"><button type="button" class="btn" data-auth="signup">Create account</button><button type="button" class="btn ghost" data-auth="login">Log in</button></div>';
+    return '<div class="lock"><div class="lock-in"><div class="ico">' + LOCK_ICO + "</div><h2>Betting splits are for members</h2>" +
+      "<p>Every game’s share of tickets and money at DraftKings and Circa, with the games where the bigger bets or the public are lopsided picked out.</p>" + acts + "</div></div>";
+  }
+  function splPct(v) { return v == null ? "–" : Math.round(v) + "%"; }
+  function splLine(v, plus) { if (v == null) return "–"; var t = (Math.round(v * 10) / 10).toString(); return plus && v > 0 ? "+" + t : v === 0 ? "PK" : t; }
+  function splCell(r, side, kind) {                       // one number; marked when it's the bigger-bets or public-heavy side
+    var o = r && r[side]; if (!o) return '<span class="sp-n">–</span>';
+    var v = kind === "m" ? o.m : o.t, cls = "";
+    if (kind === "m" && r.sharp === side) cls = " sharp";
+    if (kind === "t" && r.pub === side) cls = " public";
+    return '<span class="sp-n' + cls + '">' + splPct(v) + "</span>";
+  }
+  var NBA_NM = { ATL: "Hawks", BOS: "Celtics", BKN: "Nets", CHA: "Hornets", CHI: "Bulls", CLE: "Cavaliers", DAL: "Mavericks", DEN: "Nuggets", DET: "Pistons", GS: "Warriors", HOU: "Rockets", IND: "Pacers", LAC: "Clippers", LAL: "Lakers", MEM: "Grizzlies", MIA: "Heat", MIL: "Bucks", MIN: "Timberwolves", NO: "Pelicans", NY: "Knicks", OKC: "Thunder", ORL: "Magic", PHI: "76ers", PHX: "Suns", POR: "Trail Blazers", SAC: "Kings", SA: "Spurs", TOR: "Raptors", UTAH: "Jazz", WSH: "Wizards" };
+  function spName(t) { return state.sport === "nba" && NBA_NM[t] ? NBA_NM[t] : shortName(t); }
+  function renderSplitsPage(el) {
+    var spn = { nba: "NBA", cbb: "College basketball", cfb: "College football", nfl: "NFL" }[state.sport] || "";
+    if (!isMember()) { el.innerHTML = splitsLockHtml(); bindLock(el); return; }
+    var A = splitsAll();
+    if (!state.splitsAll) { el.innerHTML = '<div class="panel"><p class="note">Loading the betting splits…</p></div>'; return; }
+    var Q = state.splQ || (state.splQ = { f: "all", sort: "board" });
+    var keys = Object.keys(A).filter(function (k) { return A[k] && typeof A[k] === "object" && k.indexOf(" @ ") > 0; });
+    var football = state.sport === "nfl" || state.sport === "cfb";
+    if (!keys.length) {
+      el.innerHTML = '<div class="panel sp-top"><h3>' + esc(spn) + " betting splits</h3><p class=\"note\">No splits posted yet " + (football ? "this week" : "today") +
+        ". They’re added on game days, usually by mid-afternoon Pacific.</p></div>"; return;
+    }
+    var have = {}; keys.forEach(function (k) { splitBooks(A[k]).forEach(function (x) { have[x[0]] = (have[x[0]] || 0) + 1; }); });
+    var bks = ["DK", "CIRCA"].filter(function (b) { return have[b]; });
+    if (!Q.book || !have[Q.book]) Q.book = bks.slice().sort(function (a, b) { return have[b] - have[a]; })[0];
+    var rows = keys.map(function (k) {
+      var S = A[k], R = (S.books && S.books[Q.book]) || (!S.books && (S.book || "DK") === Q.book ? S : null), p = k.split(" @ ");
+      if (!R) return null;
+      var rs = splitRead(R, "spread"), rt = splitRead(R, "total");
+      function thin(r) {                                   // every number 0, 50 or 100: a handful of bets (small Circa markets), so no read
+        if (!r) return false; var v = [r[r.sides[0]].t, r[r.sides[0]].m, r[r.sides[1]].t, r[r.sides[1]].m];
+        return v.every(function (n) { return n == null || n === 0 || n === 50 || n === 100; });
+      }
+      if (thin(rs)) { rs.sharp = rs.pub = null; rs.thin = 1; }
+      if (thin(rt)) { rt.sharp = rt.pub = null; rt.thin = 1; }
+      var gap = Math.max.apply(null, [rs, rt].map(function (r) { return r ? Math.max(Math.abs((r[r.sides[0]] || {}).gap || 0), Math.abs((r[r.sides[1]] || {}).gap || 0)) : 0; }));
+      return { k: k, a: p[0], h: p[1], S: S, R: R, rs: rs, rt: rt, gap: gap, cf: bks.length > 1 && (splitConflict(S, "spread") || splitConflict(S, "total")) };
+    }).filter(Boolean);
+    var nSharp = rows.filter(function (x) { return (x.rs && x.rs.sharp) || (x.rt && x.rt.sharp); }).length;
+    var nPub = rows.filter(function (x) { return (x.rs && x.rs.pub) || (x.rt && x.rt.pub); }).length;
+    var nCf = rows.filter(function (x) { return x.cf; }).length;
+    var show = rows.filter(function (x) {
+      return Q.f === "sharp" ? (x.rs && x.rs.sharp) || (x.rt && x.rt.sharp) : Q.f === "pub" ? (x.rs && x.rs.pub) || (x.rt && x.rt.pub) : Q.f === "cf" ? x.cf : true;
+    });
+    if (Q.sort === "gap") show.sort(function (a, b) { return b.gap - a.gap; });
+    var takens = {}; rows.forEach(function (x) { if (x.R.taken) takens[x.R.taken] = 1; });
+    var tk = Object.keys(takens), oneTaken = tk.length === 1 ? tk[0] : "";
+    function seg(name, opts, cur) { return '<div class="seg" role="group" aria-label="' + name + '">' + opts.map(function (o) { return '<button type="button" data-spq="' + o[0] + '" aria-pressed="' + (o[0] === cur) + '">' + o[1] + "</button>"; }).join("") + "</div>"; }
+    var fopts = [["all", "All " + rows.length], ["sharp", "Bigger bets " + nSharp], ["pub", "Public heavy " + nPub]].concat(nCf ? [["cf", "Books disagree " + nCf]] : []);
+    var top = '<div class="panel sp-top"><div class="sp-hd"><div><h3>' + esc(spn) + " betting splits</h3><p class=\"note\">" +
+      esc((BOOK[Q.book] || { n: Q.book }).n) + (oneTaken ? " · as of " + esc(oneTaken) : "") + " · " + rows.length + " game" + (rows.length === 1 ? "" : "s") + "</p></div>" +
+      (bks.length > 1 ? seg("Book", bks.map(function (b) { return ["b:" + b, BOOK[b].n + " " + have[b]]; }), "b:" + Q.book) : "") + "</div>" +
+      '<div class="sp-ctl">' + seg("Show", fopts.map(function (o) { return ["f:" + o[0], o[1]]; }), "f:" + Q.f) +
+      seg("Order", [["s:board", "Board order"], ["s:gap", "Biggest gap"]], "s:" + Q.sort) +
+      '<input type="search" class="sp-find" placeholder="Find a team" aria-label="Find a team"></div>' +
+      '<p class="sp-key"><span><span class="sp-n sharp">62%</span> money 10+ points above tickets (bigger bets)</span><span><span class="sp-n public">71%</span> 65%+ of tickets without the money (public heavy)</span></p></div>';
+    function chips(x) {
+      var c = [];
+      if (x.rs && x.rs.sharp) c.push('<span class="spl-chip sharp">Bigger bets: ' + esc(spName(x.rs.sharp === "home" ? x.h : x.a)) + "</span>");
+      if (x.rs && x.rs.pub) c.push('<span class="spl-chip public">Public: ' + esc(spName(x.rs.pub === "home" ? x.h : x.a)) + "</span>");
+      if (x.rt && x.rt.sharp) c.push('<span class="spl-chip sharp">Bigger bets: ' + (x.rt.sharp === "over" ? "Over" : "Under") + "</span>");
+      if (x.rt && x.rt.pub) c.push('<span class="spl-chip public">Public: ' + (x.rt.pub === "over" ? "Over" : "Under") + "</span>");
+      if (x.cf) c.push('<span class="spl-chip warn">⚠ Books disagree</span>');
+      if ((x.rs && x.rs.thin) || (x.rt && x.rt.thin)) c.push('<span class="sp-few" title="Every number is 0%, 50% or 100%: only a handful of bets, so we don\u2019t read it">Few bets' + (x.rs && x.rs.thin && x.rt && x.rt.thin ? "" : x.rs && x.rs.thin ? " (spread)" : " (total)") + "</span>");
+      return c.join("");
+    }
+    var head = '<div class="sp-r sp-head" aria-hidden="true"><span>Game</span><span>Spread</span><span>Tickets</span><span>Money</span><span>Total</span><span>Tickets</span><span>Money</span><span>Read</span></div>';
+    var body = show.map(function (x) {
+      var sp = x.R.sp || {}, to = x.R.tot || {}, hl = sp.home_line;
+      return '<div class="sp-r" data-q="' + esc((x.a + " " + x.h + " " + spName(x.a) + " " + spName(x.h)).toLowerCase()) + '">' +
+        '<div class="sp-g"><span class="sp-t">' + badge(x.a) + "<b>" + esc(spName(x.a)) + '</b></span><span class="sp-at">@</span><span class="sp-t">' + badge(x.h) + "<b>" + esc(spName(x.h)) + "</b></span>" +
+        (!oneTaken && x.R.taken ? "<small>" + esc(x.R.taken) + "</small>" : "") + "</div>" +
+        '<div class="sp-c sp-ln" data-l="Spread"><span>' + splLine(hl == null ? null : -hl, true) + "</span><span>" + splLine(hl, true) + "</span></div>" +
+        '<div class="sp-c" data-l="Tickets">' + splCell(x.rs, "away", "t") + splCell(x.rs, "home", "t") + "</div>" +
+        '<div class="sp-c" data-l="Money">' + splCell(x.rs, "away", "m") + splCell(x.rs, "home", "m") + "</div>" +
+        '<div class="sp-c sp-ln" data-l="Total"><span>o' + splLine(to.line) + "</span><span>u" + splLine(to.line) + "</span></div>" +
+        '<div class="sp-c" data-l="Tickets">' + splCell(x.rt, "over", "t") + splCell(x.rt, "under", "t") + "</div>" +
+        '<div class="sp-c" data-l="Money">' + splCell(x.rt, "over", "m") + splCell(x.rt, "under", "m") + "</div>" +
+        '<div class="sp-read">' + (chips(x) || '<span class="sp-none">Balanced</span>') + "</div></div>";
+    }).join("");
+    var tbl = '<div class="panel sp-list">' + (show.length ? head + body : '<p class="note">No games match this filter.</p>') + '<p class="note sp-nomatch" hidden>No team matches that search.</p></div>';
+    var foot = '<div class="panel"><p class="note"><b>Tickets</b> = share of bets placed; <b>Money</b> = share of dollars (the handle). <b>Bigger bets</b> = the money share is 10+ points above the ticket share: fewer, bigger bets on that side. People call it “sharp money,” but it doesn’t prove professionals placed them. <b>Public heavy</b> = 65%+ of the tickets without the money to match. Circa takes bigger bets than DraftKings, so its splits may say more; small Circa games can show 100%/0% from a handful of bets, so a market where every number is 0%, 50% or 100% is marked <b>Few bets</b> and not read. Splits are context, not picks: our tests found they don’t beat the line on their own.</p>' + trackerLine() + "</div>";
+    el.innerHTML = top + tbl + foot;
+    el.querySelectorAll("[data-spq]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var v = b.getAttribute("data-spq"), k = v.slice(0, 1), val = v.slice(2);
+        if (k === "b") Q.book = val; else if (k === "f") Q.f = val; else if (k === "s") Q.sort = val;
+        render();
+      });
+    });
+    var fi = el.querySelector(".sp-find");
+    if (fi) fi.addEventListener("input", function () {
+      var q = fi.value.trim().toLowerCase(), n = 0;
+      el.querySelectorAll(".sp-list .sp-r[data-q]").forEach(function (r) { var on = !q || r.getAttribute("data-q").indexOf(q) >= 0; r.hidden = !on; if (on) n++; });
+      var nm = el.querySelector(".sp-nomatch"); if (nm) nm.hidden = n > 0;
+    });
   }
   function pickSide(x) {
     var p = String(x.pick || "").trim();
@@ -5060,6 +5183,7 @@
     if (state.view === "mybets") { renderMyBets(el); return; }
     if (state.view === "stats") { renderStats(el); return; }
     if (state.view === "bank") { renderBank(el); return; }
+    if (state.view === "splits") { renderSplitsPage(el); return; }
     if (!state.data && state.load === "loading") {
       var sk = '<div class="sk"><i style="width:40%"></i><i style="width:85%;height:28px"></i><i style="width:85%;height:28px"></i><i style="height:70px"></i><i style="width:70%"></i></div>';
       el.innerHTML = '<div class="grid">' + sk + sk + sk + "</div>"; return;
@@ -5076,8 +5200,8 @@
     if (state.view === "matchup") renderMatchup(el); else if (state.view === "games") renderSlate(el); else if (state.view === "record") renderRecord(el); else if (state.view === "ratings") (isCBB() ? renderCbbStars(el) : renderRatings(el)); else if (state.view === "teams") renderTeams(el); else renderWeek(el);
   }
   document.querySelectorAll("[role=tab]").forEach(function (t) { t.addEventListener("click", function () { if (t.getAttribute("data-view") === "home") { showHome(true); window.scrollTo(0, 0); return; } state.tpage = null; if (state.game) { state.game = null; try { history.replaceState(null, "", "#nba"); } catch (e) {} } state.view = t.getAttribute("data-view"); storeSet("gte.view", state.view); render(); }); });
-  var sv = storeGet("gte.view"); if (sv === "record" || sv === "ratings" || sv === "teams" || sv === "mybets" || sv === "bank" || sv === "games" || sv === "news" || sv === "ahead" || sv === "picks") state.view = sv;
-  if (/^#(week|picks|games|news|ahead|teams|record|ratings|mybets|bank)$/.test(location.hash)) state.view = location.hash.slice(1);
+  var sv = storeGet("gte.view"); if (sv === "record" || sv === "ratings" || sv === "teams" || sv === "mybets" || sv === "bank" || sv === "games" || sv === "news" || sv === "ahead" || sv === "picks" || sv === "splits") state.view = sv;
+  if (/^#(week|picks|games|news|ahead|teams|record|ratings|mybets|bank|splits)$/.test(location.hash)) state.view = location.hash.slice(1);
   // college defaults to proven ratings; the NFL sheet already sets honest stars, so it defaults to the stars as posted
   var modePick = document.getElementById("modePick");
   function loadMode() { state.mode = "sheet"; modePick.value = "sheet"; }      // the site always shows the stars and stakes on the sheet
