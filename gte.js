@@ -847,10 +847,26 @@
       else setTimeout(function () { TEAMREQ[sp] = 0; }, 30000);   // ESPN didn't answer: let the next view try again
     }).catch(function () { setTimeout(function () { TEAMREQ[sp] = 0; }, 30000); });
   }
+  // college basketball: our ratings file carries each team's ESPN id (and, from Nov 19 2026, its colors), so logos show even
+  // when ESPN's team list doesn't load in the browser
+  var CBB_IX = { src: null, byName: {}, byId: {} };
+  function cbbIx() {
+    var R = state.ratings, sp = sportKey(); if (!R || (sp !== "cbb" && sp !== "cfb") || (sp === "cbb" && R.sport !== "cbb") || (sp === "cfb" && R.sport)) return { byName: {}, byId: {} };
+    if (CBB_IX.src !== R) {
+      CBB_IX = { src: R, byName: {}, byId: {} };
+      (R.teams || []).forEach(function (t) { if (t.id) { CBB_IX.byName[norm(t.team)] = t; CBB_IX.byId[String(t.id)] = t; } });
+      var L = R.logos || {};                            // college football: every FBS/FCS team's id and colors (Nov 19 2026)
+      Object.keys(L).forEach(function (n) { var x = L[n], k = norm(n); var row = CBB_IX.byName[k] || { team: n }; row.id = row.id || x[0]; row.c = row.c || x[1]; row.c2 = row.c2 || x[2]; CBB_IX.byName[k] = row; });
+    }
+    return CBB_IX;
+  }
+  function cbbRowByName(n) { return cbbIx().byName[norm(n)] || null; }
+  function cbbRowById(id) { return cbbIx().byId[String(id)] || null; }
   function teamInfo(name) {
     var sp = sportKey(), reg = TEAMREG[sp]; if (!name) return null;
     var k = sp === "nfl" ? ourKey(name) : norm(name);
     if (reg && reg[k]) return reg[k];
+    if (sp === "cbb" || sp === "cfb") { var rr = cbbRowByName(name); if (rr && rr.id) return { l: "https://a.espncdn.com/i/teamlogos/ncaa/500/" + rr.id + ".png", c: rr.c || "", c2: rr.c2 || "", id: String(rr.id), n: name, a: "" }; }
     if (LG_DIR[sp] && /^[A-Za-z]{2,4}$/.test(name)) {        // NFL / NBA: ESPN's logo path is the team abbreviation
       var a = (sp === "nfl" && NFL_ALIAS[name.toUpperCase()] ? NFL_ALIAS[name.toUpperCase()] : name).toLowerCase();
       return { l: "https://a.espncdn.com/i/teamlogos/" + LG_DIR[sp] + "/500/" + a + ".png", c: "" };
@@ -2925,21 +2941,60 @@
         var c = ev.competitions && ev.competitions[0]; if (!c || !((c.status || {}).type || {}).completed) return null;
         var me = null, op = null; (c.competitors || []).forEach(function (t) { if (String(t.id || (t.team && t.team.id)) === String(T.id)) me = t; else op = t; });
         if (!me || !op) return null; var a = muScore(me), b = muScore(op); if (a == null || b == null) return null;
-        return { date: ev.date, us: a, them: b, opp: (op.team && (op.team.abbreviation || op.team.shortDisplayName)) || "", at: me.homeAway === "home" ? "vs" : "@" };
+        return { date: ev.date, us: a, them: b, opp: (op.team && (op.team.abbreviation || op.team.shortDisplayName)) || "", at: me.homeAway === "home" ? "vs" : "@",
+          oid: String(op.id || (op.team && op.team.id) || ""), oname: (op.team && (op.team.location || op.team.shortDisplayName || op.team.displayName)) || "", oabbr: (op.team && op.team.abbreviation) || "",
+          home: me.homeAway === "home", neutral: !!c.neutralSite };
       }).filter(Boolean).sort(function (a, b) { return a.date < b.date ? 1 : -1; }).slice(0, 5);
     }).catch(function () { return null; });
+  }
+  // Momentum 1-5 (Nov 19 2026, owner's request): over the last 5 games against rated D1 teams, how many points a game each team beat
+  // (or missed) the margin its CURRENT rating predicted, opponent strength, tempo and home court included. Display only: untested as a bet signal.
+  function momentumOf(team, L) {
+    if (!isCBB() || !L || !L.length) return null;
+    var me = teamRow0(team); if (!me || me.net == null) return null;
+    var R = state.ratings || {}, hfa = R.hfa != null ? +R.hfa : 3, per = [];
+    L.forEach(function (g) {
+      var o = cbbRowById(g.oid); if (!o || o.net == null) return;
+      var poss = ((+me.tempo || 68) + (+o.tempo || 68)) / 2;
+      var exp = (me.net - o.net) * poss / 100 + (g.neutral ? 0 : g.home ? hfa : -hfa);
+      g.vs = (g.us - g.them) - exp; per.push(g.vs);
+    });
+    if (per.length < 3) return null;
+    var m = per.reduce(function (a, b) { return a + b; }, 0) / per.length;
+    var s = m <= -6 ? 1 : m <= -2.5 ? 2 : m < 2.5 ? 3 : m < 6 ? 4 : 5;
+    return { m: m, s: s, n: per.length, lbl: ["", "Cold", "Cooling", "Steady", "Warming", "Hot"][s] };
+  }
+  function momHtml(M) {
+    if (!M) return "";
+    var bars = ""; for (var i = 1; i <= 5; i++) bars += '<i class="' + (i <= M.s ? "on" : "") + '"></i>';
+    return '<span class="fm-mom s' + M.s + '" title="Momentum ' + M.s + "/5: over the last " + M.n + " games vs D1 teams, " + (M.m >= 0 ? "+" : "") + M.m.toFixed(1) +
+      ' points a game ' + (M.m >= 0 ? "better" : "worse") + ' than their rating predicted (opponent, tempo and home court included). Not tested as a bet signal."><span class="fm-bars">' + bars + "</span><b>" + M.s + "/5</b> " + esc(M.lbl) + "</span>";
   }
   function formHtml(away, home) {
     var v = muGet("form|" + sportKey() + "|" + away + "|" + home, function () { return Promise.all([formLoad(away), formLoad(home)]).then(function (r) { return { a: r[0], h: r[1] }; }); });
     var hd = '<div class="panel mu-form"><h3>Recent form <small>· last 5 games</small></h3>';
     if (!v) return hd + '<p class="note">Loading…</p></div>';
-    function col(t, L) {
-      if (!L || !L.length) return '<div><b>' + esc(shortName(t)) + '</b><p class="note">No games yet.</p></div>';
-      var w = L.filter(function (g) { return g.us > g.them; }).length;
-      return "<div><div class=\"fm-h\">" + badge(t, isNBA() || state.sport === "nfl" ? t : null, "sm") + " <b>" + esc(shortName(t)) + "</b> <span>" + w + "–" + (L.length - w) + '</span></div><div class="fm-dots">' +
-        L.map(function (g) { var win = g.us > g.them; return '<span class="fm-d ' + (win ? "w" : "l") + '" title="' + esc(new Date(g.date).toLocaleDateString(undefined, { month: "short", day: "numeric" }) + " " + g.at + " " + g.opp + ": " + g.us + "–" + g.them) + '"><b>' + (win ? "W" : "L") + "</b><small>" + esc(g.at + " " + g.opp) + "</small><small>" + g.us + "–" + g.them + "</small></span>"; }).join("") + "</div></div>";
+    var cbb = isCBB(), lgo = function (t) { return isNBA() || state.sport === "nfl" ? t : null; };
+    function oppName(g) { var o = cbb ? cbbRowById(g.oid) : null; return o ? o.team : (g.oname || g.opp); }
+    function oppRank(g) { var o = cbb ? cbbRowById(g.oid) : null; return o && o.rank ? '<small class="fm-rk">#' + o.rank + "</small>" : cbb ? '<small class="fm-rk">non-D1</small>' : ""; }
+    function block(t, L) {
+      var row = cbb ? teamRow0(t) : null;
+      if (!L || !L.length) return '<div class="fm-t"><div class="fm-h">' + badge(t, lgo(t), "sm") + " <b>" + esc(shortName(t)) + '</b></div><p class="note">No games yet.</p></div>';
+      var w = L.filter(function (g) { return g.us > g.them; }).length, M = momentumOf(t, L);
+      var sos = row && row.sos != null ? '<span class="fm-sos" title="Schedule so far: the average rating of every opponent played this season (+ = tougher), ranked among D1 teams (1 = toughest)">SOS ' + signed(+row.sos, 1) + (row.sos_rank ? " · #" + row.sos_rank : "") + "</span>" : "";
+      var trs = L.map(function (g) {
+        var on = oppName(g), win = g.us > g.them, tie = g.us === g.them, wn = win ? t : on;
+        var where = g.neutral ? "Neutral" : g.home ? "Home" : "Away";
+        var fin = g.home && !g.neutral ? esc(shortName(on)) + oppRank(g) + " " + g.them + " – " + g.us + " " + esc(shortName(t)) : esc(shortName(t)) + " " + g.us + " – " + g.them + " " + esc(shortName(on)) + oppRank(g);
+        var vs = g.vs != null ? '<small class="fm-vs ' + (g.vs >= 0 ? "up" : "dn") + '" title="Margin vs what the ratings predicted">' + (g.vs >= 0 ? "+" : "") + g.vs.toFixed(1) + "</small>" : "";
+        return "<tr><td>" + esc(new Date(g.date).toLocaleDateString(undefined, { month: "short", day: "numeric" })) + "</td><td>" + where + '</td><td class="tnum">' + fin + "</td><td>" +
+          (tie ? "Tie" : '<span class="mu-w">' + badge(wn, lgo(wn), "sm") + " " + esc(shortName(wn)) + " by " + Math.abs(g.us - g.them) + "</span>") + vs + "</td></tr>";
+      }).join("");
+      return '<div class="fm-t"><div class="fm-h">' + badge(t, lgo(t), "sm") + " <b>" + esc(shortName(t)) + "</b> <span>" + w + "–" + (L.length - w) + "</span>" + sos + momHtml(M) + "</div>" +
+        '<div class="scroll" tabindex="0" role="region" aria-label="Table, scrolls sideways"><table class="mu-tbl fm-tbl"><thead><tr><th>Date</th><th>Where</th><th>Final</th><th>Winner</th></tr></thead><tbody>' + trs + "</tbody></table></div></div>";
     }
-    return hd + '<div class="fm-g">' + col(away, v.a) + col(home, v.h) + "</div></div>";
+    return hd + '<div class="fm-g2">' + block(away, v.a) + block(home, v.h) + "</div>" +
+      (cbb ? '<p class="note"><b>SOS</b> = how tough the schedule has been so far (+ = tougher, #1 = toughest). <b>Momentum</b> (1 cold to 5 hot) = how many points a game each team beat or missed what its rating predicted over these games, after opponent, pace and home court; the small number under each result is that game. It\u2019s here to read: we haven\u2019t tested it as a bet signal, and recent form is usually priced into the line quickly.</p>' : "") + "</div>";
   }
   // ---------- college football game page: the full pregame breakdown (Nov 14 2026, owner's request: "this kind of information for every game") ----------
   // Built for every game from: our sheet (numbers, picks, the line when it was built, QB check), the publish step's extras (every game this season with
