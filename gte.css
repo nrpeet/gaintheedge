@@ -1576,3 +1576,19 @@ body.on-home { overflow-anchor: none; }
   .sp-read { grid-column: 1 / -1; }
   .sp-find { max-width: none; }
 }
+/* Recent form as tables (Nov 19 2026) */
+.fm-g2 { display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; }
+.fm-t .fm-h { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin: 4px 0 6px; }
+.fm-t .fm-h > span:not(.mono) { color: var(--ink-2); font-weight: 700; }
+.fm-sos { font-size: 11.5px; font-weight: 700; color: var(--ink-2); border: 1px solid var(--line); border-radius: 999px; padding: 3px 9px; }
+.fm-mom { display: inline-flex; align-items: center; gap: 6px; font-size: 11.5px; color: var(--ink-2); border: 1px solid var(--line); border-radius: 999px; padding: 3px 9px; }
+.fm-mom b { color: var(--ink); }
+.fm-bars { display: inline-flex; gap: 2px; align-items: flex-end; }
+.fm-bars i { width: 4px; border-radius: 1px; background: color-mix(in srgb, var(--ink-2) 30%, transparent); }
+.fm-bars i:nth-child(1) { height: 5px; } .fm-bars i:nth-child(2) { height: 7px; } .fm-bars i:nth-child(3) { height: 9px; } .fm-bars i:nth-child(4) { height: 11px; } .fm-bars i:nth-child(5) { height: 13px; }
+.fm-mom.s1 .fm-bars i.on, .fm-mom.s2 .fm-bars i.on { background: var(--loss); }
+.fm-mom.s3 .fm-bars i.on { background: var(--ink-2); }
+.fm-mom.s4 .fm-bars i.on, .fm-mom.s5 .fm-bars i.on { background: var(--win); }
+.fm-rk { color: var(--ink-2); font-size: 10.5px; font-weight: 700; margin-left: 3px; }
+.fm-vs { display: block; font-size: 10.5px; font-weight: 700; margin-top: 2px; } .fm-vs.up { color: var(--win); } .fm-vs.dn { color: var(--loss); }
+.fm-tbl td { vertical-align: middle; }
