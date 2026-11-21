@@ -1592,3 +1592,7 @@ body.on-home { overflow-anchor: none; }
 .fm-rk { color: var(--ink-2); font-size: 10.5px; font-weight: 700; margin-left: 3px; }
 .fm-vs { display: block; font-size: 10.5px; font-weight: 700; margin-top: 2px; } .fm-vs.up { color: var(--win); } .fm-vs.dn { color: var(--loss); }
 .fm-tbl td { vertical-align: middle; }
+.ff-shoot { margin-top: 12px; border: 1px solid var(--line); border-left: 3px solid var(--gold); border-radius: 10px; padding: 10px 14px; background: var(--card-2); }
+.ff-shoot > b { font-size: 13px; }
+.ff-shoot ul { margin: 6px 0 4px; padding-left: 18px; font-size: 13px; line-height: 1.5; }
+.ff-shoot .note { margin: 4px 0 0; }
