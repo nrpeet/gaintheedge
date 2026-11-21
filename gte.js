@@ -862,6 +862,12 @@
   }
   function cbbRowByName(n) { return cbbIx().byName[norm(n)] || null; }
   function cbbRowById(id) { return cbbIx().byId[String(id)] || null; }
+  var NFL_COL = { ARI: ["97233f", "000000"], ATL: ["a71930", "000000"], BAL: ["241773", "9e7c0c"], BUF: ["00338d", "c60c30"], CAR: ["0085ca", "101820"],
+    CHI: ["0b162a", "c83803"], CIN: ["fb4f14", "000000"], CLE: ["311d00", "ff3c00"], DAL: ["003594", "041e42"], DEN: ["fb4f14", "002244"], DET: ["0076b6", "b0b7bc"],
+    GB: ["203731", "ffb612"], HOU: ["03202f", "a71930"], IND: ["002c5f", "a2aaad"], JAX: ["101820", "d7a22a"], KC: ["e31837", "ffb81c"], LA: ["003594", "ffa300"],
+    LAR: ["003594", "ffa300"], LAC: ["0080c6", "ffc20e"], LV: ["000000", "a5acaf"], MIA: ["008e97", "fc4c02"], MIN: ["4f2683", "ffc62f"], NE: ["002244", "c60c30"],
+    NO: ["d3bc8d", "101820"], NYG: ["0b2265", "a71930"], NYJ: ["125740", "000000"], PHI: ["004c54", "a5acaf"], PIT: ["ffb612", "101820"], SF: ["aa0000", "b3995d"],
+    SEA: ["002244", "69be28"], TB: ["d50a0a", "ff7900"], TEN: ["0c2340", "4b92db"], WAS: ["5a1414", "ffb612"], WSH: ["5a1414", "ffb612"] };
   function teamInfo(name) {
     var sp = sportKey(), reg = TEAMREG[sp]; if (!name) return null;
     var k = sp === "nfl" ? ourKey(name) : norm(name);
@@ -869,7 +875,8 @@
     if (sp === "cbb" || sp === "cfb") { var rr = cbbRowByName(name); if (rr && rr.id) return { l: "https://a.espncdn.com/i/teamlogos/ncaa/500/" + rr.id + ".png", c: rr.c || "", c2: rr.c2 || "", id: String(rr.id), n: name, a: "" }; }
     if (LG_DIR[sp] && /^[A-Za-z]{2,4}$/.test(name)) {        // NFL / NBA: ESPN's logo path is the team abbreviation
       var a = (sp === "nfl" && NFL_ALIAS[name.toUpperCase()] ? NFL_ALIAS[name.toUpperCase()] : name).toLowerCase();
-      return { l: "https://a.espncdn.com/i/teamlogos/" + LG_DIR[sp] + "/500/" + a + ".png", c: "" };
+      var nc = sp === "nfl" ? NFL_COL[name.toUpperCase()] : null;   // team colors even when ESPN's team list doesn't load (Nov 19 2026)
+      return { l: "https://a.espncdn.com/i/teamlogos/" + LG_DIR[sp] + "/500/" + a + ".png", c: nc ? nc[0] : "", c2: nc ? nc[1] : "" };
     }
     return null;
   }
@@ -2833,7 +2840,27 @@
     var gA = A.games, gH = H.games;
     return '<div class="eg-sub">The four factors <small>(this season\u2019s actual rates; # = rank' + (n ? " of " + n + (isCBB() ? " Division I teams" : " teams") : "") + ", 1 = best)</small></div>" +
       '<div class="scroll" tabindex="0" role="region" aria-label="Table, scrolls sideways"><table class="tt ff-t"><thead><tr><th></th><th class="ra">' + badge(away, isNBA() ? away : null, "sm") + " " + sh(away) + '</th><th class="ra">' + badge(home, isNBA() ? home : null, "sm") + " " + sh(home) + "</th><th>What it tells us</th></tr></thead><tbody>" + body + "</tbody></table></div>" +
-      '<p class="note">Raw season numbers' + (gA && gH ? " through " + gA + " and " + gH + " games" : "") + ", not adjusted for who they played, so early in the season they can mislead. Our ratings above already include them; nothing in this table is added on top.</p>";
+      '<p class="note">Raw season numbers' + (gA && gH ? " through " + gA + " and " + gH + " games" : "") + ", not adjusted for who they played, so early in the season they can mislead. Our ratings above already include them; nothing in this table is added on top.</p>" +
+      shootNote(S, away, home);
+  }
+  // Hot or cold 3-point shooting that usually doesn't last (Nov 19 2026). Same shrink our ratings use (ratings.adj_points: 300 attempts toward
+  // the league average for a team's own shooting; opponents' 3-point % is mostly luck, so it's pulled harder). Shown when it's worth 2+ points a game.
+  function shootNote(S, away, home) {
+    if (!isCBB() || !S || !S.lg3) return "";
+    var lg = +S.lg3, out = [], sh = function (t) { return esc(shortName(t)); }, pc = function (v) { return (100 * v).toFixed(1) + "%"; };
+    [away, home].forEach(function (t) {
+      var x = S.teams[t]; if (!x || !x.fg3a || !x.games) return;
+      var p = x.fg3m / x.fg3a, e = (x.fg3m + 300 * lg) / (x.fg3a + 300), pts = 3 * (e - p) * x.fg3a / x.games;
+      if (Math.abs(pts) >= 2) out.push("<li><b>" + sh(t) + "</b> " + (pts < 0 ? "is shooting " : "is only shooting ") + pc(p) + " from three (" + x.fg3m + " of " + x.fg3a +
+        "). Teams rarely keep that up: expect closer to " + pc(e) + ", about " + Math.abs(pts).toFixed(1) + (pts < 0 ? " fewer" : " more") + " points a game from three than so far.</li>");
+      if (x.fg3a_o) {
+        var q = x.fg3m_o / x.fg3a_o, f = (x.fg3m_o + 800 * lg) / (x.fg3a_o + 800), d = 3 * (f - q) * x.fg3a_o / x.games;
+        if (Math.abs(d) >= 2) out.push("<li>Opponents are shooting " + (d > 0 ? "only " : "") + pc(q) + " from three against <b>" + sh(t) + "</b>. Most of that is luck, not defense: expect closer to " +
+          pc(f) + ", about " + Math.abs(d).toFixed(1) + " points a game " + (d > 0 ? "more" : "fewer") + " allowed from three than so far.</li>");
+      }
+    });
+    return out.length ? '<div class="ff-shoot"><b>Shooting likely to even out</b><ul>' + out.join("") +
+      '</ul><p class="note">Our numbers already count this: our ratings expect hot and cold three-point shooting to drift back toward normal, which is one reason our line can differ from the raw stats.</p></div>' : "";
   }
   function edgesHtml(away, home, part) {
     var R = edgeRows(away, home), M = muPairs(away, home);
