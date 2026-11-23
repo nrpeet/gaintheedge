@@ -1106,7 +1106,7 @@
       (rt.benched === "tie" ? '<div class="alert warn"><b>⇄ Too close to call: passing both sides</b><span>' + esc(pretty(rt.vs.pick)) + " is on the other side with a similar record</span></div>" : "") +
       (rt.beat ? '<div class="alert warn" style="opacity:.85"><b>⇄ Chosen over the other side</b><span>' + esc(pretty(rt.beat.pick)) + " is benched \u00b7 floor " + pct(rt.lo) + " vs " + pct(baseRated(rt.beat).lo) + "</span></div>" : "") +
       '<div class="chyron"><div class="lbl"><i>PICK</i><span class="pk"><b>' + esc(pickTxt) + "</b>" + goodTo(x, paper) + "</span></div>" + resultChip(x, gr, paper) + "</div>" +
-      sharpLine(x) +
+      (x.signal ? signalBlock(x) : sharpLine(x) + pinLine(x)) +
       (function () { var ps = pickSide(x), S = x.away && x.home ? splitsOf(x.away, x.home) : null; var c = ps && S ? splitChip(S, ps.mkt, ps.side) : ""; return c ? '<div class="spl-pick">' + c + '<small>' + esc(splitBooks(S).map(function (x) { return (BOOK[x[0]] || { n: x[0] }).n; }).join(" + ") + " splits" + (S.taken ? " \u00b7 " + S.taken : "")) + "</small></div>" : ""; })() + numberBox(x, paper, true) + plainHtml(x) + histLine(x) +
       '<div class="mc-foot"><span class="fl2">' + foot + '</span><span class="acts2">' + (x.market !== "Teaser" && x.away && x.home && !isNBA() ? '<button type="button" class="sharebtn" data-mu-a="' + esc(x.away) + '" data-mu-h="' + esc(x.home) + '" data-mu-k="' + esc(x.game || "") + '" data-mu-t="' + esc(x.kickoff || "") + '" data-mu-n="' + (x.neutral ? 1 : 0) + '">Matchup</button>' : "") + trackBtn(sportKey() + ":" + x.id) + '<button type="button" class="sharebtn" data-share="' + esc(x.id || "") + '" aria-label="Share this pick as an image">' + SHARE_ICO + "Share</button></span></div>" +
       (function () { var fb = freeBtn(x, rt); return fb ? '<div class="mc-adm"><span>Owner only</span>' + fb + "</div>" : ""; })() +
@@ -1122,6 +1122,21 @@
       : s.state === "against" ? ["against", "Sharp money against", "Pinnacle " + p + " pts stronger on the other side \u00b7 check the news"]
       : ["", "Sharp money level", "Pinnacle at the same number as the US books"];
     return '<div class="spl-pick"><span class="spl-chip ' + t[0] + '">' + t[1] + "</span><small>" + t[2] + "</small></div>";
+  }
+  // Nov 23 2026: the Signal check: one read (bet / caution / pass / paper) with its reason, every data point a tap away
+  function signalBlock(x) {
+    var g = x.signal; if (!g || !g.read) return "";
+    var rows = (g.rows || []).map(function (r) { return "<div><dt>" + esc(r[0]) + "</dt><dd>" + esc(r[1]) + "</dd></div>"; }).join("");
+    return '<details class="sig sig-' + esc(g.read) + '"><summary><span class="sig-pill">' + esc(g.label) + '</span><span class="sig-why">' +
+      esc(g.reason) + '</span></summary><dl class="sig-rows">' + rows + "</dl></details>";
+  }
+  // Nov 23 2026: how Pinnacle (the sharp book) moved on this pick since our first look, every sport
+  function pinLine(x) {
+    var p = x.pin; if (!p || !p.text) return "";
+    var t = p.dir === "ours" ? ["sharp", "Pinnacle moved our way"] : p.dir === "theirs" ? ["against", "Pinnacle moved against us"]
+      : p.dir === "flat" ? ["", "Pinnacle hasn't moved"] : ["", "Pinnacle line"];
+    var w = p.why && p.why.text ? '<small class="pin-why"><b>Why it moved:</b> ' + esc(p.why.text) + "</small>" : "";
+    return '<div class="spl-pick"><span class="spl-chip ' + t[0] + '">' + t[1] + "</span><small>" + esc(p.text) + "</small>" + w + "</div>";
   }
   function segHtml(key, opts, cur, label) {
     return '<div class="seg" role="group" aria-label="' + label + '">' + opts.map(function (o) {
