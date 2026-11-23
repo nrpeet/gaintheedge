@@ -1106,12 +1106,22 @@
       (rt.benched === "tie" ? '<div class="alert warn"><b>⇄ Too close to call: passing both sides</b><span>' + esc(pretty(rt.vs.pick)) + " is on the other side with a similar record</span></div>" : "") +
       (rt.beat ? '<div class="alert warn" style="opacity:.85"><b>⇄ Chosen over the other side</b><span>' + esc(pretty(rt.beat.pick)) + " is benched \u00b7 floor " + pct(rt.lo) + " vs " + pct(baseRated(rt.beat).lo) + "</span></div>" : "") +
       '<div class="chyron"><div class="lbl"><i>PICK</i><span class="pk"><b>' + esc(pickTxt) + "</b>" + goodTo(x, paper) + "</span></div>" + resultChip(x, gr, paper) + "</div>" +
+      sharpLine(x) +
       (function () { var ps = pickSide(x), S = x.away && x.home ? splitsOf(x.away, x.home) : null; var c = ps && S ? splitChip(S, ps.mkt, ps.side) : ""; return c ? '<div class="spl-pick">' + c + '<small>' + esc(splitBooks(S).map(function (x) { return (BOOK[x[0]] || { n: x[0] }).n; }).join(" + ") + " splits" + (S.taken ? " \u00b7 " + S.taken : "")) + "</small></div>" : ""; })() + numberBox(x, paper, true) + plainHtml(x) + histLine(x) +
       '<div class="mc-foot"><span class="fl2">' + foot + '</span><span class="acts2">' + (x.market !== "Teaser" && x.away && x.home && !isNBA() ? '<button type="button" class="sharebtn" data-mu-a="' + esc(x.away) + '" data-mu-h="' + esc(x.home) + '" data-mu-k="' + esc(x.game || "") + '" data-mu-t="' + esc(x.kickoff || "") + '" data-mu-n="' + (x.neutral ? 1 : 0) + '">Matchup</button>' : "") + trackBtn(sportKey() + ":" + x.id) + '<button type="button" class="sharebtn" data-share="' + esc(x.id || "") + '" aria-label="Share this pick as an image">' + SHARE_ICO + "Share</button></span></div>" +
       (function () { var fb = freeBtn(x, rt); return fb ? '<div class="mc-adm"><span>Owner only</span>' + fb + "</div>" : ""; })() +
       "<details><summary>Why this pick</summary><div class=\"why\">" + fbPreview(x) + why + (isFootball() ? historyHtml(historyFor(x.away, x.home)) : "") +
       (x.qb ? '<div class="flag">QB check: ' + esc(x.qb) + "</div>" : "") + (x.edge && !x.plain ? '<div class="edge">' + esc(pretty(x.edge)) + "</div>" : "") +
       "</div></details></article>";
+  }
+  // Nov 22 2026: where Pinnacle (the sharp book) sits vs the US books on our side of a college basketball pick
+  function sharpLine(x) {
+    var s = x.sharp; if (!s || !s.state) return "";
+    var p = Math.abs(+s.pts || 0).toFixed(1);
+    var t = s.state === "agrees" ? ["sharp", "Sharp money agrees", "Pinnacle " + p + " pts stronger on our side \u00b7 our best spot"]
+      : s.state === "against" ? ["against", "Sharp money against", "Pinnacle " + p + " pts stronger on the other side \u00b7 check the news"]
+      : ["", "Sharp money level", "Pinnacle at the same number as the US books"];
+    return '<div class="spl-pick"><span class="spl-chip ' + t[0] + '">' + t[1] + "</span><small>" + t[2] + "</small></div>";
   }
   function segHtml(key, opts, cur, label) {
     return '<div class="seg" role="group" aria-label="' + label + '">' + opts.map(function (o) {
