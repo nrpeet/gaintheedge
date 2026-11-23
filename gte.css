@@ -1596,3 +1596,23 @@ body.on-home { overflow-anchor: none; }
 .ff-shoot > b { font-size: 13px; }
 .ff-shoot ul { margin: 6px 0 4px; padding-left: 18px; font-size: 13px; line-height: 1.5; }
 .ff-shoot .note { margin: 4px 0 0; }
+.spl-pick .pin-why{display:block;flex-basis:100%;margin-top:2px}
+
+/* Nov 23 2026: Signal check */
+.sig { margin: 8px 0 4px; border: 1px solid var(--line); border-radius: 12px; background: var(--card-2); }
+.sig > summary { list-style: none; cursor: pointer; display: flex; gap: 8px; align-items: baseline; padding: 8px 32px 8px 10px; position: relative; font-size: 13px; line-height: 1.35; }
+.sig > summary::-webkit-details-marker { display: none; }
+.sig > summary::after { content: ""; position: absolute; right: 12px; top: 13px; width: 7px; height: 7px; border-right: 2px solid var(--ink-2); border-bottom: 2px solid var(--ink-2); transform: rotate(45deg); transition: transform .2s; }
+.sig[open] > summary::after { transform: rotate(-135deg); top: 16px; }
+.sig > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 12px; }
+.sig-pill { flex: none; font-size: 11.5px; font-weight: 800; border-radius: 999px; padding: 3px 9px; white-space: nowrap; }
+.sig-bet .sig-pill { color: var(--win); background: var(--win-soft); }
+.sig-caution .sig-pill { color: var(--warn); background: rgba(255, 159, 67, .14); }
+.sig-pass .sig-pill { color: var(--on-loss); background: var(--loss); }
+.sig-paper .sig-pill { color: var(--ink-2); background: var(--card); border: 1px solid var(--line); }
+.sig-why { color: var(--ink-2); }
+.sig-rows { margin: 0; padding: 2px 10px 10px; display: grid; gap: 6px; font-size: 12.5px; }
+.sig-rows div { display: grid; grid-template-columns: 108px 1fr; gap: 8px; }
+.sig-rows dt { color: var(--ink-3); font-weight: 700; }
+.sig-rows dd { margin: 0; color: var(--ink); }
+@media (max-width: 420px) { .sig-rows div { grid-template-columns: 1fr; gap: 0; } }
