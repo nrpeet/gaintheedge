@@ -4005,7 +4005,11 @@
       var H = null, A = null; (c.competitors || []).forEach(function (t) { if (t.homeAway === "home") H = t; else A = t; });
       if (!H || !A) continue;
       var flip = false;
-      if (b.espn_id) { if (String(ev.id) !== String(b.espn_id)) continue; }
+      if (b.espn_id) {
+        if (String(ev.id) !== String(b.espn_id)) continue;
+        var hn0 = namesOf(H.team), an0 = namesOf(A.team), hk0 = teamKey(b.sport, b.home), ak0 = teamKey(b.sport, b.away);
+        flip = !!(hn0[ak0] && an0[hk0]);                 // Nov 23 2026: ESPN lists the teams the other way round (neutral site)
+      }
       else {
         var hn = namesOf(H.team), an = namesOf(A.team), hk = teamKey(b.sport, b.home), ak = teamKey(b.sport, b.away);
         if (b.sport === "nba" || b.sport === "nfl") { hn[nickKey(H.team && H.team.displayName)] = 1; an[nickKey(A.team && A.team.displayName)] = 1; }
@@ -5533,11 +5537,17 @@
           var key = ids[String(ev.id)], c = ev.competitions && ev.competitions[0]; if (!key || !c) return;
           var H = null, A = null; (c.competitors || []).forEach(function (t) { if (t.homeAway === "home") H = t; else A = t; });
           if (!H || !A) return;
+          // Nov 23 2026: at neutral sites ESPN can list the teams the other way round from our card (Southern Utah "home",
+          // ESPN Arkansas State): match the teams by name and keep OUR home/away, or the scores show swapped
+          var kp = String(key).split(/\s+(?:@|vs\.?)\s+/), flip = false;
+          if (kp.length === 2) { var hn_ = namesOf(H.team), an_ = namesOf(A.team), oa = norm(kp[0]), oh = norm(kp[1]); flip = !!(hn_[oa] && an_[oh]); }
+          var hT = flip ? A : H, aT = flip ? H : A, ln_ = espnLine(c, H);
+          if (ln_ && flip) ln_ = { sp: ln_.sp == null ? null : -ln_.sp, tot: ln_.tot, spClose: ln_.spClose, totClose: ln_.totClose, by: ln_.by };
           var st = c.status || ev.status || {}, ty = st.type || {}, s_ = ty.state === "post" ? "final" : ty.state === "in" ? "live" : "pre", per = st.period || 0;
           function h1(t) { var ls = t.linescores || []; return ls.length ? +(ls[0].value || 0) : null; }
-          games[key] = { away: +A.score || 0, home: +H.score || 0, status: s_, period: per,
-            h1_away: per >= 2 || s_ === "final" ? h1(A) : null, h1_home: per >= 2 || s_ === "final" ? h1(H) : null,
-            half_done: /halftime/i.test(ty.name || ""), ln: espnLine(c, H), eid: String(ev.id) };
+          games[key] = { away: +aT.score || 0, home: +hT.score || 0, status: s_, period: per,
+            h1_away: per >= 2 || s_ === "final" ? h1(aT) : null, h1_home: per >= 2 || s_ === "final" ? h1(hT) : null,
+            half_done: /halftime/i.test(ty.name || ""), ln: ln_, eid: String(ev.id) };
         });
       });
       return { games: games, updated: new Date().toISOString() };
