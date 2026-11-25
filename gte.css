@@ -1600,9 +1600,10 @@ body.on-home { overflow-anchor: none; }
 
 /* Nov 23 2026: Signal check */
 .sig { margin: 8px 0 4px; border: 1px solid var(--line); border-radius: 12px; background: var(--card-2); }
-.sig > summary { list-style: none; cursor: pointer; display: flex; gap: 8px; align-items: baseline; padding: 8px 32px 8px 10px; position: relative; font-size: 13px; line-height: 1.35; }
+.mc .sig > summary, .sig > summary { list-style: none; cursor: pointer; display: flex; justify-content: flex-start; gap: 8px; align-items: baseline; padding: 8px 32px 8px 10px; position: relative; font-size: 13px; font-weight: 500; line-height: 1.35; text-align: left; }
+.sig-why { flex: 1; min-width: 0; }
 .sig > summary::-webkit-details-marker { display: none; }
-.sig > summary::after { content: ""; position: absolute; right: 12px; top: 13px; width: 7px; height: 7px; border-right: 2px solid var(--ink-2); border-bottom: 2px solid var(--ink-2); transform: rotate(45deg); transition: transform .2s; }
+.mc .sig > summary::after, .sig > summary::after { content: ""; position: absolute; right: 12px; top: 13px; width: 7px; height: 7px; border-right: 2px solid var(--ink-2); border-bottom: 2px solid var(--ink-2); transform: rotate(45deg); transition: transform .2s; }
 .sig[open] > summary::after { transform: rotate(-135deg); top: 16px; }
 .sig > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 12px; }
 .sig-pill { flex: none; font-size: 11.5px; font-weight: 800; border-radius: 999px; padding: 3px 9px; white-space: nowrap; }
