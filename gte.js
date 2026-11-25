@@ -954,6 +954,8 @@
     }
     return "";
   }
+  // Nov 25 2026: a neutral-site game has no home team (tournaments, Feast Week events): say so instead of "home"
+  function isNeutral(x) { if (!x) return false; if (x.neutral != null) return !!x.neutral; var g = isCBB() ? slateOf(x.game) : null; return !!(g && g.neutral); }
   function slateOf(key) { var hit = null; ((state.data && state.data.slate) || []).forEach(function (g) { if (!hit && g.away + " @ " + g.home === key) hit = g; }); return hit; }
   function teamRow(name, side, x, gr, pickedSide) {
     var g = gr.g, fin = settled(gr.r) || gr.r === "live" || (g && g.status === "final");
@@ -961,7 +963,7 @@
     var other = g && sc != null ? +(side === "away" ? g.home : g.away) : null;
     var h1 = g && g.h1_away != null && x.market.indexOf("1H") === 0 ? (side === "away" ? g.h1_away : g.h1_home) : null;
     return '<div class="team' + (pickedSide === side ? " picked" : "") + '">' + badge(name, null, "") +
-      '<span class="tname">' + (teamOf(name) ? '<i class="rk">' + teamOf(name).rank + "</i>" : "") + esc(name) + (side === "home" ? "<small>home</small>" : "") + "</span>" +
+      '<span class="tname">' + (teamOf(name) ? '<i class="rk">' + teamOf(name).rank + "</i>" : "") + esc(name) + (side === "home" ? (isNeutral(x) ? "<small>neutral site</small>" : "<small>home</small>") : "") + "</span>" +
       '<span class="tsc' + (sc == null || (g.status === "final" && sc < other) ? " dim" : "") + (FLASH[x.game] && Date.now() - FLASH[x.game] < 4000 ? " flash" : "") + '">' + (sc == null ? "" : sc) + (h1 != null ? "<small>1H " + h1 + "</small>" : "") + "</span></div>";
   }
   function teaserRows(x, gr) {
